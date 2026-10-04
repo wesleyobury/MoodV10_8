@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
-import { trackEvent, aliasGuestToUser, GuestAnalytics } from '../utils/analytics';
+import { trackEvent, aliasGuestToUser, GuestAnalytics, setAnalyticsAuthToken } from '../utils/analytics';
 import TermsAcceptanceModal from '../components/TermsAcceptanceModal';
 import { resetNotificationSession } from '../utils/notificationUtils';
 import { API_URL, validateApiConfig } from '../utils/apiConfig';
@@ -90,6 +90,8 @@ export interface Entitlement {
   free_workouts_remaining: number | null;
   /** V2.1 — ISO ts when the weekly free allowance resets. Null if entitled. */
   free_workouts_reset_at?: string | null;
+  /** Oct 2026 — true once this week's free workout has been started (starting another this week needs access). */
+  first_workout_claimed?: boolean;
   is_founding_member: boolean;
   founding_pricing_claimed: boolean;
   founding_window_active: boolean;
@@ -115,6 +117,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isGuest, setIsGuest] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [entitlement, setEntitlement] = useState<Entitlement | null>(null);
+
+  // Hand the token to the analytics layer as soon as it lands. Events fired
+  // during the async auth load are parked rather than dropped, and this is
+  // what releases them. Without it, anything tracked before AsyncStorage
+  // resolved was sent as "Bearer null" and silently 401'd.
+  useEffect(() => {
+    setAnalyticsAuthToken(token);
+  }, [token]);
 
   // Derived state: Check if user has accepted the CURRENT version of terms
   // User must have accepted terms AND their version must match current version

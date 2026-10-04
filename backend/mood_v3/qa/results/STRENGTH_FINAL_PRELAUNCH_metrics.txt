@@ -1,0 +1,288 @@
+== sample 4470 ok 4446 conflicts [(('strength_lower_squat', "['legs']", 'sore_target_conflict'), 6), (('strength_lower_hinge', "['legs']", 'sore_target_conflict'), 6), (('strength_glutes_legs', "['legs']", 'sore_target_conflict'), 6), (('strength_full_body', "['legs']", 'sore_target_conflict'), 6)]
+
+== STATE SATISFACTION GATE
+ states evaluated 5558; satisfied 98% (5463/5558); needed a fallback expression 18% (1005/5558); yielded to a conflicting State by rule 63; exhausted 26
+   yielded: {('amped', 'low_energy_vs_effort'): 53, ('low_energy', 'low_energy_vs_amped_volume'): 10}
+   exhausted by (state, archetype, level): {('bored', 'strength_lower_squat', 'beginner'): 10, ('bored', 'strength_glutes_legs', 'beginner'): 6, ('bored', 'strength_full_body', 'beginner'): 4, ('amped', 'strength_full_body', 'beginner'): 3, ('bored', 'strength_upper_push', 'beginner'): 1, ('bored', 'strength_upper_pull', 'beginner'): 2}
+   amped        satisfied 95% (1138/1200)  fallback used 29% (350/1200)
+   bored        satisfied 98% (1120/1143)  fallback used 9% (104/1143)
+   irritated    satisfied 100% (929/929)  fallback used 15% (141/929)
+   low_energy   satisfied 99% (1133/1143)  fallback used 20% (233/1143)
+   stressed     satisfied 100% (1143/1143)  fallback used 15% (177/1143)
+ first-attempt no-op rate (before fallback): {'amped': '26%', 'bored': '6%', 'irritated': '12%', 'low_energy': '6%', 'stressed': '6%'}
+
+== STATE FINGERPRINTS (realized adaptation kinds in the final workout)
+
+ low_energy n=1080: kinds {'exercises': '66%', 'rir': '61%', 'reps': '25%', 'structure': '20%', 'slot_removed': '18%', 'complexity_or_systemic_cap': '17%', 'set_method': '11%', 'volume': '7%'}
+   top combinations: [(['exercises', 'rir'], 156), (['exercises'], 106), (['exercises', 'reps', 'rir'], 68), (['rir'], 61), (['exercises', 'slot_removed'], 49)]
+   expressions {'moderate_load': 343, 'last_resort': 10, 'simplify': 316, 'cost_down': 411}   set methods present {'slow_eccentric': 114, 'one_and_half': 26, 'pause': 92}   finisher 2% (18/1080)
+   single-State vs same no-State build: retention 67%  Δsets -1.23  ΔRIR +0.63  Δrest -1.8s
+
+ stressed n=1080: kinds {'exercises': '60%', 'tempo': '38%', 'structure': '25%', 'rest': '23%', 'complexity_or_systemic_cap': '16%', 'slot_removed': '16%', 'rir': '10%', 'set_method': '6%'}
+   top combinations: [(['exercises', 'rest'], 128), (['tempo'], 120), (['exercises'], 108), (['exercises', 'tempo'], 78), (['exercises', 'slot_removed'], 66)]
+   expressions {'predictable': 365, 'simpler': 306, 'controlled': 409}   set methods present {'slow_eccentric': 81, 'pause': 95}   finisher 1% (6/1080)
+   single-State vs same no-State build: retention 69%  Δsets -0.39  ΔRIR +0.04  Δrest -0.4s
+
+ bored n=1080: kinds {'exercises': '90%', 'set_method': '32%', 'structure': '20%', 'finisher': '6%'}
+   top combinations: [(['exercises'], 549), (['exercises', 'set_method'], 206), (['exercises', 'structure'], 99), (['exercises', 'set_method', 'structure'], 66), ([], 31)]
+   expressions {'new_exercises': 332, 'fresh_finish': 493, 'last_resort': 31, 'new_structure': 224}   set methods present {'one_and_half': 104, 'drop_set': 78, 'slow_eccentric': 265, 'rest_pause': 68, 'pause': 205, 'cluster': 15}   finisher 9% (95/1080)
+   single-State vs same no-State build: retention 51%  Δsets -0.14  ΔRIR +0.00  Δrest +3.5s
+
+ irritated n=810: kinds {'tempo': '44%', 'exercises': '42%', 'structure': '37%', 'rest': '29%', 'reps': '25%', 'complexity_or_systemic_cap': '16%', 'finisher': '5%'}
+   top combinations: [(['exercises'], 140), (['rest', 'structure', 'tempo'], 69), (['structure', 'tempo'], 64), (['reps'], 56), (['exercises', 'reps'], 47)]
+   expressions {'heavy_primary': 402, 'forceful_finish': 241, 'direct_simple': 167}   set methods present {'drop_set': 7, 'pause': 40, 'rest_pause': 2}   finisher 6% (47/810)
+   single-State vs same no-State build: retention 84%  Δsets -0.79  ΔRIR +0.02  Δrest +7.9s
+
+ amped n=1080: kinds {'rir': '39%', 'reps': '33%', 'structure': '26%', 'volume': '19%', 'set_method': '9%', 'exercises': '8%', 'finisher': '1%'}
+   top combinations: [(['reps'], 167), (['rir'], 156), (['volume'], 128), (['structure'], 117), (['reps', 'rir'], 91)]
+   expressions {'extra_set_paired': 257, 'top_set': 160, 'heavy_end': 369, 'last_resort': 108, 'intensity': 186}   set methods present {'one_and_half': 80, 'drop_set': 75, 'slow_eccentric': 108, 'rest_pause': 58, 'pause': 194, 'cluster': 21}   finisher 5% (53/1080)
+   single-State vs same no-State build: retention 97%  Δsets +0.11  ΔRIR -0.09  Δrest +2.2s
+
+== EXPLANATION TRUTHFULNESS
+ realized RIR / set details checked against the final prescription: 3556, mismatches 0
+ workouts with a synthesised line 4351; claims not backed by a realized contract entry: 0; workouts with no synthesised line 95 (no State, no soreness, nothing material to say beyond structure)
+ style-lint violations: 0
+
+== EXPERIENCE LEVEL (archetype runs, no State, 60 min)
+ beginner     n=160 sets/session 17.8  exercises 5.4  set-method in session 19% (31/160)  methods {'slow_eccentric': 31}
+      variants {'paired': 44, 'heavy_primary': 43, 'volume': 40, 'traditional': 26, 'efficient': 7}
+      RIR {2: 747, 3: 110}  primary reps {'6–8': 116, '8–10': 39}  accessory reps {'12–15': 279, '15–20': 62, '9–12': 21, '30–45 sec': 1}
+      structures {'straight': 160, 'superset': 109, 'finisher': 11}
+ intermediate n=160 sets/session 19.0  exercises 5.3  set-method in session 42% (68/160)  methods {'drop_set': 6, 'one_and_half': 7, 'pause': 24, 'slow_eccentric': 30, 'rest_pause': 1}
+      variants {'paired': 44, 'volume': 42, 'heavy_primary': 36, 'traditional': 17, 'top_backoff': 14, 'efficient': 7}
+      RIR {2: 448, 1: 388, 3: 8}  primary reps {'5–7': 93, '4–6': 42, '6–8': 20}  accessory reps {'10–12': 255, '12–15': 44, '9–12': 43, '8–10': 12}
+      structures {'straight': 160, 'superset': 94, 'finisher': 16, 'ladder': 1}
+ advanced     n=160 sets/session 19.0  exercises 5.3  set-method in session 66% (105/160)  methods {'drop_set': 19, 'one_and_half': 20, 'pause': 26, 'rest_pause': 5, 'cluster': 5, 'slow_eccentric': 30}
+      variants {'paired': 44, 'volume': 42, 'heavy_primary': 36, 'traditional': 17, 'top_backoff': 14, 'efficient': 7}
+      RIR {1: 483, 2: 361}  primary reps {'5–7': 93, '4–6': 42, '6–8': 20}  accessory reps {'10–12': 240, '9–12': 50, '12–15': 43, '8–10': 13}
+      structures {'straight': 160, 'superset': 80, 'finisher': 16, 'ladder': 1}
+
+== GOAL (goal grid, no State, 60 min, intermediate+advanced)
+ build_muscle               n=40 variants {'volume': 14, 'paired': 14, 'heavy_primary': 6, 'efficient': 2, 'top_backoff': 2, 'traditional': 2}
+      primary reps {'5–7': 24, '6–8': 10, '4–6': 6} primary rest {105: 16, 120: 16, 150: 6} accessories/session 2.5 accessory sets/session 9.0 accessory rest {None: 52, 60: 44, 45: 2} compound RIR {2: 105, 1: 13} methods {'drop_set': 7, 'one_and_half': 7, 'slow_eccentric': 6, 'pause': 4, 'rest_pause': 1}
+ build_strength             n=40 variants {'heavy_primary': 14, 'top_backoff': 10, 'paired': 6, 'volume': 6, 'efficient': 2, 'traditional': 2}
+      primary reps {'5–7': 22, '4–6': 18} primary rest {150: 20, 120: 14, 180: 6} accessories/session 2.4 accessory sets/session 6.2 accessory rest {60: 58, None: 34, 45: 2} compound RIR {2: 95, 1: 17} methods {'drop_set': 2, 'slow_eccentric': 9, 'pause': 9, 'cluster': 2, 'one_and_half': 3}
+ improve_athleticism        n=40 variants {'heavy_primary': 12, 'volume': 12, 'paired': 8, 'top_backoff': 4, 'efficient': 2, 'traditional': 2}
+      primary reps {'5–7': 24, '4–6': 16} primary rest {120: 22, 150: 14, 180: 4} accessories/session 2.4 accessory sets/session 7.0 accessory rest {60: 50, None: 44, 45: 2} compound RIR {2: 100, 1: 14} methods {'one_and_half': 4, 'rest_pause': 2, 'pause': 9, 'slow_eccentric': 4, 'drop_set': 1}
+ lose_weight_conditioning   n=40 variants {'paired': 16, 'volume': 12, 'heavy_primary': 6, 'efficient': 2, 'top_backoff': 2, 'traditional': 2}
+      primary reps {'5–7': 26, '6–8': 8, '4–6': 6} primary rest {120: 18, 105: 14, 150: 8} accessories/session 2.5 accessory sets/session 7.5 accessory rest {None: 54, 45: 30, 60: 16} compound RIR {2: 102, 1: 14} methods {'drop_set': 6, 'one_and_half': 2, 'slow_eccentric': 8, 'pause': 4}
+ feel_better_reduce_stress  n=40 variants {'volume': 12, 'heavy_primary': 10, 'paired': 10, 'traditional': 4, 'efficient': 2, 'top_backoff': 2}
+      primary reps {'5–7': 22, '4–6': 10, '6–8': 8} primary rest {105: 14, 120: 14, 150: 10} accessories/session 2.5 accessory sets/session 7.5 accessory rest {None: 48, 60: 48, 45: 2} compound RIR {2: 108, 3: 6} methods {'one_and_half': 3, 'slow_eccentric': 12, 'pause': 4, 'drop_set': 1}
+ stay_consistent            n=40 variants {'volume': 12, 'paired': 12, 'heavy_primary': 8, 'top_backoff': 4, 'efficient': 2, 'traditional': 2}
+      primary reps {'5–7': 24, '4–6': 8, '6–8': 8} primary rest {105: 14, 120: 14, 150: 8} accessories/session 2.5 accessory sets/session 7.4 accessory rest {None: 48, 60: 48, 45: 2} compound RIR {2: 102, 1: 14} methods {'drop_set': 2, 'slow_eccentric': 12, 'one_and_half': 2, 'pause': 4}
+
+== SET METHODS (all archetype runs)
+ sessions with a method: 30% (1043/3510)  by method {'one_and_half': 153, 'drop_set': 121, 'slow_eccentric': 384, 'rest_pause': 90, 'pause': 434, 'cluster': 29}
+ by State: {'': 'n/a', 'low_energy': '13% (36/270)', 'stressed': '9% (24/270)', 'bored': '72% (195/270)', 'irritated': '11% (30/270)', 'amped': '51% (137/270)'}
+ method on which class: {'accessory': 347, 'secondary_compound': 516, 'primary_compound': 348}
+
+== BASE + REGRESSION
+ no-State 60: straight-only 45% (54/120) est mean 48.0 in 50–60 30% (36/120) variants {'paired': 33, 'traditional': 32, 'heavy_primary': 25, 'volume': 23, 'top_backoff': 4, 'efficient': 3}
+ no-State 30: est mean 27.4 in 25–33 99% (119/120)
+ Amped 60 finisher 11% (15/135) burnout 5% (7/135) top/back-off 3% (4/135)
+ Irritated 60 finisher 26% (35/135) carry anywhere 23% (31/135) KB swing anywhere 14% (19/135)
+ Low Energy: accessory sets reduced 18% (48/270)
+ protected primary kept under low_energy: 100% (210/210)
+ protected primary kept under stressed: 100% (210/210)
+ protected primary kept under bored: 85% (179/210)
+ protected primary kept under irritated: 100% (210/210)
+ protected primary kept under amped: 100% (210/210)
+
+== SORENESS + EXPLICIT TARGET
+ target ['chest', 'triceps'] sore ['shoulders'] -> strength_custom_target: ['db_incline_press', 'machine_chest_press', 'seated_dip_machine', 'cable_fly', 'rope_pressdown']
+      ['no movement loads the sore front_delts, rear_delts, shoulders, side_delts directly', '2 movements still use it as a secondary mover (Incline Dumbbell Press, Machine Chest Press); everything else avoids it']
+ target ['chest', 'triceps'] sore ['lower_back'] -> strength_upper_push: ['barbell_bench_press', 'parallel_bar_dip', 'smith_incline_press', 'low_to_high_cable_fly', 'db_overhead_extension', 'machine_lateral_raise']
+      ['no movement loads the sore spinal_erectors directly', 'no accessory uses it as a secondary mover either']
+ target ['chest', 'triceps'] sore ['legs'] -> strength_upper_push: ['barbell_bench_press', 'parallel_bar_dip', 'smith_incline_press', 'low_to_high_cable_fly', 'db_overhead_extension', 'machine_lateral_raise']
+      ['no movement loads the sore calves, glutes, hamstrings, quads directly', 'no accessory uses it as a secondary mover either']
+ target ['chest'] sore ['shoulders'] -> strength_custom_target: ['db_incline_press', 'machine_chest_press', 'parallel_bar_dip', 'cable_fly']
+      ['no movement loads the sore front_delts, rear_delts, shoulders, side_delts directly', '3 movements still use it as a secondary mover (Incline Dumbbell Press, Machine Chest Press, Parallel Bar Dip); everything else avoids it']
+ target ['chest'] sore ['lower_back'] -> strength_custom_target: ['db_incline_press', 'machine_chest_press', 'parallel_bar_dip', 'cable_fly']
+      ['no movement loads the sore spinal_erectors directly', 'no accessory uses it as a secondary mover either']
+ target ['chest'] sore ['legs'] -> strength_custom_target: ['db_incline_press', 'machine_chest_press', 'parallel_bar_dip', 'cable_fly']
+      ['no movement loads the sore calves, glutes, hamstrings, quads directly', 'no accessory uses it as a secondary mover either']
+ target ['back', 'biceps'] sore ['shoulders'] -> strength_upper_pull: ['seated_cable_row', 'chin_up', 'single_arm_lat_pulldown', 'db_pullover', 'ez_preacher_curl', 'barbell_curl']
+      ['no movement loads the sore front_delts, rear_delts, shoulders, side_delts directly', '1 movement still use it as a secondary mover (Seated Cable Row); everything else avoids it']
+ target ['back', 'biceps'] sore ['lower_back'] -> strength_upper_pull: ['seated_cable_row', 'machine_high_row', 'meadows_row', 'db_pullover', 'ez_preacher_curl', 'barbell_curl']
+      ['no movement loads the sore spinal_erectors directly', 'no accessory uses it as a secondary mover either']
+ target ['back', 'biceps'] sore ['legs'] -> strength_upper_pull: ['seated_cable_row', 'machine_high_row', 'meadows_row', 'db_pullover', 'ez_preacher_curl', 'barbell_curl']
+      ['no movement loads the sore calves, glutes, hamstrings, quads directly', 'no accessory uses it as a secondary mover either']
+ target ['quads', 'glutes'] sore ['shoulders'] -> strength_glutes_legs: ['barbell_hip_thrust', 'hack_squat', 'box_step_up_glute', 'cable_glute_kickback', 'leg_extension']
+      ['no movement loads the sore front_delts, rear_delts, shoulders, side_delts directly', 'no accessory uses it as a secondary mover either']
+ target ['quads', 'glutes'] sore ['lower_back'] -> strength_glutes_legs: ['barbell_hip_thrust', 'hack_squat', 'box_step_up_glute', 'cable_glute_kickback', 'leg_extension']
+      ['no movement loads the sore spinal_erectors directly', 'no accessory uses it as a secondary mover either']
+ target ['quads', 'glutes'] sore ['legs'] -> strength_glutes_legs: ['barbell_hip_thrust', 'hack_squat', 'curtsy_lunge', 'cable_glute_kickback', 'leg_extension']
+      ['glutes, quads trained as asked despite soreness']
+ target ['chest', 'triceps'] sore ['shoulders'] -> strength_custom_target: ['db_incline_press', 'machine_chest_press', 'seated_dip_machine', 'low_to_high_cable_fly', 'overhead_cable_extension']
+      ['no movement loads the sore front_delts, rear_delts, shoulders, side_delts directly', '3 movements still use it as a secondary mover (Incline Dumbbell Press, Machine Chest Press, Low-to-High Cable Fly); everything else avoids it']
+ target ['chest', 'triceps'] sore ['lower_back'] -> strength_upper_push: ['db_incline_press', 'parallel_bar_dip', 'single_arm_cable_chest_press', 'pec_deck', 'ez_skull_crusher', 'cross_body_cable_triceps_extension']
+      ['no movement loads the sore spinal_erectors directly', 'no accessory uses it as a secondary mover either']
+ target ['chest', 'triceps'] sore ['legs'] -> strength_upper_push: ['db_incline_press', 'parallel_bar_dip', 'single_arm_cable_chest_press', 'pec_deck', 'ez_skull_crusher', 'cross_body_cable_triceps_extension']
+      ['no movement loads the sore calves, glutes, hamstrings, quads directly', 'no accessory uses it as a secondary mover either']
+ target ['chest'] sore ['shoulders'] -> strength_custom_target: ['db_incline_press', 'machine_chest_press', 'parallel_bar_dip', 'low_to_high_cable_fly']
+      ['no movement loads the sore front_delts, rear_delts, shoulders, side_delts directly', '4 movements still use it as a secondary mover (Incline Dumbbell Press, Machine Chest Press, Parallel Bar Dip, Low-to-High Cable Fly); everything else avoids it']
+ target ['chest'] sore ['lower_back'] -> strength_custom_target: ['db_incline_press', 'machine_chest_press', 'parallel_bar_dip', 'low_to_high_cable_fly']
+      ['no movement loads the sore spinal_erectors directly', 'no accessory uses it as a secondary mover either']
+ target ['chest'] sore ['legs'] -> strength_custom_target: ['db_incline_press', 'machine_chest_press', 'parallel_bar_dip', 'low_to_high_cable_fly']
+      ['no movement loads the sore calves, glutes, hamstrings, quads directly', 'no accessory uses it as a secondary mover either']
+ target ['back', 'biceps'] sore ['shoulders'] -> strength_upper_pull: ['chest_supported_row_machine', 'chin_up', 'single_arm_cable_row', 'db_pullover', 'ez_bar_curl', 'bayesian_cable_curl']
+      ['no movement loads the sore front_delts, rear_delts, shoulders, side_delts directly', '1 movement still use it as a secondary mover (Chest-Supported Machine Row); everything else avoids it']
+ target ['back', 'biceps'] sore ['lower_back'] -> strength_upper_pull: ['chest_supported_row_machine', 'lat_pulldown', 'single_arm_db_row', 'straight_arm_pulldown', 'ez_bar_curl', 'bayesian_cable_curl']
+      ['no movement loads the sore spinal_erectors directly', 'no accessory uses it as a secondary mover either']
+ target ['back', 'biceps'] sore ['legs'] -> strength_upper_pull: ['chest_supported_row_machine', 'lat_pulldown', 'single_arm_db_row', 'straight_arm_pulldown', 'ez_bar_curl', 'bayesian_cable_curl']
+      ['no movement loads the sore calves, glutes, hamstrings, quads directly', 'no accessory uses it as a secondary mover either']
+ target ['quads', 'glutes'] sore ['shoulders'] -> strength_glutes_legs: ['barbell_hip_thrust', 'hack_squat', 'curtsy_lunge', 'frog_pump', 'reverse_nordic']
+      ['no movement loads the sore front_delts, rear_delts, shoulders, side_delts directly', 'no accessory uses it as a secondary mover either']
+ target ['quads', 'glutes'] sore ['lower_back'] -> strength_glutes_legs: ['barbell_hip_thrust', 'hack_squat', 'curtsy_lunge', 'frog_pump', 'reverse_nordic']
+      ['no movement loads the sore spinal_erectors directly', 'no accessory uses it as a secondary mover either']
+ target ['quads', 'glutes'] sore ['legs'] -> strength_glutes_legs: ['barbell_hip_thrust', 'hack_squat', 'curtsy_lunge', 'frog_pump', 'reverse_nordic']
+      ['glutes, quads trained as asked despite soreness']
+
+== SEQUENTIAL
+ h1: traditional/drop_set | paired | volume/slow_eccentric | paired/pause | traditional/slow_eccentric/fin | paired/fin | volume | paired/one_and_half | traditional | volume/slow_eccentric
+      back-to-back repeats: variant 0 expression 0 method 0 finisher 0
+ h2: volume/top_set/pause | paired/intensity/drop_set | volume/extra_set_paired/drop_set | traditional/heavy_end/fin | top_backoff/extra_set_paired/drop_set | volume/intensity/one_and_half | traditional/heavy_end/rest_pause | paired/top_set
+      back-to-back repeats: variant 0 expression 0 method 1 finisher 0
+ h3: heavy_primary/heavy_primary/drop_set | paired/forceful_finish | heavy_primary/heavy_primary/rest_pause/fin | heavy_primary/heavy_primary | traditional/heavy_primary | top_backoff/direct_simple | paired/forceful_finish | heavy_primary/heavy_primary
+      back-to-back repeats: variant 1 expression 2 method 0 finisher 0
+ h4: traditional/moderate_load | traditional/cost_down | traditional/moderate_load | heavy_primary/simplify | traditional/cost_down/pause | heavy_primary/moderate_load | volume/simplify | volume/cost_down
+      back-to-back repeats: variant 3 expression 0 method 0 finisher 0
+ h5: top_backoff/new_exercises/slow_eccentric | paired/new_structure/slow_eccentric | volume/fresh_finish/pause | paired/new_structure/rest_pause | volume/fresh_finish/slow_eccentric | traditional/new_exercises/drop_set | paired/fresh_finish/drop_set | volume/new_structure/slow_eccentric
+      back-to-back repeats: variant 0 expression 0 method 2 finisher 0
+ h6: traditional/controlled | volume/simpler | traditional/predictable/slow_eccentric | traditional/simpler/slow_eccentric | volume/predictable | traditional/simpler | volume/controlled | traditional/simpler/pause
+      back-to-back repeats: variant 1 expression 0 method 1 finisher 0
+ h7: traditional | heavy_primary/intensity/drop_set | paired/new_structure/pause | traditional | paired/cost_down | heavy_primary/forceful_finish/fin | volume | traditional/controlled | top_backoff/top_set/drop_set | heavy_primary/slow_eccentric
+      back-to-back repeats: variant 0 expression 0 method 0 finisher 0
+
+== STATE COHERENCE (whole-session check after reconciliation; fail / judged by resolved combination)
+  amped                        -> amped        389/390  pass (100%)
+  amped + bored                -> amped        265/270  pass (98%)
+  amped + bored                -> bored        270/270  pass (100%)
+  amped + stressed             -> amped        268/270  pass (99%)
+  amped + stressed             -> stressed     270/270  pass (100%)
+  bored                        -> bored        333/333  pass (100%)
+  bored + low_energy           -> bored        268/270  pass (99%)
+  bored + low_energy           -> low_energy   259/270  pass (96%)
+  bored + stressed             -> bored        260/270  pass (96%)
+  bored + stressed             -> stressed     270/270  pass (100%)
+  irritated                    -> irritated    381/389  pass (98%)
+  irritated + low_energy       -> irritated    269/270  pass (100%)
+  irritated + low_energy       -> low_energy   265/270  pass (98%)
+  irritated + stressed         -> irritated    265/270  pass (98%)
+  irritated + stressed         -> stressed     270/270  pass (100%)
+  low_energy                   -> low_energy   328/333  pass (98%)
+  low_energy + amped           -> amped        270/270  pass (100%)
+  low_energy + amped           -> low_energy   263/270  pass (97%)
+  stressed                     -> stressed     333/333  pass (100%)
+  overall pass 98.9%  (62 failures of 5558)
+  failure reasons:
+     ('low_energy', '2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to O') 15
+     ('irritated', 'no perceptible direct or heavy quality anywhere in the sessi') 14
+     ('bored', 'experiential difference score 0 below 1') 12
+     ('amped', 'readiness not used anywhere meaningful (primary effort, load') 8
+     ('low_energy', '2 demanding compounds (Barbell Romanian Deadlift, Sumo Deadl') 4
+     ('low_energy', '2 demanding compounds (Barbell Romanian Deadlift, Reverse Lu') 4
+     ('low_energy', 'total sets 11 above the Low Energy budget 10') 2
+     ('low_energy', '6 station changes') 2
+     ('low_energy', 'dense pairing on top of high volume') 1
+  repairs applied:
+     ('low_energy', 'trim_accessory_sets') 272
+     ('irritated', 'primary_intent_and_heavier') 179
+     ('amped', 'trim_near_failure') 154
+     ('stressed', 'compound_rest_90') 129
+     ('low_energy', 'accessory_rir_floor_2') 117
+     ('low_energy', 'remove_optional_accessory') 117
+     ('amped', 'primary_intent') 45
+     ('irritated', 'drop_soft_method') 45
+     ('bored', 'force_method') 32
+     ('low_energy', 'drop_finisher') 31
+     ('amped', 'primary_heavier') 19
+     ('stressed', 'remove_optional_accessory') 19
+     ('stressed', 'drop_counting_method') 18
+     ('stressed', 'drop_finisher') 14
+     ('irritated', 'unpair') 10
+     ('low_energy', 'swap_demanding_secondary') 10
+     ('amped', 'primary_extra_set') 7
+     ('amped', 'primary_rir_down') 3
+  ALL FAILURES (combination, state, level, duration, archetype, reasons):
+     ('irritated + stressed', 'irritated', 'intermediate', 30, 'strength_arms', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('irritated + stressed', 'irritated', 'advanced', 30, 'strength_arms', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('bored + stressed', 'bored', 'beginner', 30, 'strength_core', ['experiential difference score 0 below 1'])
+     ('bored + stressed', 'bored', 'beginner', 60, 'strength_core', ['experiential difference score 0 below 1'])
+     ('irritated + low_energy', 'irritated', 'advanced', 30, 'strength_core', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('low_energy', 'low_energy', 'advanced', 60, 'strength_lower_hinge', ['2 demanding compounds (Barbell Romanian Deadlift, Sumo Deadlift)'])
+     ('bored + low_energy', 'low_energy', 'advanced', 60, 'strength_lower_hinge', ['2 demanding compounds (Barbell Romanian Deadlift, Sumo Deadlift)'])
+     ('low_energy + amped', 'low_energy', 'advanced', 60, 'strength_lower_hinge', ['2 demanding compounds (Barbell Romanian Deadlift, Sumo Deadlift)'])
+     ('irritated + low_energy', 'low_energy', 'advanced', 60, 'strength_lower_hinge', ['2 demanding compounds (Barbell Romanian Deadlift, Sumo Deadlift)'])
+     ('bored + low_energy', 'low_energy', 'intermediate', 30, 'strength_full_body', ['2 demanding compounds (Barbell Romanian Deadlift, Reverse Lunge to Overhead Press)'])
+     ('bored + low_energy', 'low_energy', 'advanced', 30, 'strength_full_body', ['2 demanding compounds (Barbell Romanian Deadlift, Reverse Lunge to Overhead Press)'])
+     ('bored + low_energy', 'low_energy', 'intermediate', 60, 'strength_full_body', ['2 demanding compounds (Barbell Romanian Deadlift, Reverse Lunge to Overhead Press)'])
+     ('bored + low_energy', 'low_energy', 'advanced', 60, 'strength_full_body', ['2 demanding compounds (Barbell Romanian Deadlift, Reverse Lunge to Overhead Press)'])
+     ('amped + stressed', 'amped', 'beginner', 30, 'strength_core', ['readiness not used anywhere meaningful (primary effort, loading, scheme, method, density or finisher)'])
+     ('amped + stressed', 'amped', 'beginner', 60, 'strength_core', ['readiness not used anywhere meaningful (primary effort, loading, scheme, method, density or finisher)'])
+     ('irritated + stressed', 'irritated', 'beginner', 30, 'strength_core', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('irritated + stressed', 'irritated', 'intermediate', 30, 'strength_core', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('irritated + stressed', 'irritated', 'advanced', 30, 'strength_core', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('bored + stressed', 'bored', 'beginner', 30, 'strength_core', ['experiential difference score 0 below 1'])
+     ('bored + stressed', 'bored', 'beginner', 60, 'strength_core', ['experiential difference score 0 below 1'])
+     ('low_energy + amped', 'low_energy', 'beginner', 30, 'strength_full_body', ['total sets 11 above the Low Energy budget 10'])
+     ('bored + low_energy', 'low_energy', 'advanced', 60, 'strength_core', ['6 station changes'])
+     ('bored + stressed', 'bored', 'beginner', 30, 'strength_core', ['experiential difference score 0 below 1'])
+     ('bored + stressed', 'bored', 'beginner', 60, 'strength_core', ['experiential difference score 0 below 1'])
+     ('low_energy', 'low_energy', 'intermediate', 30, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('low_energy', 'low_energy', 'advanced', 30, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('low_energy', 'low_energy', 'intermediate', 60, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('low_energy', 'low_energy', 'advanced', 60, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('bored + low_energy', 'low_energy', 'intermediate', 30, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('bored + low_energy', 'low_energy', 'advanced', 30, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('bored + low_energy', 'low_energy', 'intermediate', 60, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('bored + low_energy', 'low_energy', 'advanced', 60, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('low_energy + amped', 'low_energy', 'beginner', 30, 'strength_full_body', ['total sets 11 above the Low Energy budget 10'])
+     ('low_energy + amped', 'low_energy', 'intermediate', 30, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('low_energy + amped', 'low_energy', 'intermediate', 60, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('low_energy + amped', 'low_energy', 'advanced', 60, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('irritated + low_energy', 'low_energy', 'intermediate', 30, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('irritated + low_energy', 'low_energy', 'advanced', 30, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('irritated + low_energy', 'low_energy', 'intermediate', 60, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('irritated + low_energy', 'low_energy', 'advanced', 60, 'strength_full_body', ['2 demanding compounds (Trap-Bar Deadlift, Reverse Lunge to Overhead Press)'])
+     ('amped + bored', 'amped', 'intermediate', 30, 'strength_core', ['readiness not used anywhere meaningful (primary effort, loading, scheme, method, density or finisher)'])
+     ('amped + bored', 'amped', 'advanced', 30, 'strength_core', ['readiness not used anywhere meaningful (primary effort, loading, scheme, method, density or finisher)'])
+     ('amped + bored', 'amped', 'intermediate', 60, 'strength_core', ['readiness not used anywhere meaningful (primary effort, loading, scheme, method, density or finisher)'])
+     ('amped + bored', 'amped', 'advanced', 60, 'strength_core', ['readiness not used anywhere meaningful (primary effort, loading, scheme, method, density or finisher)'])
+     ('bored + stressed', 'bored', 'beginner', 30, 'strength_core', ['experiential difference score 0 below 1'])
+     ('bored + stressed', 'bored', 'beginner', 60, 'strength_core', ['experiential difference score 0 below 1'])
+     ('amped + bored', 'amped', 'beginner', 30, 'strength_arms', ['readiness not used anywhere meaningful (primary effort, loading, scheme, method, density or finisher)'])
+     ('low_energy + amped', 'low_energy', 'intermediate', 60, 'strength_arms', ['dense pairing on top of high volume'])
+     ('bored + low_energy', 'bored', 'beginner', 30, 'strength_core', ['experiential difference score 0 below 1'])
+     ('bored + low_energy', 'bored', 'beginner', 60, 'strength_core', ['experiential difference score 0 below 1'])
+     ('bored + low_energy', 'low_energy', 'advanced', 60, 'strength_core', ['6 station changes'])
+     ('bored + stressed', 'bored', 'beginner', 30, 'strength_core', ['experiential difference score 0 below 1'])
+     ('bored + stressed', 'bored', 'beginner', 60, 'strength_core', ['experiential difference score 0 below 1'])
+     ('irritated', 'irritated', 'intermediate', 30, 'strength_custom_target', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('irritated', 'irritated', 'intermediate', 60, 'strength_custom_target', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('irritated', 'irritated', 'intermediate', 30, 'strength_custom_target', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('irritated', 'irritated', 'intermediate', 60, 'strength_custom_target', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('amped', 'amped', 'intermediate', 30, 'strength_custom_target', ['readiness not used anywhere meaningful (primary effort, loading, scheme, method, density or finisher)'])
+     ('irritated', 'irritated', 'intermediate', 30, 'strength_custom_target', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('irritated', 'irritated', 'intermediate', 60, 'strength_custom_target', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('irritated', 'irritated', 'intermediate', 30, 'strength_custom_target', ['no perceptible direct or heavy quality anywhere in the session'])
+     ('irritated', 'irritated', 'intermediate', 60, 'strength_custom_target', ['no perceptible direct or heavy quality anywhere in the session'])
+
+== CORE SESSIONS (respect requested duration)
+  60-min Core n=195: est mean 50.4 min, min 39.3, max 59.8, in 50-60: 64% (125/195); exercises 6.5; sets 20.5; expectation flag 100% (195/195)
+     category coverage {'brace_load': 208, 'anti_extension': 195, 'posterior': 182, 'anti_rotation': 150, 'carry': 195, 'rotation': 150, 'flexion': 240}; distinct categories/session 6.5
+     beginner     est 50.0 sets 19.0 RIR {2: 33, 3: 2} methods 0% (0/5) lead {'half_kneeling_landmine_press': 5}
+     intermediate est 53.3 sets 23.0 RIR {1: 25, 2: 10} methods 40% (2/5) lead {'z_press': 1, 'barbell_overhead_press': 1, 'half_kneeling_landmine_press': 1}
+     advanced     est 52.6 sets 23.0 RIR {1: 25, 2: 10} methods 40% (2/5) lead {'z_press': 2, 'barbell_overhead_press': 2, 'front_squat': 1}
+     duplicate exercise in a session: 0; state satisfaction in Core: {'low_energy': '100% (60/60)', 'stressed': '100% (60/60)', 'bored': '100% (60/60)', 'irritated': '100% (45/45)', 'amped': '100% (60/60)'}
+  30-min Core n=195: est mean 27.2 min, min 23.4, max 31.4, in 25-33: 68% (132/195); exercises 3.7; sets 11.0; expectation flag 0% (0/195)
+     category coverage {'brace_load': 195, 'anti_extension': 195, 'anti_rotation': 150, 'flexion': 195}; distinct categories/session 3.8
+     beginner     est 25.4 sets 9.0 RIR {2: 19, 3: 1} methods 0% (0/5) lead {'half_kneeling_landmine_press': 5}
+     intermediate est 28.6 sets 12.0 RIR {1: 15, 2: 5} methods 40% (2/5) lead {'z_press': 1, 'barbell_overhead_press': 1, 'half_kneeling_landmine_press': 1}
+     advanced     est 29.7 sets 12.8 RIR {1: 15, 2: 5} methods 40% (2/5) lead {'z_press': 2, 'barbell_overhead_press': 2, 'front_squat': 1}
+     duplicate exercise in a session: 0; state satisfaction in Core: {'low_energy': '98% (59/60)', 'stressed': '100% (60/60)', 'bored': '100% (60/60)', 'irritated': '100% (45/45)', 'amped': '98% (59/60)'}
+
+== BEGINNER SET METHODS AND INTENSITY
+  beginner sessions 1290: methods {'slow_eccentric': 151}; RIR-0 rows 0; sessions with a high-fatigue method 0
+  method attachments: [(('slow_eccentric', 'leg_extension'), 40), (('slow_eccentric', 'lat_pulldown'), 28), (('slow_eccentric', 'pec_deck'), 18), (('slow_eccentric', 'chest_supported_row_machine'), 8), (('slow_eccentric', 'frog_pump'), 8), (('slow_eccentric', 'standing_single_leg_curl'), 8), (('slow_eccentric', 'single_leg_leg_curl'), 7), (('slow_eccentric', 'cable_fly'), 7), (('slow_eccentric', 'low_to_high_cable_fly'), 6), (('slow_eccentric', 'neutral_grip_lat_pulldown'), 6), (('slow_eccentric', 'chest_supported_db_row'), 4), (('slow_eccentric', 'spider_curl'), 4), (('slow_eccentric', 'reverse_pec_deck'), 2), (('slow_eccentric', 'machine_triceps_extension'), 1), (('slow_eccentric', 'db_lateral_raise'), 1)]
+  beginner finishers: {'carry': 64}

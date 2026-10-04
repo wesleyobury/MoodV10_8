@@ -1,0 +1,142 @@
+== sample 3720 ok 3712 conflicts [('strength_glutes_legs', [], 60, 'intermediate', 'sore_target_conflict'), ('strength_glutes_legs', ['amped'], 60, 'intermediate', 'sore_target_conflict'), ('strength_full_body', [], 60, 'intermediate', 'sore_target_conflict'), ('strength_full_body', ['amped'], 60, 'intermediate', 'sore_target_conflict'), ('strength_glutes_legs', [], 60, 'intermediate', 'sore_target_conflict'), ('strength_glutes_legs', ['amped'], 60, 'intermediate', 'sore_target_conflict'), ('strength_full_body', [], 60, 'intermediate', 'sore_target_conflict'), ('strength_full_body', ['amped'], 60, 'intermediate', 'sore_target_conflict')]
+
+== BASE QUALITY (no State, archetype runs excl. Core)
+ 30 min: variants {'paired': '50%', 'efficient': '27%', 'traditional': '18%', 'top_backoff': '3%', 'heavy_primary': '2%'}
+   structures present: [(('straight',), 66), (('straight', 'superset'), 50), (('ladder', 'straight'), 4)]
+   only straight sets: 55% (66/120)  has superset 42% (50/120)  pyramid/ladder 3% (4/120)  finisher 0% (0/120)  top/back-off 3% (4/120)
+   est minutes: mean 28.3 min 25.0 max 31.0  in window: 100% (120/120)
+   working sets: mean 10.5 range 9-12; exercises mean 3.7
+   rep windows: [('8–10', 126), ('10–12', 111), ('5–7', 68), ('12–15', 63), ('6–8', 35), ('15–20', 16), ('8–12', 3), ('18/15/12/10', 2), ('4–6', 2), ('18/15/12', 1)]
+   rest: [(60, 105), (120, 80), (45, 69), (105, 39), (90, 38), (165, 35), (150, 34), (135, 21), (75, 8)]
+   RIR: [(2, 319), (1, 120)]  sets/exercise: [(3, 278), (2, 107), (4, 54)]
+   primary_compound     intermediate: sets [(3, 32), (4, 3)] reps [('5–7', 34), ('4–6', 1)] rest [(165, 17), (150, 9), (135, 6), (210, 2)] RIR [(2, 35)]
+   secondary_compound   intermediate: sets [(3, 38), (4, 12)] reps [('8–10', 49), ('8–12', 1)] rest [(120, 23), (105, 14), (90, 11), (75, 2)] RIR [(2, 50)]
+   accessory            intermediate: sets [(2, 28), (3, 27), (4, 5)] reps [('10–12', 45), ('12–15', 6), ('15–20', 5), ('20–40 sec', 2)] rest [(60, 36), (45, 21), (75, 2), (30, 1)] RIR [(1, 60)]
+ 60 min: variants {'paired': '32%', 'volume': '25%', 'traditional': '24%', 'heavy_primary': '11%', 'top_backoff': '5%', 'efficient': '2%'}
+   structures present: [(('straight', 'superset'), 67), (('straight',), 33), (('finisher', 'straight'), 10), (('pyramid', 'straight'), 4), (('pyramid', 'straight', 'superset'), 3), (('finisher', 'straight', 'superset'), 3)]
+   only straight sets: 28% (33/120)  has superset 61% (73/120)  pyramid/ladder 6% (7/120)  finisher 11% (13/120)  top/back-off 5% (6/120)
+   est minutes: mean 53.8 min 42.0 max 59.9  in window: 98% (118/120)
+   working sets: mean 18.9 range 14-24; exercises mean 5.3
+   rep windows: [('8–10', 212), ('10–12', 149), ('12–15', 95), ('15–20', 60), ('5–7', 52), ('6–8', 37), ('4–6', 8), ('11/9/7/5', 5), ('8–12', 4), ('13/11/9/7', 2)]
+   rest: [(60, 274), (120, 188), (135, 45), (150, 29), (45, 23), (180, 22), (195, 22), (165, 17), (240, 16)]
+   RIR: [(2, 430), (1, 198), (3, 8)]  sets/exercise: [(4, 363), (3, 235), (2, 26), (5, 12)]
+   primary_compound     intermediate: sets [(4, 29), (5, 6)] reps [('5–7', 26), ('6–8', 5), ('4–6', 4)] rest [(195, 11), (240, 8), (165, 8), (180, 8)] RIR [(2, 35)]
+   secondary_compound   intermediate: sets [(4, 78)] reps [('8–10', 75), ('11/9/7/5', 2), ('8–12', 1)] rest [(120, 64), (135, 13), (150, 1)] RIR [(2, 78)]
+   accessory            intermediate: sets [(3, 69), (4, 18)] reps [('10–12', 65), ('15–20', 12), ('12–15', 6), ('20–30 sec', 2)] rest [(60, 84), (45, 3)] RIR [(1, 87)]
+
+== exercise variety across 5 users (no State, 60, intermediate):
+   strength_arms            distinct  23 over 5 sessions; in every session: []; primaries [('ez_bar_curl', 3), ('high_cable_curl', 1), ('barbell_curl', 1)]
+   strength_core            distinct   8 over 5 sessions; in every session: []; primaries [('dead_bug', 2), ('ab_wheel_rollout', 1), ('pallof_press', 1)]
+   strength_full_body       distinct  22 over 5 sessions; in every session: []; primaries [('hack_squat', 2), ('barbell_back_squat', 1), ('barbell_rdl', 1)]
+   strength_glutes_legs     distinct  11 over 5 sessions; in every session: ['barbell_hip_thrust', 'trap_bar_deadlift']; primaries [('barbell_hip_thrust', 5)]
+   strength_lower_hinge     distinct  12 over 5 sessions; in every session: ['barbell_rdl', 'cable_pull_through']; primaries [('barbell_rdl', 5)]
+   strength_lower_squat     distinct  12 over 5 sessions; in every session: ['leg_press', 'roman_chair_ghd_raise']; primaries [('barbell_back_squat', 3), ('hack_squat', 2)]
+   strength_upper_mixed     distinct  21 over 5 sessions; in every session: []; primaries [('db_incline_press', 2), ('barbell_bench_press', 2), ('db_bench_press', 1)]
+   strength_upper_pull      distinct  20 over 5 sessions; in every session: []; primaries [('chest_supported_row_machine', 4), ('pendlay_row', 1)]
+   strength_upper_push      distinct  17 over 5 sessions; in every session: ['parallel_bar_dip']; primaries [('barbell_bench_press', 2), ('db_incline_press', 2), ('db_bench_press', 1)]
+
+== STATE BEHAVIOR (vs same no-State build: same user/date/archetype/duration/level)
+
+ low_energy             n=240 retention 66%  primary kept 88%  Δsets -0.78  ΔRIR +0.55  Δrest +0.6s  Δest -1.6  variant changed 30%
+   variants {'efficient': 73, 'traditional': 73, 'paired': 59, 'volume': 23}
+   finisher 1% (3/240) types Counter({'forceful': 2, 'burnout': 1}) ex [('back_extension_45', 1), ('kettlebell_swing', 1), ('db_snatch', 1)]
+   structures [(('straight',), 120), (('straight', 'superset'), 116), (('finisher', 'straight'), 3), (('pyramid', 'straight'), 1)]
+   expressions {'moderate_load': 72, 'simplify': 84, 'cost_down': 84}
+   most introduced exercises [('ez_preacher_curl', 36), ('machine_triceps_extension', 29), ('machine_preacher_curl', 20), ('leg_extension', 18), ('renegade_row', 16), ('machine_lateral_raise', 16)]
+
+ stressed               n=240 retention 73%  primary kept 94%  Δsets -0.70  ΔRIR +0.03  Δrest +3.3s  Δest -0.7  variant changed 42%
+   variants {'traditional': 111, 'efficient': 62, 'volume': 33, 'paired': 17}
+   finisher 0% (0/240) types Counter() ex []
+   structures [(('straight',), 202), (('straight', 'superset'), 38)]
+   expressions {'predictable': 78, 'simpler': 78, 'controlled': 84}
+   most introduced exercises [('leg_extension', 16), ('cable_pressdown', 14), ('incline_db_curl', 14), ('machine_triceps_extension', 13), ('machine_preacher_curl', 12), ('seated_leg_curl', 12)]
+
+ bored                  n=240 retention 56%  primary kept 86%  Δsets -0.24  ΔRIR +0.01  Δrest +2.6s  Δest +0.5  variant changed 22%
+   variants {'paired': 133, 'volume': 33, 'efficient': 25, 'heavy_primary': 22}
+   finisher 16% (38/240) types Counter({'burnout': 21, 'carry': 15, 'forceful': 2}) ex [('suitcase_carry', 12), ('pec_deck', 9), ('machine_lateral_raise', 4), ('farmer_carry', 3), ('back_extension_45', 3)]
+   structures [(('straight', 'superset'), 107), (('straight',), 73), (('finisher', 'straight', 'superset'), 20), (('finisher', 'straight'), 11)]
+   expressions {'new_exercises': 78, 'fresh_finish': 108, 'new_structure': 54}
+   most introduced exercises [('bayesian_cable_curl', 58), ('frog_pump', 32), ('lu_raise', 25), ('slider_hamstring_curl', 22), ('reverse_nordic', 20), ('cross_body_cable_triceps_extension', 17)]
+
+ irritated              n=240 retention 85%  primary kept 100%  Δsets -0.75  ΔRIR +0.02  Δrest +9.9s  Δest +0.6  variant changed 35%
+   variants {'heavy_primary': 88, 'paired': 60, 'traditional': 42, 'efficient': 20}
+   finisher 11% (27/240) types Counter({'forceful': 16, 'carry': 10, 'burnout': 1}) ex [('kettlebell_swing', 11), ('farmer_carry', 10), ('db_snatch', 2), ('machine_lateral_raise', 1), ('kb_clean_and_press', 1)]
+   structures [(('straight',), 127), (('straight', 'superset'), 86), (('finisher', 'straight'), 17), (('finisher', 'straight', 'superset'), 9)]
+   expressions {'heavy_primary': 102, 'forceful_finish': 84, 'direct_simple': 54}
+   most introduced exercises [('seated_leg_curl', 9), ('reverse_pec_deck', 7), ('cable_pressdown', 6), ('ez_preacher_curl', 5), ('smith_calf_raise', 4), ('machine_glute_kickback', 4)]
+
+ amped                  n=240 retention 96%  primary kept 99%  Δsets -0.06  ΔRIR -0.11  Δrest +5.2s  Δest +1.1  variant changed 38%
+   variants {'paired': 122, 'top_backoff': 48, 'volume': 27, 'traditional': 20}
+   finisher 8% (19/240) types Counter({'burnout': 14, 'forceful': 4, 'carry': 1}) ex [('pec_deck', 6), ('incline_db_curl', 3), ('push_press', 2), ('machine_lateral_raise', 1), ('suitcase_carry', 1)]
+   structures [(('straight',), 120), (('straight', 'superset'), 89), (('finisher', 'straight', 'superset'), 12), (('finisher', 'straight'), 7)]
+   expressions {'extra_set_paired': 90, 'top_set': 60, 'heavy_end': 90}
+   most introduced exercises [('cross_body_cable_triceps_extension', 3), ('bayesian_cable_curl', 3), ('walking_lunge', 2), ('seated_dip_machine', 2), ('close_grip_bench_press', 2), ('machine_triceps_extension', 2)]
+
+ amped+stressed         n=240 retention 71%  primary kept 94%  Δsets -0.84  ΔRIR -0.06  Δrest +9.4s  Δest +0.2  variant changed 45%
+   variants {'traditional': 100, 'top_backoff': 44, 'volume': 35, 'paired': 33}
+   finisher 2% (5/240) types Counter({'burnout': 3, 'forceful': 2}) ex [('back_extension_45', 1), ('kettlebell_swing', 1), ('push_press', 1), ('pec_deck', 1), ('machine_triceps_extension', 1)]
+   structures [(('straight',), 206), (('straight', 'superset'), 29), (('finisher', 'straight'), 5)]
+   expressions {'extra_set_paired': 90, 'top_set': 60, 'heavy_end': 90, 'predictable': 78, 'simpler': 78, 'controlled': 84}
+   most introduced exercises [('leg_extension', 14), ('cable_pressdown', 14), ('incline_db_curl', 14), ('machine_preacher_curl', 12), ('seated_leg_curl', 12), ('machine_glute_kickback', 12)]
+
+ bored+low_energy       n=240 retention 53%  primary kept 88%  Δsets -1.03  ΔRIR +0.56  Δrest +1.5s  Δest -0.8  variant changed 24%
+   variants {'paired': 108, 'efficient': 65, 'traditional': 30, 'volume': 21}
+   finisher 14% (34/240) types Counter({'burnout': 15, 'carry': 14, 'forceful': 5}) ex [('suitcase_carry', 8), ('farmer_carry', 6), ('pec_deck', 5), ('back_extension_45', 3), ('frog_pump', 3)]
+   structures [(('straight', 'superset'), 106), (('straight',), 94), (('finisher', 'straight', 'superset'), 19), (('finisher', 'straight'), 15)]
+   expressions {'new_exercises': 78, 'fresh_finish': 108, 'new_structure': 54, 'moderate_load': 72, 'simplify': 84, 'cost_down': 84}
+   most introduced exercises [('bayesian_cable_curl', 41), ('frog_pump', 34), ('standing_single_leg_curl', 24), ('spider_curl', 23), ('reverse_nordic', 23), ('jm_press', 14)]
+
+ irritated+stressed     n=240 retention 69%  primary kept 94%  Δsets -1.25  ΔRIR +0.04  Δrest +12.8s  Δest -0.2  variant changed 55%
+   variants {'traditional': 103, 'heavy_primary': 76, 'efficient': 29, 'volume': 12}
+   finisher 4% (10/240) types Counter({'forceful': 6, 'carry': 4}) ex [('farmer_carry', 4), ('kettlebell_swing', 4), ('db_snatch', 1), ('push_press', 1)]
+   structures [(('straight',), 198), (('straight', 'superset'), 32), (('finisher', 'straight'), 10)]
+   expressions {'heavy_primary': 102, 'forceful_finish': 84, 'direct_simple': 54, 'predictable': 78, 'simpler': 78, 'controlled': 84}
+   most introduced exercises [('leg_extension', 16), ('cable_pressdown', 14), ('incline_db_curl', 14), ('machine_preacher_curl', 12), ('machine_glute_kickback', 11), ('cable_front_raise', 11)]
+
+ amped+bored            n=240 retention 55%  primary kept 86%  Δsets -0.28  ΔRIR -0.11  Δrest +4.5s  Δest +1.1  variant changed 43%
+   variants {'paired': 133, 'top_backoff': 46, 'volume': 27, 'heavy_primary': 22}
+   finisher 16% (38/240) types Counter({'burnout': 25, 'carry': 11, 'forceful': 2}) ex [('suitcase_carry', 11), ('pec_deck', 6), ('machine_glute_kickback', 4), ('machine_lateral_raise', 3), ('incline_db_curl', 3)]
+   structures [(('straight',), 92), (('straight', 'superset'), 88), (('finisher', 'straight', 'superset'), 20), (('finisher', 'straight'), 14)]
+   expressions {'extra_set_paired': 90, 'top_set': 60, 'heavy_end': 90, 'new_exercises': 78, 'fresh_finish': 108, 'new_structure': 54}
+   most introduced exercises [('bayesian_cable_curl', 58), ('frog_pump', 31), ('lu_raise', 25), ('slider_hamstring_curl', 22), ('reverse_nordic', 20), ('diamond_push_up', 18)]
+
+ low_energy+amped       n=240 retention 65%  primary kept 88%  Δsets -0.76  ΔRIR +0.21  Δrest +7.0s  Δest -0.4  variant changed 26%
+   variants {'paired': 103, 'traditional': 50, 'top_backoff': 38, 'volume': 20}
+   finisher 1% (3/240) types Counter({'forceful': 2, 'burnout': 1}) ex [('back_extension_45', 1), ('kettlebell_swing', 1), ('db_snatch', 1)]
+   structures [(('straight',), 149), (('straight', 'superset'), 88), (('finisher', 'straight', 'superset'), 3)]
+   expressions {'moderate_load': 72, 'simplify': 84, 'cost_down': 84, 'extra_set_paired': 90, 'top_set': 60, 'heavy_end': 90}
+   most introduced exercises [('ez_preacher_curl', 36), ('machine_triceps_extension', 23), ('machine_preacher_curl', 20), ('renegade_row', 16), ('machine_lateral_raise', 16), ('spider_curl', 12)]
+
+ bored+stressed         n=240 retention 53%  primary kept 88%  Δsets -0.99  ΔRIR +0.03  Δrest +4.1s  Δest -0.5  variant changed 35%
+   variants {'efficient': 66, 'traditional': 63, 'volume': 46, 'heavy_primary': 31}
+   finisher 2% (4/240) types Counter({'forceful': 2, 'carry': 1, 'burnout': 1}) ex [('farmer_carry', 1), ('back_extension_45', 1), ('kettlebell_swing', 1), ('push_press', 1)]
+   structures [(('straight',), 195), (('straight', 'superset'), 41), (('finisher', 'straight'), 2), (('finisher', 'straight', 'superset'), 2)]
+   expressions {'new_exercises': 78, 'fresh_finish': 108, 'new_structure': 54, 'predictable': 78, 'simpler': 78, 'controlled': 84}
+   most introduced exercises [('standing_single_leg_curl', 37), ('incline_db_curl', 33), ('band_pull_apart', 19), ('bayesian_cable_curl', 18), ('plate_front_raise', 17), ('cable_front_raise', 16)]
+
+== REGRESSION CHECKS
+ Low Energy: accessory sets reduced in 20% (47/240) ; BFT claims fewer sets only when a set came off: True
+ Amped 60: finisher 14% (17/120)  burnout type 10% (12/120)  top/back-off 20% (24/120)
+ Irritated 60: finisher 20% (24/120)  carry anywhere 8% (9/120)  KB swing anywhere 8% (9/120)
+ no-State 60 straight-only 28% (33/120)  mean est 53.8
+ Custom Target single-muscle 60 exercise count Counter({4: 102, 3: 6})
+ Custom Target chest 60 examples:
+    efficient [('db_incline_press', '5 × 5–7', 180, 2), ('machine_chest_press', '4 × 8–10', 120, 2), ('parallel_bar_dip', '4 × 8–10', 120, 2), ('cable_fly', '4 × 10–12', 45, 1)] 50.4
+    volume [('db_incline_press', '5 × 6–8', 165, 2), ('machine_chest_press', '4 × 8–10', 120, 2), ('parallel_bar_dip', '4 × 8–10', 120, 2), ('low_to_high_cable_fly', '4 × 10–12', 60, 1)] 50.4
+    paired [('barbell_bench_press', '5 × 5–7', 195, 2), ('machine_incline_press', '4 × 8–10', 120, 2), ('parallel_bar_dip', '4 × 8–10', 120, 2), ('cable_fly', '4 × 10–12', 60, 1)] 52.1
+
+== SEQUENTIAL HISTORY
+ h1: upper_pull:traditional | lower_squat:paired | upper_push:volume | glutes_legs:paired/ladder | upper_mixed:traditional/fin:db_pullover | upper_pull:paired/fin:incline_db_curl | lower_squat:volume | upper_push:paired | glutes_legs:traditional | upper_mixed:volume
+     back-to-back repeats: variant 0, expression 0, finisher 0; exercise overlap with previous same-archetype session 38%
+ h2: upper_push:top_backoff/top_set | upper_push:paired/heavy_end | upper_push:volume/extra_set_paired | upper_push:traditional/heavy_end/fin:machine_lateral_raise | upper_push:top_backoff/extra_set_paired | upper_push:top_backoff/top_set | upper_push:volume/heavy_end | upper_push:top_backoff/top_set
+     back-to-back repeats: variant 1, expression 0, finisher 0; exercise overlap with previous same-archetype session 33%
+ h3: upper_push:traditional/direct_simple | upper_push:paired/forceful_finish/fin:suitcase_carry | upper_push:heavy_primary/heavy_primary | upper_push:heavy_primary/heavy_primary | upper_push:traditional/forceful_finish/pyramid | upper_push:top_backoff/direct_simple | upper_push:heavy_primary/forceful_finish | upper_push:heavy_primary/heavy_primary
+     back-to-back repeats: variant 2, expression 1, finisher 0; exercise overlap with previous same-archetype session 38%
+ h4: upper_push:traditional/moderate_load | upper_push:traditional/cost_down | upper_push:traditional/moderate_load | upper_push:heavy_primary/simplify | upper_push:traditional/cost_down | upper_push:heavy_primary/moderate_load | upper_push:volume/simplify | upper_push:volume/cost_down
+     back-to-back repeats: variant 3, expression 0, finisher 0; exercise overlap with previous same-archetype session 38%
+ h5: upper_push:volume/fresh_finish/fin:farmer_carry/ladder | upper_push:top_backoff/new_structure | upper_push:heavy_primary/fresh_finish | upper_push:paired/fresh_finish | upper_push:volume/new_exercises | upper_push:volume/new_structure | upper_push:top_backoff/fresh_finish | upper_push:volume/fresh_finish/ladder
+     back-to-back repeats: variant 1, expression 2, finisher 0; exercise overlap with previous same-archetype session 34%
+ h6: upper_push:traditional/controlled | upper_push:volume/simpler | upper_push:traditional/predictable | upper_push:traditional/simpler | upper_push:volume/predictable | upper_push:heavy_primary/simpler | upper_push:traditional/controlled | upper_push:top_backoff/simpler
+     back-to-back repeats: variant 1, expression 0, finisher 0; exercise overlap with previous same-archetype session 39%
+ h7: upper_pull:traditional | lower_squat:top_backoff/top_set | upper_push:paired/new_structure/ladder | glutes_legs:traditional/pyramid | upper_mixed:paired/cost_down | upper_pull:heavy_primary/forceful_finish | lower_squat:volume | upper_push:traditional/controlled | glutes_legs:top_backoff/heavy_end | upper_mixed:heavy_primary
+     back-to-back repeats: variant 0, expression 0, finisher 0; exercise overlap with previous same-archetype session 43%

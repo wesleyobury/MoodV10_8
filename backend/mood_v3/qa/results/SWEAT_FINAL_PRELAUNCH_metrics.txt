@@ -1,0 +1,91 @@
+Group                            Dur | BEFORE elapsed / work (min)  | AFTER elapsed / work (min)  
+Engine, no State                  30 |  24.0 /  16.0 (worst 13.0)  |  27.5 /  20.5 (worst 19.8)
+Engine, no State                  60 |  44.0 /  26.0 (worst 20.0)  |  55.5 /  43.5 (worst 41.2)
+Engine, Stressed                  30 |  25.8 /  18.8 (worst 15.0)  |  28.1 /  21.1 (worst 19.8)
+Engine, Stressed                  60 |  48.1 /  36.1 (worst 20.0)  |  53.9 /  41.9 (worst 40.7)
+Engine, Amped                     30 |  25.0 /  18.0 (worst 13.0)  |  29.5 /  22.5 (worst 19.5)
+Engine, Amped                     60 |  44.0 /  26.0 (worst 19.5)  |  55.4 /  43.4 (worst 38.9)
+Circuit, no State                 30 |  24.6 /  17.0 (worst 14.1)  |  26.6 /  19.6 (worst 18.1)
+Circuit, no State                 60 |  47.7 /  30.7 (worst 22.5)  |  52.8 /  41.8 (worst 39.0)
+Circuit, Stressed                 30 |  24.8 /  17.4 (worst 11.2)  |  27.3 /  20.3 (worst 18.5)
+Circuit, Stressed                 60 |  45.4 /  27.4 (worst 21.5)  |  52.7 /  41.7 (worst 39.6)
+Circuit, Amped                    30 |  24.0 /  16.0 (worst 12.0)  |  29.0 /  22.0 (worst 17.6)
+Circuit, Amped                    60 |  43.7 /  25.7 (worst 19.5)  |  51.2 /  40.2 (worst 38.0)
+Hybrid, no State                  30 |  26.0 /  18.0 (worst 15.5)  |  28.4 /  20.4 (worst 17.7)
+Hybrid, no State                  60 |  49.1 /  37.1 (worst 33.2)  |  55.5 /  43.5 (worst 40.6)
+Hybrid, Amped                     30 |  26.0 /  18.0 (worst 15.8)  |  28.7 /  20.7 (worst 18.7)
+Hybrid, Amped                     60 |  49.1 /  37.1 (worst 29.0)  |  55.0 /  43.0 (worst 38.4)
+All types, Low Energy             30 |  25.0 /  17.6 (worst 13.0)  |  27.4 /  20.0 (worst 18.8)
+All types, Low Energy             60 |  48.5 /  36.7 (worst 20.0)  |  54.1 /  42.5 (worst 40.3)
+All types, Bored                  30 |  24.5 /  16.9 (worst 12.0)  |  29.0 /  21.6 (worst 18.0)
+All types, Bored                  60 |  48.1 /  34.6 (worst 23.3)  |  54.0 /  42.7 (worst 39.3)
+All types, Irritated              30 |  25.0 /  17.4 (worst 13.0)  |  28.9 /  21.9 (worst 18.3)
+All types, Irritated              60 |  47.8 /  31.1 (worst 20.0)  |  52.0 /  40.2 (worst 38.2)
+All types, Low Energy + Amped     30 |  25.2 /  17.5 (worst 11.6)  |  28.1 /  20.8 (worst 18.4)
+All types, Low Energy + Amped     60 |  47.5 /  29.2 (worst 20.0)  |  53.8 /  41.8 (worst 40.1)
+All types, Amped + Stressed       30 |  25.1 /  17.8 (worst 14.3)  |  27.8 /  20.8 (worst 17.9)
+All types, Amped + Stressed       60 |  44.8 /  26.5 (worst 17.8)  |  53.0 /  41.5 (worst 38.1)
+All types, 3-State mixes          30 |  25.0 /  17.4 (worst  9.9)  |  28.5 /  21.0 (worst 18.1)
+All types, 3-State mixes          60 |  47.8 /  31.0 (worst 19.0)  |  53.2 /  41.5 (worst 38.1)
+
+ALL 30-min (912 builds): elapsed median 25.0 -> 28.3; work median 17.5 -> 20.8; work 10th pct 14.1 -> 19.2; worst 9.9 -> 17.6; standalone steady main blocks 62 -> 0
+ALL 60-min (1089 builds): elapsed median 47.8 -> 53.5; work median 31.8 -> 41.8; work 10th pct 23.9 -> 39.2; worst 17.8 -> 33.7; standalone steady main blocks 110 -> 0
+
+== full matrix summary (python -m mood_v3.qa.sweat_trainer_qa) ==
+builds 2081  ok 2001  conflicts 80 [('equipment_insufficient', 72), ('sore_target_conflict', 8)]
+
+== 30 min (912): est p10/med/p90 26.5/28.3/30.0  work p10/min/med 19.2/17.6/20.8  active med 12.6  steady-primary 0  gate-fail 0
+   arch  sweat_circuit                    n= 381 est med  27.1 min  24.6 | work p10  18.9 med  20.1 min  17.6 | active med  11.5 | hard med  0.0
+   arch  sweat_engine                     n= 295 est med  29.0 min  26.5 | work p10  19.8 med  22.0 min  19.5 | active med  16.0 | hard med  0.0
+   arch  sweat_hybrid                     n= 236 est med  28.6 min  25.6 | work p10  18.7 med  20.6 min  17.6 | active med  14.0 | hard med  0.0
+   exp   advanced                         n= 312 est med  27.8 min  24.6 | work p10  19.4 med  20.8 min  17.6 | active med  14.4 | hard med  0.0
+   exp   beginner                         n= 300 est med  29.5 min  25.0 | work p10  18.8 med  22.2 min  17.6 | active med  11.5 | hard med  0.0
+   exp   intermediate                     n= 300 est med  27.5 min  24.6 | work p10  19.2 med  20.5 min  17.6 | active med  13.7 | hard med  0.0
+   state amped                            n=  96 est med  28.9 min  24.6 | work p10  19.4 med  21.1 min  17.6 | active med  12.2 | hard med  7.7
+   state amped+bored                      n=  36 est med  28.3 min  25.1 | work p10  18.9 med  21.0 min  17.6 | active med  13.2 | hard med  0.0
+   state amped+bored+irritated            n=  36 est med  28.2 min  25.2 | work p10  19.1 med  20.8 min  18.2 | active med  13.1 | hard med  7.7
+   state amped+irritated                  n=  36 est med  28.9 min  25.1 | work p10  18.7 med  21.8 min  18.1 | active med  13.9 | hard med  8.1
+   state amped+stressed                   n=  48 est med  27.8 min  25.0 | work p10  18.6 med  20.8 min  17.9 | active med  12.5 | hard med  0.0
+   state bored                            n=  48 est med  29.0 min  25.4 | work p10  19.4 med  21.7 min  18.0 | active med  13.5 | hard med  0.0
+   state bored+low_energy                 n=  36 est med  28.8 min  26.1 | work p10  19.6 med  21.7 min  19.1 | active med  13.9 | hard med  0.0
+   state bored+stressed                   n=  48 est med  27.6 min  25.8 | work p10  19.1 med  20.5 min  17.8 | active med  12.5 | hard med  0.0
+   state irritated                        n=  48 est med  29.0 min  25.3 | work p10  18.6 med  21.9 min  18.3 | active med  13.9 | hard med  8.0
+   state irritated+low_energy             n=  36 est med  28.8 min  26.1 | work p10  19.6 med  21.2 min  19.1 | active med  13.9 | hard med  0.0
+   state irritated+stressed               n=  36 est med  28.9 min  25.2 | work p10  18.9 med  21.3 min  18.2 | active med  13.4 | hard med  0.0
+   state low_energy                       n=  60 est med  27.4 min  25.8 | work p10  19.4 med  20.0 min  18.8 | active med  12.9 | hard med  0.0
+   state low_energy+amped                 n=  48 est med  28.3 min  26.4 | work p10  19.3 med  20.8 min  18.4 | active med  13.3 | hard med  0.0
+   state low_energy+bored+amped           n=  36 est med  29.0 min  26.5 | work p10  19.4 med  21.5 min  18.6 | active med  13.9 | hard med  0.0
+   state low_energy+stressed+irritated    n=  36 est med  28.5 min  25.5 | work p10  19.5 med  21.0 min  18.5 | active med  14.0 | hard med  0.0
+   state none                             n=  96 est med  27.8 min  25.1 | work p10  19.5 med  20.5 min  17.7 | active med  12.5 | hard med  0.0
+   state stressed                         n=  96 est med  27.8 min  25.5 | work p10  19.2 med  20.8 min  18.2 | active med  12.4 | hard med  0.0
+   state stressed+bored+amped             n=  36 est med  28.8 min  25.6 | work p10  19.2 med  21.5 min  18.1 | active med  12.5 | hard med  0.0
+
+== 60 min (1089): est p10/med/p90 50.6/53.5/57.4  work p10/min/med 39.2/33.7/41.8  active med 25.5  steady-primary 0  gate-fail 0
+   arch  sweat_circuit                    n= 443 est med  52.2 min  49.0 | work p10  39.4 med  41.2 min  38.0 | active med  22.4 | hard med  0.0
+   arch  sweat_engine                     n= 371 est med  54.1 min  47.7 | work p10  39.0 med  42.1 min  33.7 | active med  28.5 | hard med  0.0
+   arch  sweat_hybrid                     n= 275 est med  54.6 min  50.1 | work p10  39.3 med  42.6 min  38.1 | active med  31.7 | hard med  0.0
+   exp   advanced                         n= 317 est med  53.5 min  49.4 | work p10  39.5 med  41.8 min  38.0 | active med  28.1 | hard med  0.0
+   exp   beginner                         n= 300 est med  54.0 min  50.0 | work p10  39.3 med  42.2 min  38.7 | active med  21.9 | hard med  0.0
+   exp   intermediate                     n= 472 est med  53.1 min  47.7 | work p10  39.1 med  41.8 min  33.7 | active med  28.1 | hard med  0.0
+   state amped                            n= 131 est med  53.1 min  49.0 | work p10  38.7 med  41.1 min  38.0 | active med  24.0 | hard med 12.9
+   state amped+bored                      n=  36 est med  53.1 min  49.4 | work p10  39.1 med  41.2 min  38.4 | active med  27.3 | hard med  0.0
+   state amped+bored+irritated            n=  36 est med  51.2 min  49.4 | work p10  38.2 med  39.7 min  38.2 | active med  25.3 | hard med 12.7
+   state amped+irritated                  n=  36 est med  51.3 min  49.4 | work p10  38.4 med  39.5 min  38.2 | active med  25.3 | hard med 13.3
+   state amped+stressed                   n=  48 est med  53.1 min  49.8 | work p10  38.9 med  41.5 min  38.1 | active med  25.4 | hard med  0.0
+   state bored                            n=  53 est med  54.0 min  50.3 | work p10  41.2 med  42.5 min  39.3 | active med  26.9 | hard med  0.0
+   state bored+low_energy                 n=  36 est med  54.5 min  50.4 | work p10  39.8 med  42.8 min  39.4 | active med  29.5 | hard med  0.0
+   state bored+stressed                   n=  48 est med  53.8 min  50.3 | work p10  39.8 med  42.3 min  39.3 | active med  24.1 | hard med  0.0
+   state irritated                        n=  78 est med  51.2 min  47.7 | work p10  38.2 med  40.2 min  33.7 | active med  24.0 | hard med 13.3
+   state irritated+low_energy             n=  36 est med  54.0 min  50.4 | work p10  39.8 med  42.0 min  39.4 | active med  28.5 | hard med  0.0
+   state irritated+stressed               n=  36 est med  53.5 min  50.7 | work p10  39.7 med  41.9 min  39.2 | active med  27.8 | hard med  0.0
+   state low_energy                       n=  90 est med  53.8 min  51.3 | work p10  41.2 med  41.8 min  40.3 | active med  28.7 | hard med  0.0
+   state low_energy+amped                 n=  48 est med  53.8 min  51.1 | work p10  40.8 med  41.8 min  40.1 | active med  28.3 | hard med  0.0
+   state low_energy+bored+amped           n=  36 est med  53.4 min  51.1 | work p10  40.5 med  41.7 min  40.1 | active med  31.2 | hard med  0.0
+   state low_energy+stressed+irritated    n=  36 est med  54.5 min  50.2 | work p10  39.5 med  42.8 min  39.2 | active med  28.0 | hard med  0.0
+   state none                             n= 168 est med  53.8 min  50.0 | work p10  41.0 med  41.8 min  38.2 | active med  26.8 | hard med  0.0
+   state stressed                         n= 101 est med  53.6 min  50.6 | work p10  40.8 med  41.8 min  39.4 | active med  23.1 | hard med  0.0
+   state stressed+bored+amped             n=  36 est med  53.5 min  49.1 | work p10  39.1 med  41.7 min  38.1 | active med  26.2 | hard med  0.0
+State not realized (by State): {'bored': 34, 'amped': 41, 'low_energy': 14, 'stressed': 10, 'irritated': 16}   State coherence failed: {'bored': 53, 'irritated': 22, 'amped': 18, 'stressed': 3, 'low_energy': 1}
+gate re-rolls: 6 of 2001
+
+trainer gate issues: []

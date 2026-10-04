@@ -1,0 +1,1084 @@
+### Power | intermediate | 60 | no State | 2026-10-05
+  Power | intermediate | 60 min (est 48.6) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Hang High Pull (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Hang High Pull                         4 × 3           rest  120  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/superset x3] Athletic Strength + Core
+     Front Squat                            3 × 5           rest    -  Strength Support
+     Landmine Rotation                      3 × 6/side      rest    -  Core / Stability
+
+### Power | intermediate | 60 | no State | 2026-10-06
+  Power | intermediate | 60 min (est 45.4) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Hang High Pull (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Hang High Pull                         4 × 3           rest  120  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Dumbbell Step-Up with Pop              3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Landmine Rotational Punch              3 × 4/side      rest   90  Rotational Power  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 5           rest  120  Strength Support
+
+### Power | intermediate | 60 | no State | 2026-10-07
+  Power | intermediate | 60 min (est 42.0) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: upper-body power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Band Pull-Apart (15) -> Snap-Down to Stick (2 x 5) -> Push Press (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Upper-body power
+     Push Press                             4 × 3           rest  120  Upper-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Lateral Box Jump                       3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 5           rest  120  Strength Support
+
+### Power | advanced | 60 | no State | 2026-10-05
+  Power | advanced | 60 min (est 46.5) | states=[] sore=[] eq=commercial_gym | Contrast Pairing | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Countermovement Jump (light, 2 x 3, then build)
+  [primary/superset x4] Contrast Pair · Vertical power
+     Front Squat                            4 × 3           rest    -  Strength Support
+     Countermovement Jump                   4 × 3           rest    -  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Acceleration
+     Explosive Start (5-10 m)               3 × 10 m        rest   90  Acceleration  tier B
+  [secondary/straight] Athletic Element · Total-body explosiveness
+     Kettlebell Swing                       3 × 8           rest   90  Total-Body Power  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Overhead Throw                3 × 5           rest   60  Upper-Body Power  tier C
+
+### Power | advanced | 60 | no State | 2026-10-06
+  Power | advanced | 60 min (est 51.3) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Consecutive Broad Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Consecutive Broad Jumps                4 × 3           rest  120  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Acceleration
+     Sled Push                              4 × 10 m        rest  120  Acceleration  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 4           rest  150  Strength Support
+
+### Power | advanced | 60 | no State | 2026-10-07
+  Power | advanced | 60 min (est 50.1) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Power Snatch (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Power Snatch                           4 × 2           rest  150  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Vertical Jump            3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Vertical power
+     Dumbbell Step-Up with Pop              3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Slam                          3 × 5           rest   60  Upper-Body Power  tier C
+  [support/straight] Support
+     Pallof Step-Out                        3 × 10/side     rest   45  Core / Stability
+
+### Power | advanced | 60 | amped | 2026-10-05
+  Power | advanced | 60 min (est 50.5) | states=['amped'] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Power Snatch (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Power Snatch                           5 × 2           rest  165  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Box Jump                               3 × 3           rest  120  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 3           rest  150  Strength Support
+
+### Power | advanced | 60 | amped | 2026-10-06
+  Power | advanced | 60 min (est 51.3) | states=['amped'] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Hang Power Clean (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Hang Power Clean                       5 × 2           rest  165  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Skater Hops                            3 × 3/side      rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 3           rest  150  Strength Support
+
+### Power | advanced | 60 | amped | 2026-10-07
+  Power | advanced | 60 min (est 50.1) | states=['amped'] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Hang High Pull (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Hang High Pull                         5 × 3           rest  135  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Banded Lateral Bound                   3 × 3/side      rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Landmine Split Jerk                    3 × 3/side      rest  105  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 3           rest  150  Strength Support
+
+### Power | intermediate | 60 | amped | 2026-10-05
+  Power | intermediate | 60 min (est 43.9) | states=['amped'] sore=[] eq=commercial_gym | Jump + Throw | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Trap-Bar Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Trap-Bar Jump Squat                    4 × 3           rest  135  Lower-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Chest Pass                    3 × 5           rest   75  Upper-Body Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 4           rest  120  Strength Support
+
+### Power | intermediate | 60 | amped | 2026-10-06
+  Power | intermediate | 60 min (est 48.0) | states=['amped'] sore=[] eq=commercial_gym | Jump + Throw | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Banded Broad Jump (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Horizontal power
+     Banded Broad Jump                      3 × 3           rest  135  Lower-Body Power  tier B
+  [secondary/straight] Secondary Quality · Total-body explosiveness
+     Kettlebell Snatch                      2 × 2/side      rest  135  Total-Body Power  tier A
+  [secondary/straight] Athletic Element · Upper-body power
+     Explosive Push-Up                      3 × 4           rest  105  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 4           rest  120  Strength Support
+
+### Power | intermediate | 60 | amped | 2026-10-07
+  Power | intermediate | 60 min (est 52.3) | states=['amped'] sore=[] eq=commercial_gym | Jump + Throw | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Banded Broad Jump (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Horizontal power
+     Banded Broad Jump                      4 × 3           rest  135  Lower-Body Power  tier B
+  [secondary/straight] Secondary Quality · Vertical power
+     Split-Squat Jump                       3 × 3/side      rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Landmine Push Press                    3 × 3/side      rest  105  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 4           rest  120  Strength Support
+  [support/straight] Support
+     Landmine Rotation                      3 × 6/side      rest   45  Core / Stability
+
+### FullBody | intermediate | 60 | no State | 2026-10-05
+  Full-Body Athlete | intermediate | 60 min (est 46.7) | states=[] sore=[] eq=commercial_gym | Athletic Mixed | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Stick (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Total-body explosiveness
+     Dumbbell Hang Power Clean              3 × 3           rest  120  Total-Body Power  tier A
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 5           rest  120  Strength Support
+
+### FullBody | intermediate | 60 | no State | 2026-10-06
+  Full-Body Athlete | intermediate | 60 min (est 46.6) | states=[] sore=[] eq=commercial_gym | Jump + Throw | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Trap-Bar Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Trap-Bar Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Single-Leg Hop to Stick                3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/superset x3] Athletic Strength
+     Front Squat                            3 × 5           rest    -  Strength Support
+     Pull-Up                                3 × 6           rest    -  Strength Support
+
+### FullBody | intermediate | 60 | no State | 2026-10-07
+  Full-Body Athlete | intermediate | 60 min (est 45.6) | states=[] sore=[] eq=commercial_gym | Athletic Mixed | primary: acceleration
+  Warm-up: Air Bike (3-4 min easy, build to moderate) -> Leg Swings (10 each way) -> World's Greatest Stretch (3 / side) -> A-Skip (2 x 10 m) -> Wall Drill (March to Switches) (2 x 5 / leg) -> Sled Push (1 easy push, then 1 at 80%)
+  [primary/straight] Primary Power · Acceleration
+     Sled Push                              4 × 10 m        rest  105  Acceleration  tier A
+  [secondary/straight] Secondary Quality · Elastic, reactive ability
+     Pogo Jumps                             2 × 10          rest   60  Plyometric  tier B
+  [secondary/straight] Athletic Element · Total-body explosiveness
+     Hang Clean to Box Knee Drive           3 × 2/side      rest  120  Total-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Step-Behind Rotational Throw           3 × 4/side      rest   60  Rotational Power  tier C
+  [support/straight] Support
+     Pallof Step-Out                        3 × 10/side     rest   45  Core / Stability
+
+### FullBody | advanced | 60 | no State | 2026-10-05
+  Full-Body Athlete | advanced | 60 min (est 50.8) | states=[] sore=[] eq=commercial_gym | Jump + Throw | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Consecutive Broad Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Consecutive Broad Jumps                4 × 3           rest  120  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Upper-body power
+     Landmine Split Jerk                    3 × 3/side      rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Step-Behind Rotational Throw           3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Barbell Romanian Deadlift              3 × 4           rest  150  Strength Support
+  [strength/straight] Athletic Strength
+     Barbell Bench Press                    3 × 6           rest   90  Strength Support
+
+### FullBody | advanced | 60 | no State | 2026-10-06
+  Full-Body Athlete | advanced | 60 min (est 52.3) | states=[] sore=[] eq=commercial_gym | Athletic Mixed | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Split Jerk (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Split Jerk                             4 × 2           rest  150  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Dumbbell Step-Up with Pop              3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Horizontal power
+     Banded Lateral Bound                   3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   60  Rotational Power  tier C
+  [support/straight] Support
+     Pallof Step-Out                        3 × 10/side     rest   45  Core / Stability
+
+### FullBody | advanced | 60 | no State | 2026-10-07
+  Full-Body Athlete | advanced | 60 min (est 55.3) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Hang Power Clean (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Hang Power Clean                       4 × 2           rest  150  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Slam               3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 4           rest  150  Strength Support
+  [strength/straight] Athletic Strength
+     Single-Arm Landmine Press              3 × 6/side      rest   90  Strength Support
+
+### FullBody | advanced | 60 | amped | 2026-10-05
+  Full-Body Athlete | advanced | 60 min (est 56.8) | states=['amped'] sore=[] eq=commercial_gym | Athletic Mixed | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Power Snatch (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Power Snatch                           5 × 2           rest  165  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Lateral Bound to Box Jump              3 × 2/side      rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/superset x3] Athletic Strength + Core
+     Front Squat                            3 × 3           rest    -  Strength Support
+     Pallof Press                           3 × 10/side     rest    -  Core / Stability
+
+### FullBody | advanced | 60 | amped | 2026-10-06
+  Full-Body Athlete | advanced | 60 min (est 52.5) | states=['amped'] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Trap-Bar Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Trap-Bar Jump Squat                    5 × 3           rest  135  Lower-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest  120  Plyometric  tier B
+  [secondary/straight] Athletic Element · Total-body explosiveness
+     Kettlebell Swing                       3 × 8           rest  105  Total-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   75  Rotational Power  tier C
+  [support/straight] Support
+     Dead Bug                               3 × 8/side      rest   45  Core / Stability
+
+### FullBody | advanced | 60 | amped | 2026-10-07
+  Full-Body Athlete | advanced | 60 min (est 49.8) | states=['amped'] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Trap-Bar Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Trap-Bar Jump Squat                    5 × 3           rest  135  Lower-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Lateral Single-Leg Hop to Stick        3 × 3/side      rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 3           rest  150  Strength Support
+
+### Speed+Plyo | intermediate | 60 | no State | 2026-10-05
+  Speed + Plyo | intermediate | 60 min (est 44.9) | states=[] sore=[] eq=commercial_gym | Athletic Mixed | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Lateral Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Lateral Box Jump                       3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Band-Assisted Muscle-Up                3 × 3           rest  120  Upper-Body Power  tier B
+  [strength/superset x3] Athletic Strength
+     Barbell Romanian Deadlift              3 × 5           rest    -  Strength Support
+     Push-Up                                3 × 6           rest    -  Strength Support
+
+### Speed+Plyo | intermediate | 60 | no State | 2026-10-06
+  Speed + Plyo | intermediate | 60 min (est 45.8) | states=[] sore=[] eq=commercial_gym | Athletic Mixed | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Lateral Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Lateral Box Jump                       3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Acceleration
+     Sled Push                              4 × 10 m        rest  105  Acceleration  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/superset x3] Athletic Strength
+     Dumbbell Romanian Deadlift             3 × 6           rest    -  Strength Support
+     Dumbbell Bench Press                   3 × 6           rest    -  Strength Support
+
+### Speed+Plyo | intermediate | 60 | no State | 2026-10-07
+  Speed + Plyo | intermediate | 60 min (est 40.9) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Countermovement Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power
+     Countermovement Jump                   3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Lateral Single-Leg Hop to Stick        3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Landmine Push Press                    3 × 3/side      rest   90  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 5           rest  120  Strength Support
+
+### Speed+Plyo | advanced | 60 | no State | 2026-10-05
+  Speed + Plyo | advanced | 60 min (est 48.5) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Consecutive Broad Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Consecutive Broad Jumps                4 × 3           rest  120  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Split-Squat Jump                       3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Bar Muscle-Up                          3 × 2           rest  120  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   60  Rotational Power  tier C
+  [support/straight] Support
+     Landmine Rotation                      3 × 6/side      rest   45  Core / Stability
+
+### Speed+Plyo | advanced | 60 | no State | 2026-10-06
+  Speed + Plyo | advanced | 60 min (est 50.4) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Pogo to Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power
+     Pogo to Box Jump                       4 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Alternating Bound                      3 × 6           rest  120  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 4           rest  150  Strength Support
+  [strength/straight] Athletic Strength
+     Dumbbell Bench Press                   3 × 6           rest   90  Strength Support
+
+### Speed+Plyo | advanced | 60 | no State | 2026-10-07
+  Speed + Plyo | advanced | 60 min (est 47.0) | states=[] sore=[] eq=commercial_gym | Athletic Mixed | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Consecutive Broad Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Consecutive Broad Jumps                4 × 3           rest  120  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Elastic, reactive ability
+     Pogo Jumps                             3 × 10          rest   60  Plyometric  tier B
+  [secondary/straight] Athletic Element · Acceleration
+     Sled Push                              3 × 10 m        rest  120  Acceleration  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Landmine Rotational Punch              3 × 4/side      rest   90  Rotational Power  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 4           rest  150  Strength Support
+
+### Speed+Plyo | beginner | 60 | no State | 2026-10-05
+  Speed + Plyo | beginner | 60 min (est 34.3) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Countermovement Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power
+     Countermovement Jump                   3 × 3           rest   75  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Stick                    2 × 3           rest   75  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Overhead Throw                3 × 5           rest   60  Upper-Body Power  tier C
+  [strength/straight] Athletic Strength
+     Goblet Squat                           3 × 6           rest  120  Strength Support
+
+### Speed+Plyo | beginner | 60 | no State | 2026-10-06
+  Speed + Plyo | beginner | 60 min (est 40.9) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5)
+  [primary/straight] Primary Power · Vertical power
+     Reverse Lunge to Knee-Drive Hop        3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Stick                    2 × 3           rest   75  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Overhead Throw                3 × 5           rest   60  Upper-Body Power  tier C
+  [strength/superset x3] Athletic Strength
+     Goblet Squat                           3 × 6           rest    -  Strength Support
+     Single-Arm Dumbbell Row                3 × 8/side      rest    -  Strength Support
+
+### Speed+Plyo | beginner | 60 | no State | 2026-10-07
+  Speed + Plyo | beginner | 60 min (est 42.2) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Countermovement Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power
+     Countermovement Jump                   3 × 3           rest   75  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Skater Hops                            2 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Chest Pass                    3 × 5           rest   60  Upper-Body Power  tier C
+  [strength/straight] Athletic Strength
+     Goblet Squat                           3 × 6           rest  120  Strength Support
+  [strength/straight] Athletic Strength
+     Push-Up                                3 × 8           rest   75  Strength Support
+
+### Speed+Plyo | intermediate | 30 | no State | 2026-10-05
+  Speed + Plyo | intermediate | 30 min (est 21.4) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (2 min easy) -> World's Greatest Stretch (3 / side) -> Snap-Down to Stick (2 x 5)
+  [primary/straight] Primary Power · Horizontal power
+     Power Skip                             3 × 6           rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Horizontal power
+     Broad Jump to Vertical Jump            2 × 2           rest  105  Plyometric  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 5           rest  120  Strength Support
+
+### Speed+Plyo | intermediate | 30 | no State | 2026-10-06
+  Speed + Plyo | intermediate | 30 min (est 27.5) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (2 min easy) -> World's Greatest Stretch (3 / side) -> Snap-Down to Stick (2 x 5)
+  [primary/straight] Primary Power · Horizontal power
+     Lateral Single-Leg Hop to Stick        4 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Horizontal power
+     Single-Leg Hop to Stick                3 × 3/side      rest   90  Plyometric  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 5           rest  120  Strength Support
+
+### Speed+Plyo | intermediate | 30 | no State | 2026-10-07
+  Speed + Plyo | intermediate | 30 min (est 23.1) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (2 min easy) -> World's Greatest Stretch (3 / side) -> Snap-Down to Stick (2 x 5)
+  [primary/straight] Primary Power · Vertical power
+     Pogo to Box Jump                       3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Acceleration
+     Sled Push                              3 × 10 m        rest  105  Acceleration  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 5           rest  120  Strength Support
+
+### MOOD's Pick | intermediate | 60 | low_energy | 2026-10-05
+  Speed + Plyo | intermediate | 60 min (est 40.6) | states=['low_energy'] sore=[] eq=commercial_gym | Speed + Strength | primary: acceleration
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> Leg Swings (10 each way) -> World's Greatest Stretch (3 / side) -> A-Skip (2 x 10 m) -> Wall Drill (March to Switches) (2 x 5 / leg) -> Sled Push (1 easy push, then 1 at 80%)
+  [primary/straight] Primary Power · Acceleration
+     Sled Push                              4 × 10 m        rest  120  Acceleration  tier A
+  [secondary/straight] Secondary Quality · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Front-Foot Elevated Split Squat        2 × 5/side      rest  120  Strength Support
+  [strength/straight] Athletic Strength
+     Kickstand Dumbbell RDL                 2 × 6/side      rest   90  Strength Support
+
+### MOOD's Pick | intermediate | 60 | low_energy | 2026-10-06
+  Power | intermediate | 60 min (est 36.4) | states=['low_energy'] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Kettlebell Swing (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Kettlebell Swing                       3 × 8           rest  105  Total-Body Power  tier B
+  [secondary/straight] Secondary Quality · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Front Squat                            2 × 5           rest  120  Strength Support
+  [strength/straight] Athletic Strength
+     Single-Arm Dumbbell Row                2 × 6/side      rest   90  Strength Support
+
+### MOOD's Pick | intermediate | 60 | low_energy | 2026-10-07
+  Power | intermediate | 60 min (est 34.3) | states=['low_energy'] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Lateral Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Lateral Box Jump                       3 × 3           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Upper-body power
+     Med-Ball Chest Pass                    3 × 5           rest   75  Upper-Body Power  tier C
+  [strength/straight] Athletic Strength
+     Dumbbell Romanian Deadlift             2 × 6           rest  120  Strength Support
+  [strength/straight] Athletic Strength
+     Pull-Up                                2 × 6           rest   90  Strength Support
+
+### MOOD's Pick | advanced | 60 | bored | 2026-10-05
+  Full-Body Athlete | advanced | 60 min (est 45.7) | states=['bored'] sore=[] eq=commercial_gym | Athletic Mixed | primary: total-body explosiveness
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Hang High Pull (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Hang High Pull                         4 × 3           rest  120  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Vertical Jump            3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Landmine Rotational Punch              3 × 4/side      rest   90  Rotational Power  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 4           rest  150  Strength Support
+
+### MOOD's Pick | advanced | 60 | bored | 2026-10-06
+  Full-Body Athlete | advanced | 60 min (est 47.0) | states=['bored'] sore=[] eq=commercial_gym | Jump + Throw | primary: vertical power
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Trap-Bar Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Trap-Bar Jump Squat                    4 × 3           rest  120  Lower-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Vertical Jump            3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Landmine Split Jerk                    3 × 3/side      rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Total-body explosiveness
+     Med-Ball Scoop Toss                    3 × 5           rest   60  Total-Body Power  tier C
+  [support/straight] Support
+     Dead Bug                               3 × 8/side      rest   45  Core / Stability
+
+### MOOD's Pick | advanced | 60 | bored | 2026-10-07
+  Full-Body Athlete | advanced | 60 min (est 55.0) | states=['bored'] sore=[] eq=commercial_gym | Athletic Mixed | primary: total-body explosiveness
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Split Jerk (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Split Jerk                             4 × 2           rest  150  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Dumbbell Step-Up with Pop              3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 4           rest  150  Strength Support
+  [strength/straight] Athletic Strength
+     Half-Kneeling Single-Arm Landmine Press 3 × 6/side      rest   90  Strength Support
+
+### Power | intermediate | 30 | no State | 2026-10-05
+  Power | intermediate | 30 min (est 24.6) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (2 min easy) -> World's Greatest Stretch (3 / side) -> Snap-Down to Stick (2 x 5)
+  [primary/straight] Primary Power · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 5           rest  120  Strength Support
+
+### Power | intermediate | 30 | no State | 2026-10-06
+  Power | intermediate | 30 min (est 26.0) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (2 min easy) -> World's Greatest Stretch (3 / side) -> Snap-Down to Stick (2 x 5) -> Dumbbell Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Secondary Quality · Upper-body power
+     Explosive Push-Up                      3 × 4           rest   90  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 5           rest  120  Strength Support
+
+### Power | intermediate | 30 | no State | 2026-10-07
+  Power | intermediate | 30 min (est 26.8) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (2 min easy) -> World's Greatest Stretch (3 / side) -> Snap-Down to Stick (2 x 5) -> Dumbbell Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Secondary Quality · Upper-body power
+     Landmine Push Press                    3 × 3/side      rest   90  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 5           rest  120  Strength Support
+
+### Power | beginner | 60 | no State | 2026-10-05
+  Power | beginner | 60 min (est 38.0) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Countermovement Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power
+     Countermovement Jump                   3 × 3           rest   75  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Rotational power
+     Med-Ball Rotational Slam               3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Goblet Squat                           3 × 6           rest  120  Strength Support
+  [strength/straight] Athletic Strength
+     Suspension Trainer Row                 3 × 8           rest   75  Strength Support
+
+### Power | beginner | 60 | no State | 2026-10-06
+  Power | beginner | 60 min (est 43.4) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Skater Hops (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Skater Hops                            3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Upper-body power
+     Dumbbell Push Press                    2 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Chest Pass                    3 × 5           rest   60  Upper-Body Power  tier C
+  [strength/superset x3] Athletic Strength
+     Kettlebell Deadlift                    3 × 6           rest    -  Strength Support
+     Single-Arm Dumbbell Row                3 × 8/side      rest    -  Strength Support
+
+### Power | beginner | 60 | no State | 2026-10-07
+  Power | beginner | 60 min (est 42.2) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Skater Hops (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Skater Hops                            3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Horizontal power
+     Power Skip                             2 × 6           rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Slam               3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/superset x3] Athletic Strength
+     Kettlebell Deadlift                    3 × 6           rest    -  Strength Support
+     Inverted Row                           3 × 8           rest    -  Strength Support
+
+### MOOD's Pick | advanced | 60 | low_energy+amped | 2026-10-05
+  Power | advanced | 60 min (est 37.1) | states=['low_energy', 'amped'] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Lateral Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Lateral Box Jump                       4 × 3           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Rotational power
+     Med-Ball Rotational Slam               3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Barbell Romanian Deadlift              2 × 3           rest  150  Strength Support
+  [strength/straight] Athletic Strength
+     Dumbbell Bench Press                   2 × 5           rest   90  Strength Support
+
+### MOOD's Pick | advanced | 60 | low_energy+amped | 2026-10-06
+  Power | advanced | 60 min (est 38.2) | states=['low_energy', 'amped'] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Kettlebell Swing (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Kettlebell Swing                       4 × 8           rest  105  Total-Body Power  tier B
+  [secondary/straight] Secondary Quality · Rotational power
+     Med-Ball Rotational Slam               3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Front Squat                            2 × 3           rest  150  Strength Support
+  [strength/straight] Athletic Strength
+     Single-Arm Landmine Press              2 × 5/side      rest   90  Strength Support
+
+### MOOD's Pick | advanced | 60 | low_energy+amped | 2026-10-07
+  Power | advanced | 60 min (est 36.2) | states=['low_energy', 'amped'] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Lateral Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Lateral Box Jump                       4 × 3           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   75  Rotational Power  tier C
+  [strength/superset x2] Athletic Strength
+     Barbell Romanian Deadlift              2 × 3           rest    -  Strength Support
+     Weighted Push-Up                       2 × 5           rest    -  Strength Support
+
+### MOOD's Pick | intermediate | 60 | stressed+irritated+amped | 2026-10-05
+  Power | intermediate | 60 min (est 40.4) | states=['stressed', 'irritated', 'amped'] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Secondary Quality · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Total-body explosiveness
+     Kettlebell Swing                       3 × 8           rest   90  Total-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 4           rest  120  Strength Support
+
+### MOOD's Pick | intermediate | 60 | stressed+irritated+amped | 2026-10-06
+  Power | intermediate | 60 min (est 40.0) | states=['stressed', 'irritated', 'amped'] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Kettlebell Swing (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Kettlebell Swing                       3 × 8           rest   90  Total-Body Power  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Banded Lateral Bound                   3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 4           rest  120  Strength Support
+
+### MOOD's Pick | intermediate | 60 | stressed+irritated+amped | 2026-10-07
+  Full-Body Athlete | intermediate | 60 min (est 39.0) | states=['stressed', 'irritated', 'amped'] sore=[] eq=commercial_gym | Jump + Throw | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Stick (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 4           rest  120  Strength Support
+
+### Power | advanced | 60 | stressed | 2026-10-05
+  Power | advanced | 60 min (est 44.1) | states=['stressed'] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Dumbbell Jump Squat                    4 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Single-Leg Hop to Stick                3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Chest Pass                    3 × 5           rest   60  Upper-Body Power  tier C
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 4           rest  150  Strength Support
+
+### Power | advanced | 60 | stressed | 2026-10-06
+  Power | advanced | 60 min (est 42.8) | states=['stressed'] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Vertical Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Broad Jump to Vertical Jump            4 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Vertical power
+     Box Jump                               3 × 3           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 4           rest  150  Strength Support
+
+### Power | advanced | 60 | stressed | 2026-10-07
+  Power | advanced | 60 min (est 43.1) | states=['stressed'] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Kettlebell Swing (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Kettlebell Swing                       4 × 8           rest   90  Total-Body Power  tier B
+  [secondary/straight] Secondary Quality · Vertical power
+     Split-Squat Jump                       3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 4           rest  150  Strength Support
+
+### MOOD's Pick | intermediate | 60 | no State | 2026-10-05
+  Power | intermediate | 60 min (est 42.8) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Stick (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Total-body explosiveness
+     Kettlebell Snatch                      3 × 2/side      rest  120  Total-Body Power  tier A
+  [secondary/straight] Athletic Element · Acceleration
+     Sled Push                              4 × 10 m        rest  105  Acceleration  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            3 × 5           rest  120  Strength Support
+
+### MOOD's Pick | intermediate | 60 | no State | 2026-10-06
+  Full-Body Athlete | intermediate | 60 min (est 47.2) | states=[] sore=[] eq=commercial_gym | Athletic Mixed | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Stick (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Landmine Rotational Punch              3 × 4/side      rest   90  Rotational Power  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Chest Pass                    3 × 5           rest   60  Upper-Body Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 5           rest  120  Strength Support
+
+### MOOD's Pick | intermediate | 60 | no State | 2026-10-07
+  Full-Body Athlete | intermediate | 60 min (est 44.4) | states=[] sore=[] eq=commercial_gym | Athletic Mixed | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Kettlebell Swing (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Kettlebell Swing                       3 × 8           rest   90  Total-Body Power  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Vertical Jump            3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Landmine Rotational Punch              3 × 4/side      rest   90  Rotational Power  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Overhead Throw                3 × 5           rest   60  Upper-Body Power  tier C
+  [support/straight] Support
+     Landmine Rotation                      3 × 6/side      rest   45  Core / Stability
+
+### Power | build_strength | intermediate 60
+  Power | intermediate | 60 min (est 53.3) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Vertical Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Broad Jump to Vertical Jump            3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Acceleration
+     Sled Push                              4 × 10 m        rest  105  Acceleration  tier B
+  [secondary/straight] Athletic Element · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      4 × 4           rest  150  Strength Support
+  [strength/straight] Athletic Strength
+     Barbell Bench Press                    3 × 6           rest   90  Strength Support
+
+### Power | sore ['legs'] | intermediate 60
+  Power | intermediate | 60 min (est 43.4) | states=['sore'] sore=['legs'] eq=commercial_gym | Power + Strength | primary: rotational power
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Band Pull-Apart (15) -> Landmine Rotational Punch (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Rotational power
+     Landmine Rotational Punch              3 × 4/side      rest   90  Rotational Power  tier B
+  [secondary/straight] Secondary Quality · Upper-body power
+     Landmine Push Press                    3 × 3/side      rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Slam                          3 × 5           rest   60  Upper-Body Power  tier C
+  [strength/straight] Athletic Strength
+     Pull-Up                                3 × 5           rest  120  Strength Support
+
+### Power | sore ['shoulders'] | intermediate 60
+  Power | intermediate | 60 min (est 44.3) | states=['sore'] sore=['shoulders'] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Hang Clean to Box Knee Drive (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Hang Clean to Box Knee Drive           4 × 2/side      rest  120  Total-Body Power  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      3 × 5           rest  120  Strength Support
+
+### Power | sore ['lower_back'] | intermediate 60
+  Power | intermediate | 60 min (est 43.2) | states=['sore'] sore=['lower_back'] eq=commercial_gym | Jump + Throw | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Lateral Box Jump                       3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Overhead Throw                3 × 5           rest   60  Upper-Body Power  tier C
+  [support/straight] Support
+     Dead Bug                               3 × 8/side      rest   45  Core / Stability
+
+### Power | build_strength | advanced 60
+  Power | advanced | 60 min (est 48.8) | states=[] sore=[] eq=commercial_gym | Contrast Pairing | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Box Jump (light, 2 x 3, then build)
+  [primary/superset x4] Contrast Pair · Vertical power
+     Trap-Bar Deadlift                      4 × 3           rest    -  Strength Support
+     Box Jump                               4 × 3           rest    -  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Rotational power
+     Landmine Rotational Punch              3 × 4/side      rest   90  Rotational Power  tier B
+  [secondary/straight] Athletic Element · Total-body explosiveness
+     Kettlebell Swing                       3 × 8           rest   90  Total-Body Power  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Overhead Throw                3 × 5           rest   60  Upper-Body Power  tier C
+
+### Power | free_weight_limited | advanced 60
+  Power | advanced | 60 min (est 52.3) | states=[] sore=[] eq=free_weight_limited | Power + Strength | primary: horizontal power
+  Warm-up: Jump Rope (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Consecutive Broad Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Consecutive Broad Jumps                4 × 3           rest  120  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Rear-Foot-Elevated Split Squat Jump    3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Bulgarian Split Squat                  3 × 5/side      rest  150  Strength Support
+  [strength/straight] Athletic Strength
+     Weighted Push-Up                       3 × 6           rest   90  Strength Support
+
+### Power | minimal | advanced 60
+  Power | advanced | 60 min (est 54.5) | states=[] sore=[] eq=minimal | Power + Strength | primary: total-body explosiveness
+  Warm-up: Jump Rope (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Snatch (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Dumbbell Snatch                        4 × 2/side      rest  120  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Lateral Single-Leg Hop to Stick        3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Vertical power
+     Dumbbell Step-Up with Pop              3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Bulgarian Split Squat                  3 × 5/side      rest  150  Strength Support
+
+### Speed+Plyo | build_strength | intermediate 60
+  Speed + Plyo | intermediate | 60 min (est 45.0) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Lateral Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Lateral Box Jump                       3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Vertical power
+     Split-Squat Jump                       3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Landmine Rotational Punch              3 × 4/side      rest   90  Rotational Power  tier B
+  [strength/straight] Athletic Strength
+     Front Squat                            4 × 4           rest  150  Strength Support
+
+### Speed+Plyo | sore ['legs'] | intermediate 60
+  CONFLICT sore_target_conflict: Speed + Plyo needs your legs, and they are sore today.
+
+### Speed+Plyo | sore ['shoulders'] | intermediate 60
+  Speed + Plyo | intermediate | 60 min (est 48.9) | states=['sore'] sore=['shoulders'] eq=commercial_gym | Athletic Mixed | primary: elastic, reactive ability
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Continuous Vertical Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Elastic, reactive ability
+     Continuous Vertical Jumps              3 × 5           rest   90  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Acceleration
+     Sled Push                              4 × 10 m        rest  105  Acceleration  tier B
+  [secondary/straight] Athletic Element · Horizontal power
+     Banded Lateral Bound                   3 × 3/side      rest   90  Plyometric  tier B
+  [strength/straight] Athletic Strength
+     Dumbbell Step-Up                       3 × 6/side      rest  120  Strength Support
+  [support/straight] Support
+     Dead Bug                               3 × 8/side      rest   45  Core / Stability
+
+### Speed+Plyo | sore ['lower_back'] | intermediate 60
+  Speed + Plyo | intermediate | 60 min (est 47.0) | states=['sore'] sore=['lower_back'] eq=commercial_gym | Athletic Mixed | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Lateral Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Lateral Box Jump                       3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Acceleration
+     Push-Up-Start Sprint (5 m)             4 × 5 m         rest   75  Acceleration  tier B
+  [secondary/straight] Athletic Element · Elastic, reactive ability
+     Single-Leg Box Jump                    3 × 3/side      rest   90  Plyometric  tier B
+  [strength/straight] Athletic Strength
+     Goblet Squat                           3 × 6           rest  120  Strength Support
+  [strength/straight] Athletic Strength
+     Barbell Bench Press                    3 × 6           rest   90  Strength Support
+
+### Speed+Plyo | build_strength | advanced 60
+  Speed + Plyo | advanced | 60 min (est 54.2) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Consecutive Broad Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Consecutive Broad Jumps                4 × 3           rest  120  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Pogo to Box Jump                       3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      4 × 3           rest  180  Strength Support
+  [strength/straight] Athletic Strength
+     Barbell Bench Press                    3 × 6           rest   90  Strength Support
+
+### Speed+Plyo | free_weight_limited | advanced 60
+  Speed + Plyo | advanced | 60 min (est 44.8) | states=[] sore=[] eq=free_weight_limited | Power + Strength | primary: vertical power
+  Warm-up: Jump Rope (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power
+     Box Jump                               4 × 3           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Lateral Bound to Box Jump              3 × 2/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Acceleration
+     Broad Jump to Sprint (5 m)             3 × 5 m         rest   90  Acceleration  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Explosive Push-Up                      3 × 4           rest   90  Upper-Body Power  tier B
+  [support/straight] Support
+     Dead Bug                               3 × 8/side      rest   45  Core / Stability
+
+### Speed+Plyo | minimal | advanced 60
+  Speed + Plyo | advanced | 60 min (est 45.3) | states=[] sore=[] eq=minimal | Power + Strength | primary: vertical power
+  Warm-up: Jump Rope (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Countermovement Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power
+     Countermovement Jump                   4 × 3           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Skater Hops                            3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Acceleration
+     Falling-Start Sprint (5 m)             3 × 5 m         rest   90  Acceleration  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Explosive Push-Up                      3 × 4           rest   90  Upper-Body Power  tier B
+  [support/straight] Support
+     Dead Bug                               3 × 8/side      rest   45  Core / Stability
+
+### FullBody | build_strength | intermediate 60
+  Full-Body Athlete | intermediate | 60 min (est 51.5) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Secondary Quality · Upper-body power
+     Explosive Push-Up                      3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Step-Behind Rotational Throw           3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      4 × 4           rest  150  Strength Support
+  [strength/straight] Athletic Strength
+     Barbell Bench Press                    3 × 6           rest   90  Strength Support
+
+### FullBody | sore ['legs'] | intermediate 60
+  Full-Body Athlete | intermediate | 60 min (est 45.6) | states=['sore'] sore=['legs'] eq=commercial_gym | Power + Strength | primary: upper-body power
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Band Pull-Apart (15) -> Push Press (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Upper-body power
+     Push Press                             4 × 3           rest  120  Upper-Body Power  tier A
+  [secondary/straight] Athletic Element · Upper-body power
+     Explosive Push-Up                      3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/superset x3] Athletic Strength + Core
+     Pull-Up                                3 × 5           rest    -  Strength Support
+     Landmine Rotation                      3 × 6/side      rest    -  Core / Stability
+
+### FullBody | sore ['shoulders'] | intermediate 60
+  Full-Body Athlete | intermediate | 60 min (est 46.3) | states=['sore'] sore=['shoulders'] eq=commercial_gym | Power + Strength | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Vertical Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Broad Jump to Vertical Jump            3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Vertical power
+     Dumbbell Step-Up with Pop              3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Total-body explosiveness
+     Kettlebell Swing                       3 × 8           rest   90  Total-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   60  Rotational Power  tier C
+  [support/straight] Support
+     Pallof Press                           3 × 10/side     rest   45  Core / Stability
+
+### FullBody | sore ['lower_back'] | intermediate 60
+  Full-Body Athlete | intermediate | 60 min (est 46.0) | states=['sore'] sore=['lower_back'] eq=commercial_gym | Jump + Throw | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Countermovement Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power
+     Countermovement Jump                   3 × 3           rest   90  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Broad Jump to Vertical Jump            3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Overhead Throw                3 × 5           rest   60  Upper-Body Power  tier C
+  [strength/straight] Athletic Strength
+     Bulgarian Split Squat                  3 × 5/side      rest  120  Strength Support
+
+### FullBody | build_strength | advanced 60
+  Full-Body Athlete | advanced | 60 min (est 55.6) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: total-body explosiveness
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Power Snatch (empty bar or light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Power Snatch                           4 × 2           rest  150  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Med-Ball Chest Pass                    3 × 5           rest   60  Upper-Body Power  tier C
+  [strength/superset x4] Athletic Strength
+     Trap-Bar Deadlift                      4 × 3           rest    -  Strength Support
+     Chin-Up                                4 × 5           rest    -  Strength Support
+
+### FullBody | free_weight_limited | advanced 60
+  Full-Body Athlete | advanced | 60 min (est 46.8) | states=[] sore=[] eq=free_weight_limited | Power + Strength | primary: total-body explosiveness
+  Warm-up: Jump Rope (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Snatch (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Dumbbell Snatch                        4 × 2/side      rest  120  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Pogo to Box Jump                       3 × 2           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Slam               3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Bulgarian Split Squat                  3 × 5/side      rest  150  Strength Support
+
+### FullBody | minimal | advanced 60
+  Full-Body Athlete | advanced | 60 min (est 46.7) | states=[] sore=[] eq=minimal | Power + Strength | primary: total-body explosiveness
+  Warm-up: Jump Rope (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Snatch (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Dumbbell Snatch                        4 × 2/side      rest  120  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Horizontal power
+     Consecutive Broad Jumps                3 × 3           rest  120  Plyometric  tier A
+  [secondary/straight] Athletic Element · Vertical power
+     Split-Squat Jump                       2 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Dumbbell Push Press                    3 × 4           rest   90  Upper-Body Power  tier B
+  [support/straight] Support
+     Dead Bug                               3 × 8/side      rest   45  Core / Stability
+
+### MOOD's Pick | build_strength | intermediate 60
+  Power | intermediate | 60 min (est 51.5) | states=[] sore=[] eq=commercial_gym | Power + Strength | primary: vertical power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power
+     Dumbbell Jump Squat                    3 × 3           rest  120  Lower-Body Power  tier B
+  [secondary/straight] Secondary Quality · Horizontal power
+     Single-Leg Hop to Stick                3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Upper-body power
+     Explosive Push-Up                      3 × 4           rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Shot-Put Throw                3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Front Squat                            4 × 4           rest  150  Strength Support
+
+### MOOD's Pick | sore ['legs'] | intermediate 60
+  Power | intermediate | 60 min (est 46.6) | states=['sore'] sore=['legs'] eq=commercial_gym | Power + Strength | primary: rotational power
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Band Pull-Apart (15) -> Landmine Rotational Punch (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Rotational power
+     Landmine Rotational Punch              3 × 4/side      rest   90  Rotational Power  tier B
+  [secondary/straight] Secondary Quality · Upper-body power
+     Landmine Push Press                    3 × 3/side      rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Slam               3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/straight] Athletic Strength
+     Chin-Up                                3 × 5           rest  120  Strength Support
+  [strength/straight] Athletic Strength
+     Half-Kneeling Single-Arm Landmine Press 3 × 6/side      rest   90  Strength Support
+
+### MOOD's Pick | sore ['shoulders'] | intermediate 60
+  Speed + Plyo | intermediate | 60 min (est 46.9) | states=['sore'] sore=['shoulders'] eq=commercial_gym | Athletic Mixed | primary: elastic, reactive ability
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Continuous Vertical Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Elastic, reactive ability
+     Continuous Vertical Jumps              3 × 5           rest   90  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Acceleration
+     Sled Push                              4 × 10 m        rest  105  Acceleration  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Med-Ball Rotational Throw              3 × 4/side      rest   60  Rotational Power  tier C
+  [strength/superset x3] Athletic Strength + Core
+     Bulgarian Split Squat                  3 × 5/side      rest    -  Strength Support
+     Dead Bug                               3 × 8/side      rest    -  Core / Stability
+
+### MOOD's Pick | sore ['lower_back'] | intermediate 60
+  Speed + Plyo | intermediate | 60 min (est 40.4) | states=['sore'] sore=['lower_back'] eq=commercial_gym | Power + Strength | primary: elastic, reactive ability
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Continuous Vertical Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Elastic, reactive ability
+     Continuous Vertical Jumps              3 × 5           rest   90  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Acceleration
+     Explosive Start (5-10 m)               4 × 10 m        rest   75  Acceleration  tier B
+  [secondary/straight] Athletic Element · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest   90  Plyometric  tier B
+  [strength/straight] Athletic Strength
+     Bulgarian Split Squat                  3 × 5/side      rest  120  Strength Support
+
+### MOOD's Pick | build_strength | advanced 60
+  Full-Body Athlete | advanced | 60 min (est 54.4) | states=[] sore=[] eq=commercial_gym | Jump + Throw | primary: horizontal power
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Consecutive Broad Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power
+     Consecutive Broad Jumps                4 × 3           rest  120  Plyometric  tier A
+  [secondary/straight] Secondary Quality · Upper-body power
+     Landmine Push Press                    3 × 3/side      rest   90  Upper-Body Power  tier B
+  [secondary/straight] Athletic Element · Total-body explosiveness
+     Kettlebell Swing                       3 × 8           rest   90  Total-Body Power  tier B
+  [strength/straight] Athletic Strength
+     Trap-Bar Deadlift                      4 × 3           rest  180  Strength Support
+  [strength/straight] Athletic Strength
+     Chin-Up                                3 × 5           rest   90  Strength Support
+
+### MOOD's Pick | free_weight_limited | advanced 60
+  Full-Body Athlete | advanced | 60 min (est 49.2) | states=[] sore=[] eq=free_weight_limited | Athletic Mixed | primary: total-body explosiveness
+  Warm-up: Jump Rope (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Snatch (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness
+     Dumbbell Snatch                        4 × 2/side      rest  120  Total-Body Power  tier A
+  [secondary/straight] Secondary Quality · Vertical power
+     Split-Squat Jump                       3 × 3/side      rest   90  Plyometric  tier B
+  [secondary/straight] Athletic Element · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest  105  Plyometric  tier B
+  [secondary/straight] Athletic Element · Rotational power
+     Step-Behind Rotational Throw           3 × 4/side      rest   60  Rotational Power  tier C
+  [support/straight] Support
+     Dead Bug                               3 × 8/side      rest   45  Core / Stability
+
+### MOOD's Pick | minimal | advanced 60
+  Speed + Plyo | advanced | 60 min (est 45.6) | states=[] sore=[] eq=minimal | Athletic Mixed | primary: elastic, reactive ability
+  Warm-up: Jump Rope (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Elastic, reactive ability
+     Pogo Jumps                             4 × 10          rest   60  Plyometric  tier B
+  [secondary/straight] Secondary Quality · Acceleration
+     Falling-Start Sprint (5 m)             4 × 5 m         rest   90  Acceleration  tier B
+  [secondary/straight] Athletic Element · Horizontal power
+     Broad Jump to Stick                    3 × 3           rest  105  Plyometric  tier B
+  [strength/straight] Athletic Strength
+     Bulgarian Split Squat                  3 × 5/side      rest  150  Strength Support
+  [support/straight] Support
+     Dead Bug                               3 × 8/side      rest   45  Core / Stability

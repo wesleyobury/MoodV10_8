@@ -1,0 +1,448 @@
+{
+ "A_grid": {
+  "builds": 9072,
+  "by_direction": {
+   "strength": 5184,
+   "sweat": 1944,
+   "athletic": 1944
+  },
+  "outcomes": {
+   "strength": {
+    "valid": 3541,
+    "valid_with_relaxation": 999,
+    "conflict": 644
+   },
+   "sweat": {
+    "valid": 1357,
+    "valid_with_relaxation": 162,
+    "rerouted": 50,
+    "conflict": 375
+   },
+   "athletic": {
+    "valid": 1930,
+    "conflict": 14
+   }
+  },
+  "conflicts": {
+   "strength": {
+    "cannot_build | free_weight_limited": 211,
+    "cannot_build | minimal": 403,
+    "sore_target_conflict | commercial_gym": 8,
+    "sore_target_conflict | free_weight_limited": 14,
+    "sore_target_conflict | minimal": 8
+   },
+   "sweat": {
+    "equipment_insufficient | free_weight_limited": 148,
+    "equipment_insufficient | minimal": 148,
+    "cannot_build | free_weight_limited": 8,
+    "cannot_build | minimal": 5,
+    "sore_target_conflict | free_weight_limited": 17,
+    "sore_target_conflict | minimal": 19,
+    "sore_target_conflict | commercial_gym": 30
+   },
+   "athletic": {
+    "cannot_build | minimal": 14
+   }
+  },
+  "relaxations": {
+   "strength:duration_overfill_accepted": 19,
+   "strength:duration_underfill_accepted": 869,
+   "strength:sore_secondary_retained": 133,
+   "strength:sore_substitution": 24,
+   "strength:bridge_relaxed_beginner_constrained_state": 12,
+   "sweat:relaxation_a": 85,
+   "sweat:region_balance_relaxed_sore": 129,
+   "sweat:complement_unavailable": 10,
+   "sweat:complexity_relaxed_state_cap": 2
+  },
+  "estimated_minutes": {
+   "athletic 30 advanced": {
+    "min": 20.6,
+    "mean": 26.7,
+    "max": 30.5
+   },
+   "athletic 30 beginner": {
+    "min": 18.1,
+    "mean": 21.2,
+    "max": 27.0
+   },
+   "athletic 30 intermediate": {
+    "min": 18.3,
+    "mean": 24.4,
+    "max": 30.2
+   },
+   "athletic 60 advanced": {
+    "min": 30.7,
+    "mean": 44.2,
+    "max": 56.8
+   },
+   "athletic 60 beginner": {
+    "min": 30.1,
+    "mean": 37.1,
+    "max": 45.4
+   },
+   "athletic 60 intermediate": {
+    "min": 29.5,
+    "mean": 39.9,
+    "max": 53.6
+   },
+   "strength 30 advanced": {
+    "min": 14.2,
+    "mean": 27.5,
+    "max": 31.5
+   },
+   "strength 30 beginner": {
+    "min": 14.4,
+    "mean": 26.3,
+    "max": 30.9
+   },
+   "strength 30 intermediate": {
+    "min": 14.9,
+    "mean": 27.1,
+    "max": 32.5
+   },
+   "strength 60 advanced": {
+    "min": 27.4,
+    "mean": 48.1,
+    "max": 59.5
+   },
+   "strength 60 beginner": {
+    "min": 15.9,
+    "mean": 42.6,
+    "max": 58.4
+   },
+   "strength 60 intermediate": {
+    "min": 27.3,
+    "mean": 47.6,
+    "max": 59.8
+   },
+   "sweat 30 advanced": {
+    "min": 22.2,
+    "mean": 25.1,
+    "max": 30.1
+   },
+   "sweat 30 beginner": {
+    "min": 23.3,
+    "mean": 26.0,
+    "max": 30.0
+   },
+   "sweat 30 intermediate": {
+    "min": 22.2,
+    "mean": 24.9,
+    "max": 30.0
+   },
+   "sweat 60 advanced": {
+    "min": 30.0,
+    "mean": 46.6,
+    "max": 53.2
+   },
+   "sweat 60 beginner": {
+    "min": 35.4,
+    "mean": 46.0,
+    "max": 55.8
+   },
+   "sweat 60 intermediate": {
+    "min": 30.0,
+    "mean": 45.3,
+    "max": 53.7
+   }
+  },
+  "failures": 0
+ },
+ "A_commercial_unexpected_conflicts": 0,
+ "B_history": {
+  "strength:moods_pick": {
+   "archetypes": [
+    "strength_glutes_legs",
+    "strength_upper_pull",
+    "strength_upper_push",
+    "strength_lower_squat",
+    "strength_upper_mixed",
+    "strength_glutes_legs",
+    "strength_upper_pull",
+    "strength_upper_push"
+   ],
+   "primaries": [
+    "barbell_hip_thrust",
+    "chest_supported_row_machine",
+    "db_bench_press",
+    "barbell_back_squat",
+    "barbell_bench_press",
+    "barbell_hip_thrust",
+    "chest_supported_row_machine",
+    "db_bench_press"
+   ],
+   "mean_overlap_with_previous": 0.0,
+   "distinct_exercises": 34
+  },
+  "sweat:moods_pick": {
+   "archetypes": [
+    "sweat_circuit",
+    "sweat_engine",
+    "sweat_engine",
+    "sweat_hybrid",
+    "sweat_circuit",
+    "sweat_engine",
+    "sweat_hybrid",
+    "sweat_circuit"
+   ],
+   "primaries": [
+    "air_bike",
+    "treadmill_run",
+    "ski_erg",
+    "row_erg",
+    "treadmill_run",
+    "air_bike",
+    "ski_erg",
+    "wall_ball"
+   ],
+   "mean_overlap_with_previous": 0.0,
+   "distinct_exercises": 17
+  },
+  "athletic:moods_pick": {
+   "archetypes": [
+    "athletic_full_body",
+    "athletic_power",
+    "athletic_full_body",
+    "athletic_full_body",
+    "athletic_full_body",
+    "athletic_speed_agility",
+    "athletic_power",
+    "athletic_full_body"
+   ],
+   "primaries": [
+    "broad_jump",
+    "mb_scoop_toss",
+    "reverse_lunge_knee_drive_hop",
+    "single_leg_hop",
+    "skater_hop",
+    "falling_start_sprint",
+    "broad_jump",
+    "mb_backward_toss"
+   ],
+   "mean_overlap_with_previous": 0.0,
+   "distinct_exercises": 29
+  },
+  "strength:strength_upper_push": {
+   "archetypes": [
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push",
+    "strength_upper_push"
+   ],
+   "primaries": [
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press",
+    "db_incline_press"
+   ],
+   "mean_overlap_with_previous": 0.36,
+   "distinct_exercises": 20
+  }
+ },
+ "C_swaps": {
+  "counts": {
+   "ok": 110,
+   "second_swap_ok": 105,
+   "swap_workout_ok": 25,
+   "no_alternative": 1
+  },
+  "failures": []
+ },
+ "D_conflicts": {
+  "athletic_speed_sore_legs": {
+   "expected": "conflict:sore_target_conflict",
+   "got": "conflict:sore_target_conflict",
+   "detail": "Speed + Plyo needs your legs, and they are sore today.",
+   "options": [
+    "Let MOOD pick",
+    "Pick another session type",
+    "Try Strength",
+    "Try Sweat"
+   ],
+   "pass": true
+  },
+  "athletic_pick_sore_legs_reroutes": {
+   "expected": "ok",
+   "got": "rerouted",
+   "detail": "Power (rerouted); Your legs are sore, so the power work moves to the upper body: Landmine Push Press and Landmine Rotational Punch, with no jumping or sprinting. Today is primarily upper-body power: Landmine Push Press comes first, while you're fresh, then Landmine Rotational Punch for rotational power and Med-Ball Chest Pass for more upper-body power, and Chest-Supported Dumbbell Row builds the strength behind it. | 15 throws in all, with 90 s between primary sets so every rep stays explosive. | Pallof Press is there for trunk control that transfers force from the hips to the hands. | Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced. | Your profile goal is to stay consistent; today's Athletic session is built from today's choices. | This is your first MOOD workout, so it starts from your Training Profile.",
+   "options": null,
+   "pass": true
+  },
+  "athletic_minimal_sore_legs_upper_session": {
+   "expected": "ok",
+   "got": "rerouted",
+   "detail": "Power (rerouted); Your legs are sore, so the power work moves to the upper body: Explosive Push-Up, with no jumping or sprinting. Today is primarily upper-body power: Explosive Push-Up comes first, while you're fresh, and Chest-Supported Dumbbell Row and Seated Dumbbell Shoulder Press build the strength behind it. | This session is complete at about 31 min. Quality over filler. | Built around the equipment you have. | 4 explosive sets in all, with 90 s between primary sets so every rep stays explosive. | Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced. | Your profile goal is to stay consistent; today's Athletic session is built from today's choices.",
+   "options": null,
+   "pass": true
+  },
+  "strength_pick_sore_quads_reroutes": {
+   "expected": "rerouted",
+   "got": "rerouted",
+   "detail": "Lower Body: Hinge (rerouted); Your quads are sore, so we're moving the work away from them: today is a Lower Body: Hinge session that leaves them alone. Your strength goal keeps Barbell Romanian Deadlift heavy and the accessories in a supporting role. | Barbell Romanian Deadlift (4 \u00d7 5\u20137) leads as the main lift, then 2 strength lifts and 2 accessories. | 18 working sets across 5 exercises, about 48 minutes. | Main work stops about 2 reps short of failure, accessories about 1 rep short of failure. | Intermediate difficulty: every movement is within the intermediate complexity and skill limits. | MOOD's Pick follows the rotation built for your goal to build strength, at 3 to 4 days a week.",
+   "options": null,
+   "pass": true
+  },
+  "strength_explicit_chest_sore_chest_trains": {
+   "expected": "ok",
+   "got": "ok",
+   "detail": "Custom Target (valid); You asked to train chest despite the soreness, so we kept your Target and chose the friendlier setups. As an intermediate lifter, rest-pause on the final set on Cable Fly is on the table. | All 4 movements train chest, opening with Machine Chest Press (5 \u00d7 4\u20136). | 16 working sets across 4 exercises, about 46 minutes. | Main work stops about 2 reps short of failure. | Intermediate difficulty: every movement is within the intermediate complexity and skill limits. | Your profile goal is to stay consistent; today's Strength session is built from today's choices.",
+   "options": null,
+   "pass": true
+  },
+  "strength_explicit_back_sore_arms_shoulders": {
+   "expected": "any",
+   "got": "ok",
+   "detail": "Upper Pull (valid_with_relaxation); You asked to train arms, shoulders and lower back despite the soreness, so we kept your Target and chose the friendlier setups. As an intermediate lifter, the top-set scheme is in play. Both back and biceps get direct work, in that order. | Back + Biceps run as an Upper Pull session, so both get direct work. | Assisted Pull-Up Machine (4 sets: 4/7/7/7) leads as the main lift, then 2 strength lifts and 3 accessories, with part of it run as a superset. | 21 working sets across 6 exercises, about 57 minutes. | Main work stops about 2 reps short of failure, accessories about 1 rep short of failure. | Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+   "options": null,
+   "pass": true
+  },
+  "sweat_engine_sore_legs": {
+   "expected": "any",
+   "got": "ok",
+   "detail": "Engine (valid); Your legs are sore, so every station keeps that area out of the loading; the SkiErg carries the conditioning. | Intermediate dosing: 8 pyramid steps up to 4 min, output held across the steps. | A 1-2-3-4-4-3-2-1 minute pyramid on the SkiErg, 60 s easy between steps. | One main block, about 45 minutes in all with warm-up and downshift. | Target effort for the main block is RPE 7\u20138. | Your profile goal is to stay consistent; today's Sweat session is built from today's choices.",
+   "options": null,
+   "pass": true
+  },
+  "sweat_hybrid_minimal": {
+   "expected": "conflict:equipment_insufficient",
+   "got": "conflict:equipment_insufficient",
+   "detail": "This Sweat format needs equipment that is not in your setup.",
+   "options": [
+    "Let MOOD pick",
+    "Use full gym equipment"
+   ],
+   "pass": true
+  },
+  "strength_minimal_full_body": {
+   "expected": "any",
+   "got": "ok",
+   "detail": "Full Body (valid); As an intermediate lifter, the top-set scheme is in play. | Built around the equipment you have. | Dumbbell Romanian Deadlift (4 sets: 4/7/7/7) leads as the main lift, then 2 strength lifts and 2 accessories, with part of it run as a superset. | 18 working sets across 5 exercises, about 47 minutes. | Main work stops about 2 reps short of failure, accessories about 1 rep short of failure. | Intermediate difficulty: every movement is within the intermediate complexity and skill limits.",
+   "options": null,
+   "pass": true
+  },
+  "invalid_duration_45": {
+   "expected": "input_error",
+   "got": "input_error",
+   "detail": "must be 30 or 60",
+   "pass": true
+  },
+  "four_states": {
+   "expected": "input_error",
+   "got": "input_error",
+   "detail": "select at most 3 States",
+   "pass": true
+  },
+  "athletic_muscle_target_shapes_support": {
+   "expected": "ok",
+   "got": "ok",
+   "detail": "Full-Body Athlete (valid); Today is primarily horizontal power: Broad Jump to Vertical Jump comes first, while you're fresh, then Explosive Push-Up for upper-body power and Seated Box Jump for vertical power, and Kettlebell Deadlift builds the strength behind it. | This session is complete at about 40 min. Quality over filler. | Your Chest Target shapes the support work (Explosive Push-Up); the session itself stays athletic, built around horizontal power. | About 21 landings in all, with 105 s between primary sets so every rep stays explosive. | Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced. | Your profile goal is to stay consistent; today's Athletic session is built from today's choices.",
+   "options": null,
+   "pass": true
+  },
+  "athletic_archetype_and_target": {
+   "expected": "input_error",
+   "got": "input_error",
+   "detail": "choose either an Athletic session type or a Target, not both",
+   "pass": true
+  }
+ },
+ "E_progression": {
+  "strength_hit_all_reps": {
+   "reference": {
+    "load": 100,
+    "unit": "kg",
+    "reps": [
+     8,
+     8,
+     8,
+     8
+    ],
+    "date": "2026-10-01"
+   },
+   "suggestion": {
+    "load": 105,
+    "unit": "kg",
+    "reps": 4,
+    "action": "increase"
+   },
+   "text": "You hit every rep at 100 kg last time. Try 105 kg today."
+  },
+  "strength_missed_reps": {
+   "reference": {
+    "load": 100,
+    "unit": "kg",
+    "reps": [
+     8,
+     6
+    ],
+    "date": "2026-10-01"
+   },
+   "suggestion": {
+    "load": 100,
+    "unit": "kg",
+    "reps": 4,
+    "action": "hold"
+   },
+   "text": "Last time: 100 kg \u00d7 8, 6. Stay at 100 kg and own every rep."
+  },
+  "strength_low_energy_today": {
+   "reference": {
+    "load": 100,
+    "unit": "kg",
+    "reps": [
+     8,
+     8,
+     8,
+     8
+    ],
+    "date": "2026-10-01"
+   },
+   "suggestion": {
+    "load": 100,
+    "unit": "kg",
+    "reps": 6,
+    "action": "hold"
+   },
+   "text": "Last time: 100 kg \u00d7 8, 8, 8, 8. Start at 100 kg and see how it moves."
+  },
+  "strength_unseen_exercise_has_no_load": true,
+  "sweat_resistance": {
+   "reference": {
+    "load": 16,
+    "unit": "kg",
+    "date": "x"
+   },
+   "suggestion": null,
+   "text": "Same load as last time: 16 kg."
+  },
+  "pass": true
+ },
+ "F_negative": {
+  "strength_wrong_slot_exercise_caught": true,
+  "strength_sore_primary_caught": true,
+  "sweat_long_passive_rest_caught": true,
+  "sweat_primary_not_first_caught": true,
+  "athletic_high_rep_short_rest_power_caught": true,
+  "athletic_power_under_fatigue_caught": true,
+  "athletic_impact_overdose_caught": true,
+  "athletic_intermediate_high_impact_caught": true,
+  "pass": true
+ },
+ "G_determinism": {
+  "identical": 3,
+  "cases": 3
+ },
+ "failures": [],
+ "failure_count": 0,
+ "all_green": true,
+ "seconds": 13.3
+}

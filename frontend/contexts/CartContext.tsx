@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useCallback, ReactNode, use
 import { API_URL } from '../utils/apiConfig';
 import { prefetchCartImages } from '../utils/mediaPrefetch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { trackEvent } from '../utils/analytics';
 
 export interface WorkoutItem {
   id: string;
@@ -128,30 +129,30 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setCartMetaState(meta);
   }, []);
 
-  // Track cart item added event
+  // Track cart item added event.
+  //
+  // This used to be a raw fetch, which meant it bypassed everything the
+  // analytics layer does: the batching queue, the opt-out check, app version
+  // stamping, and the pre-auth parking that holds events fired before the
+  // token has loaded. It also returned early with no token, silently dropping
+  // the event — the same failure that was eating onboarding completions.
+  // Routing it through trackEvent fixes all of those at once.
+  //
+  // Note this event overlaps with `workout_added_to_cart`, which is fired from
+  // the screens themselves and carries no `source`. Both are kept for now
+  // because dashboards read them, but `cart_item_added` is the one with source
+  // attribution and should be treated as canonical.
   const trackCartItemAdded = async (workout: WorkoutItem, source: 'custom' | 'build_for_me', token?: string | null) => {
     const authToken = token || tokenRef.current;
-    if (!authToken) return; // Don't track for guests without token
-
     try {
-      await fetch(`${API_URL}/api/analytics/track`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          event_type: 'cart_item_added',
-          metadata: {
-            workout_id: workout.id,
-            workout_name: workout.name,
-            moodCard: workout.moodCard,
-            workoutType: workout.workoutType,
-            equipment: workout.equipment,
-            difficulty: workout.difficulty,
-            source: source, // 'custom' or 'build_for_me'
-          },
-        }),
+      await trackEvent(authToken || '', 'cart_item_added', {
+        workout_id: workout.id,
+        workout_name: workout.name,
+        moodCard: workout.moodCard,
+        workoutType: workout.workoutType,
+        equipment: workout.equipment,
+        difficulty: workout.difficulty,
+        source: source, // 'custom' or 'build_for_me'
       });
     } catch (error) {
       console.log('Failed to track cart item:', error);

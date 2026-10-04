@@ -25,12 +25,13 @@ import { Analytics } from '../utils/analytics';
 import { useFoundingPurchase } from '../hooks/useFoundingPurchase';
 import { foundingDaysRemaining } from '../utils/founding';
 import { useUpdateGateState } from './ForceUpdateGate';
+import { isFirstWorkoutPending } from '../utils/v3Profile';
 
 // Per-session latch (resets on app restart = new session).
 let shownThisSession = false;
 
 export function FoundingOfferModal() {
-  const { token, entitlement } = useAuth();
+  const { token, entitlement, user } = useAuth();
   const { pendingTrigger } = useSubscription();
   const { claimFounding } = useFoundingPurchase();
   const pathname = usePathname();
@@ -41,8 +42,16 @@ export function FoundingOfferModal() {
 
   // Don't surface the launch modal during the onboarding funnel / onboarding
   // stack — the reveal-payoff screen renders its own founding offer there.
+  // Oct 2026: also never over a V3 workout surface (Build / Cart / Session), and not before the first workout is done:
+  // onboarding has no paywall, so the first thing after it is workout #1.
   const inOnboarding =
-    !!pathname && (pathname.startsWith('/onboarding') || pathname.startsWith('/auth'));
+    !!pathname && (pathname.startsWith('/onboarding') || pathname.startsWith('/auth') || pathname.startsWith('/v3'));
+  const [firstWorkoutPending, setFirstWorkoutPending] = useState(true);
+  useEffect(() => {
+    let alive = true;
+    isFirstWorkoutPending(user?.id).then((p) => { if (alive) setFirstWorkoutPending(p); });
+    return () => { alive = false; };
+  }, [user?.id, pathname]);
 
   const eligible =
     !!entitlement?.is_founding_member &&
@@ -62,7 +71,7 @@ export function FoundingOfferModal() {
   }, [updateGateState]);
 
   useEffect(() => {
-    if (!token || inOnboarding) return;
+    if (!token || inOnboarding || firstWorkoutPending) return;
     // Don't present a native modal until the update check has resolved —
     // if the check comes back 'blocked' one frame later, the dismiss/present
     // race with the update wall can leave the screen black on iOS.
@@ -77,7 +86,7 @@ export function FoundingOfferModal() {
       // 1c — canonical founding-offer-shown event for the funnel.
       Analytics.foundingMemberOfferShown(token, { days_remaining_in_window: daysLeft });
     }
-  }, [token, eligible, daysLeft, inOnboarding, pendingTrigger, updateGateState]);
+  }, [token, eligible, daysLeft, inOnboarding, firstWorkoutPending, pendingTrigger, updateGateState]);
 
   const handleRemindLater = () => {
     setVisible(false);

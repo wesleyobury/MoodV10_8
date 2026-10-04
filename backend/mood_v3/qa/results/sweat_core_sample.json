@@ -1,0 +1,50 @@
+{
+ "note": "Full 2,012-row production-path sample is regenerated with mood_v3/qa/sweat_core_sample.py (13.7 MB, not stored in the repo). Metrics: SWEAT_REBUILD_metrics.txt",
+ "rows": 2012,
+ "ok": 1968,
+ "conflicts": 44,
+ "gate": {
+  "low_energy": [
+   486,
+   491
+  ],
+  "stressed": [
+   426,
+   433
+  ],
+  "bored": [
+   481,
+   501
+  ],
+  "irritated": [
+   352,
+   367
+  ],
+  "amped": [
+   407,
+   433
+  ]
+ },
+ "coherence_verdicts": [
+  2107,
+  2225
+ ],
+ "duration": {
+  "30": {
+   "n": 783,
+   "median": 25.0,
+   "min": 23.5,
+   "max": 31.0,
+   "under_band": 102,
+   "under_brief_window": 0
+  },
+  "60": {
+   "n": 1185,
+   "median": 47.8,
+   "min": 34.7,
+   "max": 55.5,
+   "under_band": 650,
+   "under_brief_window": 357
+  }
+ }
+}

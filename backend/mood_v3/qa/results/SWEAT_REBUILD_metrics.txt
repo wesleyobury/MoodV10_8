@@ -1,0 +1,246 @@
+rows 2012 ok 1968
+CONFLICTS Counter({('sore_target_conflict', (), 'sweat_hybrid', 'commercial_gym', 'intermediate', ('legs',), ()): 2, ('sore_target_conflict', ('irritated',), 'sweat_hybrid', 'commercial_gym', 'intermediate', ('legs',), ()): 2, ('sore_target_conflict', ('low_energy',), 'sweat_hybrid', 'commercial_gym', 'intermediate', ('legs',), ()): 2, ('equipment_insufficient', (), 'sweat_engine', 'minimal', 'beginner', (), ()): 2, ('equipment_insufficient', ('bored',), 'sweat_engine', 'minimal', 'beginner', (), ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_engine', 'minimal', 'beginner', (), ()): 2, ('equipment_insufficient', (), 'sweat_engine', 'free_weight_limited', 'beginner', (), ()): 2, ('equipment_insufficient', ('bored',), 'sweat_engine', 'free_weight_limited', 'beginner', (), ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_engine', 'free_weight_limited', 'beginner', (), ()): 2, ('equipment_insufficient', (), 'sweat_hybrid', 'minimal', 'beginner', (), ()): 2, ('equipment_insufficient', ('bored',), 'sweat_hybrid', 'minimal', 'beginner', (), ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_hybrid', 'minimal', 'beginner', (), ()): 2, ('equipment_insufficient', (), 'sweat_hybrid', 'minimal', 'advanced', (), ()): 2, ('equipment_insufficient', ('bored',), 'sweat_hybrid', 'minimal', 'advanced', (), ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_hybrid', 'minimal', 'advanced', (), ()): 2, ('equipment_insufficient', (), 'sweat_hybrid', 'free_weight_limited', 'beginner', (), ()): 2, ('equipment_insufficient', ('bored',), 'sweat_hybrid', 'free_weight_limited', 'beginner', (), ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_hybrid', 'free_weight_limited', 'beginner', (), ()): 2, ('equipment_insufficient', (), 'sweat_hybrid', 'free_weight_limited', 'advanced', (), ()): 2, ('equipment_insufficient', ('bored',), 'sweat_hybrid', 'free_weight_limited', 'advanced', (), ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_hybrid', 'free_weight_limited', 'advanced', (), ()): 2, ('cannot_build', ('low_energy',), 'sweat_engine', 'minimal', 'advanced', (), ()): 1, ('cannot_build', ('low_energy',), 'sweat_engine', 'free_weight_limited', 'advanced', (), ()): 1})
+ARCH by tag {'arch': {'sweat_engine': 390, 'sweat_circuit': 390, 'sweat_hybrid': 390}, 'pick': {'sweat_engine': 84, 'sweat_circuit': 76, 'sweat_hybrid': 20}, 'target': {'sweat_circuit': 216}, 'sore': {'sweat_engine': 40, 'sweat_circuit': 32, 'sweat_hybrid': 18}, 'equip': {'sweat_engine': 36, 'sweat_circuit': 58, 'sweat_hybrid': 12}}
+SHAPES {('sweat_engine', 'continuous'): 229, ('sweat_engine', 'long_intervals'): 310, ('sweat_engine', 'pyramid'): 59, ('sweat_circuit', 'rounds'): 430, ('sweat_circuit', 'timed'): 368, ('sweat_hybrid', 'anchor_couplet'): 166, ('sweat_hybrid', 'split_anchor'): 275, ('sweat_hybrid', 'anchor_triplet'): 51, ('sweat_circuit', 'emom'): 41, ('sweat_hybrid', 'ladder_hybrid'): 17, ('sweat_engine', 'short_intervals'): 22}
+DUR 30 n 783 min 23.5 p10 23.7 med 25.0 p90 28.46 max 31.0 under 102 over 0
+DUR 60 n 1185 min 34.7 p10 41.56 med 47.8 p90 50.5 max 55.5 under 650 over 0
+GATE {'low_energy': (486, 491, 0.99), 'stressed': (426, 433, 0.984), 'bored': (481, 501, 0.96), 'irritated': (352, 367, 0.959), 'amped': (407, 433, 0.94)}
+GATE FAILS 70
+   (['low_energy', 'amped'], 'sweat_engine', 30, 'beginner', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_engine', 30, 'intermediate', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_engine', 30, 'advanced', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_engine', 60, 'beginner', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_engine', 60, 'intermediate', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_engine', 60, 'advanced', None, None, {'low_energy': True, 'amped': False})
+   (['amped', 'stressed'], 'sweat_circuit', 60, 'beginner', None, None, {'amped': True, 'stressed': False})
+   (['irritated', 'stressed'], 'sweat_hybrid', 30, 'advanced', None, None, {'irritated': False, 'stressed': True})
+   (['low_energy', 'amped'], 'sweat_engine', 30, 'beginner', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_engine', 60, 'intermediate', None, None, {'low_energy': False, 'amped': True})
+   (['irritated', 'stressed'], 'sweat_engine', 30, 'intermediate', None, None, {'irritated': False, 'stressed': True})
+   (['irritated', 'stressed'], 'sweat_engine', 30, 'advanced', None, None, {'irritated': False, 'stressed': True})
+   (['irritated', 'stressed'], 'sweat_engine', 60, 'intermediate', None, None, {'irritated': False, 'stressed': True})
+   (['irritated', 'stressed'], 'sweat_engine', 60, 'advanced', None, None, {'irritated': False, 'stressed': True})
+   (['bored', 'low_energy'], 'sweat_engine', 30, 'beginner', None, None, {'bored': False, 'low_energy': True})
+   (['bored', 'low_energy'], 'sweat_engine', 30, 'intermediate', None, None, {'bored': False, 'low_energy': True})
+   (['bored', 'low_energy'], 'sweat_engine', 30, 'advanced', None, None, {'bored': False, 'low_energy': True})
+   (['bored', 'low_energy'], 'sweat_engine', 60, 'beginner', None, None, {'bored': False, 'low_energy': True})
+   (['bored', 'low_energy'], 'sweat_engine', 60, 'intermediate', None, None, {'bored': False, 'low_energy': True})
+   (['low_energy', 'amped'], 'sweat_circuit', 30, 'beginner', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_circuit', 30, 'advanced', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_circuit', 60, 'beginner', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_circuit', 60, 'advanced', None, None, {'low_energy': False, 'amped': False})
+   (['amped', 'stressed'], 'sweat_hybrid', 60, 'beginner', None, None, {'amped': False, 'stressed': True})
+   (['irritated', 'stressed'], 'sweat_hybrid', 30, 'advanced', None, None, {'irritated': False, 'stressed': True})
+   (['irritated', 'stressed'], 'sweat_hybrid', 60, 'advanced', None, None, {'irritated': False, 'stressed': True})
+   (['low_energy', 'amped'], 'sweat_engine', 30, 'beginner', None, None, {'low_energy': True, 'amped': False})
+   (['bored', 'low_energy'], 'sweat_engine', 30, 'beginner', None, None, {'bored': False, 'low_energy': True})
+   (['bored', 'low_energy'], 'sweat_engine', 30, 'intermediate', None, None, {'bored': False, 'low_energy': True})
+   (['bored', 'low_energy'], 'sweat_engine', 30, 'advanced', None, None, {'bored': False, 'low_energy': True})
+   (['bored', 'low_energy'], 'sweat_engine', 60, 'beginner', None, None, {'bored': False, 'low_energy': True})
+   (['bored', 'low_energy'], 'sweat_engine', 60, 'intermediate', None, None, {'bored': False, 'low_energy': True})
+   (['bored', 'low_energy'], 'sweat_engine', 60, 'advanced', None, None, {'bored': False, 'low_energy': True})
+   (['amped', 'bored'], 'sweat_engine', 30, 'beginner', None, None, {'amped': True, 'bored': False})
+   (['amped', 'bored'], 'sweat_engine', 30, 'intermediate', None, None, {'amped': True, 'bored': False})
+   (['amped', 'bored'], 'sweat_engine', 30, 'advanced', None, None, {'amped': True, 'bored': False})
+   (['amped', 'bored'], 'sweat_engine', 60, 'advanced', None, None, {'amped': True, 'bored': False})
+   (['irritated', 'stressed'], 'sweat_hybrid', 30, 'advanced', None, None, {'irritated': False, 'stressed': True})
+   (['low_energy', 'amped'], 'sweat_engine', 30, 'beginner', None, None, {'low_energy': True, 'amped': False})
+   (['low_energy', 'amped'], 'sweat_engine', 60, 'intermediate', None, None, {'low_energy': False, 'amped': True})
+COHERENCE sessions 1595 all-pass 1477 verdicts 2225 passed 2107
+COH FAILS
+   ('irritated', 'nothing direct or forceful to push against') 48
+   ('bored', 'experiential difference score 0 below 1') 23
+   ('bored', 'experiential difference score 1 below 2') 15
+   ('amped', 'readiness not used ') 11
+   ('low_energy', '32 transitions ') 6
+   ('stressed', '32 transitions') 5
+   ('stressed', '36 transitions') 4
+   ('low_energy', '2 impact items') 4
+   ('stressed', '20 transitions') 2
+COH REPAIRS []
+BUDGET_OPEN 4 [("['impact contacts 42 above 32']", 4)]
+DECISION CODES [('state_expression', 4450), ('duration_backfill', 3327), ('state_gate', 3018), ('shape_selected', 1968), ('primary_block_completeness', 1968), ('state_coherence', 1595), ('state_conflict_resolved', 1192), ('state_rpe', 1107), ('duration_underfill_accepted', 759), ('complement_selected', 467), ('state_gate_fallback', 441), ('budget_repair', 403), ('state_rpe_no_effect', 338), ('state_recovery', 286), ('state_volume', 285), ('complement_skipped', 264), ('archetype_selected', 264), ('finisher_skipped', 259), ('state_stations_no_effect', 229), ('target_routed_circuit', 216), ('state_coherence_repair', 194), ('state_bouts_no_effect', 144), ('sore_exclusion', 90), ('state_volume_no_effect', 63), ('state_stations', 49), ('state_recovery_no_effect', 38), ('state_gate_exhausted', 35), ('finisher_selected', 31), ('state_structure_no_effect', 28), ('complement_unavailable', 25), ('state_gate_yielded', 22), ('state_structure', 8), ('target_coverage_swap', 8), ('archetype_skipped_equipment', 8), ('duration_trim', 7), ('state_bouts', 5), ('budget_open', 4), ('archetype_failed', 2)]
+HYBRID 30 n 205 {'anchor_share': (0.32, 0.42, 0.48), 'engine_share': (0.42, 0.55, 0.62), 'loaded_reps': (0, 50, 150), 'bodyweight_reps': (0, 0, 100), 'transitions': (12, 16, 22), 'hard_share': (0.0, 0.0, 0.62), 'stations': (3, 3, 5)}
+  shapes Counter({'anchor_couplet': 97, 'split_anchor': 68, 'anchor_triplet': 32, 'ladder_hybrid': 8}) rounds Counter({4: 101, 2: 59, 3: 41, 5: 4})
+HYBRID 60 n 304 {'anchor_share': (0.35, 0.41, 0.48), 'engine_share': (0.45, 0.53, 0.62), 'loaded_reps': (0, 124.0, 270), 'bodyweight_reps': (0, 0.0, 144), 'transitions': (24, 25.0, 36), 'hard_share': (0.0, 0.0, 0.61), 'stations': (3, 5.0, 5)}
+  shapes Counter({'split_anchor': 207, 'anchor_couplet': 69, 'anchor_triplet': 19, 'ladder_hybrid': 9}) rounds Counter({4: 176, 6: 94, 5: 34})
+BUDGET KEYS ['active_min', 'anchor_share', 'blocks', 'bodyweight_reps', 'demanding', 'duty', 'engine', 'engine_bouts', 'engine_min', 'engine_share', 'finisher', 'fixed_stations', 'hard_min', 'hard_share', 'high_impact_items', 'impact_contacts', 'loaded_hinges', 'loaded_reps', 'recovery_min', 'reps_by', 'rpe', 'stations', 'total_min', 'transition_min', 'transitions', 'very_hard_blocks']
+LEVEL sweat_engine beginner n 65 rpe_max [(7, 24), (8, 20), (6, 19), (5, 2)] loaded 0 impact 0 stations 2 fin 0
+LEVEL sweat_engine intermediate n 65 rpe_max [(7, 29), (8, 20), (6, 8), (9, 6)] loaded 0 impact 0 stations 1 fin 3
+LEVEL sweat_engine advanced n 65 rpe_max [(7, 32), (8, 19), (6, 8), (9, 6)] loaded 0 impact 0 stations 2 fin 1
+LEVEL sweat_circuit beginner n 65 rpe_max [(7, 34), (8, 31)] loaded 60 impact 0 stations 4 fin 0
+LEVEL sweat_circuit intermediate n 65 rpe_max [(8, 24), (7, 24), (9, 17)] loaded 115 impact 0 stations 4 fin 3
+LEVEL sweat_circuit advanced n 65 rpe_max [(7, 27), (8, 21), (9, 17)] loaded 138 impact 0 stations 4 fin 4
+LEVEL sweat_hybrid beginner n 65 rpe_max [(7, 39), (8, 26)] loaded 72 impact 0 stations 4 fin 0
+LEVEL sweat_hybrid intermediate n 65 rpe_max [(8, 40), (7, 25)] loaded 125 impact 0 stations 4 fin 0
+LEVEL sweat_hybrid advanced n 65 rpe_max [(7, 30), (8, 19), (9, 16)] loaded 130 impact 0 stations 4 fin 0
+GOAL shapes {'build_muscle': {('engine', 'continuous'): 2, ('circuit', 'rounds'): 2, ('hybrid', 'anchor_triplet'): 3, ('engine', 'long_intervals'): 2, ('circuit', 'timed'): 4, ('hybrid', 'split_anchor'): 3, ('engine', 'pyramid'): 2}, 'build_strength': {('engine', 'continuous'): 2, ('circuit', 'rounds'): 2, ('hybrid', 'split_anchor'): 6, ('engine', 'long_intervals'): 2, ('circuit', 'timed'): 4, ('engine', 'pyramid'): 2}, 'feel_better_reduce_stress': {('engine', 'continuous'): 2, ('circuit', 'rounds'): 2, ('hybrid', 'split_anchor'): 6, ('engine', 'long_intervals'): 4, ('circuit', 'timed'): 4}, 'improve_athleticism': {('engine', 'short_intervals'): 2, ('circuit', 'rounds'): 2, ('hybrid', 'split_anchor'): 6, ('engine', 'long_intervals'): 2, ('circuit', 'timed'): 4, ('engine', 'pyramid'): 2}, 'lose_weight_conditioning': {('engine', 'continuous'): 2, ('circuit', 'rounds'): 2, ('hybrid', 'split_anchor'): 6, ('engine', 'long_intervals'): 2, ('circuit', 'timed'): 4, ('engine', 'pyramid'): 2}, 'stay_consistent': {('engine', 'continuous'): 2, ('circuit', 'rounds'): 2, ('hybrid', 'split_anchor'): 6, ('engine', 'long_intervals'): 2, ('circuit', 'timed'): 4, ('engine', 'pyramid'): 2}}
+SEQ h1 [('eng', 'pyramid', ['ski_erg']), ('hyb', 'split_anchor', ['row_erg']), ('cir', 'emom', ['air_bike']), ('eng', 'continuous', ['stationary_bik']), ('hyb', 'anchor_triplet', ['treadmill_run']), ('hyb', 'split_anchor', ['ski_erg']), ('cir', 'timed', ['row_erg', 'jump_rope']), ('hyb', 'anchor_couplet', ['treadmill_run'])]
+   distinct sessions 8 / 8 shape distinct 7
+SEQ h2 [('hyb', 'ladder_hybrid', ['ski_erg']), ('hyb', 'anchor_couplet', ['row_erg']), ('hyb', 'anchor_triplet', ['treadmill_run']), ('hyb', 'anchor_couplet', ['ski_erg']), ('hyb', 'split_anchor', ['row_erg']), ('hyb', 'anchor_triplet', ['treadmill_run'])]
+   distinct sessions 6 / 6 shape distinct 4
+SEQ h3 [('eng', 'continuous', ['row_erg']), ('eng', 'pyramid', ['ski_erg']), ('eng', 'short_intervals', ['air_bike']), ('eng', 'pyramid', ['row_erg']), ('eng', 'long_intervals', ['ski_erg']), ('eng', 'short_intervals', ['air_bike'])]
+   distinct sessions 3 / 6 shape distinct 4
+SEQ h4 [('cir', 'rounds', ['burpee', 'jump_rope']), ('cir', 'timed', ['dead_bug']), ('cir', 'timed', ['high_knees']), ('cir', 'rounds', ['jumping_jack', 'treadmill_run']), ('cir', 'timed', ['plank']), ('cir', 'rounds', ['burpee', 'jump_rope'])]
+   distinct sessions 6 / 6 shape distinct 2
+SEQ h5 [('hyb', 'anchor_couplet', ['row_erg']), ('eng', 'long_intervals', ['stationary_bik', 'row_erg']), ('hyb', 'split_anchor', ['ski_erg']), ('eng', 'continuous', ['row_erg']), ('cir', 'rounds', ['air_bike']), ('hyb', 'anchor_triplet', ['row_erg']), ('eng', 'continuous', ['stationary_bik']), ('eng', 'long_intervals', ['treadmill_run'])]
+   distinct sessions 8 / 8 shape distinct 6
+CLAIMS 5137 unbacked 0
+BFT codes [('difficulty', 1968), ('structure', 1968), ('volume', 1968), ('intensity', 1958), ('goal', 1580), ('state_pair', 630), ('why_today', 316), ('state_bored', 231), ('state_low_energy', 221), ('target', 216), ('state_irritated', 187), ('state_stressed', 163), ('state_amped', 163), ('duration', 81), ('equipment', 58), ('sore', 30), ('different_workout', 24), ('history', 22), ('swap', 16), ('rotation_swap', 8)]
+DW/SWAP Counter({('dw1', 'ok'): 16, ('dw2', 'ok'): 16, ('swap', 'ok'): 16})
+
+--- GATE excluding States yielded by a conflict rule ---
+yielded by rule 22 {'low_energy': (486, 491, 0.99), 'stressed': (426, 433, 0.984), 'bored': (481, 501, 0.96), 'irritated': (352, 367, 0.959), 'amped': (407, 411, 0.99)}
+unsatisfied by combination [(('bored', ('bored', 'low_energy'), 'engine', 30), 9), (('bored', ('bored', 'low_energy'), 'engine', 60), 7), (('irritated', ('irritated', 'stressed'), 'hybrid', 30), 5), (('irritated', ('irritated', 'stressed'), 'engine', 30), 4), (('irritated', ('irritated', 'stressed'), 'engine', 60), 4), (('stressed', ('amped', 'stressed'), 'circuit', 60), 3), (('amped', ('amped', 'stressed'), 'hybrid', 60), 3), (('bored', ('amped', 'bored'), 'engine', 30), 3), (('low_energy', ('low_energy', 'amped'), 'engine', 60), 2), (('irritated', ('irritated', 'stressed'), 'hybrid', 60), 2), (('stressed', ('amped', 'stressed'), 'circuit', 30), 2), (('stressed', ('amped', 'stressed'), 'hybrid', 60), 2)]
+
+--- COHERENCE failures after repairs ---
+failed verdicts 118
+[(('irritated', 'nothing direct or forceful to push against'), 48), (('bored', 'experiential difference score 0 below 1'), 23), (('bored', 'experiential difference score 1 below 2'), 15), (('amped', 'readiness not used '), 11), (('low_energy', '32 transitions '), 6), (('stressed', '32 transitions'), 5), (('stressed', '36 transitions'), 4), (('low_energy', '2 impact items'), 4), (('stressed', '20 transitions'), 2)]
+[(('bored', ('bored', 'low_energy'), 'engine', 30, 'beginner'), 5), (('bored', ('bored', 'low_energy'), 'engine', 60, 'beginner'), 5), (('irritated', ('irritated',), 'engine', 30, 'beginner'), 4), (('irritated', ('irritated',), 'engine', 30, 'intermediate'), 4), (('irritated', ('irritated',), 'engine', 30, 'advanced'), 4), (('irritated', ('irritated',), 'engine', 60, 'beginner'), 4), (('amped', ('amped',), 'engine', 30, 'beginner'), 4), (('bored', ('bored', 'low_energy'), 'engine', 30, 'intermediate'), 4), (('bored', ('bored', 'low_energy'), 'engine', 30, 'advanced'), 4), (('bored', ('bored', 'low_energy'), 'engine', 60, 'intermediate'), 4), (('amped', ('amped', 'stressed'), 'circuit', 60, 'beginner'), 4), (('low_energy', ('low_energy',), 'circuit', 60, 'advanced'), 4)]
+
+--- DURATION vs brief windows (30 -> ~22-30, 60 -> ~45-60) ---
+30 n 783 below preferred band 102 below brief window 0 within brief window % 100.0
+60 n 1185 below preferred band 650 below brief window 357 within brief window % 69.9
+
+--- CONFLICT envelopes ---
+Counter({('sore_target_conflict', (), 'sweat_hybrid', 'commercial_gym', 'intermediate', ('legs',)): 2, ('sore_target_conflict', ('irritated',), 'sweat_hybrid', 'commercial_gym', 'intermediate', ('legs',)): 2, ('sore_target_conflict', ('low_energy',), 'sweat_hybrid', 'commercial_gym', 'intermediate', ('legs',)): 2, ('equipment_insufficient', (), 'sweat_engine', 'minimal', 'beginner', ()): 2, ('equipment_insufficient', ('bored',), 'sweat_engine', 'minimal', 'beginner', ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_engine', 'minimal', 'beginner', ()): 2, ('equipment_insufficient', (), 'sweat_engine', 'free_weight_limited', 'beginner', ()): 2, ('equipment_insufficient', ('bored',), 'sweat_engine', 'free_weight_limited', 'beginner', ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_engine', 'free_weight_limited', 'beginner', ()): 2, ('equipment_insufficient', (), 'sweat_hybrid', 'minimal', 'beginner', ()): 2, ('equipment_insufficient', ('bored',), 'sweat_hybrid', 'minimal', 'beginner', ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_hybrid', 'minimal', 'beginner', ()): 2, ('equipment_insufficient', (), 'sweat_hybrid', 'minimal', 'advanced', ()): 2, ('equipment_insufficient', ('bored',), 'sweat_hybrid', 'minimal', 'advanced', ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_hybrid', 'minimal', 'advanced', ()): 2, ('equipment_insufficient', (), 'sweat_hybrid', 'free_weight_limited', 'beginner', ()): 2, ('equipment_insufficient', ('bored',), 'sweat_hybrid', 'free_weight_limited', 'beginner', ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_hybrid', 'free_weight_limited', 'beginner', ()): 2, ('equipment_insufficient', (), 'sweat_hybrid', 'free_weight_limited', 'advanced', ()): 2, ('equipment_insufficient', ('bored',), 'sweat_hybrid', 'free_weight_limited', 'advanced', ()): 2, ('equipment_insufficient', ('low_energy',), 'sweat_hybrid', 'free_weight_limited', 'advanced', ()): 2, ('cannot_build', ('low_energy',), 'sweat_engine', 'minimal', 'advanced', ()): 1, ('cannot_build', ('low_energy',), 'sweat_engine', 'free_weight_limited', 'advanced', ()): 1})
+
+--- HYBRID: primary block is the workout (completeness gate) ---
+30 hybrids 205 blocks {1: 205} closers 0 second circuits 0
+   fills [('technique and setup', 23), ('anchor bout +1 step', 11), ('warm-up extended', 5)]
+   primary active minutes deciles [8, 10, 11, 12, 13, 13, 14, 14, 14, 15, 16]
+60 hybrids 304 blocks {1: 304} closers 0 second circuits 0
+   fills [('technique and setup', 132), ('warm-up extended', 102), ('anchor bout +1 step', 61), ('downshift extended', 56)]
+   primary active minutes deciles [16, 20, 22, 24, 26, 27, 27, 28, 29, 30, 32]
+
+===== AFTER (this pass): 1968 sessions =====
+block composition, all: {'main only': 1478, 'main + complement': 467, 'main + finisher': 23}
+  by archetype:
+    circuit: main only 552 (66%), main + complement 277 (33%), main + finisher 10 (1%)
+    engine: main only 417 (67%), main + complement 190 (31%), main + finisher 13 (2%)
+    hybrid: main only 509 (100%)
+  by duration:
+    30: main only 783 (100%)
+    60: main only 695 (59%), main + complement 467 (39%), main + finisher 23 (2%)
+  by level:
+    advanced: main only 409 (72%), main + complement 153 (27%), main + finisher 6 (1%)
+    beginner: main only 382 (76%), main + complement 122 (24%)
+    intermediate: main only 687 (77%), main + complement 192 (21%), main + finisher 17 (2%)
+  main + complement + finisher cases: 0
+  30 min: median elapsed 25.0, median meaningful active 11.1, median main-block active 11.1, median hard minutes 0.0, median loaded reps 0, median engine minutes 6.0, median warm-up 5, median cooldown 3
+    main-block RPE distribution: {'steady (<= 7)': 422, 'moderate (7-8)': 214, 'hard (floor 8+ or 9)': 147}
+    steady (<= 7): n 422, complement 0%, finisher 0%
+    moderate (7-8): n 214, complement 0%, finisher 0%
+    hard (floor 8+ or 9): n 147, complement 0%, finisher 0%
+    completeness labels: {'substantial': 312, 'sufficient': 408, 'insufficient': 63}
+    by archetype/level: elapsed / main active / total active / hard min / loaded reps / engine min / main-only %
+      circuit  advanced      24.4 /  10.9 /  10.9 /   0.0 /  84.0 /   0.0 / 100%
+      circuit  beginner      25.0 /   8.3 /   8.3 /   0.0 /    36 /   0.0 / 100%
+      circuit  intermediate  24.2 /   9.6 /   9.6 /   0.0 /   0.0 /   0.0 / 100%
+      engine   advanced      25.0 /  16.0 /  16.0 /   0.0 /     0 /  16.0 / 100%
+      engine   beginner      24.5 /  10.0 /  10.0 /   0.0 /     0 /  10.0 / 100%
+      engine   intermediate  24.0 /  12.0 /  12.0 /   0.0 /     0 /  12.0 / 100%
+      hybrid   advanced      27.7 /  14.4 /  14.4 /   0.0 /  75.0 /   8.0 / 100%
+      hybrid   beginner      25.9 /  11.1 /  11.1 /   0.0 /    32 /   5.7 / 100%
+      hybrid   intermediate  27.0 /  13.4 /  13.4 /   0.0 /  72.0 /   6.9 / 100%
+  60 min: median elapsed 47.8, median meaningful active 20.5, median main-block active 18.4, median hard minutes 0.0, median loaded reps 56, median engine minutes 12.5, median warm-up 10, median cooldown 6
+    main-block RPE distribution: {'steady (<= 7)': 516, 'moderate (7-8)': 513, 'hard (floor 8+ or 9)': 156}
+    steady (<= 7): n 516, complement 48%, finisher 2%
+    moderate (7-8): n 513, complement 39%, finisher 3%
+    hard (floor 8+ or 9): n 156, complement 10%, finisher 0%
+    completeness labels: {'sufficient': 709, 'substantial': 319, 'insufficient': 157}
+    by archetype/level: elapsed / main active / total active / hard min / loaded reps / engine min / main-only %
+      circuit  advanced      47.8 /  16.1 /  19.0 /   0.0 / 100.0 /   4.0 / 38%
+      circuit  beginner      47.0 /  12.4 /  14.2 /   0.0 /    32 /   3.0 / 39%
+      circuit  intermediate  47.5 /  14.6 /  16.2 /   0.0 /    60 /   4.0 / 46%
+      engine   advanced      47.6 /  20.0 /  25.0 /   0.0 /    30 /  20.0 / 31%
+      engine   beginner      48.1 /  17.8 /  20.0 /   0.0 /     0 /  20.0 / 44%
+      engine   intermediate  44.0 /  21.4 /  26.0 /   0.0 /     0 /  26.0 / 60%
+      hybrid   advanced      49.7 /  29.1 /  29.1 /   0.0 / 152.5 /  16.1 / 100%
+      hybrid   beginner      48.5 /  21.8 /  21.8 /   0.0 /    78 /  11.0 / 100%
+      hybrid   intermediate  48.8 /  26.8 /  26.8 /   0.0 /   150 /  13.6 / 100%
+
+===== BEFORE (previous pass): 1968 sessions =====
+block composition, all: {'main only': 992, 'main + complement': 913, 'main + complement + finisher': 62, 'main + finisher': 1}
+  by archetype:
+    circuit: main only 277 (33%), main + complement 540 (64%), main + complement + finisher 22 (3%)
+    engine: main only 211 (34%), main + complement 369 (60%), main + complement + finisher 40 (6%)
+    hybrid: main only 504 (99%), main + complement 4 (1%), main + finisher 1 (0%)
+  by duration:
+    30: main only 693 (89%), main + complement 90 (11%)
+    60: main only 299 (25%), main + complement 823 (69%), main + finisher 1 (0%), main + complement + finisher 62 (5%)
+  by level:
+    advanced: main only 309 (54%), main + complement 240 (42%), main + complement + finisher 19 (3%)
+    beginner: main only 285 (57%), main + complement 219 (43%)
+    intermediate: main only 398 (44%), main + complement 454 (51%), main + finisher 1 (0%), main + complement + finisher 43 (5%)
+  main + complement + finisher cases: 62
+     ['irritated'] sweat_engine 60 intermediate lose_weight_conditioning arch ['continuous', 'circuit', 'finisher'] est 56.1
+     ['irritated'] sweat_engine 60 advanced lose_weight_conditioning arch ['continuous', 'circuit', 'finisher'] est 56.1
+     ['amped', 'bored'] sweat_engine 60 intermediate lose_weight_conditioning arch ['continuous', 'circuit', 'finisher'] est 56.9
+     ['amped', 'bored'] sweat_engine 60 advanced lose_weight_conditioning arch ['continuous', 'circuit', 'finisher'] est 56.9
+     ['irritated'] sweat_engine 60 intermediate improve_athleticism arch ['intervals', 'circuit', 'finisher'] est 56.1
+     ['bored'] sweat_engine 60 intermediate build_muscle arch ['pyramid', 'circuit', 'finisher'] est 58.4
+     ['bored'] sweat_engine 60 advanced build_muscle arch ['pyramid', 'circuit', 'finisher'] est 58.4
+     ['irritated'] sweat_engine 60 intermediate build_muscle arch ['pyramid', 'circuit', 'finisher'] est 57.1
+     ['irritated'] sweat_engine 60 advanced build_muscle arch ['pyramid', 'circuit', 'finisher'] est 57.1
+     ['amped'] sweat_engine 60 intermediate build_muscle arch ['pyramid', 'circuit', 'finisher'] est 57.8
+     ['amped'] sweat_engine 60 advanced build_muscle arch ['pyramid', 'circuit', 'finisher'] est 57.8
+     ['amped', 'bored'] sweat_engine 60 intermediate build_muscle arch ['pyramid', 'circuit', 'finisher'] est 58.4
+     ['amped', 'bored'] sweat_engine 60 advanced build_muscle arch ['pyramid', 'circuit', 'finisher'] est 58.4
+     ['irritated'] sweat_engine 60 intermediate build_strength arch ['intervals', 'circuit', 'finisher'] est 56.1
+     ['bored'] sweat_circuit 60 intermediate build_strength arch ['emom', 'ladder', 'finisher'] est 46.9
+     ['bored'] sweat_circuit 60 advanced build_strength arch ['emom', 'ladder', 'finisher'] est 55.5
+     ['irritated'] sweat_circuit 60 intermediate build_strength arch ['circuit', 'intervals', 'finisher'] est 52.9
+     ['irritated'] sweat_circuit 60 advanced build_strength arch ['circuit', 'intervals', 'finisher'] est 55.6
+     ['amped', 'bored'] sweat_circuit 60 intermediate build_strength arch ['emom', 'ladder', 'finisher'] est 42.7
+     ['amped', 'bored'] sweat_circuit 60 advanced build_strength arch ['emom', 'ladder', 'finisher'] est 48.7
+     ['irritated'] sweat_engine 60 intermediate feel_better_reduce_stress arch ['continuous', 'circuit', 'finisher'] est 56.1
+     ['irritated'] sweat_engine 60 advanced feel_better_reduce_stress arch ['continuous', 'circuit', 'finisher'] est 56.1
+     ['amped'] sweat_engine 60 intermediate feel_better_reduce_stress arch ['continuous', 'circuit', 'finisher'] est 59.1
+     ['amped'] sweat_engine 60 advanced feel_better_reduce_stress arch ['continuous', 'circuit', 'finisher'] est 59.1
+     ['amped', 'bored'] sweat_engine 60 intermediate feel_better_reduce_stress arch ['intervals', 'circuit', 'finisher'] est 57.4
+     ['bored'] sweat_circuit 60 intermediate feel_better_reduce_stress arch ['emom', 'ladder', 'finisher'] est 45.2
+     ['bored'] sweat_circuit 60 advanced feel_better_reduce_stress arch ['emom', 'ladder', 'finisher'] est 53.7
+     ['irritated'] sweat_circuit 60 intermediate feel_better_reduce_stress arch ['circuit', 'intervals', 'finisher'] est 57.8
+     ['irritated'] sweat_circuit 60 advanced feel_better_reduce_stress arch ['circuit', 'intervals', 'finisher'] est 55.6
+     ['amped'] sweat_circuit 60 advanced feel_better_reduce_stress arch ['circuit', 'intervals', 'finisher'] est 58.7
+     ['amped', 'bored'] sweat_circuit 60 intermediate feel_better_reduce_stress arch ['circuit', 'ladder', 'finisher'] est 50.5
+     ['amped', 'bored'] sweat_circuit 60 advanced feel_better_reduce_stress arch ['circuit', 'ladder', 'finisher'] est 54.9
+     ['irritated'] sweat_engine 60 intermediate lose_weight_conditioning pick ['continuous', 'circuit', 'finisher'] est 56.1
+     ['irritated'] sweat_engine 60 advanced lose_weight_conditioning pick ['continuous', 'circuit', 'finisher'] est 56.1
+     ['bored'] sweat_circuit 60 intermediate build_strength pick ['emom', 'ladder', 'finisher'] est 46.9
+     ['bored'] sweat_circuit 60 advanced build_strength pick ['emom', 'ladder', 'finisher'] est 55.5
+     ['irritated'] sweat_engine 60 intermediate feel_better_reduce_stress pick ['continuous', 'circuit', 'finisher'] est 56.1
+     ['irritated'] sweat_engine 60 advanced feel_better_reduce_stress pick ['continuous', 'circuit', 'finisher'] est 56.1
+     ['amped'] sweat_engine 60 intermediate feel_better_reduce_stress pick ['continuous', 'circuit', 'finisher'] est 59.1
+     ['amped'] sweat_engine 60 advanced feel_better_reduce_stress pick ['continuous', 'circuit', 'finisher'] est 59.1
+  30 min: median elapsed 26.6, median meaningful active 12.0, median main-block active 11.7, median hard minutes 0.0, median loaded reps 0, median engine minutes 6.3, median warm-up 0, median cooldown 0
+    main-block RPE distribution: {'steady (<= 7)': 420, 'moderate (7-8)': 219, 'hard (floor 8+ or 9)': 144}
+    steady (<= 7): n 420, complement 5%, finisher 0%
+    moderate (7-8): n 219, complement 19%, finisher 0%
+    hard (floor 8+ or 9): n 144, complement 18%, finisher 0%
+    by archetype/level: elapsed / main active / total active / hard min / loaded reps / engine min / main-only %
+      circuit  advanced      26.6 /  11.9 /  12.0 /   0.0 /  84.0 /   0.0 / 96%
+      circuit  beginner      25.4 /   9.3 /   9.3 /   0.0 /    48 /   0.0 / 88%
+      circuit  intermediate  26.6 /  10.7 /  10.7 /   0.0 /  31.0 /   0.0 / 72%
+      engine   advanced      27.5 /  16.0 /  16.0 /   0.0 /     0 /  16.0 / 84%
+      engine   beginner      24.5 /  10.0 /  10.0 /   0.0 /     0 /  10.0 / 100%
+      engine   intermediate  27.5 /  16.0 /  16.0 /   0.0 /     0 /  16.0 / 84%
+      hybrid   advanced      27.9 /  14.5 /  14.5 /   0.0 /  75.0 /   8.1 / 100%
+      hybrid   beginner      25.9 /  11.1 /  11.1 /   0.0 /    32 /   5.7 / 100%
+      hybrid   intermediate  27.2 /  13.5 /  13.5 /   0.0 /  72.0 /   6.9 / 100%
+  60 min: median elapsed 49.3, median meaningful active 25.7, median main-block active 19.1, median hard minutes 0.0, median loaded reps 84, median engine minutes 13.6, median warm-up 0, median cooldown 0
+    main-block RPE distribution: {'steady (<= 7)': 513, 'moderate (7-8)': 541, 'hard (floor 8+ or 9)': 131}
+    steady (<= 7): n 513, complement 80%, finisher 4%
+    moderate (7-8): n 541, complement 73%, finisher 7%
+    hard (floor 8+ or 9): n 131, complement 63%, finisher 1%
+    by archetype/level: elapsed / main active / total active / hard min / loaded reps / engine min / main-only %
+      circuit  advanced      50.6 /  18.6 /  24.5 /   0.0 / 106.5 /   6.7 / 0%
+      circuit  beginner      48.5 /  12.7 /  19.0 /   0.0 /    40 /   7.0 / 0%
+      circuit  intermediate  48.9 /  16.5 /  22.6 /   0.0 /    70 /   8.0 / 0%
+      engine   advanced      49.9 /  18.8 /  28.1 /   0.0 /    60 /  20.0 / 0%
+      engine   beginner      49.5 /  15.7 /  22.1 /   0.0 /    36 /  15.0 / 0%
+      engine   intermediate  50.0 /  19.2 /  28.2 /   0.0 /    60 /  20.0 / 0%
+      hybrid   advanced      49.8 /  29.1 /  29.1 /   0.0 / 152.5 /  16.1 / 100%
+      hybrid   beginner      48.7 /  25.3 /  25.3 /   0.0 /    78 /  12.8 / 99%
+      hybrid   intermediate  48.8 /  26.8 /  26.8 /   0.0 /   150 /  13.8 / 97%

@@ -1,0 +1,75 @@
+== 1. Classification + library audit
+  ids in both ATHLETIC (POWER) and ATHLETIC_STRENGTH vocabularies: none
+  carries in the Athletic SUPPORT vocabulary: none (still in the master library: ['farmer_carry', 'front_rack_carry', 'overhead_carry', 'suitcase_carry'])
+  ATHLETIC vocabulary: 62 exercises; ATHLETIC_STRENGTH: 30; SUPPORT: 7
+  duplicate exercise names in the library: none
+  Hang High Pull                         min intermediate impact low      cx 3 tier A dose 4x3 rest 120s swap high_pull          same-family records: ['db_hang_power_clean', 'hang_power_clean']
+  Explosive Step-Up (Pop)                min beginner     impact moderate cx 1 tier C dose 3x4/side rest 90s swap step_up_pop        same-family records: ['db_step_up_pop']
+  Dumbbell Step-Up with Pop              min intermediate impact moderate cx 2 tier B dose 3x3/side rest 90s swap step_up_pop_loaded same-family records: ['step_up_pop']
+  Reverse Lunge to Knee-Drive Hop        min beginner     impact moderate cx 2 tier B dose 3x3/side rest 90s swap lunge_hop          same-family records: none
+  Rear-Foot-Elevated Split Squat Jump    min advanced     impact moderate cx 3 tier B dose 3x3/side rest 90s swap rfe_split_jump     same-family records: ['split_jump']
+  Band-Assisted Muscle-Up                min intermediate impact low      cx 3 tier B dose 3x3 rest 120s swap muscle_up          same-family records: ['bar_muscle_up']
+  Bar Muscle-Up                          min advanced     impact low      cx 4 tier B dose 3x2 rest 120s swap muscle_up          same-family records: ['band_assisted_muscle_up']
+  Split-Squat Jump                       min intermediate impact moderate cx 2 tier B dose 3x3/side rest 90s swap split_jump         same-family records: ['rfe_split_squat_jump']
+
+== 2. Olympic / explosive-lift pool actually in the library (by level eligibility)
+  beginner     none
+  intermediate ['Push Press', 'Dumbbell Hang Power Clean', 'Kettlebell Snatch', 'Hang Clean to Box Knee Drive', 'Hang High Pull']
+  advanced     ['Push Press', 'Dumbbell Hang Power Clean', 'Kettlebell Snatch', 'Hang Clean to Box Knee Drive', 'Dumbbell Snatch', 'Hang Power Clean', 'Power Snatch', 'Split Jerk', 'Hang High Pull']
+  not in the library (not programmed): ['hang_clean', 'power_clean', 'push_jerk', 'hang_snatch']
+
+== 3. Broad grid invariants (production path)
+  builds 882, ok 882, conflicts {}
+  power after strength                       0
+  carry                                      0
+  strength mislabelled ATHLETIC              0
+  high impact below advanced                 0
+  Tier A over limit                          0
+  athletic cost over budget                  0
+  sprint accounting                          0
+  sled accounting                            0
+  duplicate quality metadata                 0
+  secondary title repeats primary quality    0
+  BFT sprint claim                           0
+  BFT sprint claim without sprints           0
+  BFT sled claim                             0
+  BFT landing claim                          0
+  BFT carry claim                            0
+  beginner too advanced                      0
+  30 min more than 3 exercises               0
+  State gate / coherence                     0
+  sessions where two athletic exercises share one quality (allowed, labelled honestly): 27 of 882
+  sore legs       18 sessions; athletic movements mean 2.56
+  sore shoulders  18 sessions; athletic movements mean 2.56
+  sore lower_back 18 sessions; athletic movements mean 2.56
+  sore chest      18 sessions; athletic movements mean 2.50
+
+== 4. Accounting truthfulness examples (sled vs sprint)
+  ['Sled Push', 'Seated Box Jump']: sprint exposures 0 (0 m), sled efforts 3 (30 m), jump contacts 6 (0 high-impact), throws 0, Olympic-derivative sets 0, explosive sets 5
+     Built for Today: ['About 6 landings and 3 sled pushes in all, with 90 s between primary sets so every rep stays explosive.']
+  ['Sled Push', 'Seated Box Jump']: sprint exposures 0 (0 m), sled efforts 3 (30 m), jump contacts 6 (0 high-impact), throws 0, Olympic-derivative sets 0, explosive sets 5
+     Built for Today: ['About 6 landings and 3 sled pushes in all, with 90 s between primary sets so every rep stays explosive.']
+  ['Sled Push', 'Seated Box Jump']: sprint exposures 0 (0 m), sled efforts 3 (30 m), jump contacts 6 (0 high-impact), throws 0, Olympic-derivative sets 0, explosive sets 5
+     Built for Today: ['About 6 landings and 3 sled pushes in all, with 105 s between primary sets so every rep stays explosive.']
+
+== 5. State regression vs the same-seed no-State session (C.generate; 60 min, intermediate + advanced, 3 goals x 12 users)
+  low_energy             mean change: athletic -1.47  explosive sets -4.5  contacts -10.5  intent -5.8  max cx -0.38  Tier A -0.78  strength sets +0.2  RIR +1.17  exercises -0.69  novelty -0.45  forceful -0.42  changed ids 3.2
+  bored                  mean change: athletic -0.06  explosive sets -0.2  contacts -0.0  intent -0.3  max cx +0.07  Tier A +0.26  strength sets +0.3  RIR +0.07  exercises +0.07  novelty +0.21  forceful -0.06  changed ids 3.0
+  irritated              mean change: athletic -0.10  explosive sets -0.6  contacts -0.0  intent -0.9  max cx -0.19  Tier A +0.39  strength sets +0.3  RIR -0.11  exercises +0.01  novelty -0.29  forceful +1.11  changed ids 3.2
+  amped                  mean change: athletic -0.24  explosive sets -0.1  contacts +0.3  intent +0.2  max cx +0.06  Tier A +0.06  strength sets +0.0  RIR -0.75  exercises -0.18  novelty +0.06  forceful -0.11  changed ids 1.9
+  stressed               mean change: athletic -0.47  explosive sets -1.6  contacts -4.6  intent -2.5  max cx -0.62  Tier A -0.78  strength sets -0.6  RIR +0.25  exercises -0.69  novelty -0.35  forceful +0.28  changed ids 2.7
+  low_energy+amped       mean change: athletic -1.47  explosive sets -4.5  contacts -10.5  intent -5.8  max cx -0.19  Tier A -0.78  strength sets +0.2  RIR +1.17  exercises -0.69  novelty -0.51  forceful -0.42  changed ids 3.1
+  amped+stressed         mean change: athletic -0.47  explosive sets -1.6  contacts -4.6  intent -2.5  max cx -0.46  Tier A -0.78  strength sets -0.6  RIR -0.54  exercises -0.69  novelty -0.31  forceful +0.22  changed ids 2.7
+  bored+stressed         mean change: athletic -0.47  explosive sets -1.5  contacts -0.0  intent -2.1  max cx -0.58  Tier A -0.83  strength sets -0.7  RIR +0.32  exercises -0.69  novelty +0.15  forceful -0.35  changed ids 2.9
+  irritated+low_energy   mean change: athletic -1.47  explosive sets -4.5  contacts -11.1  intent -6.0  max cx -0.32  Tier A -0.75  strength sets +0.2  RIR +1.17  exercises -0.69  novelty -0.75  forceful +0.56  changed ids 3.3
+  irritated+stressed     mean change: athletic -0.47  explosive sets -1.4  contacts -5.5  intent -2.6  max cx -0.60  Tier A -0.78  strength sets -0.7  RIR +0.36  exercises -0.69  novelty -0.40  forceful +1.38  changed ids 3.2
+  bored+low_energy       mean change: athletic -1.47  explosive sets -4.5  contacts -9.6  intent -6.0  max cx -0.36  Tier A -0.81  strength sets +0.2  RIR +1.17  exercises -0.69  novelty -0.17  forceful -0.44  changed ids 3.4
+  bored+amped            mean change: athletic -0.33  explosive sets -0.4  contacts -0.7  intent -0.4  max cx +0.04  Tier A +0.24  strength sets +0.5  RIR -0.65  exercises -0.18  novelty +0.22  forceful +0.01  changed ids 3.1
+  irritated+amped        mean change: athletic -0.31  explosive sets -0.3  contacts +0.9  intent -0.6  max cx -0.15  Tier A +0.36  strength sets +0.4  RIR -0.85  exercises -0.18  novelty -0.32  forceful +1.06  changed ids 3.3
+
+== 6. History / repetition over 8 consecutive days (C.generate with history; 60 min; 10 users x 3 levels)
+  day-to-day: same primary exercise 0%, same primary quality 11%, mean exercise overlap with yesterday 2%
+
+== 7. Duration (estimated minutes; a window, not a quota)
+  60 min: median 41.0  {'40-50': 185, '50-57': 59, '<40': 197}
+  30 min: median 25.7  {'20-25': 154, '25-31': 238, '<20': 49}

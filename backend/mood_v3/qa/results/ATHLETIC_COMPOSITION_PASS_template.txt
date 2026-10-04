@@ -1,0 +1,23 @@
+group                                        n  sprint   sled  0 lift  1 lift  2 lifts  ath.support  loaded pw  oly/KB/DB
+ALL builds                                1950      6%     7%      5%     71%      24%          23%        47%        21%
+trained 60 min (int/adv)                   650      8%    11%     10%     57%      33%          38%        69%        36%
+trained 60 min, no State                   224      9%    11%     18%     50%      32%          46%        79%        40%
+  Power (all levels/durations)             825      3%     1%      5%     74%      20%          30%        64%        30%
+  Speed+Plyo (all levels/durations)        525     13%    22%      4%     70%      25%          10%         6%         0%
+  FullBody (all levels/durations)          600      4%     2%      4%     67%      28%          26%        58%        29%
+
+sessions with two sprint variations: 0%
+
+composition modes, trained 60 min: power_complex 25%, strength_supported 24%, None 19%, loaded_power 17%, athletic_volume 15%
+traditional lifts that are athletic-leaning (unilateral, trap-bar / front-loaded, pull-ups, landmine): 62% of 2330
+most common traditional lifts: trap_bar_deadlift 422, front_squat 417, kettlebell_deadlift 281, goblet_squat 271, bulgarian_split_squat 149, single_arm_db_row 143, front_foot_elevated_split_squat 94, push_up 77, barbell_rdl 70, db_rdl 50
+
+consecutive sessions (8 days, history on, 224 pairs): same composition mode 13%, identical block shape 0%
+  int Power        strength_supported:3+2 | power_complex:3+1 | loaded_power:4+1 | strength_supported:3+2 | strength_supported:3+2 | loaded_power:3+1 | power_complex:3+1 | loaded_power:3+1
+  int Speed+Plyo   power_complex:4+1 | strength_supported:3+2 | athletic_volume:3+1 | power_complex:3+1 | athletic_volume:3+1 | strength_supported:3+2 | athletic_volume:3+1 | athletic_volume:3+1
+  int FullBody     power_complex:3+1 | power_complex:3+1 | strength_supported:3+2 | power_complex:4+1 | athletic_volume:3+1 | loaded_power:4+1 | power_complex:3+1 | strength_supported:3+2
+  int MOOD's Pick  power_complex:3+1 | athletic_volume:4+0 | loaded_power:4+1 | loaded_power:4+1 | power_complex:4+1 | strength_supported:3+2 | athletic_volume:4+0 | strength_supported:3+2
+  adv Power        athletic_volume:3+1 | None:4+0 | loaded_power:4+1 | power_complex:3+1 | athletic_volume:4+0 | loaded_power:4+1 | strength_supported:3+2 | athletic_volume:4+0
+  adv Speed+Plyo   power_complex:3+1 | athletic_volume:4+0 | power_complex:4+1 | loaded_power:3+1 | power_complex:4+1 | loaded_power:4+1 | loaded_power:4+1 | strength_supported:3+2
+  adv FullBody     athletic_volume:3+1 | strength_supported:3+2 | loaded_power:3+1 | athletic_volume:4+0 | athletic_volume:4+0 | power_complex:3+1 | loaded_power:4+1 | power_complex:3+1
+  adv MOOD's Pick  None:4+0 | strength_supported:3+2 | loaded_power:3+1 | athletic_volume:4+0 | power_complex:3+1 | loaded_power:4+1 | athletic_volume:3+1 | None:4+0

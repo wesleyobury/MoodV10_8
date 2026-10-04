@@ -1,0 +1,19 @@
+Identity pass: before = composition pass (athletic-frozen-v3), after = identity pass candidate. Same seeds. Categories from exercise identity.
+BEFORE
+NO STATE, 60 min, 120 per level
+  beginner     n= 120 1/2/3/4+:   3%  97%   0%   0% | mean ATH 1.97 STR 1.76 SUP 0.24 | carry 6% pull/row 59% | med expl sets 6.0 est 35.9
+  intermediate n= 120 1/2/3/4+:   0%  43%  57%   0% | mean ATH 2.57 STR 1.74 SUP 0.28 | carry 12% pull/row 57% | med expl sets 9.0 est 45.25
+  advanced     n= 120 1/2/3/4+:   0%  46%  54%   0% | mean ATH 2.54 STR 1.78 SUP 0.24 | carry 8% pull/row 66% | med expl sets 10.0 est 48.5
+FULL GRID (all States), 60 min
+  beginner     n= 234 1/2/3/4+:   1%  99%   0%   0% | mean ATH 1.99 STR 1.94 SUP 0.06 | carry 2% pull/row 67% | med expl sets 6.0 est 36.2
+  intermediate n= 234 1/2/3/4+:   3%  71%  26%   0% | mean ATH 2.23 STR 1.89 SUP 0.11 | carry 4% pull/row 65% | med expl sets 7.0 est 43.4
+  advanced     n= 234 1/2/3/4+:   5%  65%  30%   0% | mean ATH 2.26 STR 1.96 SUP 0.04 | carry 0% pull/row 74% | med expl sets 8.5 est 47.8
+AFTER
+NO STATE, 60 min, 120 per level
+  beginner     n= 120 1/2/3/4+:   0%  82%  18%   0% | mean ATH 2.18 STR 1.86 SUP 0.00 | carry 0% pull/row 28% | med expl sets 7.0 est 36.0
+  intermediate n= 120 1/2/3/4+:   0%   8%  78%  14% | mean ATH 3.07 STR 1.22 SUP 0.14 | carry 0% pull/row 8% | med expl sets 10.0 est 43.45
+  advanced     n= 120 1/2/3/4+:   0%   3%  52%  44% | mean ATH 3.41 STR 1.22 SUP 0.07 | carry 0% pull/row 14% | med expl sets 13.0 est 49.1
+FULL GRID (all States), 60 min
+  beginner     n= 234 1/2/3/4+:   0%  90%  10%   0% | mean ATH 2.10 STR 1.94 SUP 0.00 | carry 0% pull/row 30% | med expl sets 6.0 est 37.35
+  intermediate n= 234 1/2/3/4+:   0%  37%  59%   3% | mean ATH 2.66 STR 1.47 SUP 0.03 | carry 0% pull/row 16% | med expl sets 9.0 est 42.3
+  advanced     n= 234 1/2/3/4+:   0%  32%  52%  16% | mean ATH 2.83 STR 1.43 SUP 0.02 | carry 0% pull/row 18% | med expl sets 10.0 est 46.5

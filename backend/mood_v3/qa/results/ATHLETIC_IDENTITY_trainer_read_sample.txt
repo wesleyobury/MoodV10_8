@@ -1,0 +1,538 @@
+### T01 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "build_strength", "states": ["irritated"]}
+  Speed + Plyo | intermediate | 60 min (est 52.2) | states=['irritated'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: acceleration | secondary: upper-body power | structure: Athletic Mixed
+  Warm-up: Air Bike (3-4 min easy, build to moderate) -> Leg Swings (10 each way) -> World's Greatest Stretch (3 / side) -> A-Skip (2 x 10 m) -> Wall Drill (March to Switches) (2 x 5 / leg) -> Sled Push (1 easy push, then 1 at 80%)
+  [primary/straight] Primary Speed · Acceleration -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Sled Push                          4 × 10 m         rest 105s  heavy enough to drive, light enough to stay fast; big pushes  [sled]
+  [secondary/straight] Secondary Quality · Upper-body power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Landmine Push Press                3 × 3/side       rest 90s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Overhead Throw            3 × 5            rest 60s  throw as hard as you can, reset between reps  [throw]
+  [strength/superset] Athletic Strength -- Alternate the two: 60 s between them, 120 s after each round. Why: bilateral leg strength behind the jumps and starts.
+     SUP Front Squat                        4 × 4            rest Nones  about 2 reps left in the tank; 2 lighter ramp-up sets first  []
+     SUP Kickstand Dumbbell RDL             4 × 6/side       rest Nones  about 2 reps left in the tank  []
+  ACCOUNT: items=5 explosive=3 (10 sets) contacts=0 sprints=4 (0 m) olympic_sets=0 support=2 (8 sets)
+  BFT: You're irritated, so the session keeps things direct with Sled Push and Med-Ball Overhead Throw. The reps stay low enough that the explosive work stays explosive. Today is primarily acceleration: Sled Push comes first, while you're fresh, then Landmine Push Press for upper-body power, then Med-Ball Overhead Throw for upper-body power, and Front Squat and Kickstand Dumbbell RDL build the strength behind it.
+  BFT: 4 sprint efforts and 15 throws in all, with 105 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your goal is to build strength, so the athletic strength work is heavier: Front Squat at 4 × 4.
+
+### T02 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "build_muscle"}
+  Power | intermediate | 60 min (est 39.6) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: acceleration | structure: Power + Strength
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Pogo to Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Pogo to Box Jump                   3 × 2            rest 105s  max intent on both parts, stick the landing  [jump_combo]
+  [secondary/straight] Secondary Quality · Acceleration -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Sled Push                          3 × 10 m         rest 105s  heavy enough to drive, light enough to stay fast; big pushes  [sled]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 60s  drive from the back hip, throw hard  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Barbell Back Squat                 3 × 6            rest 120s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (9 sets) contacts=6 sprints=3 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Today is primarily vertical power: Pogo to Box Jump comes first, while you're fresh, then Sled Push for acceleration, then Med-Ball Rotational Throw for rotational power, and Barbell Back Squat builds the strength behind it.
+  BFT: This session is complete at about 40 min. Quality over filler.
+  BFT: About 12 landings, 3 sprint efforts and 24 throws in all, with 105 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+
+### T03 {"experience": "beginner", "duration": 60, "equipment": "commercial_gym", "goal": "feel_better_reduce_stress", "states": ["amped"]}
+  Power | beginner | 60 min (est 33.5) | states=['amped'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: upper-body power | structure: Power + Strength
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Countermovement Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Countermovement Jump               3 × 3            rest 90s  max height or distance, land soft and quiet, reset between reps  [jump]
+  [secondary/straight] Secondary Quality · Upper-body power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Dumbbell Push Press                2 × 4            rest 105s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Slam           3 × 4/side       rest 75s  slam through the floor, every rep full effort  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Goblet Squat                       2 × 7            rest 90s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (8 sets) contacts=9 sprints=0 (0 m) olympic_sets=0 support=1 (2 sets)
+  BFT: You're amped, so we're spending that readiness on quality rather than piling on volume: heavier strength work (Goblet Squat at 7 reps, about 2 from failure), with the jumps and throws kept low-rep and explosive. Today is primarily vertical power: Countermovement Jump comes first, while you're fresh, then Dumbbell Push Press for upper-body power, then Med-Ball Rotational Slam for rotational power, and Goblet Squat builds the strength behind it.
+  BFT: This session is complete at about 34 min. Quality over filler.
+  BFT: Beginner difficulty keeps the athletic work simple: no Olympic lifts, no high-impact or reactive jumps, and a small landing budget (9 landings today).
+  BFT: About 9 landings and 24 throws in all, with 90 s between primary sets so every rep stays explosive.
+
+### T04 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "lose_weight_conditioning"}
+  Power | intermediate | 60 min (est 39.6) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: acceleration | structure: Power + Strength
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Seated Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Seated Box Jump                    3 × 3            rest 90s  max height or distance, land soft and quiet, reset between reps  [jump]
+  [secondary/straight] Secondary Quality · Acceleration -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Sled Push                          4 × 10 m         rest 105s  heavy enough to drive, light enough to stay fast; big pushes  [sled]
+  [secondary/straight] Athletic Element · Horizontal power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Lateral Box Jump                   3 × 3            rest 90s  push hard sideways, stick each landing  [lateral_power]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Trap-Bar Deadlift                  3 × 8            rest 75s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (10 sets) contacts=18 sprints=4 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Today is primarily vertical power: Seated Box Jump comes first, while you're fresh, then Sled Push for acceleration, then Lateral Box Jump for horizontal power, and Trap-Bar Deadlift builds the strength behind it.
+  BFT: This session is complete at about 40 min. Quality over filler.
+  BFT: About 18 landings and 4 sprint efforts in all, with 90 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+
+### T05 {"experience": "advanced", "duration": 60, "equipment": "commercial_gym", "goal": "build_strength", "states": ["bored", "irritated"], "archetype": "athletic_power"}
+  Power | advanced | 60 min (est 53.9) | states=['bored', 'irritated'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: rotational power | structure: Jump + Throw
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Trap-Bar Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Trap-Bar Jump Squat                4 × 3            rest 120s  light load, jump as high or far as you can; every rep fast  [loaded_jump]
+  [secondary/straight] Secondary Quality · Rotational power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Landmine Rotational Punch          3 × 4/side       rest 90s  fast hips, punch through  [rotational_power]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Slam                      3 × 5            rest 60s  slam through the floor, every rep full effort  [throw]
+  [strength/superset] Athletic Strength -- Alternate the two: 60 s between them, 150 s after each round. Why: bilateral leg strength behind the jumps and starts.
+     SUP Front Squat                        4 × 3            rest Nones  about 2 reps left in the tank; 2 lighter ramp-up sets first  []
+     SUP Pull-Up                            4 × 5            rest Nones  about 2 reps left in the tank  []
+  ACCOUNT: items=5 explosive=3 (10 sets) contacts=12 sprints=0 (0 m) olympic_sets=0 support=2 (8 sets)
+  BFT: You're bored, so we're changing the movement experience with a Jump + Throw structure, Trap-Bar Jump Squat and rotational work rather than simply adding more work. You're irritated, so the session keeps things direct with Trap-Bar Jump Squat and Med-Ball Slam. The reps stay low enough that the explosive work stays explosive. Today is primarily vertical power: Trap-Bar Jump Squat comes first, while you're fresh, then Landmine Rotational Punch for rotational power, then Med-Ball Slam for upper-body power, and Front Squat and Pull-Up build the strength behind it.
+  BFT: Advanced difficulty allows more demanding movements such as Trap-Bar Jump Squat and Front Squat, with the same low-rep, full-recovery rules.
+  BFT: About 12 landings and 15 throws in all, with 120 s between primary sets so every rep stays explosive.
+  BFT: Your goal is to build strength, so the athletic strength work is heavier: Front Squat at 4 × 3.
+
+### T06 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "build_strength"}
+  Power | intermediate | 60 min (est 50.4) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: upper-body power | structure: Power + Strength
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Pogo to Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Pogo to Box Jump                   3 × 2            rest 105s  max intent on both parts, stick the landing  [jump_combo]
+  [secondary/straight] Secondary Quality · Upper-body power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Dumbbell Push Press                3 × 4            rest 90s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [secondary/straight] Athletic Element · Total-body explosiveness -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Speed Trap-Bar Deadlift            4 × 2            rest 90s  about 50% of your estimated max: every rep as fast as possible, full rest; stop the set if bar speed visibly slows  [speed_strength]
+  [strength/superset] Athletic Strength -- Alternate the two: 60 s between them, 120 s after each round. Why: bilateral leg strength behind the jumps and starts.
+     SUP Front Squat                        4 × 4            rest Nones  about 2 reps left in the tank; 2 lighter ramp-up sets first  []
+     SUP Barbell Bench Press                4 × 6            rest Nones  about 2 reps left in the tank  []
+  ACCOUNT: items=5 explosive=3 (10 sets) contacts=6 sprints=0 (0 m) olympic_sets=0 support=2 (8 sets)
+  BFT: Today is primarily vertical power: Pogo to Box Jump comes first, while you're fresh, then Dumbbell Push Press for upper-body power, then Speed Trap-Bar Deadlift for total-body explosiveness, and Front Squat and Barbell Bench Press build the strength behind it.
+  BFT: About 12 landings in all, with 105 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your goal is to build strength, so the athletic strength work is heavier: Front Squat at 4 × 4.
+
+### T07 {"experience": "advanced", "duration": 60, "equipment": "commercial_gym", "goal": "build_muscle", "states": ["bored"]}
+  Power | advanced | 60 min (est 51.4) | states=['bored'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: horizontal power | secondary: total-body explosiveness | structure: Contrast Pairing
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Stick (light, 2 x 3, then build)
+  [primary/superset] Contrast Pair · Horizontal power -- Heavy set, 45 s, then the explosive partner. Full recovery after each pair: start the next only when you feel fresh.
+     SUP Trap-Bar Deadlift                  4 × 3            rest Nones  heavy but crisp: about 2 reps left in the tank, then straight to the explosive partner  []
+     PWR Broad Jump to Stick                4 × 3            rest Nones  max height or distance, land soft and quiet, reset between reps  [jump]
+  [secondary/straight] Secondary Quality · Total-body explosiveness -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Dumbbell Snatch                    3 × 2/side       rest 120s  move it fast; pick a weight that stays fast  [explosive_lift]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Landmine Push Press                3 × 3/side       rest 90s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 60s  drive from the back hip, throw hard  [rotational_throw]
+  ACCOUNT: items=5 explosive=4 (13 sets) contacts=12 sprints=0 (0 m) olympic_sets=0 support=1 (4 sets)
+  BFT: You're bored, so we're changing the movement experience with a Contrast Pairing structure, Dumbbell Snatch and rotational work rather than simply adding more work. Today is primarily horizontal power: heavy Trap-Bar Deadlift paired with Broad Jump to Stick, so the heavy set primes the explosive one, with full recovery after every pair, then Dumbbell Snatch for total-body explosiveness, then Landmine Push Press for upper-body power and Med-Ball Rotational Throw for rotational power.
+  BFT: Advanced difficulty unlocks contrast pairing: a heavy set followed by its explosive partner.
+  BFT: About 12 landings and 24 throws in all, with 150 s between primary sets so every rep stays explosive.
+  BFT: Your profile goal is to build muscle; today's Athletic session is built from today's choices.
+
+### T08 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "stay_consistent", "states": ["amped", "bored"]}
+  Full-Body Athlete | intermediate | 60 min (est 46.1) | states=['amped', 'bored'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: total-body explosiveness | secondary: acceleration | structure: Athletic Mixed
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Hang Clean to Box Knee Drive (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Hang Clean to Box Knee Drive       4 × 2/side       rest 135s  move it fast; pick a weight that stays fast  [explosive_lift]
+  [secondary/straight] Secondary Quality · Acceleration -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Falling-Start Sprint (5 m)         4 × 5 m          rest 90s  all-out start, walk back slowly, next rep only when fully recovered  [acceleration]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 75s  drive from the back hip, throw hard  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Barbell Back Squat                 3 × 5            rest 120s  about 1 rep left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (11 sets) contacts=0 sprints=4 (20 m) olympic_sets=0 support=1 (3 sets)
+  BFT: You're amped, so we're spending that readiness on quality rather than piling on volume: heavier strength work (Barbell Back Squat at 5 reps, about 1 from failure) and one extra quality set of Hang Clean to Box Knee Drive, with the sprints, throws and lifts kept low-rep and explosive. You're bored, so we're changing the movement experience with a Athletic Mixed structure, Hang Clean to Box Knee Drive and rotational work rather than simply adding more work. Today is primarily total-body explosiveness: Hang Clean to Box Knee Drive comes first, while you're fresh, then Falling-Start Sprint (5 m) for acceleration, then Med-Ball Rotational Throw for rotational power, and Barbell Back Squat builds the strength behind it.
+  BFT: 4 sprint efforts and 24 throws in all, with 135 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your profile goal is to stay consistent; today's Athletic session is built from today's choices.
+
+### T09 {"experience": "advanced", "duration": 60, "equipment": "commercial_gym", "goal": "lose_weight_conditioning", "archetype": "athletic_speed_agility"}
+  Speed + Plyo | advanced | 60 min (est 47.9) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: horizontal power | secondary: total-body explosiveness | structure: Athletic Mixed
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Consecutive Broad Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Consecutive Broad Jumps            4 × 3            rest 120s  max distance per contact, stick the last one  [bound]
+  [secondary/straight] Secondary Quality · Total-body explosiveness -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Kettlebell Swing                   3 × 8            rest 90s  heavy enough to snap the hips; end the set when the snap fades  [explosive_lift]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Landmine Push Press                3 × 3/side       rest 90s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Slam           3 × 4/side       rest 60s  slam through the floor, every rep full effort  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Front Squat                        3 × 6            rest 90s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=5 explosive=4 (13 sets) contacts=12 sprints=0 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Today is primarily horizontal power: Consecutive Broad Jumps comes first, while you're fresh, then Kettlebell Swing for total-body explosiveness, then Landmine Push Press for upper-body power and Med-Ball Rotational Slam for rotational power, and Front Squat builds the strength behind it.
+  BFT: Advanced difficulty allows more demanding movements such as Consecutive Broad Jumps and Front Squat, with the same low-rep, full-recovery rules.
+  BFT: About 12 landings and 24 throws in all, with 120 s between primary sets so every rep stays explosive.
+  BFT: Your goal leans toward conditioning, but Athletic stays performance training: the power work keeps full recovery.
+
+### T10 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "lose_weight_conditioning", "states": ["stressed", "amped"]}
+  Speed + Plyo | intermediate | 60 min (est 42.7) | states=['stressed', 'amped'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: acceleration | secondary: horizontal power | structure: Speed + Strength
+  Warm-up: Air Bike (3-4 min easy, build to moderate) -> Leg Swings (10 each way) -> World's Greatest Stretch (3 / side) -> A-Skip (2 x 10 m) -> Wall Drill (March to Switches) (2 x 5 / leg) -> Explosive Start (5-10 m) (2 build-ups at 70% and 85%)
+  [primary/straight] Primary Speed · Acceleration -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Explosive Start (5-10 m)           5 × 10 m         rest 75s  all-out start, walk back slowly, next rep only when fully recovered  [acceleration]
+  [secondary/straight] Secondary Quality · Horizontal power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Banded Broad Jump                  3 × 3            rest 120s  light load, jump as high or far as you can; every rep fast  [loaded_jump]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Slam           3 × 4/side       rest 60s  slam through the floor, every rep full effort  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: single-leg strength for jumping, landing and acceleration.
+     SUP Front-Foot Elevated Split Squat    3 × 7/side       rest 75s  about 1 rep left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (11 sets) contacts=9 sprints=5 (50 m) olympic_sets=0 support=1 (3 sets)
+  BFT: You're amped and stressed, so the load goes up but the structure stays simple: Explosive Start (5-10 m) first, then Front-Foot Elevated Split Squat at 7 reps, heavier than usual, with no complicated drills. Today is primarily acceleration: Explosive Start (5-10 m) comes first, while you're fresh, then Banded Broad Jump for horizontal power, then Med-Ball Rotational Slam for rotational power, and Front-Foot Elevated Split Squat builds the strength behind it.
+  BFT: About 9 landings, 5 sprint efforts and 24 throws in all, with 75 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your goal leans toward conditioning, but Athletic stays performance training: the power work keeps full recovery.
+
+### T11 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "build_muscle", "states": ["stressed", "amped"]}
+  Full-Body Athlete | intermediate | 60 min (est 41.0) | states=['stressed', 'amped'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: horizontal power | structure: Jump + Throw
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Countermovement Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Countermovement Jump               3 × 3            rest 90s  max height or distance, land soft and quiet, reset between reps  [jump]
+  [secondary/straight] Secondary Quality · Horizontal power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Banded Broad Jump                  3 × 3            rest 120s  light load, jump as high or far as you can; every rep fast  [loaded_jump]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Shot-Put Throw            3 × 4/side       rest 60s  drive from the back hip, throw hard  [throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Barbell Back Squat                 3 × 5            rest 120s  about 1 rep left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (9 sets) contacts=18 sprints=0 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: You're amped and stressed, so the load goes up but the structure stays simple: Countermovement Jump first, then Barbell Back Squat at 5 reps, heavier than usual, with no complicated drills. Today is primarily vertical power: Countermovement Jump comes first, while you're fresh, then Banded Broad Jump for horizontal power, then Med-Ball Shot-Put Throw for rotational power, and Barbell Back Squat builds the strength behind it.
+  BFT: About 18 landings and 24 throws in all, with 90 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your goal is to build muscle, so the strength work carries a little more volume while the power work stays low-rep.
+
+### T12 {"experience": "beginner", "duration": 60, "equipment": "commercial_gym", "goal": "lose_weight_conditioning", "states": ["amped", "irritated"]}
+  Power | beginner | 60 min (est 38.5) | states=['amped', 'irritated'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: horizontal power | secondary: upper-body power | structure: Power + Strength
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Broad Jump to Stick (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Broad Jump to Stick                4 × 3            rest 90s  max height or distance, land soft and quiet, reset between reps  [jump]
+  [secondary/straight] Secondary Quality · Upper-body power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Dumbbell Push Press                3 × 4            rest 105s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [strength/superset] Athletic Strength -- Alternate the two: 60 s between them, 60 s after each round. Why: hip-hinge strength that drives jumps and sprints.
+     SUP Kettlebell Deadlift                3 × 7            rest Nones  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+     SUP Dumbbell Bench Press               3 × 9            rest Nones  about 2 reps left in the tank  []
+  ACCOUNT: items=4 explosive=2 (7 sets) contacts=12 sprints=0 (0 m) olympic_sets=0 support=2 (6 sets)
+  BFT: You're amped, so we're spending that readiness on quality rather than piling on volume: heavier strength work (Kettlebell Deadlift at 7 reps, about 2 from failure) and one extra quality set of Broad Jump to Stick, with the jumps and throws kept low-rep and explosive. You're irritated, so the session keeps things direct with Broad Jump to Stick and Dumbbell Push Press. The reps stay low enough that the explosive work stays explosive. Today is primarily horizontal power: Broad Jump to Stick comes first, while you're fresh, then Dumbbell Push Press for upper-body power, and Kettlebell Deadlift and Dumbbell Bench Press build the strength behind it.
+  BFT: This session is complete at about 38 min. Quality over filler.
+  BFT: Beginner difficulty keeps the athletic work simple: no Olympic lifts, no high-impact or reactive jumps, and a small landing budget (12 landings today).
+  BFT: About 12 landings in all, with 90 s between primary sets so every rep stays explosive.
+
+### T13 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "stay_consistent"}
+  Speed + Plyo | intermediate | 60 min (est 45.1) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: acceleration | secondary: rotational power | structure: Athletic Mixed
+  Warm-up: Air Bike (3-4 min easy, build to moderate) -> Leg Swings (10 each way) -> World's Greatest Stretch (3 / side) -> A-Skip (2 x 10 m) -> Wall Drill (March to Switches) (2 x 5 / leg) -> Sled Push (1 easy push, then 1 at 80%)
+  [primary/straight] Primary Speed · Acceleration -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Sled Push                          4 × 10 m         rest 105s  heavy enough to drive, light enough to stay fast; big pushes  [sled]
+  [secondary/straight] Secondary Quality · Rotational power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Landmine Rotational Punch          3 × 4/side       rest 90s  fast hips, punch through  [rotational_power]
+  [secondary/straight] Athletic Element · Vertical power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Explosive Step-Up (Pop)            3 × 4/side       rest 90s  drive through the box leg hard enough to leave the box; land softly, reset every rep  [unilateral_power]
+  [strength/straight] Athletic Strength -- Why: single-leg strength for jumping, landing and acceleration.
+     SUP Front-Foot Elevated Split Squat    3 × 6/side       rest 120s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (10 sets) contacts=24 sprints=4 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Today is primarily acceleration: Sled Push comes first, while you're fresh, then Landmine Rotational Punch for rotational power, then Explosive Step-Up (Pop) for vertical power, and Front-Foot Elevated Split Squat builds the strength behind it.
+  BFT: About 24 landings and 4 sprint efforts in all, with 105 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your profile goal is to stay consistent; today's Athletic session is built from today's choices.
+
+### T14 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "build_muscle", "states": ["bored"], "archetype": "athletic_speed_agility"}
+  Speed + Plyo | intermediate | 60 min (est 44.0) | states=['bored'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: acceleration | secondary: total-body explosiveness | structure: Athletic Mixed
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> Leg Swings (10 each way) -> World's Greatest Stretch (3 / side) -> A-Skip (2 x 10 m) -> Wall Drill (March to Switches) (2 x 5 / leg) -> Falling-Start Sprint (5 m) (2 build-ups at 70% and 85%)
+  [primary/straight] Primary Speed · Acceleration -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Falling-Start Sprint (5 m)         5 × 5 m          rest 75s  all-out start, walk back slowly, next rep only when fully recovered  [acceleration]
+  [secondary/straight] Secondary Quality · Total-body explosiveness -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Speed Trap-Bar Deadlift            4 × 2            rest 90s  about 50% of your estimated max: every rep as fast as possible, full rest; stop the set if bar speed visibly slows  [speed_strength]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 60s  drive from the back hip, throw hard  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: single-leg strength for jumping, landing and acceleration.
+     SUP Front-Foot Elevated Split Squat    3 × 6/side       rest 120s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (12 sets) contacts=0 sprints=5 (25 m) olympic_sets=0 support=1 (3 sets)
+  BFT: You're bored, so we're changing the movement experience with a Athletic Mixed structure, Falling-Start Sprint (5 m) and rotational work rather than simply adding more work. Today is primarily acceleration: Falling-Start Sprint (5 m) comes first, while you're fresh, then Speed Trap-Bar Deadlift for total-body explosiveness, then Med-Ball Rotational Throw for rotational power, and Front-Foot Elevated Split Squat builds the strength behind it.
+  BFT: 5 sprint efforts and 24 throws in all, with 75 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your goal is to build muscle, so the strength work carries a little more volume while the power work stays low-rep.
+
+### T15 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "feel_better_reduce_stress", "states": ["irritated", "amped"]}
+  Full-Body Athlete | intermediate | 60 min (est 43.4) | states=['irritated', 'amped'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: upper-body power | structure: Jump + Throw
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Trap-Bar Jump Squat (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Trap-Bar Jump Squat                4 × 3            rest 135s  light load, jump as high or far as you can; every rep fast  [loaded_jump]
+  [secondary/straight] Secondary Quality · Upper-body power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Dumbbell Push Press                3 × 4            rest 105s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Chest Pass                3 × 5            rest 75s  throw as hard as you can, reset between reps  [throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Barbell Back Squat                 3 × 7            rest 90s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (10 sets) contacts=12 sprints=0 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: You're irritated, so the session keeps things direct with Trap-Bar Jump Squat, Dumbbell Push Press and Med-Ball Chest Pass. The reps stay low enough that the explosive work stays explosive. You're amped, so we're spending that readiness on quality rather than piling on volume: heavier strength work (Barbell Back Squat at 7 reps, about 2 from failure) and one extra quality set of Trap-Bar Jump Squat, with the jumps and throws kept low-rep and explosive. Today is primarily vertical power: Trap-Bar Jump Squat comes first, while you're fresh, then Dumbbell Push Press for upper-body power, then Med-Ball Chest Pass for upper-body power, and Barbell Back Squat builds the strength behind it.
+  BFT: About 12 landings and 15 throws in all, with 135 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your goal is to feel better, so the session favours accessible, lower-impact athletic work at a moderate effort.
+
+### T16 {"experience": "beginner", "duration": 60, "equipment": "commercial_gym", "goal": "improve_athleticism", "states": ["irritated", "amped"], "soreness": ["lower_back"]}
+  Full-Body Athlete | beginner | 60 min (est 36.0) | states=['irritated', 'amped', 'sore'] sore=['lower_back'] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: acceleration | structure: Jump + Throw
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Countermovement Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Countermovement Jump               3 × 3            rest 90s  max height or distance, land soft and quiet, reset between reps  [jump]
+  [secondary/straight] Secondary Quality · Acceleration -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Explosive Start (5-10 m)           3 × 10 m         rest 75s  all-out start, walk back slowly, next rep only when fully recovered  [acceleration]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Chest Pass                3 × 5            rest 75s  throw as hard as you can, reset between reps  [throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Goblet Squat                       3 × 6            rest 120s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (9 sets) contacts=9 sprints=3 (30 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Your lower back is sore, so there are no loaded hinges, Olympic lifts or rotational slams today. You're irritated, so the session keeps things direct with Countermovement Jump, Explosive Start (5-10 m) and Med-Ball Chest Pass. The reps stay low enough that the explosive work stays explosive. You're amped, so we're spending that readiness on quality rather than piling on volume: heavier strength work (Goblet Squat at 6 reps, about 2 from failure), with the jumps, sprints and throws kept low-rep and explosive.
+  BFT: This session is complete at about 36 min. Quality over filler.
+  BFT: Beginner difficulty keeps the athletic work simple: no Olympic lifts, no high-impact or reactive jumps, and a small landing budget (9 landings today).
+  BFT: About 9 landings, 3 sprint efforts and 15 throws in all, with 90 s between primary sets so every rep stays explosive.
+
+### T17 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "stay_consistent", "states": ["bored"], "soreness": ["legs"]}
+  Power | intermediate | 60 min (est 45.2) | states=['bored', 'sore'] sore=['legs'] eq=commercial_gym
+  PRIMARY QUALITY: rotational power | secondary: upper-body power | structure: Power + Strength
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Band Pull-Apart (15) -> Med-Ball Rotational Throw (2 x 3 at 70%, then build)
+  [primary/straight] Primary Power · Rotational power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 60s  drive from the back hip, throw hard  [rotational_throw]
+  [secondary/straight] Secondary Quality · Upper-body power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Landmine Push Press                3 × 3/side       rest 90s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Landmine Rotational Punch          3 × 4/side       rest 90s  fast hips, punch through  [rotational_power]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Slam                      3 × 5            rest 60s  slam through the floor, every rep full effort  [throw]
+  [strength/straight] Athletic Strength -- Why: pulling strength that balances the pushing and throwing.
+     SUP Meadows Row                        3 × 6/side       rest 120s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=5 explosive=4 (12 sets) contacts=0 sprints=0 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Your legs are sore, so the power work moves to the upper body: Med-Ball Rotational Throw and Landmine Push Press, with no jumping or sprinting. You're bored, so we're changing the movement experience with Med-Ball Rotational Throw, rotational work and different tools (landmine, med ball, slam ball) rather than simply adding more work. Today is primarily rotational power: Med-Ball Rotational Throw comes first, while you're fresh, then Landmine Push Press for upper-body power, then Landmine Rotational Punch for rotational power and Med-Ball Slam for upper-body power, and Meadows Row builds the strength behind it.
+  BFT: 39 throws in all, with 60 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your profile goal is to stay consistent; today's Athletic session is built from today's choices.
+
+### T18 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "feel_better_reduce_stress", "states": ["irritated"], "archetype": "athletic_speed_agility"}
+  Speed + Plyo | intermediate | 60 min (est 43.2) | states=['irritated'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: acceleration | secondary: vertical power | structure: Speed + Strength
+  Warm-up: Air Bike (3-4 min easy, build to moderate) -> Leg Swings (10 each way) -> World's Greatest Stretch (3 / side) -> A-Skip (2 x 10 m) -> Wall Drill (March to Switches) (2 x 5 / leg) -> Falling-Start Sprint (5 m) (2 build-ups at 70% and 85%)
+  [primary/straight] Primary Speed · Acceleration -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Falling-Start Sprint (5 m)         5 × 5 m          rest 75s  all-out start, walk back slowly, next rep only when fully recovered  [acceleration]
+  [secondary/straight] Secondary Quality · Vertical power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Dumbbell Step-Up with Pop          3 × 3/side       rest 90s  drive through the box leg hard enough to leave the box; land softly, reset every rep  [unilateral_power]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 60s  drive from the back hip, throw hard  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: single-leg strength for jumping, landing and acceleration.
+     SUP Bulgarian Split Squat              3 × 8/side       rest 90s  about 3 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (11 sets) contacts=18 sprints=5 (25 m) olympic_sets=0 support=1 (3 sets)
+  BFT: You're irritated, so the session keeps things direct with Falling-Start Sprint (5 m) and Med-Ball Rotational Throw. The reps stay low enough that the explosive work stays explosive. Today is primarily acceleration: Falling-Start Sprint (5 m) comes first, while you're fresh, then Dumbbell Step-Up with Pop for vertical power, then Med-Ball Rotational Throw for rotational power, and Bulgarian Split Squat builds the strength behind it.
+  BFT: About 18 landings, 5 sprint efforts and 24 throws in all, with 75 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your goal is to feel better, so the session favours accessible, lower-impact athletic work at a moderate effort.
+
+### T19 {"experience": "beginner", "duration": 60, "equipment": "commercial_gym", "goal": "lose_weight_conditioning"}
+  Power | beginner | 60 min (est 35.4) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: horizontal power | secondary: upper-body power | structure: Power + Strength
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Broad Jump to Stick (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Broad Jump to Stick                3 × 3            rest 75s  max height or distance, land soft and quiet, reset between reps  [jump]
+  [secondary/straight] Secondary Quality · Upper-body power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Med-Ball Chest Pass                3 × 5            rest 60s  throw as hard as you can, reset between reps  [throw]
+  [strength/superset] Athletic Strength -- Alternate the two: 60 s between them, 60 s after each round. Why: hip-hinge strength that drives jumps and sprints.
+     SUP Kettlebell Deadlift                3 × 8            rest Nones  about 3 reps left in the tank; 1-2 ramp-up sets first  []
+     SUP Push-Up                            3 × 10           rest Nones  about 3 reps left in the tank  []
+  ACCOUNT: items=4 explosive=2 (6 sets) contacts=9 sprints=0 (0 m) olympic_sets=0 support=2 (6 sets)
+  BFT: Today is primarily horizontal power: Broad Jump to Stick comes first, while you're fresh, then Med-Ball Chest Pass for upper-body power, and Kettlebell Deadlift and Push-Up build the strength behind it.
+  BFT: This session is complete at about 35 min. Quality over filler.
+  BFT: Beginner difficulty keeps the athletic work simple: no Olympic lifts, no high-impact or reactive jumps, and a small landing budget (9 landings today).
+  BFT: About 9 landings and 15 throws in all, with 75 s between primary sets so every rep stays explosive.
+
+### T20 {"experience": "advanced", "duration": 60, "equipment": "commercial_gym", "goal": "feel_better_reduce_stress", "states": ["amped"]}
+  Power | advanced | 60 min (est 55.9) | states=['amped'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: total-body explosiveness | secondary: horizontal power | structure: Power + Strength
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Dumbbell Snatch (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Total-body explosiveness -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Dumbbell Snatch                    5 × 2/side       rest 135s  move it fast; pick a weight that stays fast  [explosive_lift]
+  [secondary/straight] Secondary Quality · Horizontal power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Skater Hops                        3 × 3/side       rest 105s  push hard sideways, stick each landing  [lateral_power]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Landmine Rotational Punch          3 × 4/side       rest 105s  fast hips, punch through  [rotational_power]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Chest Pass                3 × 5            rest 75s  throw as hard as you can, reset between reps  [throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Barbell Back Squat                 3 × 5            rest 90s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=5 explosive=4 (14 sets) contacts=18 sprints=0 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: You're amped, so we're spending that readiness on quality rather than piling on volume: heavier strength work (Barbell Back Squat at 5 reps, about 2 from failure) and one extra quality set of Dumbbell Snatch, with the jumps, throws and lifts kept low-rep and explosive. Today is primarily total-body explosiveness: Dumbbell Snatch comes first, while you're fresh, then Skater Hops for horizontal power, then Landmine Rotational Punch for rotational power and Med-Ball Chest Pass for upper-body power, and Barbell Back Squat builds the strength behind it.
+  BFT: Advanced difficulty allows more demanding movements such as Dumbbell Snatch and Barbell Back Squat, with the same low-rep, full-recovery rules.
+  BFT: About 18 landings and 15 throws in all, with 135 s between primary sets so every rep stays explosive.
+  BFT: Your goal is to feel better, so the session favours accessible, lower-impact athletic work at a moderate effort.
+
+### T21 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "feel_better_reduce_stress", "soreness": ["lower_back"], "archetype": "athletic_full_body"}
+  Full-Body Athlete | intermediate | 60 min (est 37.5) | states=['sore'] sore=['lower_back'] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: acceleration | structure: Jump + Throw
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Pogo to Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Pogo to Box Jump                   3 × 2            rest 105s  max intent on both parts, stick the landing  [jump_combo]
+  [secondary/straight] Secondary Quality · Acceleration -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Explosive Start (5-10 m)           3 × 10 m         rest 75s  all-out start, walk back slowly, next rep only when fully recovered  [acceleration]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Explosive Push-Up                  3 × 4            rest 90s  push the floor away fast, hands leave the floor  [upper_power]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Goblet Squat                       3 × 8            rest 90s  about 3 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (9 sets) contacts=6 sprints=3 (30 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Your lower back is sore, so there are no loaded hinges, Olympic lifts or rotational slams today. Today is primarily vertical power: Pogo to Box Jump comes first, while you're fresh, then Explosive Start (5-10 m) for acceleration, then Explosive Push-Up for upper-body power, and Goblet Squat builds the strength behind it.
+  BFT: This session is complete at about 38 min. Quality over filler.
+  BFT: About 12 landings and 3 sprint efforts in all, with 105 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+
+### T22 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "improve_athleticism", "states": ["bored"]}
+  Full-Body Athlete | intermediate | 60 min (est 47.9) | states=['bored'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: horizontal power | secondary: vertical power | structure: Jump + Throw
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Lateral Box Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Lateral Box Jump                   3 × 3            rest 90s  push hard sideways, stick each landing  [lateral_power]
+  [secondary/straight] Secondary Quality · Vertical power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Reverse Lunge to Knee-Drive Hop    3 × 3/side       rest 90s  jump as high as you can from the split stance, land in the same stance and reset each rep  [unilateral_power]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Landmine Rotational Punch          3 × 4/side       rest 90s  fast hips, punch through  [rotational_power]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 60s  drive from the back hip, throw hard  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: hip-hinge strength that drives jumps and sprints.
+     SUP Kettlebell Deadlift                3 × 6            rest 120s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=5 explosive=4 (12 sets) contacts=27 sprints=0 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: You're bored, so we're changing the movement experience with a Jump + Throw structure, Lateral Box Jump and lateral and rotational work rather than simply adding more work. Today is primarily horizontal power: Lateral Box Jump comes first, while you're fresh, then Reverse Lunge to Knee-Drive Hop for vertical power, then Landmine Rotational Punch for rotational power and Med-Ball Rotational Throw for rotational power, and Kettlebell Deadlift builds the strength behind it.
+  BFT: About 27 landings and 24 throws in all, with 90 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your goal is to improve athleticism, so speed and power lead and strength supports them.
+
+### T23 {"experience": "advanced", "duration": 60, "equipment": "commercial_gym", "goal": "lose_weight_conditioning", "states": ["bored"], "soreness": ["legs"], "archetype": "athletic_speed_agility"}
+  CONFLICT sore_target_conflict: Speed + Plyo needs your legs, and they are sore today.
+
+### T24 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "stay_consistent", "states": ["bored"], "soreness": ["lower_back"]}
+  Full-Body Athlete | intermediate | 60 min (est 46.5) | states=['bored', 'sore'] sore=['lower_back'] eq=commercial_gym
+  PRIMARY QUALITY: horizontal power | secondary: horizontal power | structure: Jump + Throw
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Vertical Jump (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Broad Jump to Vertical Jump        3 × 2            rest 105s  max intent on both parts, stick the landing  [jump_combo]
+  [secondary/straight] Secondary Quality · Horizontal power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Single-Leg Hop to Stick            3 × 3/side       rest 90s  stick each landing for a full second  [hop]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Landmine Push Press                3 × 3/side       rest 90s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Chest Pass                3 × 5            rest 60s  throw as hard as you can, reset between reps  [throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Goblet Squat                       3 × 6            rest 120s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=5 explosive=4 (12 sets) contacts=24 sprints=0 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Your lower back is sore, so there are no loaded hinges, Olympic lifts or rotational slams today. You're bored, so we're changing the movement experience with a Jump + Throw structure, Broad Jump to Vertical Jump and different tools (landmine, med ball) rather than simply adding more work. Today is primarily horizontal power: Broad Jump to Vertical Jump comes first, while you're fresh, then Single-Leg Hop to Stick for horizontal power, then Landmine Push Press for upper-body power and Med-Ball Chest Pass for upper-body power, and Goblet Squat builds the strength behind it.
+  BFT: About 30 landings and 15 throws in all, with 105 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your profile goal is to stay consistent; today's Athletic session is built from today's choices.
+
+### T25 {"experience": "advanced", "duration": 60, "equipment": "commercial_gym", "goal": "lose_weight_conditioning", "states": ["irritated", "amped"]}
+  Power | advanced | 60 min (est 52.7) | states=['irritated', 'amped'] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: horizontal power | secondary: vertical power | structure: Power + Strength
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Consecutive Broad Jumps (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Consecutive Broad Jumps            5 × 3            rest 135s  max distance per contact, stick the last one  [bound]
+  [secondary/straight] Secondary Quality · Vertical power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Box Jump                           3 × 3            rest 120s  max height or distance, land soft and quiet, reset between reps  [jump]
+  [secondary/straight] Athletic Element · Total-body explosiveness -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Kettlebell Swing                   3 × 8            rest 105s  heavy enough to snap the hips; end the set when the snap fades  [explosive_lift]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 75s  drive from the back hip, throw hard  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Front Squat                        3 × 5            rest 90s  about 1 rep left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=5 explosive=4 (14 sets) contacts=24 sprints=0 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: You're irritated, so the session keeps things direct with Box Jump, Kettlebell Swing and Med-Ball Rotational Throw. The reps stay low enough that the explosive work stays explosive. You're amped, so we're spending that readiness on quality rather than piling on volume: heavier strength work (Front Squat at 5 reps, about 1 from failure) and one extra quality set of Consecutive Broad Jumps, with the jumps, throws and lifts kept low-rep and explosive. Today is primarily horizontal power: Consecutive Broad Jumps comes first, while you're fresh, then Box Jump for vertical power, then Kettlebell Swing for total-body explosiveness and Med-Ball Rotational Throw for rotational power, and Front Squat builds the strength behind it.
+  BFT: Advanced difficulty allows more demanding movements such as Consecutive Broad Jumps and Front Squat, with the same low-rep, full-recovery rules.
+  BFT: About 24 landings and 24 throws in all, with 135 s between primary sets so every rep stays explosive.
+  BFT: Your goal leans toward conditioning, but Athletic stays performance training: the power work keeps full recovery.
+
+### T26 {"experience": "advanced", "duration": 60, "equipment": "commercial_gym", "goal": "stay_consistent", "archetype": "athletic_power"}
+  Power | advanced | 60 min (est 46.5) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: vertical power | secondary: horizontal power | structure: Jump + Throw
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10)
+  [primary/straight] Primary Power · Vertical power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Rear-Foot-Elevated Split Squat Jump 4 × 3/side       rest 90s  jump as high as you can from the split stance, land in the same stance and reset each rep  [unilateral_power]
+  [secondary/straight] Secondary Quality · Horizontal power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Broad Jump to Vertical Jump        3 × 2            rest 105s  max intent on both parts, stick the landing  [jump_combo]
+  [secondary/straight] Athletic Element · Upper-body power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Explosive Push-Up                  3 × 4            rest 90s  push the floor away fast, hands leave the floor  [upper_power]
+  [secondary/straight] Athletic Element · Total-body explosiveness -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Kettlebell Swing                   3 × 8            rest 90s  heavy enough to snap the hips; end the set when the snap fades  [explosive_lift]
+  [strength/straight] Athletic Strength -- Why: bilateral leg strength behind the jumps and starts.
+     SUP Trap-Bar Deadlift                  3 × 5            rest 120s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=5 explosive=4 (13 sets) contacts=30 sprints=0 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Today is primarily vertical power: Rear-Foot-Elevated Split Squat Jump comes first, while you're fresh, then Broad Jump to Vertical Jump for horizontal power, then Explosive Push-Up for upper-body power and Kettlebell Swing for total-body explosiveness, and Trap-Bar Deadlift builds the strength behind it.
+  BFT: Advanced difficulty allows more demanding movements such as Rear-Foot-Elevated Split Squat Jump and Trap-Bar Deadlift, with the same low-rep, full-recovery rules.
+  BFT: About 36 landings in all, with 90 s between primary sets so every rep stays explosive.
+  BFT: Your profile goal is to stay consistent; today's Athletic session is built from today's choices.
+
+### T27 {"experience": "beginner", "duration": 60, "equipment": "commercial_gym", "goal": "improve_athleticism"}
+  Speed + Plyo | beginner | 60 min (est 42.7) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: acceleration | secondary: rotational power | structure: Speed + Strength
+  Warm-up: Stationary Bike (3-4 min easy, build to moderate) -> Leg Swings (10 each way) -> World's Greatest Stretch (3 / side) -> A-March (2 x 10 m) -> Wall Drill (March to Switches) (2 x 5 / leg) -> Explosive Start (5-10 m) (2 build-ups at 70% and 85%)
+  [primary/straight] Primary Speed · Acceleration -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Explosive Start (5-10 m)           5 × 10 m         rest 60s  all-out start, walk back slowly, next rep only when fully recovered  [acceleration]
+  [secondary/straight] Secondary Quality · Rotational power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 60s  drive from the back hip, throw hard  [rotational_throw]
+  [strength/superset] Athletic Strength -- Alternate the two: 60 s between them, 90 s after each round. Why: single-leg strength for jumping, landing and acceleration.
+     SUP Walking Lunge                      3 × 6/side       rest Nones  about 3 reps left in the tank; 1-2 ramp-up sets first  []
+     SUP Kickstand Dumbbell RDL             3 × 8/side       rest Nones  about 2 reps left in the tank  []
+  ACCOUNT: items=4 explosive=2 (8 sets) contacts=0 sprints=5 (50 m) olympic_sets=0 support=2 (6 sets)
+  BFT: Today is primarily acceleration: Explosive Start (5-10 m) comes first, while you're fresh, then Med-Ball Rotational Throw for rotational power, and Walking Lunge and Kickstand Dumbbell RDL build the strength behind it.
+  BFT: Beginner difficulty keeps the athletic work simple: no Olympic lifts, no high-impact or reactive jumps, and a small landing budget (0 landings today).
+  BFT: 5 sprint efforts and 24 throws in all, with 60 s between primary sets so every rep stays explosive.
+  BFT: Your goal is to improve athleticism, so speed and power lead and strength supports them.
+
+### T28 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "build_strength", "states": ["stressed"], "soreness": ["legs"]}
+  Power | intermediate | 60 min (est 41.3) | states=['stressed', 'sore'] sore=['legs'] eq=commercial_gym
+  PRIMARY QUALITY: upper-body power | secondary: rotational power | structure: Power + Strength
+  Warm-up: SkiErg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Band Pull-Apart (15) -> Dumbbell Push Press (light, 2 x 3, then build)
+  [primary/straight] Primary Power · Upper-body power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Dumbbell Push Press                3 × 4            rest 90s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [secondary/straight] Secondary Quality · Rotational power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Landmine Rotational Punch          3 × 4/side       rest 90s  fast hips, punch through  [rotational_power]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 60s  drive from the back hip, throw hard  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: pulling strength that balances the pushing and throwing.
+     SUP Chest-Supported Dumbbell Row       4 × 4            rest 150s  about 2 reps left in the tank; 2 lighter ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (9 sets) contacts=0 sprints=0 (0 m) olympic_sets=0 support=1 (4 sets)
+  BFT: Your legs are sore, so the power work moves to the upper body: Dumbbell Push Press and Landmine Rotational Punch, with no jumping or sprinting. You're stressed, so there are no complicated reaction drills today: a simple power + strength structure with 4 exercises you can repeat without thinking about a dozen moving parts. Today is primarily upper-body power: Dumbbell Push Press comes first, while you're fresh, then Landmine Rotational Punch for rotational power, then Med-Ball Rotational Throw for rotational power, and Chest-Supported Dumbbell Row builds the strength behind it.
+  BFT: 24 throws in all, with 90 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your goal is to build strength, so the athletic strength work is heavier: Chest-Supported Dumbbell Row at 4 × 4.
+
+### T29 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "stay_consistent"}
+  Speed + Plyo | intermediate | 60 min (est 44.4) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: acceleration | secondary: horizontal power | structure: Speed + Strength
+  Warm-up: Air Bike (3-4 min easy, build to moderate) -> Leg Swings (10 each way) -> World's Greatest Stretch (3 / side) -> A-Skip (2 x 10 m) -> Wall Drill (March to Switches) (2 x 5 / leg) -> Sled Push (1 easy push, then 1 at 80%)
+  [primary/straight] Primary Speed · Acceleration -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Sled Push                          4 × 10 m         rest 105s  heavy enough to drive, light enough to stay fast; big pushes  [sled]
+  [secondary/straight] Secondary Quality · Horizontal power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Banded Broad Jump                  3 × 3            rest 120s  light load, jump as high or far as you can; every rep fast  [loaded_jump]
+  [secondary/straight] Athletic Element · Rotational power -- A short third athletic element, still before any strength work. A few crisp sets; every rep fast.
+     PWR Med-Ball Rotational Throw          3 × 4/side       rest 60s  drive from the back hip, throw hard  [rotational_throw]
+  [strength/straight] Athletic Strength -- Why: single-leg strength for jumping, landing and acceleration.
+     SUP Walking Lunge                      3 × 6/side       rest 120s  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+  ACCOUNT: items=4 explosive=3 (10 sets) contacts=9 sprints=4 (0 m) olympic_sets=0 support=1 (3 sets)
+  BFT: Today is primarily acceleration: Sled Push comes first, while you're fresh, then Banded Broad Jump for horizontal power, then Med-Ball Rotational Throw for rotational power, and Walking Lunge builds the strength behind it.
+  BFT: About 9 landings, 4 sprint efforts and 24 throws in all, with 105 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your profile goal is to stay consistent; today's Athletic session is built from today's choices.
+
+### T30 {"experience": "intermediate", "duration": 60, "equipment": "commercial_gym", "goal": "stay_consistent"}
+  Full-Body Athlete | intermediate | 60 min (est 40.1) | states=[] sore=[] eq=commercial_gym
+  PRIMARY QUALITY: horizontal power | secondary: upper-body power | structure: Jump + Throw
+  Warm-up: Row Erg (3-4 min easy, build to moderate) -> World's Greatest Stretch (3 / side) -> Leg Swings (10 each way) -> Snap-Down to Stick (2 x 5) -> Pogo Jumps (2 x 10) -> Broad Jump to Stick (2 x 2 at 70-80%, full reset)
+  [primary/straight] Primary Power · Horizontal power -- Full recovery between sets: start the next set only when you feel fresh. Every rep is maximal intent.
+     PWR Broad Jump to Stick                4 × 3            rest 90s  max height or distance, land soft and quiet, reset between reps  [jump]
+  [secondary/straight] Secondary Quality · Upper-body power -- A different athletic quality while you are still fresh. Quality over volume.
+     PWR Dumbbell Push Press                3 × 4            rest 90s  dip and drive fast; stop the set if the bar or bells slow  [upper_power]
+  [strength/superset] Athletic Strength -- Alternate the two: 60 s between them, 90 s after each round. Why: hip-hinge strength that drives jumps and sprints.
+     SUP Kettlebell Deadlift                3 × 6            rest Nones  about 2 reps left in the tank; 1-2 ramp-up sets first  []
+     SUP Dumbbell Bench Press               3 × 8            rest Nones  about 2 reps left in the tank  []
+  ACCOUNT: items=4 explosive=2 (7 sets) contacts=12 sprints=0 (0 m) olympic_sets=0 support=2 (6 sets)
+  BFT: Today is primarily horizontal power: Broad Jump to Stick comes first, while you're fresh, then Dumbbell Push Press for upper-body power, and Kettlebell Deadlift and Dumbbell Bench Press build the strength behind it.
+  BFT: About 12 landings in all, with 90 s between primary sets so every rep stays explosive.
+  BFT: Intermediate difficulty opens moderate plyometrics and loaded power while keeping high-impact landings for Advanced.
+  BFT: Your profile goal is to stay consistent; today's Athletic session is built from today's choices.

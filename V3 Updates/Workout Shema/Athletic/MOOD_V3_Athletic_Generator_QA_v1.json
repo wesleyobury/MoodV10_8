@@ -1,0 +1,176 @@
+{
+ "grid": {
+  "builds": 1728,
+  "status": {
+   "ok": 1476,
+   "conflict": 252
+  },
+  "seconds": 2.9
+ },
+ "revalidation_failures": [],
+ "conflicts": {
+  "sore legs + too little upper equipment (bodyweight_floor)": 108,
+  "explicit Speed + sore legs": 144
+ },
+ "commercial_conflicts_other_than_speed_sore": [],
+ "reproducible": true,
+ "grid_hash": "a874e39cf0a8b6e5",
+ "structure": {
+  "warmup_items": {
+   "4": 794,
+   "2": 324,
+   "3": 358
+  },
+  "warmup_over_4": 0,
+  "trunk_slots": 0,
+  "ps_by_duration": {
+   "60 min / 1 PS": 365,
+   "60 min / 0 PS": 373,
+   "30 min / 1 PS": 212,
+   "30 min / 0 PS": 526
+  },
+  "ps_at_30_non_beginner": 0,
+  "qc_on_beginner": 0,
+  "qc_on_low_energy": 0,
+  "qc_at_30": 0,
+  "sessions_with_type_b": 822,
+  "sessions_ending_after_athletic_work_60": 373,
+  "equipment_limited_relaxations": {
+   "free_weight_limited": 73,
+   "bodyweight_floor": 120
+  },
+  "relaxations_on_commercial": 0
+ },
+ "duration_commercial": {
+  "30 min advanced": {
+   "min": 18.9,
+   "mean": 21.9,
+   "max": 26.9
+  },
+  "30 min beginner": {
+   "min": 20.1,
+   "mean": 21.6,
+   "max": 23.4
+  },
+  "30 min intermediate": {
+   "min": 18.6,
+   "mean": 20.7,
+   "max": 23.8
+  },
+  "60 min advanced": {
+   "min": 30.4,
+   "mean": 39.3,
+   "max": 46.7
+  },
+  "60 min beginner": {
+   "min": 30.2,
+   "mean": 31.5,
+   "max": 33.3
+  },
+  "60 min intermediate": {
+   "min": 30.2,
+   "mean": 36.9,
+   "max": 46.7
+  }
+ },
+ "seed_variety": {
+  "distinct_primary": 10,
+  "distinct_sessions": 19
+ },
+ "history_rotation": {
+  "athletic_power": {
+   "archetypes": [
+    "power",
+    "power",
+    "power",
+    "power",
+    "power",
+    "power",
+    "power",
+    "power"
+   ],
+   "primaries": [
+    "Pogo to Box Jump",
+    "Pogo to Box Jump",
+    "Pogo to Box Jump",
+    "Pogo to Box Jump",
+    "Pogo to Box Jump",
+    "Pogo to Box Jump",
+    "Pogo to Box Jump",
+    "Pogo to Box Jump"
+   ],
+   "mean_repeats_from_previous": 1.0
+  },
+  "athletic_speed_agility": {
+   "archetypes": [
+    "speed_agility",
+    "speed_agility",
+    "speed_agility",
+    "speed_agility",
+    "speed_agility",
+    "speed_agility",
+    "speed_agility",
+    "speed_agility"
+   ],
+   "primaries": [
+    "Explosive Start (5-10 m)",
+    "Explosive Start (5-10 m)",
+    "Explosive Start (5-10 m)",
+    "Explosive Start (5-10 m)",
+    "Explosive Start (5-10 m)",
+    "Explosive Start (5-10 m)",
+    "Explosive Start (5-10 m)",
+    "Explosive Start (5-10 m)"
+   ],
+   "mean_repeats_from_previous": 1.0
+  },
+  "athletic_full_body": {
+   "archetypes": [
+    "full_body",
+    "full_body",
+    "full_body",
+    "full_body",
+    "full_body",
+    "full_body",
+    "full_body",
+    "full_body"
+   ],
+   "primaries": [
+    "Banded Broad Jump",
+    "Banded Broad Jump",
+    "Banded Broad Jump",
+    "Banded Broad Jump",
+    "Banded Broad Jump",
+    "Banded Broad Jump",
+    "Banded Broad Jump",
+    "Banded Broad Jump"
+   ],
+   "mean_repeats_from_previous": 1.0
+  },
+  "moods_pick": {
+   "archetypes": [
+    "full_body",
+    "power",
+    "speed_agility",
+    "full_body",
+    "power",
+    "speed_agility",
+    "full_body",
+    "power"
+   ],
+   "primaries": [
+    "Banded Broad Jump",
+    "Dumbbell Hang Power Clean",
+    "Sled Push",
+    "Banded Broad Jump",
+    "Dumbbell Hang Power Clean",
+    "Sled Push",
+    "Banded Broad Jump",
+    "Dumbbell Hang Power Clean"
+   ],
+   "mean_repeats_from_previous": 0.57
+  }
+ },
+ "pack_inputs_all_ok": true,
+ "all_green": true
+}

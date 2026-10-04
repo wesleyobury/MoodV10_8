@@ -1,0 +1,9 @@
+No-State 60-minute composition, commercial gym, 120 sessions per level (6 goals x 20 users), identical seeds. BEFORE = frozen v2, AFTER = composition pass.
+BEFORE
+beginner     athletic 1/2/3+: 6% 94% 0% | other>athletic 79% | support 79% carry 77% | median explosive sets 6.0, strength+support sets 9.0, est 41.2 min
+intermediate athletic 1/2/3+: 31% 69% 0% | other>athletic 88% | support 82% carry 78% | median explosive sets 7.0, strength+support sets 9.0, est 45.75 min
+advanced     athletic 1/2/3+: 49% 51% 0% | other>athletic 77% | support 72% carry 67% | median explosive sets 9.0, strength+support sets 9.0, est 49.4 min
+AFTER
+beginner     athletic 1/2/3+: 3% 97% 0% | other>athletic 3% | support 24% carry 6% | median explosive sets 6.0, strength+support sets 6.0, est 35.9 min
+intermediate athletic 1/2/3+: 0% 43% 57% | other>athletic 2% | support 26% carry 12% | median explosive sets 9.0, strength+support sets 6.0, est 45.25 min
+advanced     athletic 1/2/3+: 0% 46% 54% | other>athletic 2% | support 22% carry 8% | median explosive sets 10.0, strength+support sets 6.0, est 48.5 min

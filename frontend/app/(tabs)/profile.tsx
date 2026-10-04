@@ -1,2550 +1,608 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  Modal,
-  Dimensions,
-  Alert,
-  RefreshControl,
-  Linking,
-} from 'react-native';
+/**
+ * Profile (V3, Oct 2026): what have I done + how am I progressing. The social profile (posts, followers, DMs) is gone.
+ *
+ *   HEADER          avatar (Edit Profile) · name · "47 workouts · 31h training" · settings
+ *   STATS           Workouts · Training · Week streak · Achievements
+ *   ACTIVITY        month calendar of trained days + this week's summary
+ *   ACHIEVEMENTS    five simple milestones, earned and locked (no XP / levels)
+ *   YOUR MOOD       personal patterns, only when the user's own history supports them
+ *   WORKOUT HISTORY V3 workouts by day -> the V3 Cart in completed mode (read-only, Do Again)
+ *   GOAL BIO        "MOOD is here to help you <funnel goal>." + how MOOD helps on their typical State / with their barrier (goalBio)
+ *   SAVED           a row into the Saved page (app/saved.tsx)
+ *   HISTORY ROWS    View Workout (Cart, completed mode) · Stats (the completion share overlay) · Do Again
+ *
+ * One request (GET /api/v3/me/activity); every number is derived in utils/v3Activity.ts (tested). Nothing is estimated.
+ */
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
-import { useRouter, useFocusEffect } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Constants from 'expo-constants';
-// REMOVED: expo-video-thumbnails - causes crashes on production iOS builds
-// Use the VideoThumbnail component instead which has safe fallbacks
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import WorkoutStatsCard from '../../components/WorkoutStatsCard';
-import VideoThumbnail from '../../components/VideoThumbnail';
+import * as Haptics from 'expo-haptics';
+import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
+import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
-import { useCart } from '../../contexts/CartContext';
-import { useBadges } from '../../contexts/BadgeContext';
-import { useDrafts } from '../../contexts/DraftsContext';
-import FollowListModal from '../../components/FollowListModal';
-import { useScreenTime } from '../../hooks/useScreenTime';
-import { GridItemSkeleton, ProfileHeaderSkeleton } from '../../components/Skeleton';
 import GuestPromptModal from '../../components/GuestPromptModal';
 import { FoundingMemberBadge } from '../../components/FoundingMemberBadge';
-import MaskedView from '@react-native-masked-view/masked-view';
-import { BRAND_GRADIENT } from '../../constants/brand';
-
-// Prioritize process.env for development/preview environments
+import AchievementMedallion from '../../components/AchievementMedallion';
 import { API_URL } from '../../utils/apiConfig';
 import { readCache, writeCache } from '../../utils/dataCache';
-import AchievementMedallion from '../../components/AchievementMedallion';
-import { useAchievements } from '../../contexts/AchievementsContext';
-import { ACHIEVEMENTS } from '../../constants/achievements';
-const { width } = Dimensions.get('window');
+import { trackEvent } from '../../utils/analytics';
+import { fetchSaved } from '../../utils/v3Saved';
+import { fetchTrainingProfile } from '../../utils/v3Profile';
+import { CompletedStatsOverlay } from '../../components/v3/CompletedStatsOverlay';
+import { getMyActivity } from '../../utils/v3ExploreApi';
+import { DIRECTION_ACCENT, buildPresetParams } from '../../utils/v3Explore';
+import {
+  ActivityRow,
+  HistoryItem,
+  achievements,
+  dayLabel,
+  doAgainPreset,
+  formatMinutes,
+  historyCount,
+  historyGroups,
+  insights,
+  monthGrid,
+  goalBio,
+  profileStats,
+  thisWeek,
+  weekLine,
+} from '../../utils/v3Activity';
+import { resolveV3CartHero } from '../../utils/cartHero';
+import { heroImageSource } from '../../components/v3/v3Images';
 
+const GUTTER = 16;
+const HISTORY_PAGE = 8;
+const TRAINED = '#FF9A3D'; // Home week strip's trained-day colour
 
-// External URLs for legal pages
-const EXTERNAL_URLS = {
-  termsOfService: 'https://www.officialmood.app/terms-of-service',
-  privacyPolicy: 'https://www.officialmood.app/privacy-policy',
-  support: 'https://www.officialmood.app/support',
-};
-
-// Mapping of featured workout names to their IDs
-const FEATURED_WORKOUT_IDS: { [key: string]: string } = {
-  'Sweat / Burn Fat - Cardio Based': '1',
-  'Muscle Gainer - Back & Bis Volume': '2',
-  'Sweat / Burn Fat - HIIT - Intense Full Body': '6',
-  'Build Explosion - Power Lifting': '3',
-  'Calisthenics - Pulls & Dips': '4',
-  'Get Outside - Hill Workout': '5',
-};
-
-interface UserStats {
-  workouts: number;
-  followers: number;
-  following: number;
-  streak: number;
+function avatarUri(a?: string | null): string | null {
+  if (!a) return null;
+  if (a.startsWith('http')) return a;
+  return a.startsWith('/') ? `${API_URL}${a}` : `${API_URL}/api/uploads/${a}`;
 }
 
-interface RecentWorkout {
-  id: string;
-  title: string;
-  mood: string;
-  duration: number;
-  date: string;
+/* ------------------------------------------------------------------ pieces */
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <View style={styles.stat}>
+      <Text style={styles.statValue} numberOfLines={1} adjustsFontSizeToFit>
+        {value}
+      </Text>
+      <Text style={styles.statLabel}>{label}</Text>
+    </View>
+  );
 }
 
-interface Post {
-  id: string;
-  media_urls: string[];
-  cover_urls?: { [key: string]: string }; // Map of media index to cover image URL
-  thumbnail_url?: string | null; // Canonical thumbnail for grid (server-derived for videos)
-  media_type?: string | null; // "video" | "image" | null
-  caption: string;
-  likes_count: number;
-  comments_count: number;
-  created_at: string;
+function SectionHead({ title, sub, right }: { title: string; sub?: string; right?: React.ReactNode }) {
+  return (
+    <View style={styles.secHead}>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.secTitle}>{title}</Text>
+        {sub ? <Text style={styles.secSub}>{sub}</Text> : null}
+      </View>
+      {right}
+    </View>
+  );
 }
 
-interface WorkoutCard {
-  id: string;
-  workouts: {
-    workoutName: string;
-    workoutTitle?: string;
-    equipment: string;
-    duration: string;
-    difficulty: string;
-    battlePlan?: string;
-    imageUrl?: string;
-    description?: string;
-    intensityReason?: string;
-    moodCategory?: string;
-    moodTips?: any[];
-  }[];
-  totalDuration: number;
-  completedAt: string;
-  created_at: string;
-  moodCategory?: string;
-  workoutSnapshotId?: string;
+function HistoryRow({ h, last, onView, onStats, onAgain }: { h: HistoryItem; last: boolean; onView: () => void; onStats: () => void; onAgain: () => void }) {
+  const hero = useMemo(
+    () => resolveV3CartHero({ workout_id: h.workoutId, created_at: h.row.created_at ?? undefined, direction: h.row.direction!, archetype: { id: h.row.archetype?.id ?? '' }, target: h.row.target ?? null } as any),
+    [h],
+  );
+  return (
+    <Pressable onPress={onView} style={({ pressed }) => [styles.histRow, !last && styles.divider, pressed && { opacity: 0.85 }]} testID={`profile-history-${h.workoutId}`}>
+      <Image source={heroImageSource(hero.source, 64) as any} style={styles.histThumb} contentFit="cover" />
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <Text style={styles.histTitle} numberOfLines={1}>
+          {h.title}
+        </Text>
+        <Text style={styles.histMeta} numberOfLines={1}>
+          {h.meta}
+        </Text>
+        {h.facts ? <Text style={styles.histFacts}>{h.facts}</Text> : null}
+        <View style={styles.histActions}>
+          <Text style={styles.histView}>View Workout →</Text>
+          <View style={styles.histRight}>
+            <Pressable onPress={onStats} hitSlop={8} testID={`profile-stats-${h.workoutId}`}>
+              <Text style={styles.histAgain}>Stats</Text>
+            </Pressable>
+            <Pressable onPress={onAgain} hitSlop={8} testID={`profile-do-again-${h.workoutId}`}>
+              <Text style={styles.histAgain}>Do Again</Text>
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    </Pressable>
+  );
 }
 
-interface SavedWorkout {
-  id: string;
-  name: string;
-  workouts: {
-    name: string;
-    equipment: string;
-    duration: string;
-    difficulty: string;
-    description?: string;
-    battlePlan?: string;
-    imageUrl?: string;
-    intensityReason?: string;
-    workoutType?: string;
-    moodCard?: string;
-    moodTips?: any[];
-  }[];
-  total_duration: number;
-  source: string;
-  featured_workout_id?: string;
-  mood?: string;
-  title?: string;
-  created_at: string;
-}
-
-interface SavedPost {
-  id: string;
-  author: {
-    id: string;
-    username: string;
-    name: string;
-    avatar: string;
-  };
-  caption: string;
-  media_urls: string[];
-  likes_count: number;
-  comments_count: number;
-  saved_at: string;
-}
+/* ------------------------------------------------------------------ screen */
 
 export default function Profile() {
-  // Track screen time
-  useScreenTime('Profile');
-  
-  const [user, setUser] = useState({
-    id: 'current-user',
-    username: 'your_username',
-    name: 'Your Name',
-    bio: 'Fitness enthusiast • Living my best life • Let\'s get stronger together 💪',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&h=120&fit=crop&crop=face',
-    isVerified: false,
-  });
-
-  const [stats, setStats] = useState<UserStats>({
-    workouts: 0,
-    followers: 0,
-    following: 0,
-    streak: 0,
-  });
-
-  const [recentWorkouts] = useState<RecentWorkout[]>([]);
-  const [workoutCards, setWorkoutCards] = useState<WorkoutCard[]>([]);
-  const [savedWorkouts, setSavedWorkouts] = useState<SavedWorkout[]>([]);
-  const [savedPosts, setSavedPosts] = useState<SavedPost[]>([]);
-  const [loadingCards, setLoadingCards] = useState(false);
-  const [loadingSaved, setLoadingSaved] = useState(false);
-  const [loadingSavedPosts, setLoadingSavedPosts] = useState(false);
-  const [loadingProfile, setLoadingProfile] = useState(true);
-  const [selectedCard, setSelectedCard] = useState<WorkoutCard | null>(null);
-  const [selectedSavedWorkout, setSelectedSavedWorkout] = useState<SavedWorkout | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [savedModalVisible, setSavedModalVisible] = useState(false);
-  const [userPosts, setUserPosts] = useState<Post[]>([]);
-  const [loadingPosts, setLoadingPosts] = useState(false);
-  const [postsError, setPostsError] = useState(false);
-  const [followListVisible, setFollowListVisible] = useState(false);
-  const [followListType, setFollowListType] = useState<'followers' | 'following'>('followers');
-  const [refreshing, setRefreshing] = useState(false);
-  const { token, user: authUser, updateUser, isGuest, exitGuestMode } = useAuth();
-  const { addToCart } = useCart();
-  const { unreadMessages, refreshBadges } = useBadges();
-  const { activeCount: savedBuildsCount, refreshCount: refreshDraftsCount } = useDrafts();
-  // V2.1 — profile previously showed NO badges, only a button routing to
-  // /user-stats. Same data source as that screen (static ACHIEVEMENTS x earnedIds)
-  // so the two can't disagree.
-  const { earnedIds } = useAchievements();
-  const earnedBadges = React.useMemo(() => {
-    const earned = new Set(earnedIds);
-    return ACHIEVEMENTS.filter(a => earned.has(a.id));
-  }, [earnedIds]);
-
-  // BUNDLE-VERIFY: Unique marker so we can verify you're running the profile-fix v2 bundle.
-  useEffect(() => {
-    console.log('🎯 PROFILE_DRAFTS_FIX_V2_ACTIVE', { savedBuildsCount });
-  }, [savedBuildsCount]);
-
-  const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'cards'>('posts');
   const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { token, user, isGuest } = useAuth();
+  const uid = user?.id ?? null;
 
-  // Pull to refresh handler
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await Promise.all([
-      fetchUserProfile(),
-      fetchUserPosts(),
-    ]);
-    // Refresh badge counts from shared context
-    refreshBadges();
-    setRefreshing(false);
-  }, [token, authUser?.id, refreshBadges]);
+  const [rows, setRows] = useState<ActivityRow[] | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [savedCount, setSavedCount] = useState<number | null>(null);
+  const [goal, setGoal] = useState<string | null | undefined>(undefined);
+  const [barrier, setBarrier] = useState<string | null>(null);
+  const [statsFor, setStatsFor] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [guestModal, setGuestModal] = useState(false);
+  const [historyShown, setHistoryShown] = useState(HISTORY_PAGE);
+  const [month, setMonth] = useState(() => {
+    const d = new Date();
+    return { y: d.getFullYear(), m: d.getMonth() };
+  });
+  const lastFetch = useRef(0);
+  const viewed = useRef(false);
 
-  // Load user profile when token is available
-  useEffect(() => {
-    if (token) {
-      fetchUserProfile();
-    }
+  const track = useCallback((name: string, meta: Record<string, any> = {}) => {
+    if (token) trackEvent(token, name, { surface: 'profile', ...meta });
   }, [token]);
 
-  // Refetch profile data when screen comes into focus (with debounce)
-  const lastFocusFetch = React.useRef(0);
+  const load = useCallback(async () => {
+    if (!token) return;
+    lastFetch.current = Date.now();
+    const [a, s] = await Promise.all([
+      getMyActivity(token),
+      fetchSaved(token),
+      fetchTrainingProfile(token)
+        .then((p) => {
+          setBarrier((p?.profile?.biggest_barrier as string | undefined) ?? null);
+          setGoal((p?.profile?.goal as string | undefined) ?? null);
+        })
+        .catch(() => setGoal(null)),
+    ]);
+    if (a) {
+      setRows(a);
+      setFailed(false);
+      if (uid) writeCache(`profile:activity:${uid}`, a);
+    } else setFailed(true);
+    if (s) setSavedCount(s.length);
+  }, [token, uid]);
+
+  // last-known activity paints instantly; the server copy replaces it
+  useEffect(() => {
+    if (!uid) return;
+    let alive = true;
+    readCache<ActivityRow[]>(`profile:activity:${uid}`).then((c) => {
+      if (alive && c) setRows((cur) => cur ?? c);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [uid]);
+
   useFocusEffect(
-    React.useCallback(() => {
-      if (token) {
-        const now = Date.now();
-        // Debounce: only fetch if last fetch was more than 5 seconds ago
-        if (now - lastFocusFetch.current > 5000) {
-          lastFocusFetch.current = now;
-          fetchUserProfile();
-          // Fetch posts only if on posts tab
-          if (activeTab === 'posts' && authUser?.id) {
-            fetchUserPosts();
-          }
-        }
-      }
-    }, [token, activeTab, authUser?.id])
+    useCallback(() => {
+      if (Date.now() - lastFetch.current > 5000) load();
+    }, [load]),
   );
 
-  // Sync with AuthContext user data when it changes
+  const now = new Date();
+  const data = rows ?? [];
+  const stats = useMemo(() => profileStats(data, now), [rows]); // eslint-disable-line react-hooks/exhaustive-deps
+  const week = useMemo(() => thisWeek(data, now), [rows]); // eslint-disable-line react-hooks/exhaustive-deps
+  const grid = useMemo(() => monthGrid(month.y, month.m, data, now), [rows, month]); // eslint-disable-line react-hooks/exhaustive-deps
+  const badges = useMemo(() => achievements(data), [rows]); // eslint-disable-line react-hooks/exhaustive-deps
+  const mine = useMemo(() => insights(data), [rows]); // eslint-disable-line react-hooks/exhaustive-deps
+  const groups = useMemo(() => historyGroups(data, now, historyShown), [rows, historyShown]); // eslint-disable-line react-hooks/exhaustive-deps
+  const totalHistory = useMemo(() => historyCount(data), [rows]);
+  const earned = badges.filter((b) => b.earned).length;
+
   useEffect(() => {
-    if (authUser) {
-      // Fix avatar URL if it doesn't include the backend URL
-      let avatarUrl = authUser.avatar || '';
-      if (avatarUrl && !avatarUrl.startsWith('http')) {
-        avatarUrl = avatarUrl.startsWith('/') ? `${API_URL}${avatarUrl}` : `${API_URL}/api/uploads/${avatarUrl}`;
-      }
-      
-      setUser({
-        id: authUser.id,
-        username: authUser.username,
-        name: authUser.name || authUser.username,
-        bio: authUser.bio || '',
-        avatar: avatarUrl,
-        isVerified: false,
-      });
-      setStats({
-        workouts: authUser.workouts_count || 0,
-        followers: authUser.followers_count || 0,
-        following: authUser.following_count || 0,
-        streak: authUser.current_streak || 0,
-      });
-    }
-  }, [authUser]);
+    if (!rows || viewed.current) return;
+    viewed.current = true;
+    track('profile_viewed', { workouts: stats.workouts, v3_history: totalHistory, insights: mine.length, achievements: earned });
+  }, [rows, stats.workouts, totalHistory, mine.length, earned, track]);
 
-  // Load workout cards when Cards tab is selected
-  useEffect(() => {
-    if (activeTab === 'cards' && token) {
-      fetchWorkoutCards();
-    }
-  }, [activeTab, token]);
-
-  // Load saved workouts and posts when Saved tab is selected
-  useEffect(() => {
-    if (activeTab === 'saved' && token) {
-      fetchSavedWorkouts();
-      fetchSavedPosts();
-    }
-  }, [activeTab, token]);
-
-  // Load user posts when Posts tab is selected or user is loaded
-  useEffect(() => {
-    if (activeTab === 'posts' && token && authUser?.id) {
-      fetchUserPosts();
-    }
-  }, [activeTab, token, authUser?.id]);
-
-  // Stale-while-revalidate: paint the profile header from the last-known
-  // data immediately; fetchUserProfile refreshes it in the background.
-  useEffect(() => {
-    if (!authUser?.id) return;
-    let cancelled = false;
-    (async () => {
-      const cached = await readCache<{ user: typeof user; stats: UserStats }>(
-        `profile:${authUser.id}`
-      );
-      if (cancelled || !cached) return;
-      // 'current-user' is the placeholder initial state — real data wins.
-      setUser((prev) => (prev.id !== 'current-user' ? prev : cached.user));
-      setStats((prev) =>
-        prev.workouts || prev.followers || prev.following ? prev : cached.stats
-      );
-      setLoadingProfile(false);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [authUser?.id]);
-
-  const fetchUserProfile = async () => {
-    if (!token) {
-      console.log('No token available for profile');
-      setLoadingProfile(false);
-      return;
-    }
-
-    try {
-      console.log('Fetching user profile from:', `${API_URL}/api/users/me`);
-      const response = await fetch(`${API_URL}/api/users/me`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      console.log('Profile fetch response status:', response.status);
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Profile data loaded:', data.username);
-        
-        // Fix avatar URL if it doesn't include the backend URL
-        let avatarUrl = data.avatar || '';
-        if (avatarUrl && !avatarUrl.startsWith('http')) {
-          avatarUrl = avatarUrl.startsWith('/') ? `${API_URL}${avatarUrl}` : `${API_URL}/api/uploads/${avatarUrl}`;
-        }
-        
-        const freshUser = {
-          id: data.id,
-          username: data.username,
-          name: data.name || data.username,
-          bio: data.bio || '',
-          avatar: avatarUrl,
-          isVerified: false,
-        };
-        const freshStats = {
-          workouts: data.workouts_count || 0,
-          followers: data.followers_count || 0,
-          following: data.following_count || 0,
-          streak: data.current_streak || 0,
-        };
-        setUser(freshUser);
-        setStats(freshStats);
-        // Persist for instant render on next open (stale-while-revalidate).
-        writeCache(`profile:${data.id}`, { user: freshUser, stats: freshStats });
-        // Also update the AuthContext with the fetched data
-        updateUser({
-          username: data.username,
-          name: data.name,
-          bio: data.bio,
-          avatar: data.avatar,
-          followers_count: data.followers_count || 0,
-          following_count: data.following_count || 0,
-          workouts_count: data.workouts_count || 0,
-          current_streak: data.current_streak || 0,
-        });
-      } else {
-        console.error('Failed to fetch profile:', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
-    } finally {
-      setLoadingProfile(false);
-    }
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await load();
+    setRefreshing(false);
   };
 
-  const fetchWorkoutCards = async () => {
-    setLoadingCards(true);
-    try {
-      console.log('Fetching workout cards...');
-      const response = await fetch(`${API_URL}/api/workout-cards`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      console.log('Workout cards response status:', response.status);
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Fetched workout cards:', data);
-        
-        // Transform snake_case to camelCase for frontend
-        const transformedData = data.map((card: any) => ({
-          id: card.id,
-          workouts: card.workouts.map((w: any) => ({
-            workoutName: w.workoutName || w.workout_name || w.workoutTitle || w.workout_title,
-            workoutTitle: w.workoutTitle || w.workout_title || w.workoutName || w.workout_name,
-            equipment: w.equipment,
-            duration: w.duration,
-            difficulty: w.difficulty,
-            battlePlan: w.battlePlan || w.battle_plan,
-            imageUrl: w.imageUrl || w.image_url,
-            description: w.description,
-            intensityReason: w.intensityReason || w.intensity_reason,
-            moodCategory: w.moodCategory || w.mood_category,
-            moodTips: w.moodTips || w.mood_tips,
-          })),
-          totalDuration: card.total_duration,
-          completedAt: card.completed_at,
-          created_at: card.created_at,
-          moodCategory: card.mood_category,
-          workoutSnapshotId: card.workout_snapshot_id, // CRITICAL: Include snapshot ID for "Try this workout"
-        }));
-        
-        console.log('Transformed cards with snapshot IDs:', transformedData.map((c: any) => ({ id: c.id, snapshotId: c.workoutSnapshotId })));
-        setWorkoutCards(transformedData);
-      } else {
-        console.error('Failed to fetch workout cards:', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching workout cards:', error);
-    } finally {
-      setLoadingCards(false);
-    }
-  };
-
-  const fetchUserPosts = async (retryCount = 0) => {
-    if (!authUser?.id) {
-      console.log('No user ID available for fetching posts');
-      return;
-    }
-    
-    const startTime = Date.now();
-    console.log('Fetching posts for user:', authUser.id);
-    setLoadingPosts(true);
-    setPostsError(false);
-    
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-    
-    try {
-      const url = `${API_URL}/api/users/${authUser.id}/posts`;
-      const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        signal: controller.signal,
-      });
-
-      clearTimeout(timeoutId);
-      const responseTime = Date.now() - startTime;
-      console.log(`Profile posts fetch completed in ${responseTime}ms, status: ${response.status}`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Posts loaded:', data.length, 'posts');
-        setUserPosts(data);
-        setPostsError(false);
-        
-        // Prefetch thumbnails for grid
-        prefetchGridImages(data);
-      } else {
-        const errorText = await response.text();
-        console.error('Failed to fetch posts:', response.status, errorText);
-        setPostsError(true);
-        // Retry on server error
-        if (response.status >= 500 && retryCount < 2) {
-          console.log(`Retrying fetch (attempt ${retryCount + 1})...`);
-          setTimeout(() => fetchUserPosts(retryCount + 1), 1000 * (retryCount + 1));
-          return;
-        }
-      }
-    } catch (error: any) {
-      clearTimeout(timeoutId);
-      setPostsError(true);
-      if (error.name === 'AbortError') {
-        console.error('Profile posts fetch timed out');
-        if (retryCount < 2) {
-          setTimeout(() => fetchUserPosts(retryCount + 1), 1000);
-          return;
-        }
-      } else {
-        console.error('Error fetching user posts:', error);
-      }
-    } finally {
-      setLoadingPosts(false);
-    }
-  };
-
-  // Prefetch grid images for smoother scrolling
-  const prefetchGridImages = (posts: Post[]) => {
-    posts.forEach(post => {
-      if (post.media_urls && post.media_urls.length > 0) {
-        const firstMedia = post.media_urls[0];
-        const mediaUrl = firstMedia.startsWith('http') ? firstMedia : `${API_URL}${firstMedia}`;
-        // Only prefetch images, not videos
-        if (!mediaUrl.match(/\.(mov|mp4|avi|webm)$/i)) {
-          Image.prefetch(mediaUrl).catch(() => {});
-        }
-      }
-      // Prefetch cover_urls for videos
-      if (post.cover_urls) {
-        Object.values(post.cover_urls).forEach((coverUrl: any) => {
-          if (coverUrl) {
-            const url = coverUrl.startsWith('http') ? coverUrl : `${API_URL}${coverUrl}`;
-            Image.prefetch(url).catch(() => {});
-          }
-        });
-      }
+  const shiftMonth = (delta: number) => {
+    Haptics.selectionAsync().catch(() => undefined);
+    setMonth(({ y, m }) => {
+      const d = new Date(y, m + delta, 1);
+      return { y: d.getFullYear(), m: d.getMonth() };
     });
   };
+  const atCurrentMonth = month.y === now.getFullYear() && month.m === now.getMonth();
 
-  const fetchSavedWorkouts = async () => {
-    setLoadingSaved(true);
-    try {
-      const response = await fetch(`${API_URL}/api/saved-workouts`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setSavedWorkouts(data);
-      } else {
-        console.error('Failed to fetch saved workouts:', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching saved workouts:', error);
-    } finally {
-      setLoadingSaved(false);
-    }
+  const viewWorkout = (h: HistoryItem) => {
+    const d = new Date(h.row.at);
+    const when = dayLabel(d, now);
+    const label = ['Completed ' + (when === 'TODAY' ? 'today' : when === 'YESTERDAY' ? 'yesterday' : when.charAt(0) + when.slice(1).toLowerCase()), h.facts || null].filter(Boolean).join(' · ');
+    track('profile_history_opened', { workout_id: h.workoutId });
+    router.push({ pathname: '/v3/workout', params: { id: h.workoutId, completed: label } } as any);
   };
 
-  const fetchSavedPosts = async () => {
-    setLoadingSavedPosts(true);
-    try {
-      const response = await fetch(`${API_URL}/api/saved-posts`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setSavedPosts(data);
-      } else {
-        console.error('Failed to fetch saved posts:', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching saved posts:', error);
-    } finally {
-      setLoadingSavedPosts(false);
-    }
+  const doAgain = (h: HistoryItem) => {
+    const p = doAgainPreset(h.row);
+    if (!p) return;
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => undefined);
+    track('v3_do_again_tapped', { workout_id: h.workoutId, surface: 'profile_history' });
+    router.push({ pathname: '/v3/build', params: buildPresetParams(p, 'do_again') } as any);
   };
 
-  const handleUnsavePost = async (postId: string) => {
-    try {
-      const response = await fetch(`${API_URL}/api/posts/${postId}/save`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        setSavedPosts(savedPosts.filter(p => p.id !== postId));
-      }
-    } catch (error) {
-      console.error('Error unsaving post:', error);
-    }
-  };
-
-  const handleDeleteSavedWorkout = async (workoutId: string) => {
-    try {
-      const response = await fetch(`${API_URL}/api/saved-workouts/${workoutId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        setSavedWorkouts(savedWorkouts.filter(w => w.id !== workoutId));
-        setSavedModalVisible(false);
-        setSelectedSavedWorkout(null);
-      }
-    } catch (error) {
-      console.error('Error deleting saved workout:', error);
-    }
-  };
-
-  const handleLoadSavedWorkout = (savedWorkout: SavedWorkout) => {
-    // Add all exercises from saved workout to cart
-    savedWorkout.workouts.forEach(exercise => {
-      addToCart({
-        id: `${exercise.name}-${Date.now()}-${Math.random()}`,
-        name: exercise.name,
-        duration: exercise.duration,
-        description: exercise.description || '',
-        battlePlan: exercise.battlePlan || '',
-        imageUrl: exercise.imageUrl || '',
-        intensityReason: exercise.intensityReason || '',
-        equipment: exercise.equipment,
-        difficulty: exercise.difficulty,
-        workoutType: exercise.workoutType || '',
-        moodCard: exercise.moodCard || '',
-        moodTips: exercise.moodTips || [],
-      });
-    });
-    
-    setSavedModalVisible(false);
-    setSelectedSavedWorkout(null);
-    
-    // Show confirmation alert like featured workouts
-    Alert.alert(
-      'Added to Cart',
-      `${savedWorkout.workouts.length} exercise${savedWorkout.workouts.length !== 1 ? 's' : ''} added to your cart. You can now customize your workout.`,
-      [
-        { text: 'View Cart', onPress: () => router.push('/cart') },
-        { text: 'Continue', style: 'cancel' },
-      ]
-    );
-  };
-
-  const handleDeleteCard = async (cardId: string) => {
-    try {
-      const response = await fetch(`${API_URL}/api/workout-cards/${cardId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        setWorkoutCards(workoutCards.filter(card => card.id !== cardId));
-        setModalVisible(false);
-        setSelectedCard(null);
-      }
-    } catch (error) {
-      console.error('Error deleting workout card:', error);
-    }
-  };
-
-  const handleEditProfile = () => {
-    router.push('/edit-profile');
-  };
-
-  const handleCreatePost = () => {
-    router.push('/create-post');
-  };
-
-  const handleFollowers = () => {
-    setFollowListType('followers');
-    setFollowListVisible(true);
-  };
-
-  const handleFollowing = () => {
-    setFollowListType('following');
-    setFollowListVisible(true);
-  };
-
-  const renderWorkoutCard = ({ item }: { item: WorkoutCard }) => {
-    // Get up to 2 workout titles for cleaner look
-    const workoutTitles = item.workouts.slice(0, 2).map(w => w.workoutName);
-    const hasMore = item.workouts.length > 2;
-    
-    // Calculate estimated calories
-    const estimatedCalories = Math.round(item.totalDuration * 8);
-    
-    // Extract mood card name (first word of first workout or category)
-    const getMoodLabel = (): string => {
-      if (item.workouts.length > 0) {
-        const firstWorkout = item.workouts[0].workoutName?.toLowerCase() || '';
-        // Check for known mood categories
-        if (firstWorkout.includes('muscle') || firstWorkout.includes('gainer') || firstWorkout.includes('back') || firstWorkout.includes('chest') || firstWorkout.includes('arm')) return 'Muscle';
-        if (firstWorkout.includes('sweat') || firstWorkout.includes('cardio') || firstWorkout.includes('hiit') || firstWorkout.includes('burn')) return 'Sweat';
-        if (firstWorkout.includes('explosion') || firstWorkout.includes('power') || firstWorkout.includes('explosive')) return 'Explosion';
-        if (firstWorkout.includes('outdoor') || firstWorkout.includes('hill') || firstWorkout.includes('run') || firstWorkout.includes('outside')) return 'Outdoor';
-        if (firstWorkout.includes('calisthenics') || firstWorkout.includes('pull') || firstWorkout.includes('dip') || firstWorkout.includes('bodyweight')) return 'Calisthenics';
-        if (firstWorkout.includes('lazy') || firstWorkout.includes('stretch') || firstWorkout.includes('recovery') || firstWorkout.includes('easy')) return 'Lazy';
-      }
-      return 'Workout';
-    };
-    
-    const moodLabel = getMoodLabel();
-    
-    return (
-      <TouchableOpacity
-        style={styles.cardThumbnail}
-        onPress={() => {
-          setSelectedCard(item);
-          setModalVisible(true);
-        }}
-        activeOpacity={0.85}
-      >
-        <View style={styles.cardThumbnailContent}>
-          {/* Header with date and checkmark */}
-          <View style={styles.cardHeaderRow}>
-            <Text style={styles.cardDateLabel}>{item.completedAt}</Text>
-            <View style={styles.cardTrophyBadge}>
-              <Ionicons name="checkmark" size={14} color="#0c0c0c" />
-            </View>
-          </View>
-          
-          {/* Mood label as hero text */}
-          <Text style={styles.cardMoodLabel}>{moodLabel}</Text>
-          
-          {/* Stats row - duration, calories, exercises all together */}
-          <View style={styles.cardStatsRow}>
-            <View style={styles.cardStatPill}>
-              <Ionicons name="time-outline" size={11} color="#FFD700" />
-              <Text style={styles.cardStatPillText}>{item.totalDuration}m</Text>
-            </View>
-            <View style={styles.cardStatPill}>
-              <Ionicons name="flame-outline" size={11} color="#FFD700" />
-              <Text style={styles.cardStatPillText}>{estimatedCalories}</Text>
-            </View>
-            <View style={styles.cardStatPill}>
-              <Ionicons name="barbell-outline" size={11} color="#FFD700" />
-              <Text style={styles.cardStatPillText}>{item.workouts.length}</Text>
-            </View>
-          </View>
-          
-          {/* Workout preview */}
-          <View style={styles.cardWorkoutPreview}>
-            {workoutTitles.map((title, index) => (
-              <Text key={index} style={styles.cardWorkoutName} numberOfLines={1}>
-                {title}
-              </Text>
-            ))}
-            {hasMore && (
-              <Text style={styles.cardWorkoutMore}>
-                +{item.workouts.length - 2} more
-              </Text>
-            )}
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  const insets = useSafeAreaInsets();
-  
-  // State for guest modal visibility
-  const [guestModalVisible, setGuestModalVisible] = useState(false);
-  
-  // Auto-show modal when guest visits profile
-  useEffect(() => {
-    if (isGuest) {
-      setGuestModalVisible(true);
-    }
-  }, [isGuest]);
-
-  // Guest Profile View - shows modal over dark background
+  /* ---------------------------------------------------------------- guest */
   if (isGuest) {
     return (
-      <View style={styles.container}>
-        <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
-          <View style={{ width: 32 }} />
-          <Text style={styles.username}>Profile</Text>
-          <View style={{ width: 32 }} />
-        </View>
-        
-        <View style={styles.guestBackgroundContainer}>
-          <View style={styles.guestIconContainer}>
-            <LinearGradient
-              colors={['#FFD700', '#FFA500']}
-              style={styles.guestIconGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            >
-              <Ionicons name="person-outline" size={48} color="#0c0c0c" />
-            </LinearGradient>
-          </View>
-          <Text style={styles.guestTitle}>Welcome to Profile</Text>
-          <Text style={styles.guestSubtitle}>
-            Create an account to unlock your profile
-          </Text>
-          <TouchableOpacity 
-            style={styles.guestTapButton}
-            onPress={() => setGuestModalVisible(true)}
-          >
-            <Text style={styles.guestTapButtonText}>Tap to get started</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <GuestPromptModal
-          visible={guestModalVisible}
-          onClose={() => setGuestModalVisible(false)}
-          action="access your profile"
-        />
+      <View style={[styles.root, styles.center, { paddingHorizontal: 32 }]}>
+        <Ionicons name="person-circle-outline" size={56} color="rgba(255,255,255,0.5)" />
+        <Text style={[styles.secTitle, { marginTop: 12, textAlign: 'center' }]}>Your training lives here</Text>
+        <Text style={[styles.secSub, { textAlign: 'center', marginTop: 6 }]}>Create an account to track your workouts, streaks and achievements.</Text>
+        <Pressable onPress={() => setGuestModal(true)} style={{ marginTop: 18 }}>
+          <LinearGradient colors={[...BRAND_GRADIENT]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.primaryBtn as any}>
+            <Text style={styles.primaryBtnText}>Get started</Text>
+          </LinearGradient>
+        </Pressable>
+        <GuestPromptModal visible={guestModal} onClose={() => setGuestModal(false)} action="track your training" />
       </View>
     );
   }
 
+  const name = user?.name || user?.username || 'You';
+  const avatar = avatarUri(user?.avatar);
+  // Admin Dashboard entry: the officialmoodapp account, or anyone the server's ADMIN_ALLOWLIST marks admin (/api/auth/me
+  // is_admin_effective). The dashboard re-checks on the server either way.
+  const isAdmin = user?.username?.toLowerCase() === 'officialmoodapp' || (user as any)?.is_admin_effective === true;
+  const hasAny = data.length > 0;
+  const trainingValue = formatMinutes(stats.minutes, { hoursOnly: stats.minutes >= 600 });
+  const line = goalBio(goal, barrier, data);
+
   return (
-    <View style={styles.container}>
-      <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
-        <TouchableOpacity 
-          style={styles.settingsButton}
-          onPress={() => router.push('/settings')}
-        >
-          <Ionicons name="settings-outline" size={24} color="#fff" />
-        </TouchableOpacity>
-        <Text style={styles.username}>@{user.username}</Text>
-        <View style={styles.headerRightButtons}>
-          <TouchableOpacity 
-            style={styles.messagesButton}
-            onPress={() => router.push('/messages')}
-          >
-            <Ionicons name="chatbubbles-outline" size={24} color="#fff" />
-            {unreadMessages > 0 && (
-              <View style={styles.unreadBadge}>
-                <Text style={styles.unreadBadgeText}>
-                  {unreadMessages > 99 ? '99+' : unreadMessages}
-                </Text>
+    <View style={styles.root} testID="profile-v3">
+      <ScrollView
+        contentContainerStyle={{ paddingTop: insets.top + 8, paddingBottom: 48 }}
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.accent} colors={[COLORS.accent]} />}
+      >
+        {/* ---------------- header */}
+        <View style={[styles.pad, styles.topBar]}>
+          <View style={{ flex: 1 }} />
+          {isAdmin ? (
+            <Pressable onPress={() => router.push('/admin-dashboard' as any)} hitSlop={10} style={styles.adminPill} accessibilityLabel="Admin dashboard" testID="profile-admin">
+              <Ionicons name="analytics" size={15} color={COLORS.accent} />
+              <Text style={styles.adminPillText}>Admin</Text>
+            </Pressable>
+          ) : null}
+          <Pressable onPress={() => router.push('/settings' as any)} hitSlop={10} style={styles.iconBtn} accessibilityLabel="Settings" testID="profile-settings">
+            <Ionicons name="settings-outline" size={21} color={COLORS.textPrimary} />
+          </Pressable>
+        </View>
+
+        <View style={[styles.pad, styles.identity]}>
+          <Pressable onPress={() => router.push('/edit-profile' as any)} accessibilityLabel="Edit profile" testID="profile-avatar">
+            {avatar ? (
+              <Image source={{ uri: avatar }} style={styles.avatar} contentFit="cover" />
+            ) : (
+              <View style={[styles.avatar, styles.avatarFallback]}>
+                <Text style={styles.avatarInitial}>{name[0]?.toUpperCase()}</Text>
               </View>
             )}
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.createButton}
-            onPress={handleCreatePost}
-          >
-            <View style={styles.createIconContainer}>
-              <Ionicons name="add" size={24} color="#000" />
+            <View style={styles.editDot}>
+              <Ionicons name="pencil" size={11} color={COLORS.accentInk} />
             </View>
-          </TouchableOpacity>
+          </Pressable>
+          <View style={{ flex: 1, minWidth: 0 }}>
+            <View style={styles.nameRow}>
+              <Text style={styles.name} numberOfLines={1}>
+                {name}
+              </Text>
+              {user?.founding_member ? <FoundingMemberBadge size="sm" /> : null}
+            </View>
+            <Text style={styles.nameSub}>
+              {rows ? `${stats.workouts} workout${stats.workouts === 1 ? '' : 's'}${stats.minutes ? ` · ${trainingValue} training` : ''}` : ' '}
+            </Text>
+          </View>
         </View>
-      </View>
 
-      <ScrollView 
-        style={styles.scrollView} 
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor="#FFD700"
-            colors={['#FFD700']}
-          />
-        }
-      >
-        {/* Profile Info */}
-        <View style={styles.profileSection}>
-          <View style={styles.profileHeader}>
-            <TouchableOpacity onPress={handleEditProfile} style={styles.avatarContainer}>
-              <Image 
-                source={{ 
-                  uri: user.avatar 
-                    ? (user.avatar.startsWith('http') ? user.avatar : `${API_URL}${user.avatar}`)
-                    : 'https://via.placeholder.com/100'
-                }}
-                style={styles.profileImage}
-                resizeMode="cover"
-              />
-              <View style={styles.editIconContainer}>
-                <Ionicons name="pencil" size={16} color="#0c0c0c" />
-              </View>
-            </TouchableOpacity>
-            <View style={styles.statsContainer}>
-              <TouchableOpacity style={styles.statItem}>
-                <Text style={styles.statValue}>{stats.workouts}</Text>
-                <Text style={styles.statLabel}>Workouts</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.statItem} onPress={handleFollowers}>
-                <Text style={styles.statValue}>{stats.followers}</Text>
-                <Text style={styles.statLabel}>Followers</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.statItem} onPress={handleFollowing}>
-                <Text style={styles.statValue}>{stats.following}</Text>
-                <Text style={styles.statLabel}>Following</Text>
-              </TouchableOpacity>
+        {goal !== undefined ? (
+          <Text style={[styles.pad, styles.goal]} testID="profile-goal-line">
+            {line.lead}
+            <Text style={styles.goalStrong}>{line.goal}</Text>
+            {` ${line.rest}`}
+          </Text>
+        ) : null}
+
+        {/* ---------------- stats */}
+        <View style={[styles.pad, { marginTop: 18 }]}>
+          <View style={[styles.card, styles.statsRow]}>
+            <Stat value={rows ? String(stats.workouts) : '–'} label="Workouts" />
+            <View style={styles.statSep} />
+            <Stat value={rows ? trainingValue : '–'} label="Training" />
+            <View style={styles.statSep} />
+            <Stat value={rows ? String(stats.weekStreak) : '–'} label="Week streak" />
+            <View style={styles.statSep} />
+            <Stat value={rows ? String(earned) : '–'} label="Achievements" />
+          </View>
+          <Pressable onPress={() => router.push('/saved' as any)} style={({ pressed }) => [styles.card, styles.savedEntry, pressed && { opacity: 0.85 }]} testID="profile-saved">
+            <View style={styles.savedIcon}>
+              <Ionicons name="bookmark" size={16} color={COLORS.accent} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.savedTitle}>Saved</Text>
+              <Text style={styles.savedMeta}>{savedCount == null ? 'Your saved workouts' : savedCount ? `${savedCount} workout${savedCount === 1 ? '' : 's'}` : 'Bookmark a workout to keep it here'}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={17} color="rgba(255,255,255,0.4)" />
+          </Pressable>
+        </View>
+
+        {!rows && !failed ? (
+          <View style={{ paddingTop: 40 }}>
+            <ActivityIndicator color={COLORS.accent} />
+          </View>
+        ) : null}
+        {failed && !rows ? (
+          <Pressable onPress={load} style={[styles.pad, { paddingTop: 30, alignItems: 'center' }]}>
+            <Text style={styles.secSub}>Couldn’t load your training. Tap to try again.</Text>
+          </Pressable>
+        ) : null}
+
+        {rows && !hasAny ? (
+          <View style={[styles.pad, { marginTop: 22 }]}>
+            <View style={[styles.card, { padding: 20, alignItems: 'flex-start' }]}>
+              <Ionicons name="sparkles" size={18} color={COLORS.accent} />
+              <Text style={[styles.secTitle, { marginTop: 10 }]}>Your training story starts here</Text>
+              <Text style={[styles.secSub, { marginTop: 4, lineHeight: 18 }]}>Finish your first MOOD workout and your history, streaks and achievements show up on this page.</Text>
+              <Pressable onPress={() => router.push('/v3/build' as any)} style={{ marginTop: 16 }} testID="profile-first-workout">
+                <LinearGradient colors={[...BRAND_GRADIENT]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.primaryBtn as any}>
+                  <Text style={styles.primaryBtnText}>Build a workout</Text>
+                </LinearGradient>
+              </Pressable>
             </View>
           </View>
+        ) : null}
 
-          <View style={styles.profileInfo}>
-            <View style={styles.nameContainer}>
-              <Text style={styles.displayName}>{user.name}</Text>
-              {user.isVerified && (
-                <Ionicons name="checkmark-circle" size={16} color="#FFD700" />
-              )}
-              {/* Phase D — Founding Member marker: name (badge) gradient label.
-                  Permanent lifetime-Premium identity marker. */}
-              {authUser?.founding_member ? (
-                <View style={styles.foundingWrap} testID="profile-founding-member-badge">
-                  <FoundingMemberBadge size="sm" />
-                  <MaskedView maskElement={<Text style={styles.foundingLabel}>Founding Member</Text>}>
-                    <LinearGradient
-                      colors={[...BRAND_GRADIENT]}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                    >
-                      <Text style={[styles.foundingLabel, { opacity: 0 }]}>Founding Member</Text>
-                    </LinearGradient>
-                  </MaskedView>
+        {rows && hasAny ? (
+          <>
+            {/* ---------------- activity */}
+            <View style={[styles.pad, { marginTop: 28 }]}>
+              <SectionHead title="Activity" />
+              <View style={[styles.card, { marginTop: 12, padding: 16 }]}>
+                <View style={styles.monthBar}>
+                  <Pressable onPress={() => shiftMonth(-1)} hitSlop={10} accessibilityLabel="Previous month">
+                    <Ionicons name="chevron-back" size={18} color={COLORS.textSecondary} />
+                  </Pressable>
+                  <Text style={styles.monthLabel}>{grid.label}</Text>
+                  <Pressable onPress={() => !atCurrentMonth && shiftMonth(1)} hitSlop={10} disabled={atCurrentMonth} accessibilityLabel="Next month">
+                    <Ionicons name="chevron-forward" size={18} color={atCurrentMonth ? 'rgba(255,255,255,0.18)' : COLORS.textSecondary} />
+                  </Pressable>
                 </View>
-              ) : null}
-            </View>
-            <Text style={styles.bio}>{user.bio}</Text>
-          </View>
-
-          <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
-              <Text style={styles.editButtonText}>Edit Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={styles.statsButton} 
-              onPress={() => router.push('/user-stats')}
-            >
-              <Ionicons name="trophy" size={18} color="#FFD700" />
-              <Text style={styles.statsButtonText}>Achievements</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* V2.1 — earned badges, inline. Shows EARNED only (user-stats shows the
-              full locked grid), so this reads as a trophy shelf rather than a
-              to-do list. Horizontal scroll keeps it to one row at any count, and
-              the whole strip routes to the full grid. Hidden entirely at zero —
-              an empty shelf on your own profile is worse than no shelf. */}
-          {earnedBadges.length > 0 && (
-            <TouchableOpacity
-              activeOpacity={0.85}
-              onPress={() => router.push('/user-stats')}
-              style={styles.badgeShelf}
-            >
-              <View style={styles.badgeShelfHead}>
-                <Text style={styles.badgeShelfTitle}>
-                  Badges <Text style={styles.badgeShelfCount}>{earnedBadges.length}</Text>
-                </Text>
-                <Ionicons name="chevron-forward" size={15} color="rgba(255,255,255,0.4)" />
-              </View>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.badgeShelfRow}
-                // Let the parent handle the tap; the row itself only scrolls.
-                scrollEnabled={earnedBadges.length > 4}
-              >
-                {earnedBadges.map(a => (
-                  <View key={a.id} style={styles.badgeShelfCell}>
-                    <AchievementMedallion icon={a.icon as any} size={44} glow={false} />
-                    <Text style={styles.badgeShelfCaption} numberOfLines={1}>
-                      {a.label}
+                <View style={styles.calRow}>
+                  {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((l, i) => (
+                    <Text key={i} style={styles.calLetter}>
+                      {l}
                     </Text>
+                  ))}
+                </View>
+                {grid.weeks.map((w, wi) => (
+                  <View key={wi} style={styles.calRow}>
+                    {w.map((c) => (
+                      <View key={c.key} style={styles.calCell}>
+                        <View style={[styles.calDay, c.trained && c.inMonth && styles.calTrained, c.isToday && styles.calToday]}>
+                          <Text
+                            style={[
+                              styles.calNum,
+                              !c.inMonth && { color: 'rgba(255,255,255,0.15)' },
+                              c.inMonth && c.isFuture && { color: 'rgba(255,255,255,0.3)' },
+                              c.trained && c.inMonth && styles.calNumTrained,
+                            ]}
+                          >
+                            {c.day}
+                          </Text>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                ))}
+                <Text style={styles.calFoot}>
+                  {grid.trainedCount} training day{grid.trainedCount === 1 ? '' : 's'} in {grid.label.split(' ')[0]}
+                </Text>
+                <View style={styles.weekBox}>
+                  <Text style={styles.weekEyebrow}>THIS WEEK</Text>
+                  <Text style={styles.weekLine}>{weekLine(week)}</Text>
+                  {week.byDirection.length ? (
+                    <View style={styles.weekDirs}>
+                      {week.byDirection.map((d) => (
+                        <View key={d.direction} style={styles.weekDir}>
+                          <View style={[styles.weekDot, { backgroundColor: DIRECTION_ACCENT[d.direction] }]} />
+                          <Text style={styles.weekDirText}>
+                            {d.name} {d.count}
+                          </Text>
+                        </View>
+                      ))}
+                    </View>
+                  ) : null}
+                </View>
+              </View>
+            </View>
+
+            {/* ---------------- achievements */}
+            <View style={{ marginTop: 28 }}>
+              <View style={styles.pad}>
+                <SectionHead title="Achievements" sub={`${earned} of ${badges.length} earned`} />
+              </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: GUTTER, gap: 10, paddingTop: 12 }}>
+                {badges.map((b) => (
+                  <View key={b.id} style={[styles.card, styles.badge]} testID={`profile-achievement-${b.id}`}>
+                    <AchievementMedallion icon={b.icon as any} size={52} locked={!b.earned} progress={b.earned ? null : b.progress / b.goal} value={b.goal > 1 && b.id !== 'all_around' ? String(b.goal) : null} glow={false} />
+                    <Text style={[styles.badgeTitle, !b.earned && { color: COLORS.textSecondary }]} numberOfLines={1}>
+                      {b.title}
+                    </Text>
+                    <Text style={styles.badgeDesc} numberOfLines={2}>
+                      {b.description}
+                    </Text>
+                    {b.earned ? (
+                      <Text style={styles.badgeEarned}>Earned</Text>
+                    ) : (
+                      <View style={styles.badgeTrack}>
+                        <View style={[styles.badgeFill, { width: `${Math.round((b.progress / b.goal) * 100)}%` }]} />
+                      </View>
+                    )}
+                    {!b.earned ? (
+                      <Text style={styles.badgeProgress}>
+                        {b.progress} / {b.goal}
+                      </Text>
+                    ) : null}
                   </View>
                 ))}
               </ScrollView>
-            </TouchableOpacity>
-          )}
-
-          {/* Admin Dashboard Button - Only show for officialmoodapp admin account */}
-          {(authUser?.username?.toLowerCase() === 'officialmoodapp' || user?.username?.toLowerCase() === 'officialmoodapp') && (
-            <TouchableOpacity 
-              style={styles.adminButton} 
-              onPress={() => router.push('/admin-dashboard')}
-            >
-              <Ionicons name="analytics" size={20} color="#FFD700" />
-              <Text style={styles.adminButtonText}>Admin Dashboard</Text>
-            </TouchableOpacity>
-          )}
-
-          {/* Current Streak */}
-          <View style={styles.streakContainer}>
-            <Ionicons name="flame" size={24} color="#FFD700" />
-            <Text style={styles.streakText}>
-              {stats.streak} day streak
-            </Text>
-          </View>
-        </View>
-
-        {/* Tabs */}
-        <View style={styles.tabContainer}>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'posts' && styles.activeTab]}
-            onPress={() => setActiveTab('posts')}
-          >
-            <Ionicons 
-              name="grid" 
-              size={18} 
-              color={activeTab === 'posts' ? '#FFD700' : '#888'} 
-            />
-            <Text style={[
-              styles.tabText, 
-              activeTab === 'posts' && styles.activeTabText
-            ]}>
-              Posts
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'cards' && styles.activeTab]}
-            onPress={() => setActiveTab('cards')}
-          >
-            <Ionicons 
-              name="trophy" 
-              size={18} 
-              color={activeTab === 'cards' ? '#FFD700' : '#888'} 
-            />
-            <Text style={[
-              styles.tabText, 
-              activeTab === 'cards' && styles.activeTabText
-            ]}>
-              Completed
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'saved' && styles.activeTab]}
-            onPress={() => setActiveTab('saved')}
-          >
-            <Ionicons 
-              name="bookmark" 
-              size={18} 
-              color={activeTab === 'saved' ? '#FFD700' : '#888'} 
-            />
-            <Text style={[
-              styles.tabText, 
-              activeTab === 'saved' && styles.activeTabText
-            ]}>
-              Saved
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Tab Content */}
-        <View style={styles.tabContent}>
-          {activeTab === 'posts' ? (
-            <View style={styles.postsTab}>
-              {loadingPosts ? (
-                <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="large" color="#FFD700" />
-                  <Text style={styles.loadingText}>Loading posts...</Text>
-                </View>
-              ) : postsError ? (
-                <View style={styles.emptyState} data-testid="profile-posts-error">
-                  <Ionicons name="cloud-offline-outline" size={48} color="#FF6B6B" />
-                  <Text style={styles.emptyTitle}>Couldn't load posts</Text>
-                  <Text style={styles.emptySubtitle}>
-                    Pull down to refresh and try again
-                  </Text>
-                </View>
-              ) : userPosts.length === 0 ? (
-                <View style={styles.emptyState}>
-                  <Ionicons name="images-outline" size={48} color="#666" />
-                  <Text style={styles.emptyTitle}>No posts yet</Text>
-                  <Text style={styles.emptySubtitle}>
-                    Share your fitness journey with your first post!
-                  </Text>
-                </View>
-              ) : (
-                <View style={styles.postsGrid}>
-                  {userPosts.map((post) => {
-                    let mediaUrl = post.media_urls && post.media_urls.length > 0 
-                      ? post.media_urls[0] 
-                      : null;
-                    
-                    // Detect video using server-derived media_type (canonical) + URL extension fallback
-                    const isVideo = post.media_type === 'video' || (mediaUrl && (
-                      mediaUrl.toLowerCase().endsWith('.mov') ||
-                      mediaUrl.toLowerCase().endsWith('.mp4') ||
-                      mediaUrl.toLowerCase().endsWith('.avi') ||
-                      mediaUrl.toLowerCase().endsWith('.webm') ||
-                      mediaUrl.toLowerCase().endsWith('.m3u8') ||
-                      mediaUrl.toLowerCase().includes('/video/')
-                    ));
-                    
-                    // Use canonical thumbnail_url from backend (user-selected cover or Cloudinary fallback)
-                    // Priority: post.thumbnail_url > cover_urls['0'] > null
-                    let coverUrl: string | null = post.thumbnail_url || null;
-                    if (!coverUrl && post.cover_urls) {
-                      coverUrl = post.cover_urls['0'] || post.cover_urls[0 as unknown as string] || null;
-                    }
-                    if (coverUrl && !coverUrl.startsWith('http')) {
-                      coverUrl = coverUrl.startsWith('/') ? `${API_URL}${coverUrl}` : `${API_URL}/api/uploads/${coverUrl}`;
-                    }
-                    
-                    // For video grid tiles: ALWAYS use the thumbnail image, never load the video
-                    const gridImageUrl = isVideo ? (coverUrl || mediaUrl) : mediaUrl;
-                    
-                    // Fix media URL if it doesn't include the backend URL
-                    if (mediaUrl && !mediaUrl.startsWith('http')) {
-                      mediaUrl = mediaUrl.startsWith('/') ? `${API_URL}${mediaUrl}` : `${API_URL}/api/uploads/${mediaUrl}`;
-                    }
-                    
-                    return (
-                      <TouchableOpacity
-                        key={post.id}
-                        style={styles.gridItem}
-                        onPress={() => {
-                          router.push(`/post-detail?postId=${post.id}`);
-                        }}
-                      >
-                        {gridImageUrl ? (
-                          isVideo && coverUrl ? (
-                            // Video with known cover thumbnail — render as static Image (no video loading)
-                            <Image 
-                              source={{ uri: coverUrl }}
-                              style={styles.gridImage}
-                              contentFit="cover"
-                              transition={150}
-                              cachePolicy="memory-disk"
-                              placeholder={{ blurhash: 'L6PZfSi_.AyE_3t7t7R**0o#DgR4' }}
-                            />
-                          ) : isVideo ? (
-                            // Video without cover — use VideoThumbnail (Cloudinary auto-thumb)
-                            <VideoThumbnail 
-                              videoUrl={mediaUrl}
-                              coverUrl={null}
-                              style={styles.gridImage}
-                            />
-                          ) : (
-                            <Image 
-                              source={{ uri: mediaUrl }}
-                              style={styles.gridImage}
-                              contentFit="cover"
-                              transition={150}
-                              cachePolicy="memory-disk"
-                              placeholder={{ blurhash: 'L6PZfSi_.AyE_3t7t7R**0o#DgR4' }}
-                            />
-                          )
-                        ) : (
-                          <View style={[styles.gridImage, styles.placeholderGrid]}>
-                            <Ionicons name="image-outline" size={40} color="#666" />
-                          </View>
-                        )}
-                        {/* Video indicator overlay */}
-                        {isVideo && (
-                          <View style={styles.videoIndicator}>
-                            <Ionicons name="videocam" size={14} color="#fff" />
-                          </View>
-                        )}
-                        {post.media_urls && post.media_urls.length > 1 && (
-                          <View style={styles.multipleIndicator}>
-                            <Ionicons name="copy-outline" size={16} color="#fff" />
-                          </View>
-                        )}
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              )}
             </View>
-          ) : activeTab === 'cards' ? (
-            <View style={styles.cardsTab}>
-              {loadingCards ? (
-                <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="large" color="#FFD700" />
-                  <Text style={styles.loadingText}>Loading workout cards...</Text>
-                </View>
-              ) : workoutCards.length === 0 ? (
-                <View style={styles.emptyState}>
-                  <Ionicons name="trophy-outline" size={48} color="#666" />
-                  <Text style={styles.emptyTitle}>No completed workouts yet</Text>
-                  <Text style={styles.emptySubtitle}>
-                    Finish a workout to see it here.
-                  </Text>
-                </View>
-              ) : (
-                <FlatList
-                  data={workoutCards}
-                  renderItem={renderWorkoutCard}
-                  keyExtractor={(item) => item.id}
-                  numColumns={2}
-                  columnWrapperStyle={styles.cardRow}
-                  scrollEnabled={false}
-                />
-              )}
-            </View>
-          ) : (
-            <View style={styles.savedTab}>
-              {/* Saved Builds Entry — visible only if at least 1 active draft */}
-              {savedBuildsCount > 0 ? (
-                <TouchableOpacity
-                  style={styles.savedBuildsEntry}
-                  onPress={() => router.push('/saved-builds')}
-                  activeOpacity={0.85}
-                  testID="profile-saved-builds-entry"
-                >
-                  <View style={styles.savedBuildsLeft}>
-                    <View style={styles.savedBuildsIconWrap}>
-                      <Ionicons name="bookmark" size={18} color="#0A0A0A" />
-                    </View>
-                    <View>
-                      <Text style={styles.savedBuildsTitle}>Saved Builds</Text>
-                      <Text style={styles.savedBuildsSubtitle}>Resume where you left off</Text>
-                    </View>
-                  </View>
-                  <View style={styles.savedBuildsRight}>
-                    <View style={styles.savedBuildsBadge} testID="profile-saved-builds-count">
-                      <Text style={styles.savedBuildsBadgeText}>{savedBuildsCount}</Text>
-                    </View>
-                    <Ionicons name="chevron-forward" size={18} color="#6B6B6B" />
-                  </View>
-                </TouchableOpacity>
-              ) : null}
 
-              {/* Saved Workouts Section */}
-              <View style={styles.savedSection}>
-                <View style={styles.savedSectionHeader}>
-                  <Ionicons name="fitness" size={20} color="#FFD700" />
-                  <Text style={styles.savedSectionTitle}>Saved Workouts</Text>
+            {/* ---------------- your MOOD */}
+            {mine.length ? (
+              <View style={[styles.pad, { marginTop: 28 }]}>
+                <SectionHead title="Your MOOD" sub="What your training says about you" />
+                <View style={styles.insGrid}>
+                  {mine.map((i) => (
+                    <View key={i.key} style={[styles.card, styles.insCell]}>
+                      <Text style={styles.insLabel}>{i.label.toUpperCase()}</Text>
+                      <Text style={styles.insValue} numberOfLines={1} adjustsFontSizeToFit>
+                        {i.value}
+                      </Text>
+                    </View>
+                  ))}
                 </View>
-                {loadingSaved ? (
-                  <View style={styles.loadingContainerSmall}>
-                    <ActivityIndicator size="small" color="#FFD700" />
-                  </View>
-                ) : savedWorkouts.length === 0 ? (
-                  <View style={styles.emptyStateSmall}>
-                    <Text style={styles.emptySubtitleSmall}>No saved workouts yet</Text>
-                  </View>
-                ) : (
-                  <View style={styles.savedWorkoutsList}>
-                    {savedWorkouts.map((savedWorkout) => (
-                      <View key={savedWorkout.id} style={styles.savedWorkoutCard}>
-                        {/* Main content area */}
-                        <TouchableOpacity
-                          style={styles.savedWorkoutContent}
-                          onPress={() => {
-                            // Prefer the explicit featured_workout_id (MongoDB ObjectId)
-                            // saved at save-time. Fall back to legacy name → numeric map
-                            // for older saved records.
-                            const featuredId = savedWorkout.featured_workout_id || FEATURED_WORKOUT_IDS[savedWorkout.name];
-                            if (savedWorkout.source === 'featured' && featuredId) {
-                              // Navigate to featured workout detail page
-                              router.push({
-                                pathname: '/featured-workout-detail',
-                                params: { id: featuredId },
-                              });
-                            } else {
-                              // For custom workouts, load directly into cart
-                              handleLoadSavedWorkout(savedWorkout);
-                            }
+              </View>
+            ) : null}
+
+            {/* ---------------- history */}
+            <View style={[styles.pad, { marginTop: 28 }]}>
+              <SectionHead title="Workout History" sub={totalHistory ? `${totalHistory} MOOD workout${totalHistory === 1 ? '' : 's'}` : undefined} />
+              {groups.length ? (
+                groups.map((g) => (
+                  <View key={g.key} style={{ marginTop: 16 }}>
+                    <Text style={styles.histDay}>{g.label}</Text>
+                    <View style={[styles.card, { marginTop: 8 }]}>
+                      {g.items.map((h, i) => (
+                        <HistoryRow
+                          key={h.workoutId}
+                          h={h}
+                          last={i === g.items.length - 1}
+                          onView={() => viewWorkout(h)}
+                          onStats={() => {
+                            track('v3_completed_stats_opened', { workout_id: h.workoutId, surface: 'profile_history' });
+                            setStatsFor(h.workoutId);
                           }}
-                        >
-                          <View style={styles.savedWorkoutHeader}>
-                            <View style={styles.savedWorkoutInfo}>
-                              <Text style={styles.savedWorkoutName}>{savedWorkout.name}</Text>
-                              <Text style={styles.savedWorkoutMeta}>
-                                {savedWorkout.workouts.length} exercises • {savedWorkout.total_duration} min
-                              </Text>
-                            </View>
-                            <View style={styles.savedWorkoutBadge}>
-                              <Ionicons 
-                                name={savedWorkout.source === 'featured' ? 'star' : 'create'} 
-                                size={14} 
-                                color="#FFD700" 
-                              />
-                              <Text style={styles.savedWorkoutBadgeText}>
-                                {savedWorkout.source === 'featured' ? 'Featured' : 'Custom'}
-                              </Text>
-                            </View>
-                          </View>
-                          <View style={styles.savedWorkoutExercises}>
-                            {savedWorkout.workouts.slice(0, 3).map((exercise, index) => (
-                              <Text key={index} style={styles.savedExerciseName}>
-                                • {exercise.name}
-                              </Text>
-                            ))}
-                            {savedWorkout.workouts.length > 3 && (
-                              <Text style={styles.savedExerciseMore}>
-                                +{savedWorkout.workouts.length - 3} more
-                              </Text>
-                            )}
-                          </View>
-                        </TouchableOpacity>
-                        
-                        {/* X button - vertically centered on entire card */}
-                        <TouchableOpacity
-                          style={styles.unsaveButtonOnCard}
-                          onPress={() => handleDeleteSavedWorkout(savedWorkout.id)}
-                        >
-                          <Ionicons name="close" size={16} color="#FFD700" />
-                        </TouchableOpacity>
-                      </View>
-                    ))}
+                          onAgain={() => doAgain(h)}
+                        />
+                      ))}
+                    </View>
                   </View>
-                )}
-              </View>
-
-              {/* Saved Posts Section */}
-              <View style={styles.savedSection}>
-                <View style={styles.savedSectionHeader}>
-                  <Ionicons name="bookmark" size={20} color="#FFD700" />
-                  <Text style={styles.savedSectionTitle}>Saved Posts</Text>
-                </View>
-                {loadingSavedPosts ? (
-                  <View style={styles.loadingContainerSmall}>
-                    <ActivityIndicator size="small" color="#FFD700" />
-                  </View>
-                ) : savedPosts.length === 0 ? (
-                  <View style={styles.emptyStateSmall}>
-                    <Text style={styles.emptySubtitleSmall}>No saved posts yet</Text>
-                  </View>
-                ) : (
-                  <View style={styles.savedPostsGrid}>
-                    {savedPosts.map((post) => (
-                      <TouchableOpacity 
-                        key={post.id} 
-                        style={styles.savedPostItem}
-                        onPress={() => router.push('/(tabs)/explore')}
-                      >
-                        {post.media_urls.length > 0 && (
-                          <Image
-                            source={{ 
-                              uri: post.media_urls[0].startsWith('http') 
-                                ? post.media_urls[0] 
-                                : `${API_URL}${post.media_urls[0].startsWith('/') ? '' : '/api/uploads/'}${post.media_urls[0]}` 
-                            }}
-                            style={styles.savedPostImage}
-                            contentFit="cover"
-                          />
-                        )}
-                        {/* Unsave button overlay */}
-                        <TouchableOpacity
-                          style={styles.unsavePostButton}
-                          onPress={() => handleUnsavePost(post.id)}
-                        >
-                          <Ionicons name="close" size={14} color="#FFD700" />
-                        </TouchableOpacity>
-                        {/* Multiple images indicator */}
-                        {post.media_urls.length > 1 && (
-                          <View style={styles.multipleImagesIndicator}>
-                            <Ionicons name="copy" size={12} color="#fff" />
-                          </View>
-                        )}
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                )}
-              </View>
+                ))
+              ) : (
+                <Text style={[styles.secSub, { marginTop: 10 }]}>Workouts you finish with MOOD’s guided session will appear here.</Text>
+              )}
+              {totalHistory > historyShown ? (
+                <Pressable onPress={() => setHistoryShown((n) => n + HISTORY_PAGE * 2)} style={({ pressed }) => [styles.moreBtn, pressed && { opacity: 0.7 }]}>
+                  <Text style={styles.moreText}>Show more</Text>
+                </Pressable>
+              ) : null}
             </View>
-          )}
-        </View>
+          </>
+        ) : null}
+
       </ScrollView>
-
-      {/* Workout Card Detail Modal */}
-      <Modal
-        visible={modalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Workout Achievement</Text>
-              <View style={styles.modalActions}>
-                <TouchableOpacity
-                  onPress={() => selectedCard && handleDeleteCard(selectedCard.id)}
-                  style={styles.deleteButton}
-                >
-                  <Ionicons name="trash-outline" size={20} color="#FF4444" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => setModalVisible(false)}
-                  style={styles.closeButton}
-                >
-                  <Ionicons name="close" size={24} color="#fff" />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
-              {selectedCard && (
-                <View style={styles.modalCardContainer}>
-                  <WorkoutStatsCard {...selectedCard} />
-                  
-                  {/* Share/Post Button */}
-                  <TouchableOpacity
-                    style={styles.shareAchievementButton}
-                    onPress={() => {
-                      setModalVisible(false);
-                      // Navigate to create-post with workout stats INCLUDING snapshot ID
-                      router.push({
-                        pathname: '/create-post',
-                        params: {
-                          workoutStats: JSON.stringify({
-                            workouts: selectedCard.workouts.map((w: any) => ({
-                              workoutTitle: w.workoutTitle || w.workoutName || w.workout_title,
-                              workoutName: w.workoutName || w.workoutTitle || w.workout_name,
-                              equipment: w.equipment,
-                              duration: w.duration,
-                              difficulty: w.difficulty,
-                              battlePlan: w.battlePlan || w.battle_plan,
-                              imageUrl: w.imageUrl || w.image_url,
-                              description: w.description,
-                              intensityReason: w.intensityReason || w.intensity_reason,
-                              moodCategory: w.moodCategory || w.mood_category,
-                              moodTips: w.moodTips || w.mood_tips,
-                            })),
-                            totalDuration: selectedCard.totalDuration,
-                            completedAt: selectedCard.completedAt,
-                            moodCategory: selectedCard.moodCategory,
-                            workoutSnapshotId: selectedCard.workoutSnapshotId, // CRITICAL: Include snapshot ID for "Try this workout"
-                          }),
-                        },
-                      });
-                    }}
-                  >
-                    <LinearGradient
-                      colors={['#FFD700', '#FFA500']}
-                      style={styles.shareAchievementGradient}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                    >
-                      <Ionicons name="share-social" size={20} color="#0c0c0c" />
-                      <Text style={styles.shareAchievementButtonText}>Share Achievement</Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
-                </View>
-              )}
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
-
-      {/* Saved Workout Detail Modal */}
-      <Modal
-        visible={savedModalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setSavedModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Saved Workout</Text>
-              <View style={styles.modalActions}>
-                <TouchableOpacity
-                  onPress={() => selectedSavedWorkout && handleDeleteSavedWorkout(selectedSavedWorkout.id)}
-                  style={styles.deleteButton}
-                >
-                  <Ionicons name="trash-outline" size={20} color="#FF4444" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => setSavedModalVisible(false)}
-                  style={styles.closeButton}
-                >
-                  <Ionicons name="close" size={24} color="#fff" />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
-              {selectedSavedWorkout && (
-                <View style={styles.savedModalContent}>
-                  <Text style={styles.savedModalName}>{selectedSavedWorkout.name}</Text>
-                  <Text style={styles.savedModalMeta}>
-                    {selectedSavedWorkout.workouts.length} exercises • {selectedSavedWorkout.total_duration} min
-                  </Text>
-                  
-                  <View style={styles.savedModalExercises}>
-                    {selectedSavedWorkout.workouts.map((exercise, index) => (
-                      <View key={index} style={styles.savedModalExercise}>
-                        <Text style={styles.savedModalExerciseName}>{exercise.name}</Text>
-                        <Text style={styles.savedModalExerciseDetail}>
-                          {exercise.equipment} • {exercise.duration}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-                  
-                  <View style={styles.savedModalButtons}>
-                    <TouchableOpacity
-                      style={styles.addToCartButtonSaved}
-                      onPress={() => selectedSavedWorkout && handleLoadSavedWorkout(selectedSavedWorkout)}
-                    >
-                      <Ionicons name="cart-outline" size={20} color="#fff" />
-                      <Text style={styles.addToCartButtonTextSaved}>Add to Cart</Text>
-                    </TouchableOpacity>
-                    
-                    <TouchableOpacity
-                      style={styles.startWorkoutButtonSaved}
-                      onPress={() => {
-                        if (selectedSavedWorkout) {
-                          // Add to cart first
-                          selectedSavedWorkout.workouts.forEach(exercise => {
-                            addToCart({
-                              id: `${exercise.name}-${Date.now()}-${Math.random()}`,
-                              name: exercise.name,
-                              duration: exercise.duration,
-                              description: exercise.description || '',
-                              battlePlan: exercise.battlePlan || '',
-                              imageUrl: exercise.imageUrl || '',
-                              intensityReason: exercise.intensityReason || '',
-                              equipment: exercise.equipment,
-                              difficulty: exercise.difficulty,
-                              workoutType: exercise.workoutType || '',
-                              moodCard: exercise.moodCard || '',
-                              moodTips: exercise.moodTips || [],
-                            });
-                          });
-                          
-                          setSavedModalVisible(false);
-                          setSelectedSavedWorkout(null);
-                          
-                          // Navigate to workout guidance
-                          router.push({
-                            pathname: '/workout-guidance',
-                            params: {
-                              workouts: JSON.stringify(selectedSavedWorkout.workouts),
-                              moodTitle: selectedSavedWorkout.name.split(' - ')[0] || 'Workout',
-                              workoutTitle: selectedSavedWorkout.name.split(' - ').slice(1).join(' - ') || selectedSavedWorkout.name,
-                            },
-                          });
-                        }
-                      }}
-                    >
-                      <Text style={styles.startWorkoutButtonTextSaved}>Start Workout</Text>
-                      <Ionicons name="arrow-forward" size={20} color="#0c0c0c" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
-
-      {/* Follow List Modal */}
-      <FollowListModal
-        visible={followListVisible}
-        onClose={() => setFollowListVisible(false)}
-        userId={user.id}
-        type={followListType}
-      />
+      <CompletedStatsOverlay visible={!!statsFor} token={token ?? null} workoutId={statsFor} onClose={() => setStatsFor(null)} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0c0c0c',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
-  },
-  settingsButton: {
-    width: 32,
-    height: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  username: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  headerRightButtons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  messagesButton: {
-    padding: 4,
-    position: 'relative',
-  },
-  unreadBadge: {
-    position: 'absolute',
-    top: -4,
-    right: -4,
-    backgroundColor: '#FF3B30',
-    borderRadius: 10,
-    minWidth: 18,
-    height: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 4,
-  },
-  unreadBadgeText: {
-    color: '#fff',
-    fontSize: 10,
-    fontWeight: '700',
-  },
-  createButton: {
-    padding: 4,
-  },
-  createIconContainer: {
-    backgroundColor: '#FFD700',
-    borderRadius: 20,
-    width: 32,
-    height: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  profileSection: {
-    padding: 20,
-  },
-  profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  avatarContainer: {
-    position: 'relative',
-    marginRight: 20,
-  },
-  profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-  },
-  editIconContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    backgroundColor: '#FFD700',
-    borderRadius: 12,
-    width: 24,
-    height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#0c0c0c',
-  },
-  statsContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#888',
-    marginTop: 2,
-  },
-  profileInfo: {
-    marginBottom: 16,
-  },
-  nameContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginBottom: 2,
-  },
-  displayName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  foundingWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  foundingLabel: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#FFA500',
-  },
-  bio: {
-    fontSize: 14,
-    color: '#ccc',
-    lineHeight: 20,
-  },
-  badgeShelf: {
-    marginTop: 16,
-    paddingTop: 14,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.07)',
-  },
-  badgeShelfHead: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  badgeShelfTitle: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: 'rgba(255,255,255,0.75)',
-    letterSpacing: 1.1,
-    textTransform: 'uppercase',
-  },
-  badgeShelfCount: { color: '#FFD700' },
-  badgeShelfRow: { gap: 14, paddingRight: 4 },
-  badgeShelfCell: { width: 56, alignItems: 'center', paddingBottom: 6 },
-  badgeShelfCaption: {
-    fontSize: 9,
-    color: 'rgba(255,255,255,0.5)',
-    marginTop: 5,
-    textAlign: 'center',
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    gap: 12,
-    // Tightened top and bottom — the row sat with more air around it than the
-    // rest of the header stack.
-    marginTop: 4,
-    marginBottom: 8,
-  },
-  editButton: {
-    flex: 1,
-    backgroundColor: '#1a1a1a',
-    borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-  },
-  editButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  statsButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    backgroundColor: '#1a1a1a',
-    borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  statsButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  adminButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    backgroundColor: '#1a1a1a',
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderWidth: 1,
-    borderColor: '#333',
-    marginBottom: 16,
-  },
-  adminButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  streakContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#1a1a1a',
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  streakText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-    marginLeft: 8,
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
-    paddingHorizontal: 20,
-  },
-  tab: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 16,
-    gap: 4,
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
-  },
-  activeTab: {
-    borderBottomColor: '#FFD700',
-  },
-  tabText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#888',
-  },
-  activeTabText: {
-    color: '#FFD700',
-  },
-  tabContent: {
-    flex: 1,
-    padding: 20,
-  },
-  workoutsTab: {
-    flex: 1,
-  },
-  cardsTab: {
-    flex: 1,
-  },
-  postsTab: {
-    flex: 1,
-  },
-  postsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 2,
-  },
-  gridItem: {
-    width: (width - 44) / 3, // 3 columns with small gaps
-    height: (width - 44) / 3, // 1:1 aspect ratio
-    position: 'relative',
-  },
-  gridImage: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#1a1a1a',
-  },
-  placeholderGrid: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  videoThumbnail: {
-    backgroundColor: '#1a1a1a',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  videoIndicator: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    borderRadius: 4,
-    padding: 4,
-  },
-  multipleIndicator: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    borderRadius: 4,
-    padding: 4,
-  },
-  savedTab: {
-    flex: 1,
-  },
-  // Saved Builds entry row (above saved workouts section)
-  savedBuildsEntry: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#141414',
-    borderColor: '#1F1F1F',
-    borderWidth: 1,
-    borderRadius: 14,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    marginBottom: 18,
-  },
-  savedBuildsLeft: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  savedBuildsIconWrap: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#F5C518',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  savedBuildsTitle: { color: '#FFFFFF', fontSize: 15, fontWeight: '700' },
-  savedBuildsSubtitle: { color: '#B7B7B7', fontSize: 12, marginTop: 2 },
-  savedBuildsRight: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  savedBuildsBadge: {
-    minWidth: 22,
-    height: 22,
-    paddingHorizontal: 6,
-    borderRadius: 11,
-    backgroundColor: '#F5C518',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 6,
-  },
-  savedBuildsBadgeText: { color: '#0A0A0A', fontSize: 12, fontWeight: '700' },
-  savedSection: {
-    marginBottom: 24,
-  },
-  savedSectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 12,
-    paddingBottom: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 215, 0, 0.2)',
-  },
-  savedSectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  loadingContainerSmall: {
-    padding: 20,
-    alignItems: 'center',
-  },
-  emptyStateSmall: {
-    padding: 16,
-    alignItems: 'center',
-  },
-  emptySubtitleSmall: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
-  },
-  savedPostsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 4,
-  },
-  savedPostItem: {
-    width: (width - 48 - 8) / 3,
-    aspectRatio: 4 / 5,
-    borderRadius: 8,
-    overflow: 'hidden',
-    backgroundColor: '#1a1a1a',
-  },
-  savedPostImage: {
-    width: '100%',
-    height: '100%',
-  },
-  unsavePostButton: {
-    position: 'absolute',
-    top: 4,
-    right: 4,
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.3)',
-  },
-  multipleImagesIndicator: {
-    position: 'absolute',
-    top: 4,
-    left: 4,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    borderRadius: 4,
-    padding: 3,
-  },
-  savedWorkoutsList: {
-    gap: 12,
-  },
-  savedWorkoutCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#1a1a1a',
-    borderRadius: 12,
-    paddingLeft: 16,
-    paddingVertical: 12,
-    paddingRight: 8,
-    borderWidth: 1,
-    borderColor: '#333',
-  },
-  savedWorkoutContent: {
-    flex: 1,
-  },
-  savedWorkoutRightColumn: {
-    alignItems: 'center',
-    gap: 8,
-  },
-  unsaveButtonOnCard: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.3)',
-    marginLeft: 12,
-  },
-  savedWorkoutHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 6,
-  },
-  savedWorkoutInfo: {
-    flex: 1,
-  },
-  savedWorkoutName: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#fff',
-    marginBottom: 4,
-  },
-  savedWorkoutMeta: {
-    fontSize: 13,
-    color: '#888',
-  },
-  savedWorkoutBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    gap: 4,
-  },
-  savedWorkoutBadgeText: {
-    fontSize: 11,
-    color: '#FFD700',
-    fontWeight: '600',
-  },
-  savedWorkoutExercises: {
-    marginTop: 2,
-  },
-  savedExerciseName: {
-    fontSize: 13,
-    color: '#aaa',
-    marginBottom: 2,
-  },
-  savedExerciseMore: {
-    fontSize: 12,
-    color: '#666',
-    fontStyle: 'italic',
-    marginTop: 4,
-  },
-  savedModalContent: {
-    padding: 16,
-  },
-  savedModalName: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#fff',
-    marginBottom: 8,
-  },
-  savedModalMeta: {
-    fontSize: 14,
-    color: '#888',
-    marginBottom: 24,
-  },
-  savedModalExercises: {
-    gap: 14,
-  },
-  savedModalExercise: {
-    backgroundColor: '#1a1a1a',
-    borderRadius: 10,
-    padding: 16,
-    borderLeftWidth: 3,
-    borderLeftColor: '#FFD700',
-  },
-  savedModalExerciseName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-    marginBottom: 6,
-  },
-  savedModalExerciseDetail: {
-    fontSize: 13,
-    color: '#888',
-  },
-  loadWorkoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    backgroundColor: '#FFD700',
-    borderRadius: 12,
-    paddingVertical: 18,
-    marginTop: 28,
-  },
-  loadWorkoutButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#000',
-  },
-  savedModalButtons: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 24,
-  },
-  addToCartButtonSaved: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 30,
-    paddingVertical: 14,
-  },
-  addToCartButtonTextSaved: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  startWorkoutButtonSaved: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    backgroundColor: '#FFD700',
-    borderRadius: 30,
-    paddingVertical: 14,
-  },
-  startWorkoutButtonTextSaved: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#0c0c0c',
-  },
-  emptyState: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 40,
-  },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  emptySubtitle: {
-    fontSize: 14,
-    color: '#888',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  startButton: {
-    backgroundColor: '#FFD700',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-  },
-  startButtonText: {
-    color: '#0c0c0c',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  workoutItem: {
-    backgroundColor: '#1a1a1a',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-  },
-  workoutTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-    marginBottom: 4,
-  },
-  workoutMood: {
-    fontSize: 12,
-    color: '#FFD700',
-    marginBottom: 4,
-  },
-  workoutDuration: {
-    fontSize: 12,
-    color: '#888',
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 40,
-  },
-  loadingText: {
-    color: '#888',
-    marginTop: 16,
-    fontSize: 14,
-  },
-  cardRow: {
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  cardThumbnail: {
-    width: (width - 52) / 2,
-    backgroundColor: '#111',
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-  cardAccentLine: {
-    height: 3,
-    backgroundColor: '#FFD700',
-  },
-  cardThumbnailContent: {
-    padding: 14,
-    paddingTop: 10,
-  },
-  cardHeaderRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
-  cardDateLabel: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: 11,
-    fontWeight: '500',
-    letterSpacing: 0.3,
-  },
-  cardTrophyBadge: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: '#FFD700',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardMoodLabel: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#fff',
-    letterSpacing: -0.5,
-    marginBottom: 10,
-  },
-  cardStatsRow: {
-    flexDirection: 'row',
-    gap: 6,
-    marginBottom: 12,
-    flexWrap: 'nowrap',
-  },
-  cardStatPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
-    paddingHorizontal: 7,
-    paddingVertical: 4,
-    borderRadius: 12,
-    gap: 3,
-  },
-  cardStatPillText: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 11,
-    fontWeight: '500',
-  },
-  cardWorkoutPreview: {
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.08)',
-    paddingTop: 10,
-  },
-  cardWorkoutName: {
-    color: 'rgba(255, 255, 255, 0.6)',
-    fontSize: 11,
-    marginBottom: 3,
-  },
-  cardWorkoutMore: {
-    color: 'rgba(255, 215, 0, 0.6)',
-    fontSize: 10,
-    fontWeight: '500',
-    marginTop: 2,
-  },
-  // Legacy styles (kept for compatibility)
-  cardMainStats: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    marginBottom: 8,
-  },
-  cardDurationValue: {
-    fontSize: 36,
-    fontWeight: '700',
-    color: '#fff',
-    letterSpacing: -1,
-  },
-  cardDurationUnit: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.5)',
-    marginLeft: 4,
-  },
-  cardSecondaryStats: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 12,
-  },
-  workoutTitlesContainer: {
-    width: '100%',
-    marginTop: 8,
-    gap: 3,
-  },
-  savedWorkoutTitle: {
-    color: '#fff',
-    fontSize: 11,
-    fontWeight: '500',
-    textAlign: 'center',
-    width: '100%',
-  },
-  workoutTitleMore: {
-    color: '#888',
-    fontSize: 10,
-    fontWeight: '400',
-    textAlign: 'center',
-    marginTop: 2,
-  },
-  cardStats: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-    gap: 6,
-  },
-  cardStat: {
-    color: '#FFD700',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  cardStatDivider: {
-    color: '#666',
-    fontSize: 12,
-  },
-  cardThumbnailText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-    marginTop: 8,
-  },
-  cardThumbnailDuration: {
-    color: '#FFD700',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 4,
-  },
-  cardThumbnailFooter: {
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
-    padding: 8,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 215, 0, 0.2)',
-  },
-  cardThumbnailDate: {
-    color: '#888',
-    fontSize: 11,
-    textAlign: 'center',
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  modalContent: {
-    backgroundColor: '#0c0c0c',
-    borderRadius: 20,
-    width: '100%',
-    maxHeight: '90%',
-    borderWidth: 2,
-    borderColor: 'rgba(255, 215, 0, 0.3)',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 215, 0, 0.2)',
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  modalActions: {
-    flexDirection: 'row',
-    gap: 16,
-  },
-  deleteButton: {
-    padding: 4,
-  },
-  closeButton: {
-    padding: 4,
-  },
-  modalScroll: {
-    maxHeight: '85%',
-  },
-  modalCardContainer: {
-    padding: 20,
-    alignItems: 'center',
-  },
-  shareAchievementButton: {
-    borderRadius: 12,
-    overflow: 'hidden',
-    marginTop: 16,
-    width: '100%',
-  },
-  shareAchievementGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    gap: 8,
-  },
-  shareAchievementButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#0c0c0c',
-  },
-  // Guest Profile Styles
-  guestBackgroundContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-    marginTop: -60,
-  },
-  guestProfileContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-    marginTop: -60,  // Offset for visual centering (accounts for header)
-  },
-  guestIconContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    overflow: 'hidden',
-    marginBottom: 24,
-  },
-  guestIconGradient: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  guestTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#fff',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  guestSubtitle: {
-    fontSize: 15,
-    color: '#888',
-    textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 24,
-  },
-  guestTapButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-  },
-  guestTapButtonText: {
-    fontSize: 14,
-    color: '#FFD700',
-    textDecorationLine: 'underline',
-  },
-  guestBenefits: {
-    width: '100%',
-    marginBottom: 32,
-  },
-  guestBenefitItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  guestBenefitIconContainer: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    overflow: 'hidden',
-  },
-  guestBenefitIconGradient: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  guestBenefitText: {
-    fontSize: 15,
-    color: '#ccc',
-    marginLeft: 14,
-  },
-  guestSignUpButton: {
-    width: '100%',
-    borderRadius: 12,
-    overflow: 'hidden',
-    marginBottom: 12,
-  },
-  guestSignUpGradient: {
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  guestSignUpButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#0c0c0c',
-  },
-  guestSignInButton: {
-    width: '100%',
-    backgroundColor: '#333',
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  guestSignInButtonText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  guestLegalContainer: {
-    marginTop: 24,
-    width: '100%',
-  },
-  guestLegalDivider: {
-    height: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    marginBottom: 16,
-  },
-  guestLegalLinks: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  guestLegalButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    gap: 6,
-  },
-  guestLegalText: {
-    fontSize: 12,
-    color: '#888',
-  },
+  root: { flex: 1, backgroundColor: COLORS.bg },
+  center: { alignItems: 'center', justifyContent: 'center' },
+  pad: { paddingHorizontal: GUTTER },
+  card: { borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.05)', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.10)', overflow: 'hidden' },
+  divider: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(255,255,255,0.08)' },
+
+  topBar: { flexDirection: 'row', alignItems: 'center', gap: 8, height: 40 },
+  adminPill: { flexDirection: 'row', alignItems: 'center', gap: 6, height: 36, paddingHorizontal: 13, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.05)', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.14)' },
+  adminPillText: { fontSize: 13.5, fontWeight: '700', color: COLORS.textPrimary },
+  iconBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.05)' },
+  identity: { flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 6 },
+  avatar: { width: 76, height: 76, borderRadius: 38 },
+  avatarFallback: { backgroundColor: 'rgba(255,255,255,0.08)', alignItems: 'center', justifyContent: 'center' },
+  avatarInitial: { fontSize: 30, fontWeight: '800', color: COLORS.textPrimary },
+  editDot: { position: 'absolute', right: 0, bottom: 0, width: 24, height: 24, borderRadius: 12, backgroundColor: COLORS.accent, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: COLORS.bg },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  name: { flexShrink: 1, fontSize: 28, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.8 },
+  nameSub: { fontSize: 14, fontWeight: '600', color: '#8D8D90', marginTop: 3 },
+
+  statsRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 16 },
+  stat: { flex: 1, alignItems: 'center', paddingHorizontal: 4 },
+  statValue: { fontSize: 22, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.5, fontVariant: ['tabular-nums'] },
+  statLabel: { fontSize: 11.5, fontWeight: '600', color: '#8D8D90', marginTop: 3 },
+  statSep: { width: StyleSheet.hairlineWidth, height: 30, backgroundColor: 'rgba(255,255,255,0.12)' },
+
+  secHead: { flexDirection: 'row', alignItems: 'flex-end' },
+  secTitle: { fontSize: 19, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.4 },
+  secSub: { fontSize: 12.5, color: COLORS.textSecondary, marginTop: 2, fontWeight: '500' },
+
+  monthBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
+  monthLabel: { fontSize: 14.5, fontWeight: '700', color: COLORS.textPrimary },
+  calRow: { flexDirection: 'row' },
+  calLetter: { flex: 1, textAlign: 'center', fontSize: 11, fontWeight: '700', color: 'rgba(255,255,255,0.4)', marginBottom: 6 },
+  calCell: { flex: 1, alignItems: 'center', paddingVertical: 3 },
+  calDay: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  calTrained: { backgroundColor: TRAINED },
+  calToday: { borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.75)' },
+  calNum: { fontSize: 13, fontWeight: '600', color: 'rgba(255,255,255,0.7)', fontVariant: ['tabular-nums'] },
+  calNumTrained: { color: '#140A00', fontWeight: '800' },
+  calFoot: { fontSize: 12, color: '#8D8D90', marginTop: 8, fontWeight: '500' },
+  weekBox: { marginTop: 14, paddingTop: 14, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: 'rgba(255,255,255,0.08)' },
+  weekEyebrow: { fontSize: 11, fontWeight: '800', letterSpacing: 1.5, color: COLORS.textSecondary },
+  weekLine: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginTop: 4 },
+  weekDirs: { flexDirection: 'row', flexWrap: 'wrap', gap: 14, marginTop: 8 },
+  weekDir: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  weekDot: { width: 7, height: 7, borderRadius: 4 },
+  weekDirText: { fontSize: 13, fontWeight: '600', color: COLORS.textSecondary },
+
+  badge: { width: 132, padding: 14, alignItems: 'flex-start' },
+  badgeTitle: { fontSize: 13.5, fontWeight: '800', color: COLORS.textPrimary, marginTop: 10 },
+  badgeDesc: { fontSize: 11.5, color: '#8D8D90', marginTop: 2, lineHeight: 15, minHeight: 30 },
+  badgeEarned: { fontSize: 11.5, fontWeight: '800', color: '#5FE0A0', marginTop: 8 },
+  badgeTrack: { alignSelf: 'stretch', height: 3, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.08)', marginTop: 10, overflow: 'hidden' },
+  badgeFill: { height: 3, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.55)' },
+  badgeProgress: { fontSize: 11, fontWeight: '600', color: '#8D8D90', marginTop: 5, fontVariant: ['tabular-nums'] },
+
+  insGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 12 },
+  insCell: { width: '48.4%', padding: 14 },
+  insLabel: { fontSize: 10.5, fontWeight: '800', letterSpacing: 1.2, color: '#8D8D90' },
+  insValue: { fontSize: 19, fontWeight: '800', color: COLORS.textPrimary, marginTop: 6, letterSpacing: -0.3 },
+
+  histDay: { fontSize: 11.5, fontWeight: '800', letterSpacing: 1.6, color: COLORS.textSecondary },
+  histRow: { flexDirection: 'row', gap: 12, padding: 12 },
+  histThumb: { width: 64, height: 80, borderRadius: 12, backgroundColor: COLORS.surface },
+  histTitle: { fontSize: 15.5, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.2 },
+  histMeta: { fontSize: 13, fontWeight: '600', color: COLORS.textSecondary, marginTop: 2 },
+  histFacts: { fontSize: 12.5, fontWeight: '500', color: '#8D8D90', marginTop: 2 },
+  histActions: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 },
+  histView: { fontSize: 13, fontWeight: '700', color: COLORS.accent },
+  histAgain: { fontSize: 13, fontWeight: '700', color: COLORS.textSecondary },
+  moreBtn: { alignSelf: 'center', marginTop: 14, paddingHorizontal: 18, height: 36, borderRadius: 18, justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.05)', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.12)' },
+  moreText: { fontSize: 13.5, fontWeight: '700', color: COLORS.textPrimary },
+
+  savedEntry: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 13, marginTop: 10 },
+  savedIcon: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.07)' },
+  goal: { fontSize: 15, lineHeight: 21, color: '#8D8D90', marginTop: 14, fontWeight: '500' },
+  goalStrong: { color: COLORS.textPrimary, fontWeight: '700' },
+  histRight: { flexDirection: 'row', alignItems: 'center', gap: 16 },
+  savedTitle: { fontSize: 14.5, fontWeight: '700', color: COLORS.textPrimary },
+  savedMeta: { fontSize: 12.5, color: '#8D8D90', marginTop: 2 },
+
+  primaryBtn: { height: 42, paddingHorizontal: 20, borderRadius: 21, alignItems: 'center', justifyContent: 'center' },
+  primaryBtnText: { fontSize: 15, fontWeight: '800', color: COLORS.accentInk },
 });

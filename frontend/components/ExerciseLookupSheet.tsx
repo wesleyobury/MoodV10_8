@@ -21,6 +21,8 @@ import { API_URL } from '../utils/apiConfig';
 import { 
   cloudinaryThumbnailUrlFromVideoUrl, 
   normalizeCloudinaryVideoUrl,
+  exerciseDemoPosterUrl,
+  exerciseDemoVideoUrl,
   prefetchThumbnails,
   PreloadableItem 
 } from '../utils/cloudinaryVideo';
@@ -60,6 +62,223 @@ const POPULAR_EXERCISES = [
 
 const RECENT_LOOKUPS_KEY = '@exercise_recent_lookups';
 const MAX_RECENT = 6;
+
+// Module level on purpose: defined inside ExerciseLookupSheet it was a new component type on every render of the sheet, so
+// any parent re-render (the V3 Guided Session re-renders every second for its timers) unmounted and restarted the video.
+// Video player with seamless poster-to-video transition
+// Fixed: Only hide poster when video is actually playing AND has buffered enough
+// This prevents the loop/restart issue caused by showing video before it's ready
+function VideoWithPoster({ videoUrl, posterUrl, style }: { videoUrl: string; posterUrl: string; style: any }) {
+  const videoRef = useRef<Video>(null);
+  const [isVideoReady, setIsVideoReady] = useState(false); // True when video is loaded AND playing smoothly
+  const [hasTimedOut, setHasTimedOut] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const [videoKey, setVideoKey] = useState(0); // Force remount on retry
+  const [playbackPosition, setPlaybackPosition] = useState(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastPositionRef = useRef(0);
+  const stuckCountRef = useRef(0);
+  
+  const MAX_RETRIES = 2;
+  const LOAD_TIMEOUT_MS = 20000; // 20 seconds - more lenient for slow connections
+  const READY_THRESHOLD_MS = 500; // Wait 500ms of smooth playback before hiding poster
+
+  // Start timeout when component mounts or retries
+  useEffect(() => {
+    setHasTimedOut(false);
+    setIsVideoReady(false);
+    setPlaybackPosition(0);
+    lastPositionRef.current = 0;
+    stuckCountRef.current = 0;
+    
+    // Set timeout for video loading
+    timeoutRef.current = setTimeout(() => {
+      if (!isVideoReady) {
+        console.log(`Video timeout after ${LOAD_TIMEOUT_MS}ms, retry ${retryCount + 1}/${MAX_RETRIES}`);
+        
+        if (retryCount < MAX_RETRIES) {
+          handleRetry();
+        } else {
+          setHasTimedOut(true);
+        }
+      }
+    }, LOAD_TIMEOUT_MS);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [videoKey]);
+
+  // Clear timeout when video is ready
+  useEffect(() => {
+    if (isVideoReady && timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, [isVideoReady]);
+
+  const handleRetry = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.unloadAsync().catch(() => {});
+    }
+    
+    setRetryCount(prev => prev + 1);
+    setVideoKey(prev => prev + 1);
+    setIsVideoReady(false);
+  }, []);
+
+  const handleManualRetry = useCallback(() => {
+    setRetryCount(0);
+    setHasTimedOut(false);
+    setVideoKey(prev => prev + 1);
+    setIsVideoReady(false);
+  }, []);
+
+  const handlePlaybackStatusUpdate = useCallback((status: AVPlaybackStatus) => {
+    if (status.isLoaded) {
+      const currentPos = status.positionMillis || 0;
+      
+      // Check if video is actually making progress (not stuck buffering)
+      if (status.isPlaying && !status.isBuffering) {
+        // Only mark as ready if:
+        // 1. Video is playing
+        // 2. Video is NOT buffering  
+        // 3. Position has advanced past threshold
+        if (currentPos >= READY_THRESHOLD_MS && !isVideoReady) {
+          setIsVideoReady(true);
+        }
+        
+        // Reset stuck counter when playing smoothly
+        stuckCountRef.current = 0;
+      } else if (status.isBuffering && isVideoReady) {
+        // Video was playing but now buffering - check if stuck
+        if (currentPos === lastPositionRef.current) {
+          stuckCountRef.current += 1;
+          
+          // If stuck at same position for 5+ updates (2.5 seconds), retry
+          if (stuckCountRef.current >= 5 && retryCount < MAX_RETRIES) {
+            console.log('Video stuck buffering, retrying...');
+            handleRetry();
+          }
+        } else {
+          stuckCountRef.current = 0;
+        }
+      }
+      
+      lastPositionRef.current = currentPos;
+      setPlaybackPosition(currentPos);
+      
+      // Handle loop
+      if (status.didJustFinish) {
+        videoRef.current?.replayAsync().catch(() => {});
+      }
+    }
+  }, [isVideoReady, retryCount, handleRetry]);
+
+  const handleError = useCallback((error: any) => {
+    console.error('VIDEO LOAD ERROR:', videoUrl, error);
+    if (retryCount < MAX_RETRIES) {
+      handleRetry();
+    } else {
+      setHasTimedOut(true);
+    }
+  }, [retryCount, handleRetry, videoUrl]);
+
+  // Show timeout/error state with retry button
+  if (hasTimedOut) {
+    return (
+      <TouchableOpacity 
+        style={[style, { backgroundColor: '#000' }]} 
+        onPress={handleManualRetry}
+        activeOpacity={0.8}
+      >
+        <Image
+          source={{ uri: posterUrl }}
+          style={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            bottom: 0,
+          }}
+          contentFit="cover"
+          cachePolicy="memory-disk"
+        />
+        <View style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          bottom: 0, 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          backgroundColor: 'rgba(0,0,0,0.6)',
+        }}>
+          <Ionicons name="refresh-circle" size={56} color="#FFD700" />
+          <Text style={{ color: '#fff', marginTop: 12, fontSize: 16, fontWeight: '600' }}>
+            Video taking too long
+          </Text>
+          <Text style={{ color: 'rgba(255,255,255,0.7)', marginTop: 4, fontSize: 14 }}>
+            Tap to retry
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  return (
+    <View style={[style, { backgroundColor: '#000' }]}>
+      {/* Video plays underneath - always loaded but may be hidden by poster */}
+      <Video
+        key={videoKey}
+        ref={videoRef}
+        source={{ uri: videoUrl }}
+        style={{ width: '100%', height: '100%' }}
+        resizeMode={ResizeMode.COVER}
+        isLooping
+        isMuted
+        shouldPlay
+        progressUpdateIntervalMillis={500}
+        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        onError={handleError}
+      />
+      
+      {/* Poster image - hides once video is actually playing smoothly */}
+      {!isVideoReady && (
+        <View style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          bottom: 0,
+          zIndex: 2,
+          backgroundColor: '#000',
+        }}>
+          <Image
+            source={{ uri: posterUrl }}
+            style={{ width: '100%', height: '100%' }}
+            contentFit="cover"
+            cachePolicy="memory-disk"
+          />
+          {/* Loading indicator on poster */}
+          <View style={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            bottom: 0, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+          }}>
+            <ActivityIndicator size="large" color="rgba(255,255,255,0.7)" />
+          </View>
+        </View>
+      )}
+    </View>
+  );
+}
 
 export default function ExerciseLookupSheet({ visible, onClose, initialQuery, autoSelectSlug, initialExercise }: ExerciseLookupSheetProps) {
   const autoSelectRef = useRef<string | undefined>(undefined);
@@ -207,8 +426,10 @@ export default function ExerciseLookupSheet({ visible, onClose, initialQuery, au
     if (!selectedExercise) return null;
     
     // Get optimized URLs from Cloudinary
-    const optimizedVideoUrl = normalizeCloudinaryVideoUrl(selectedExercise.video_url) || selectedExercise.video_url;
-    const posterUrl = selectedExercise.thumbnail_url || cloudinaryThumbnailUrlFromVideoUrl(selectedExercise.video_url);
+    // Exercise demos are portrait: the generic 1280×720 cap delivered them at 404×720. Demo delivery keeps 720×1280 (see
+    // exerciseDemoVideoUrl); the poster is a sharp frame of the same video.
+    const optimizedVideoUrl = exerciseDemoVideoUrl(selectedExercise.video_url) || normalizeCloudinaryVideoUrl(selectedExercise.video_url) || selectedExercise.video_url;
+    const posterUrl = exerciseDemoPosterUrl(selectedExercise.video_url, 1080) || selectedExercise.thumbnail_url || cloudinaryThumbnailUrlFromVideoUrl(selectedExercise.video_url);
 
     return (
       <View style={styles.detailContainer}>
@@ -319,220 +540,6 @@ export default function ExerciseLookupSheet({ visible, onClose, initialQuery, au
     );
   };
 
-  // Video player with seamless poster-to-video transition
-  // Fixed: Only hide poster when video is actually playing AND has buffered enough
-  // This prevents the loop/restart issue caused by showing video before it's ready
-  const VideoWithPoster = ({ videoUrl, posterUrl, style }: { videoUrl: string; posterUrl: string; style: any }) => {
-    const videoRef = useRef<Video>(null);
-    const [isVideoReady, setIsVideoReady] = useState(false); // True when video is loaded AND playing smoothly
-    const [hasTimedOut, setHasTimedOut] = useState(false);
-    const [retryCount, setRetryCount] = useState(0);
-    const [videoKey, setVideoKey] = useState(0); // Force remount on retry
-    const [playbackPosition, setPlaybackPosition] = useState(0);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const lastPositionRef = useRef(0);
-    const stuckCountRef = useRef(0);
-    
-    const MAX_RETRIES = 2;
-    const LOAD_TIMEOUT_MS = 20000; // 20 seconds - more lenient for slow connections
-    const READY_THRESHOLD_MS = 500; // Wait 500ms of smooth playback before hiding poster
-
-    // Start timeout when component mounts or retries
-    useEffect(() => {
-      setHasTimedOut(false);
-      setIsVideoReady(false);
-      setPlaybackPosition(0);
-      lastPositionRef.current = 0;
-      stuckCountRef.current = 0;
-      
-      // Set timeout for video loading
-      timeoutRef.current = setTimeout(() => {
-        if (!isVideoReady) {
-          console.log(`Video timeout after ${LOAD_TIMEOUT_MS}ms, retry ${retryCount + 1}/${MAX_RETRIES}`);
-          
-          if (retryCount < MAX_RETRIES) {
-            handleRetry();
-          } else {
-            setHasTimedOut(true);
-          }
-        }
-      }, LOAD_TIMEOUT_MS);
-
-      return () => {
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-      };
-    }, [videoKey]);
-
-    // Clear timeout when video is ready
-    useEffect(() => {
-      if (isVideoReady && timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-    }, [isVideoReady]);
-
-    const handleRetry = useCallback(() => {
-      if (videoRef.current) {
-        videoRef.current.unloadAsync().catch(() => {});
-      }
-      
-      setRetryCount(prev => prev + 1);
-      setVideoKey(prev => prev + 1);
-      setIsVideoReady(false);
-    }, []);
-
-    const handleManualRetry = useCallback(() => {
-      setRetryCount(0);
-      setHasTimedOut(false);
-      setVideoKey(prev => prev + 1);
-      setIsVideoReady(false);
-    }, []);
-
-    const handlePlaybackStatusUpdate = useCallback((status: AVPlaybackStatus) => {
-      if (status.isLoaded) {
-        const currentPos = status.positionMillis || 0;
-        
-        // Check if video is actually making progress (not stuck buffering)
-        if (status.isPlaying && !status.isBuffering) {
-          // Only mark as ready if:
-          // 1. Video is playing
-          // 2. Video is NOT buffering  
-          // 3. Position has advanced past threshold
-          if (currentPos >= READY_THRESHOLD_MS && !isVideoReady) {
-            setIsVideoReady(true);
-          }
-          
-          // Reset stuck counter when playing smoothly
-          stuckCountRef.current = 0;
-        } else if (status.isBuffering && isVideoReady) {
-          // Video was playing but now buffering - check if stuck
-          if (currentPos === lastPositionRef.current) {
-            stuckCountRef.current += 1;
-            
-            // If stuck at same position for 5+ updates (2.5 seconds), retry
-            if (stuckCountRef.current >= 5 && retryCount < MAX_RETRIES) {
-              console.log('Video stuck buffering, retrying...');
-              handleRetry();
-            }
-          } else {
-            stuckCountRef.current = 0;
-          }
-        }
-        
-        lastPositionRef.current = currentPos;
-        setPlaybackPosition(currentPos);
-        
-        // Handle loop
-        if (status.didJustFinish) {
-          videoRef.current?.replayAsync().catch(() => {});
-        }
-      }
-    }, [isVideoReady, retryCount, handleRetry]);
-
-    const handleError = useCallback((error: any) => {
-      console.error('VIDEO LOAD ERROR:', videoUrl, error);
-      if (retryCount < MAX_RETRIES) {
-        handleRetry();
-      } else {
-        setHasTimedOut(true);
-      }
-    }, [retryCount, handleRetry, videoUrl]);
-
-    // Show timeout/error state with retry button
-    if (hasTimedOut) {
-      return (
-        <TouchableOpacity 
-          style={[style, { backgroundColor: '#000' }]} 
-          onPress={handleManualRetry}
-          activeOpacity={0.8}
-        >
-          <Image
-            source={{ uri: posterUrl }}
-            style={{ 
-              position: 'absolute', 
-              top: 0, 
-              left: 0, 
-              right: 0, 
-              bottom: 0,
-            }}
-            contentFit="cover"
-            cachePolicy="memory-disk"
-          />
-          <View style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0, 
-            justifyContent: 'center', 
-            alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.6)',
-          }}>
-            <Ionicons name="refresh-circle" size={56} color="#FFD700" />
-            <Text style={{ color: '#fff', marginTop: 12, fontSize: 16, fontWeight: '600' }}>
-              Video taking too long
-            </Text>
-            <Text style={{ color: 'rgba(255,255,255,0.7)', marginTop: 4, fontSize: 14 }}>
-              Tap to retry
-            </Text>
-          </View>
-        </TouchableOpacity>
-      );
-    }
-
-    return (
-      <View style={[style, { backgroundColor: '#000' }]}>
-        {/* Video plays underneath - always loaded but may be hidden by poster */}
-        <Video
-          key={videoKey}
-          ref={videoRef}
-          source={{ uri: videoUrl }}
-          style={{ width: '100%', height: '100%' }}
-          resizeMode={ResizeMode.COVER}
-          isLooping
-          isMuted
-          shouldPlay
-          progressUpdateIntervalMillis={500}
-          onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-          onError={handleError}
-        />
-        
-        {/* Poster image - hides once video is actually playing smoothly */}
-        {!isVideoReady && (
-          <View style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0,
-            zIndex: 2,
-            backgroundColor: '#000',
-          }}>
-            <Image
-              source={{ uri: posterUrl }}
-              style={{ width: '100%', height: '100%' }}
-              contentFit="cover"
-              cachePolicy="memory-disk"
-            />
-            {/* Loading indicator on poster */}
-            <View style={{ 
-              position: 'absolute', 
-              top: 0, 
-              left: 0, 
-              right: 0, 
-              bottom: 0, 
-              justifyContent: 'center', 
-              alignItems: 'center',
-            }}>
-              <ActivityIndicator size="large" color="rgba(255,255,255,0.7)" />
-            </View>
-          </View>
-        )}
-      </View>
-    );
-  };
 
   // Prefetch thumbnails when exercises load
   useEffect(() => {

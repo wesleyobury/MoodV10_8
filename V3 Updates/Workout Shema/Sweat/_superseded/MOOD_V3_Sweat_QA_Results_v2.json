@@ -1,0 +1,5315 @@
+{
+ "tiers": {
+  "T0_data": {
+   "checks": 596,
+   "errors": [],
+   "passed": true
+  },
+  "T1a_grid": {
+   "builds": 672,
+   "outcomes": {
+    "grid_forced|VALID BUILD": 380,
+    "grid_forced|VALID INFEASIBLE (equipment)": 112,
+    "grid_forced|VALID TERMINAL CONFLICT": 12,
+    "grid_pick|VALID BUILD": 168
+   },
+   "hard_fail_counts": {},
+   "soft_counts": {
+    "SOFT_duration_band": 2
+   },
+   "actual_generator_failures": 0,
+   "failures": []
+  },
+  "T1b_fixtures": {
+   "count": 41,
+   "passed": 41,
+   "results": [
+    {
+     "id": "W01",
+     "name": "Engine canonical",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "engine_mode": "interval",
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W02",
+     "name": "Circuit canonical",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W03",
+     "name": "Hybrid canonical (sled default)",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W03b",
+     "name": "Hybrid, user has no sled",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W04",
+     "name": "Engine beginner 30",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "engine_mode": "interval",
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W05",
+     "name": "Explicit upper Target 30",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W06",
+     "name": "Hybrid 30",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W07",
+     "name": "Low Energy 60",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W08",
+     "name": "Stressed 60 (Engine steady)",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "engine_mode": "steady",
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W08b",
+     "name": "Stressed 60 after a steady Engine session",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "engine_mode": "interval",
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W09",
+     "name": "Bored advanced 60",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W10",
+     "name": "Irritated Hybrid 60 (sled default)",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W11",
+     "name": "Amped Engine 60 advanced",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "engine_mode": "interval",
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W12",
+     "name": "Amped Circuit 30",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W13",
+     "name": "Sore legs, MOOD's Pick",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W13b",
+     "name": "Sore legs, Engine forced (SkiErg legal: not dependent)",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "engine_mode": "interval",
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W14",
+     "name": "Beginner limited equipment 30",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W15",
+     "name": "Lower Target + Irritated + Low Energy",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "W16",
+     "name": "Engine Bored 30",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "engine_mode": "interval",
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "M1",
+     "name": "Bored + Stressed",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "M2",
+     "name": "Low Energy + Amped",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "M3",
+     "name": "Irritated + Low Energy (pick)",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "M4",
+     "name": "Sore shoulders + Amped",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "M5",
+     "name": "Stressed + Irritated",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "M6",
+     "name": "Bored + Amped 60",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "M7",
+     "name": "Bored + Amped 30",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "M8",
+     "name": "Low Energy + Stressed + Bored",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "T1",
+     "name": "Target core",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "T2",
+     "name": "Target biceps (secondary coverage)",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "T3",
+     "name": "Target calves",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "T4",
+     "name": "Target chest + quads",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "T5",
+     "name": "Target full_body",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "T6",
+     "name": "Target quads, sore quads (S2a override)",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "T7",
+     "name": "Target chest, sore shoulders (S2b substitution)",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "T8",
+     "name": "Target beginner lower",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "S1",
+     "name": "Sore chest+shoulders+triceps, pick",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "S2",
+     "name": "Sore back, pick",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "S3",
+     "name": "Sore legs, Hybrid forced (dependent -> terminal)",
+     "outcome": "VALID TERMINAL CONFLICT",
+     "archetype": "sweat_hybrid",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "S4",
+     "name": "Sore legs + back + shoulders, pick",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "S5",
+     "name": "Sore legs, explicit upper Target",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    },
+    {
+     "id": "S6",
+     "name": "Sore legs + back, explicit lower Target (named muscles override)",
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "engine_mode": null,
+     "hard_fails": [],
+     "soft": [],
+     "matches_reference": true
+    }
+   ]
+  },
+  "T2a_reproducibility": {
+   "checked": 400,
+   "identical": 400
+  },
+  "T2b_swap": {
+   "cases": 14,
+   "verdicts": {
+    "healthy": 13,
+    "limited but defensible": 1
+   },
+   "results": [
+    {
+     "case": 0,
+     "inputs": {
+      "duration": 60,
+      "experience": "intermediate"
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_engine",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.0,
+     "verdict": "healthy"
+    },
+    {
+     "case": 1,
+     "inputs": {
+      "duration": 30,
+      "experience": "intermediate"
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_engine",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.0,
+     "verdict": "healthy"
+    },
+    {
+     "case": 2,
+     "inputs": {
+      "duration": 60,
+      "experience": "beginner"
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_engine",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.0,
+     "verdict": "healthy"
+    },
+    {
+     "case": 3,
+     "inputs": {
+      "duration": 60,
+      "experience": "advanced",
+      "states": [
+       "bored"
+      ]
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_engine",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.33,
+     "verdict": "healthy"
+    },
+    {
+     "case": 4,
+     "inputs": {
+      "duration": 60,
+      "experience": "intermediate",
+      "states": [
+       "stressed"
+      ]
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_engine",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.0,
+     "verdict": "healthy"
+    },
+    {
+     "case": 5,
+     "inputs": {
+      "duration": 60,
+      "experience": "intermediate",
+      "states": [
+       "low_energy"
+      ]
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_engine",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.2,
+     "verdict": "healthy"
+    },
+    {
+     "case": 6,
+     "inputs": {
+      "duration": 60,
+      "experience": "intermediate",
+      "states": [
+       "irritated"
+      ]
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_hybrid",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.12,
+     "verdict": "healthy"
+    },
+    {
+     "case": 7,
+     "inputs": {
+      "duration": 60,
+      "experience": "intermediate",
+      "states": [
+       "amped"
+      ]
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_engine",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.12,
+     "verdict": "healthy"
+    },
+    {
+     "case": 8,
+     "inputs": {
+      "duration": 60,
+      "experience": "intermediate",
+      "goal": "build_strength"
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_circuit",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.0,
+     "verdict": "healthy"
+    },
+    {
+     "case": 9,
+     "inputs": {
+      "duration": 30,
+      "experience": "beginner",
+      "preset": "db_bodyweight_only"
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_circuit",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.0,
+     "verdict": "healthy"
+    },
+    {
+     "case": 10,
+     "inputs": {
+      "duration": 60,
+      "experience": "intermediate",
+      "target": [
+       "chest",
+       "back"
+      ]
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_circuit",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.6,
+     "verdict": "limited but defensible"
+    },
+    {
+     "case": 11,
+     "inputs": {
+      "duration": 30,
+      "experience": "intermediate",
+      "target": [
+       "quads",
+       "glutes"
+      ]
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_circuit",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.5,
+     "verdict": "healthy"
+    },
+    {
+     "case": 12,
+     "inputs": {
+      "duration": 60,
+      "experience": "intermediate",
+      "force_archetype": "sweat_engine"
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_engine",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.0,
+     "verdict": "healthy"
+    },
+    {
+     "case": 13,
+     "inputs": {
+      "duration": 60,
+      "experience": "intermediate",
+      "force_archetype": "sweat_hybrid"
+     },
+     "swap1_changed": true,
+     "swap1_same_archetype": true,
+     "swap2_archetype": "sweat_hybrid",
+     "swap2_rule_ok": true,
+     "exercise_overlap_swap1": 0.0,
+     "verdict": "healthy"
+    }
+   ]
+  },
+  "T2c_history": {
+   "profiles": 8,
+   "verdicts": {
+    "good": 8
+   },
+   "results": [
+    {
+     "profile": "Normal conditioning",
+     "sequence": [
+      "sweat_circuit / None / None / circuit / farmer_carry",
+      "sweat_engine / interval / long_even / intervals / ski_erg",
+      "sweat_hybrid / None / None / circuit / treadmill_run",
+      "sweat_circuit / None / None / emom / air_bike",
+      "sweat_engine / steady / aerobic / continuous / row_erg",
+      "sweat_hybrid / None / None / circuit / ski_erg",
+      "sweat_circuit / None / None / circuit / sled_push",
+      "sweat_engine / interval / long_even / intervals / treadmill_run"
+     ],
+     "engine_modes": [
+      "interval",
+      "steady",
+      "interval"
+     ],
+     "issues": [],
+     "verdict": "good"
+    },
+    {
+     "profile": "Normal performance",
+     "sequence": [
+      "sweat_hybrid / None / None / circuit / treadmill_run",
+      "sweat_circuit / None / None / circuit / ski_erg",
+      "sweat_engine / interval / long_even / intervals / air_bike",
+      "sweat_hybrid / None / None / circuit / row_erg",
+      "sweat_circuit / None / None / intervals / wall_ball",
+      "sweat_engine / steady / aerobic / continuous / treadmill_incline_walk",
+      "sweat_hybrid / None / None / circuit / treadmill_run",
+      "sweat_circuit / None / None / circuit / air_bike"
+     ],
+     "engine_modes": [
+      "interval",
+      "steady"
+     ],
+     "issues": [],
+     "verdict": "good"
+    },
+    {
+     "profile": "Stressed",
+     "sequence": [
+      "sweat_circuit / None / None / circuit / farmer_carry",
+      "sweat_engine / steady / aerobic / continuous / row_erg",
+      "sweat_circuit / None / None / circuit / burpee",
+      "sweat_engine / interval / long_even / intervals / stationary_bike",
+      "sweat_circuit / None / None / circuit / jump_rope",
+      "sweat_engine / steady / aerobic / continuous / treadmill_incline_walk",
+      "sweat_circuit / None / None / circuit / farmer_carry",
+      "sweat_engine / interval / long_even / intervals / row_erg"
+     ],
+     "engine_modes": [
+      "steady",
+      "interval",
+      "steady",
+      "interval"
+     ],
+     "issues": [],
+     "verdict": "good"
+    },
+    {
+     "profile": "Low Energy",
+     "sequence": [
+      "sweat_circuit / None / None / circuit / stationary_bike",
+      "sweat_engine / steady / aerobic / continuous / treadmill_incline_walk",
+      "sweat_circuit / None / None / circuit / suitcase_carry",
+      "sweat_engine / interval / controlled / intervals / row_erg",
+      "sweat_circuit / None / None / circuit / stationary_bike",
+      "sweat_engine / steady / aerobic / continuous / treadmill_incline_walk",
+      "sweat_circuit / None / None / circuit / stationary_bike",
+      "sweat_engine / interval / controlled / intervals / stationary_bike"
+     ],
+     "engine_modes": [
+      "steady",
+      "interval",
+      "steady",
+      "interval"
+     ],
+     "issues": [],
+     "verdict": "good"
+    },
+    {
+     "profile": "Bored",
+     "sequence": [
+      "sweat_circuit / None / None / emom / bear_crawl",
+      "sweat_engine / interval / pyramid / pyramid / air_bike",
+      "sweat_hybrid / None / None / circuit / ski_erg",
+      "sweat_circuit / None / None / intervals / bear_crawl",
+      "sweat_engine / steady / tempo / continuous / row_erg",
+      "sweat_hybrid / None / None / circuit / treadmill_run",
+      "sweat_circuit / None / None / emom / sled_pull",
+      "sweat_engine / interval / pyramid / pyramid / ski_erg"
+     ],
+     "engine_modes": [
+      "interval",
+      "steady",
+      "interval"
+     ],
+     "issues": [],
+     "verdict": "good"
+    },
+    {
+     "profile": "Amped",
+     "sequence": [
+      "sweat_circuit / None / None / intervals / jump_squat",
+      "sweat_engine / interval / short / intervals / ski_erg",
+      "sweat_hybrid / None / None / circuit / row_erg",
+      "sweat_circuit / None / None / intervals / ski_erg",
+      "sweat_engine / interval / short / intervals / row_erg",
+      "sweat_hybrid / None / None / circuit / row_erg",
+      "sweat_circuit / None / None / intervals / wall_ball",
+      "sweat_engine / interval / short / intervals / air_bike"
+     ],
+     "engine_modes": [
+      "interval",
+      "interval",
+      "interval"
+     ],
+     "issues": [],
+     "verdict": "good"
+    },
+    {
+     "profile": "Irritated",
+     "sequence": [
+      "sweat_circuit / None / None / circuit / jump_squat",
+      "sweat_hybrid / None / None / circuit / ski_erg",
+      "sweat_circuit / None / None / circuit / sled_pull",
+      "sweat_hybrid / None / None / circuit / row_erg",
+      "sweat_circuit / None / None / circuit / ski_erg",
+      "sweat_hybrid / None / None / circuit / row_erg",
+      "sweat_circuit / None / None / circuit / air_bike",
+      "sweat_hybrid / None / None / circuit / row_erg"
+     ],
+     "engine_modes": [],
+     "issues": [],
+     "verdict": "good"
+    },
+    {
+     "profile": "Beginner",
+     "sequence": [
+      "sweat_circuit / None / None / circuit / air_bike",
+      "sweat_engine / interval / controlled / intervals / treadmill_run",
+      "sweat_hybrid / None / None / circuit / row_erg",
+      "sweat_circuit / None / None / intervals / sled_pull",
+      "sweat_engine / steady / aerobic / continuous / stationary_bike",
+      "sweat_hybrid / None / None / circuit / treadmill_run",
+      "sweat_circuit / None / None / circuit / wall_ball",
+      "sweat_engine / interval / controlled / intervals / treadmill_incline_walk"
+     ],
+     "engine_modes": [
+      "interval",
+      "steady",
+      "interval"
+     ],
+     "issues": [],
+     "verdict": "good"
+    }
+   ]
+  },
+  "T3_soreness": {
+   "cases": 156,
+   "outcomes": {
+    "VALID BUILD": 152,
+    "VALID TERMINAL CONFLICT": 4
+   },
+   "sore_primary_violations": 0,
+   "other_hard_fails": 0,
+   "engine_sore_legs_builds": true,
+   "results": [
+    {
+     "sore": "legs",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID TERMINAL CONFLICT",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID TERMINAL CONFLICT",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "quads",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "glutes",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "hamstrings",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "calves",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "chest",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "shoulders",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "back",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "biceps",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "triceps",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "core",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "upper_push",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "pick",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "pick",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "sweat_engine",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "sweat_engine",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_engine",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "sweat_circuit",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "sweat_circuit",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "sweat_hybrid",
+     "duration": 30,
+     "outcome": "VALID TERMINAL CONFLICT",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "sweat_hybrid",
+     "duration": 60,
+     "outcome": "VALID TERMINAL CONFLICT",
+     "archetype": "sweat_hybrid",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "target_upper",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "target_upper",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "target_lower",
+     "duration": 30,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    },
+    {
+     "sore": "legs+back",
+     "mode": "target_lower",
+     "duration": 60,
+     "outcome": "VALID BUILD",
+     "archetype": "sweat_circuit",
+     "sore_primary_violations": 0,
+     "hard_fails": [],
+     "reroute": []
+    }
+   ],
+   "reroutes": [],
+   "terminal": [
+    {
+     "sore": "legs",
+     "mode": "sweat_hybrid",
+     "duration": 30
+    },
+    {
+     "sore": "legs",
+     "mode": "sweat_hybrid",
+     "duration": 60
+    },
+    {
+     "sore": "legs+back",
+     "mode": "sweat_hybrid",
+     "duration": 30
+    },
+    {
+     "sore": "legs+back",
+     "mode": "sweat_hybrid",
+     "duration": 60
+    }
+   ]
+  },
+  "T5_targeted_v3": {
+   "5a_low_energy_rotation": [
+    {
+     "profile": "LE int 60",
+     "engine_sequence": [
+      "treadmill_incline_walk",
+      "row_erg",
+      "treadmill_incline_walk",
+      "stationary_bike"
+     ],
+     "distinct_engines": 3,
+     "circuit_resistance": [
+      [
+       "kickstand_db_rdl",
+       "chest_supported_row_machine"
+      ],
+      [
+       "hack_squat",
+       "assisted_pull_up_machine"
+      ],
+      [
+       "cable_pull_through",
+       "db_floor_press"
+      ],
+      [
+       "kickstand_db_rdl",
+       "machine_high_row"
+      ]
+     ],
+     "le_violations": [],
+     "issues": [],
+     "verdict": "rotates"
+    },
+    {
+     "profile": "LE int 30",
+     "engine_sequence": [
+      "row_erg",
+      "stationary_bike",
+      "treadmill_incline_walk",
+      "row_erg"
+     ],
+     "distinct_engines": 3,
+     "circuit_resistance": [
+      [
+       "kickstand_db_rdl",
+       "seated_dip_machine"
+      ],
+      [
+       "hack_squat",
+       "assisted_pull_up_machine"
+      ],
+      [
+       "cable_pull_through",
+       "chest_supported_db_row"
+      ],
+      [
+       "kickstand_db_rdl",
+       "machine_incline_press"
+      ]
+     ],
+     "le_violations": [],
+     "issues": [],
+     "verdict": "rotates"
+    },
+    {
+     "profile": "LE beginner 60",
+     "engine_sequence": [
+      "treadmill_incline_walk",
+      "stationary_bike",
+      "treadmill_incline_walk",
+      "stationary_bike"
+     ],
+     "distinct_engines": 2,
+     "circuit_resistance": [
+      [
+       "kettlebell_deadlift",
+       "seated_dip_machine"
+      ],
+      [
+       "kettlebell_deadlift",
+       "machine_incline_press"
+      ],
+      [
+       "kettlebell_deadlift",
+       "lat_pulldown"
+      ],
+      [
+       "kettlebell_deadlift",
+       "assisted_pull_up_machine"
+      ]
+     ],
+     "le_violations": [],
+     "issues": [],
+     "verdict": "rotates"
+    },
+    {
+     "profile": "LE + Stressed 60",
+     "engine_sequence": [
+      "treadmill_incline_walk",
+      "stationary_bike",
+      "treadmill_incline_walk",
+      "stationary_bike"
+     ],
+     "distinct_engines": 2,
+     "circuit_resistance": [
+      [
+       "kettlebell_deadlift",
+       "lat_pulldown"
+      ],
+      [
+       "kettlebell_deadlift",
+       "machine_low_row"
+      ],
+      [
+       "kettlebell_deadlift",
+       "machine_incline_press"
+      ],
+      [
+       "kettlebell_deadlift",
+       "machine_chest_press"
+      ]
+     ],
+     "le_violations": [],
+     "issues": [],
+     "verdict": "rotates"
+    },
+    {
+     "profile": "LE forced Engine 60",
+     "engine_sequence": [
+      "stationary_bike",
+      "row_erg",
+      "treadmill_incline_walk",
+      "stationary_bike",
+      "row_erg",
+      "treadmill_incline_walk",
+      "stationary_bike",
+      "row_erg"
+     ],
+     "distinct_engines": 3,
+     "circuit_resistance": [],
+     "le_violations": [],
+     "issues": [],
+     "verdict": "rotates"
+    }
+   ],
+   "5b_duty_cycle": {
+    "threshold": 0.6,
+    "by_block": {
+     "sweat_circuit|circuit": {
+      "n": 190,
+      "min": 0.667,
+      "mean": 0.761
+     },
+     "sweat_circuit|emom": {
+      "n": 101,
+      "min": 0.606,
+      "mean": 0.635
+     },
+     "sweat_circuit|intervals": {
+      "n": 90,
+      "min": 0.621,
+      "mean": 0.706
+     },
+     "sweat_engine|continuous": {
+      "n": 53,
+      "min": 1.0,
+      "mean": 1.0
+     },
+     "sweat_engine|intervals": {
+      "n": 101,
+      "min": 1.0,
+      "mean": 1.0
+     },
+     "sweat_engine|pyramid": {
+      "n": 17,
+      "min": 1.0,
+      "mean": 1.0
+     },
+     "sweat_hybrid|circuit": {
+      "n": 76,
+      "min": 0.764,
+      "mean": 0.829
+     }
+    },
+    "below": 0,
+    "repairs": 2
+   },
+   "5c_resistance_heavy_circuits": {
+    "cases": 72,
+    "failures": 0,
+    "min_duty": 0.67,
+    "with_driver": 72,
+    "results": [
+     {
+      "target": "quads+glutes",
+      "states": [],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.73,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.73,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.85,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.77,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "quads+glutes",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.73,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.8,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.71,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.82,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.74,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.85,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.77,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.79,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.7,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.82,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+back",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.74,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.79,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.7,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.8,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.8,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.84,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.75,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.78,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.67,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.8,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "chest+shoulders+triceps",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.73,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.82,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.74,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.73,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.85,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.77,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.82,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "hamstrings",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.74,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.8,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.82,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.74,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.84,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.74,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.8,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.72,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.82,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "core",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.74,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.8,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.71,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.73,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.81,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.73,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.85,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.75,
+      "duty": 0.77,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.79,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.7,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 30,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.82,
+      "driver": true,
+      "fails": []
+     },
+     {
+      "target": "biceps+triceps",
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "duration": 60,
+      "structure": "circuit",
+      "resistance_share": 0.5,
+      "duty": 0.74,
+      "driver": true,
+      "fails": []
+     }
+    ]
+   },
+   "5d_equipment_limited": {
+    "cases": 96,
+    "failures": 0,
+    "resistance_only_builds": 24,
+    "resistance_only_structures": {
+     "intervals": 24
+    },
+    "results": [
+     {
+      "preset": "free_weight_limited",
+      "sore": [],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "emom",
+      "duty": 0.62,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.8,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.79,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.74,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.79,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.71,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "emom",
+      "duty": 0.66,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.76,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.74,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.76,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.72,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.76,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.72,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "emom",
+      "duty": 0.65,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.74,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "emom",
+      "duty": 0.65,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.76,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.76,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.76,
+      "fails": []
+     },
+     {
+      "preset": "free_weight_limited",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "emom",
+      "duty": 0.62,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.78,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.75,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.78,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.74,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.78,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "emom",
+      "duty": 0.66,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.76,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.74,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.75,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.72,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.75,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.72,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "emom",
+      "duty": 0.65,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.74,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "emom",
+      "duty": 0.65,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.76,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.75,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.75,
+      "fails": []
+     },
+     {
+      "preset": "db_bodyweight_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "emom",
+      "duty": 0.62,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.8,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.74,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.78,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.74,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.78,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": false,
+      "structure": "circuit",
+      "duty": 0.73,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.64,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.62,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.64,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.64,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.62,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.62,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.64,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "quads",
+       "core",
+       "chest"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.77,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.64,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "low_energy"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.62,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "stressed"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.64,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "beginner",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.63,
+      "fails": []
+     },
+     {
+      "preset": "db_bench_only",
+      "sore": [
+       "back",
+       "core",
+       "quads"
+      ],
+      "states": [
+       "irritated"
+      ],
+      "level": "intermediate",
+      "outcome": "VALID BUILD",
+      "resistance_only": true,
+      "structure": "intervals",
+      "duty": 0.77,
+      "fails": []
+     }
+    ]
+   },
+   "5e_hybrid_variety": [
+    {
+     "profile": "Hybrid int",
+     "sessions": 8,
+     "anchors": [
+      "treadmill_run",
+      "row_erg",
+      "ski_erg",
+      "treadmill_run",
+      "row_erg",
+      "ski_erg",
+      "treadmill_run",
+      "row_erg"
+     ],
+     "stations": [
+      [
+       "sled_push",
+       "farmer_carry",
+       "burpee",
+       "goblet_squat",
+       "jump_squat"
+      ],
+      [
+       "walking_lunge",
+       "sled_pull",
+       "kettlebell_deadlift",
+       "db_squat_to_press",
+       "front_foot_elevated_split_squat"
+      ],
+      [
+       "heel_elevated_db_squat",
+       "med_ball_slam",
+       "suitcase_carry",
+       "sled_push",
+       "burpee"
+      ],
+      [
+       "wall_ball",
+       "jump_squat",
+       "box_step_up_glute",
+       "db_rdl",
+       "front_foot_elevated_split_squat"
+      ],
+      [
+       "db_squat_to_press",
+       "sled_pull",
+       "farmer_carry",
+       "goblet_squat",
+       "burpee"
+      ],
+      [
+       "sled_push",
+       "med_ball_slam",
+       "reverse_lunge",
+       "kettlebell_deadlift",
+       "front_foot_elevated_split_squat"
+      ],
+      [
+       "wall_ball",
+       "jump_squat",
+       "suitcase_carry",
+       "heel_elevated_db_squat",
+       "burpee"
+      ],
+      [
+       "landmine_squat_to_press",
+       "db_step_up",
+       "kickstand_db_rdl",
+       "front_foot_elevated_split_squat",
+       "med_ball_slam"
+      ]
+     ],
+     "consecutive_overlap": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "full_hyrox_template_sessions": 0,
+     "sessions_with_sled": 5,
+     "distinct_stations": 20,
+     "verdict": "varied"
+    },
+    {
+     "profile": "Hybrid Irritated",
+     "sessions": 8,
+     "anchors": [
+      "row_erg",
+      "ski_erg",
+      "row_erg",
+      "row_erg",
+      "ski_erg",
+      "row_erg",
+      "ski_erg",
+      "row_erg"
+     ],
+     "stations": [
+      [
+       "jump_squat",
+       "med_ball_slam",
+       "sled_push",
+       "burpee",
+       "farmer_carry"
+      ],
+      [
+       "jump_squat",
+       "sled_pull",
+       "med_ball_slam",
+       "burpee",
+       "goblet_squat"
+      ],
+      [
+       "wall_ball",
+       "jump_squat",
+       "med_ball_slam",
+       "burpee",
+       "box_step_up_glute"
+      ],
+      [
+       "jump_squat",
+       "sled_pull",
+       "med_ball_slam",
+       "burpee",
+       "farmer_carry"
+      ],
+      [
+       "sled_push",
+       "jump_squat",
+       "med_ball_slam",
+       "burpee",
+       "goblet_squat"
+      ],
+      [
+       "jump_squat",
+       "sled_pull",
+       "med_ball_slam",
+       "burpee",
+       "front_foot_elevated_split_squat"
+      ],
+      [
+       "sled_push",
+       "med_ball_slam",
+       "jump_squat",
+       "burpee",
+       "farmer_carry"
+      ],
+      [
+       "jump_squat",
+       "sled_pull",
+       "med_ball_slam",
+       "burpee",
+       "goblet_squat"
+      ]
+     ],
+     "consecutive_overlap": [
+      0.6,
+      0.6,
+      0.6,
+      0.6,
+      0.6,
+      0.6,
+      0.6
+     ],
+     "full_hyrox_template_sessions": 0,
+     "sessions_with_sled": 7,
+     "distinct_stations": 10,
+     "verdict": "varied (State-limited pool)"
+    },
+    {
+     "profile": "Hybrid adv 30",
+     "sessions": 8,
+     "anchors": [
+      "treadmill_run",
+      "row_erg",
+      "ski_erg",
+      "treadmill_run",
+      "row_erg",
+      "ski_erg",
+      "treadmill_run",
+      "row_erg"
+     ],
+     "stations": [
+      [
+       "sled_push",
+       "farmer_carry"
+      ],
+      [
+       "goblet_squat",
+       "sled_pull"
+      ],
+      [
+       "wall_ball",
+       "burpee"
+      ],
+      [
+       "sled_push",
+       "farmer_carry"
+      ],
+      [
+       "goblet_squat",
+       "sled_pull"
+      ],
+      [
+       "wall_ball",
+       "burpee"
+      ],
+      [
+       "sled_push",
+       "farmer_carry"
+      ],
+      [
+       "goblet_squat",
+       "sled_pull"
+      ]
+     ],
+     "consecutive_overlap": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "full_hyrox_template_sessions": 0,
+     "sessions_with_sled": 6,
+     "distinct_stations": 6,
+     "verdict": "varied"
+    },
+    {
+     "profile": "Hybrid in rotation (Performance)",
+     "sessions": 4,
+     "anchors": [
+      "treadmill_run",
+      "ski_erg",
+      "row_erg",
+      "treadmill_run"
+     ],
+     "stations": [
+      [
+       "sled_push",
+       "farmer_carry",
+       "goblet_squat",
+       "burpee",
+       "jump_squat"
+      ],
+      [
+       "front_foot_elevated_split_squat",
+       "sled_pull",
+       "med_ball_slam",
+       "db_squat_to_press",
+       "walking_lunge"
+      ],
+      [
+       "heel_elevated_db_squat",
+       "suitcase_carry",
+       "kettlebell_deadlift",
+       "sled_push",
+       "burpee"
+      ],
+      [
+       "jump_squat",
+       "reverse_lunge",
+       "sled_pull",
+       "front_foot_elevated_split_squat",
+       "med_ball_slam"
+      ]
+     ],
+     "consecutive_overlap": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "full_hyrox_template_sessions": 0,
+     "sessions_with_sled": 4,
+     "distinct_stations": 14,
+     "verdict": "varied"
+    }
+   ]
+  },
+  "T4_invariants": {
+   "builds": 832,
+   "checks": 73402,
+   "violations": {
+    "SOFT_duration_band": 2
+   },
+   "fixed_station_overflows": 0,
+   "sled_used_in_default_builds": 79
+  }
+ },
+ "summary": {
+  "T0_data_errors": 0,
+  "T1a_builds": 672,
+  "T1a_actual_generator_failures": 0,
+  "T1a_hard_fail_total": 0,
+  "T1a_soft_duration_band": 2,
+  "T1b_fixtures": "41/41",
+  "T2a_reproducible": "400/400",
+  "T2b_swap": {
+   "healthy": 13,
+   "limited but defensible": 1
+  },
+  "T2c_history": {
+   "good": 8
+  },
+  "T3_sore_primary_violations": 0,
+  "T3_other_hard_fails": 0,
+  "T3_outcomes": {
+   "VALID BUILD": 152,
+   "VALID TERMINAL CONFLICT": 4
+  },
+  "T3_engine_sore_legs_builds": true,
+  "T4_violations": {
+   "SOFT_duration_band": 2
+  },
+  "T4_fixed_station_overflows": 0,
+  "T5a_low_energy": {
+   "LE int 60": "rotates",
+   "LE int 30": "rotates",
+   "LE beginner 60": "rotates",
+   "LE + Stressed 60": "rotates",
+   "LE forced Engine 60": "rotates"
+  },
+  "T5b_duty_below_060": 0,
+  "T5b_repairs": 2,
+  "T5c_resistance_heavy": "72/72 pass",
+  "T5d_equipment_limited": "96/96 pass, resistance-only builds 24",
+  "T5e_hybrid": {
+   "Hybrid int": "varied",
+   "Hybrid Irritated": "varied (State-limited pool)",
+   "Hybrid adv 30": "varied",
+   "Hybrid in rotation (Performance)": "varied"
+  }
+ }
+}

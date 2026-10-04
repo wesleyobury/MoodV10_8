@@ -13,6 +13,7 @@ from typing import Optional, List, Dict, Any, Set
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from bson import ObjectId
 import logging
+import os
 from collections import defaultdict
 
 from product_pricing import (
@@ -24,13 +25,164 @@ from product_pricing import (
 logger = logging.getLogger(__name__)
 
 
+# Accounts that must never be counted as real users. The admin allowlist is
+# included automatically: the founder account was silently inflating every
+# engagement metric because nobody had set is_internal on it by hand.
+# INTERNAL_USERNAMES adds testers and QA accounts without a redeploy of this
+# module. Matching is case-insensitive on username and email.
+_INTERNAL_IDENTIFIERS = {
+    x.strip().lower()
+    for x in (
+        os.environ.get("ADMIN_ALLOWLIST", "officialmoodapp").split(",")
+        + os.environ.get("INTERNAL_USERNAMES", "").split(",")
+    )
+    if x.strip()
+}
+
+# Throttle for the self-healing flag sync so we do not write on every request.
+_INTERNAL_SYNC_INTERVAL_SECONDS = 600
+_last_internal_sync_at: Optional[datetime] = None
+
+
+async def sync_internal_flags(db: AsyncIOMotorDatabase, force: bool = False) -> int:
+    """Stamp is_internal=True on every allowlisted account.
+
+    The is_internal flag is read in a dozen places across the codebase, so
+    fixing the flag itself is safer than teaching each of those reads about
+    the allowlist. Idempotent, and only ever sets the flag (never clears it),
+    so manually flagged testers are preserved.
+    """
+    global _last_internal_sync_at
+    if not _INTERNAL_IDENTIFIERS:
+        return 0
+    now = datetime.now(timezone.utc)
+    if not force and _last_internal_sync_at is not None:
+        if (now - _last_internal_sync_at).total_seconds() < _INTERNAL_SYNC_INTERVAL_SECONDS:
+            return 0
+    _last_internal_sync_at = now
+    try:
+        result = await db.users.update_many(
+            {
+                "is_internal": {"$ne": True},
+                "$or": [
+                    {"username": {"$in": list(_INTERNAL_IDENTIFIERS)}},
+                    {"email": {"$in": list(_INTERNAL_IDENTIFIERS)}},
+                ],
+            },
+            {"$set": {"is_internal": True}},
+        )
+        if result.modified_count:
+            logger.info(
+                "Marked %d allowlisted account(s) as internal", result.modified_count
+            )
+        return result.modified_count
+    except Exception as exc:  # never let analytics fail on a housekeeping write
+        logger.warning("sync_internal_flags failed: %s", exc)
+        return 0
+
+
 async def get_internal_user_ids(db: AsyncIOMotorDatabase) -> Set[str]:
     """Get set of internal user IDs to exclude from analytics."""
+    # Self-heals the flag (throttled) so a newly added tester is excluded
+    # without waiting for a restart.
+    await sync_internal_flags(db)
     internal_users = await db.users.find(
         {"is_internal": True},
         {"_id": 1}
     ).to_list(1000)
     return {str(u["_id"]) for u in internal_users}
+
+
+# Canonical mood keys. The same mood reaches analytics under several spellings
+# depending on which screen emitted the event ("Sweat / burn fat",
+# "Sweat / Burn Fat", "I want to do calisthenics", "Calisthenics"), which split
+# one mood into two or three rows on every breakdown. Normalise on read so
+# historical events are fixed too, not just new ones.
+_MOOD_ALIASES = {
+    "muscle": "muscle",
+    "muscle gainer": "muscle",
+    "i want to build muscle": "muscle",
+    "lazy": "lazy",
+    "i'm feeling lazy": "lazy",
+    "im feeling lazy": "lazy",
+    "feeling lazy": "lazy",
+    "sweat": "sweat",
+    "sweat / burn fat": "sweat",
+    "sweat/burn fat": "sweat",
+    "i want to sweat": "sweat",
+    "burn fat": "sweat",
+    "calisthenics": "calisthenics",
+    "i want to do calisthenics": "calisthenics",
+    "outdoor": "outdoor",
+    "i want to go outside": "outdoor",
+    "outdoors": "outdoor",
+    "explosive": "explosive",
+    "build explosion": "explosive",
+    "i want to be explosive": "explosive",
+}
+
+_MOOD_DISPLAY = {
+    "muscle": "Muscle gainer",
+    "lazy": "Feeling lazy",
+    "sweat": "Sweat / burn fat",
+    "calisthenics": "Calisthenics",
+    "outdoor": "Outdoor",
+    "explosive": "Build explosion",
+}
+
+
+def normalize_mood_category(value: Optional[str]) -> str:
+    """Fold a raw mood_category string onto one canonical display label."""
+    if not value:
+        return "Unknown"
+    key = " ".join(str(value).strip().lower().split())
+    canonical = _MOOD_ALIASES.get(key)
+    if canonical:
+        return _MOOD_DISPLAY[canonical]
+    # Unknown spelling: title-case it so at least casing stops splitting rows.
+    return str(value).strip()
+
+
+async def count_subscribers_by_derived_status(
+    db: AsyncIOMotorDatabase, include_internal: bool = False
+) -> Dict[str, Any]:
+    """Count subscribers by DERIVED status, not the raw subscription.status field.
+
+    Nothing writes subscription.status back to a lapsed value when a receipt
+    expires, so querying it directly counts everyone who has ever paid. That
+    overstated active subscribers and MRR by roughly 8x. subscriber_directory
+    ._classify is the same logic the Subscribers screen uses, so both screens
+    now agree by construction.
+
+    Returns {"active": [docs], "trial": [docs], "counts": {...}}.
+    """
+    from subscriber_directory import _classify
+
+    query: Dict[str, Any] = {
+        "$or": [
+            {"subscription.product_id": {"$exists": True, "$ne": None}},
+            {"subscription.status": {"$exists": True, "$ne": None}},
+        ]
+    }
+    if not include_internal:
+        query["is_internal"] = {"$ne": True}
+
+    docs = await db.users.find(
+        query, {"subscription": 1, "is_comp": 1, "is_internal": 1}
+    ).to_list(5000)
+
+    buckets: Dict[str, List[Dict[str, Any]]] = {
+        "active": [], "trial": [], "comp": [], "lapsed": []
+    }
+    for doc in docs:
+        derived = _classify(doc)
+        if derived in buckets:
+            buckets[derived].append(doc)
+
+    return {
+        **buckets,
+        "counts": {k: len(v) for k, v in buckets.items()},
+    }
 
 
 async def get_funnel_analysis(
@@ -224,6 +376,21 @@ _ONB_QUESTIONS = [
     (5, "Workout length"),
 ]
 
+# A build shipped 24-28 May 2026 wrote each question's answer into the NEXT
+# question's slot (goals landed under fitness level, levels under barrier, and
+# so on). The build was fixed, but ~24 events from that window still pollute
+# the lifetime answer distribution. Validating answers against the question's
+# real vocabulary drops them without hiding anything legitimate: an answer that
+# is not an option for the question it is filed under cannot be a real answer.
+_ONB_ANSWER_VOCAB = {
+    1: {"muscle", "lazy", "sweat", "calisthenics", "outdoor", "explosive"},
+    2: {"build_strength", "improve_physique", "lose_weight", "consistency",
+        "stress_relief", "improve_athleticism", "feel_better"},
+    3: {"active", "casual", "athletic", "sedentary"},
+    4: {"motivation", "time", "energy", "bored", "unsure"},
+    5: {"20", "30", "45", "60", "90"},
+}
+
 _ONB_STEP_LABELS = {
     0: "Intro", 1: "Mood", 2: "Primary goal", 3: "Fitness level",
     4: "Biggest barrier", 5: "Workout length", 6: "Social proof",
@@ -337,6 +504,9 @@ async def get_onboarding_analytics(
                             "metadata.answer": {"$exists": True, "$ne": None}}},
                 {"$group": {"_id": "$metadata.answer", "ppl": {"$addToSet": _ONB_PARTICIPANT}}},
             ]).to_list(length=300)
+            vocab = _ONB_ANSWER_VOCAB.get(step_num)
+            if vocab:
+                docs = [d for d in docs if str(d["_id"]) in vocab]
             options = [{"answer": str(d["_id"]),
                         "count": len([p for p in d["ppl"] if p is not None])} for d in docs]
             options.sort(key=lambda x: -x["count"])
@@ -491,13 +661,18 @@ async def get_monetization_analytics(
         # MRR — monthly-recurring revenue from the CURRENT active paid subscriber
         # base (a live snapshot, independent of the selected date range). Annual
         # plans are normalised to a monthly figure. Excludes trials/comps/internal.
-        mrr_docs = await db.users.aggregate([
-            {"$match": {"subscription.status": "active",
-                        "is_comp": {"$ne": True}, "is_internal": {"$ne": True}}},
-            {"$group": {"_id": "$subscription.product_id", "count": {"$sum": 1}}},
-        ]).to_list(50)
-        active_subscribers = sum(d["count"] for d in mrr_docs)
-        mrr = round(sum(monthly_price_for_plan(d["_id"]) * d["count"] for d in mrr_docs), 2)
+        # Derived from expiration_date, not the raw subscription.status field.
+        # See count_subscribers_by_derived_status for why.
+        _subs = await count_subscribers_by_derived_status(db, include_internal)
+        active_docs = _subs["active"]
+        active_subscribers = len(active_docs)
+        mrr = round(
+            sum(
+                monthly_price_for_plan((u.get("subscription") or {}).get("product_id"))
+                for u in active_docs
+            ),
+            2,
+        )
         arr = round(mrr * 12, 2)
 
         trials = await _onb_participants(db, base_match, "trial_started")
@@ -661,13 +836,15 @@ async def get_live_snapshot(
             (s.get("total", 0) for s in _dl.get("series", []) if s.get("date") == _today_str), 0)
         downloads_synced = bool(_dl.get("last_synced_date"))
 
-        # Active free trials + trials started today.
-        trials_active = await db.users.count_documents({**paid_flags, "subscription.status": "in_trial"})
+        # Active free trials + trials started today. Counted from derived
+        # status so an expired trial stops being reported as active.
+        _snap_subs = await count_subscribers_by_derived_status(db, include_internal)
+        trials_active = _snap_subs["counts"]["trial"]
         trials_today = await db.user_events.count_documents({
             **ev_filter, "event_type": "trial_started", "timestamp": {"$gte": today}})
 
         # Active paid subscriptions + new subscriptions started today.
-        subs_active = await db.users.count_documents({**paid_flags, "subscription.status": "active"})
+        subs_active = _snap_subs["counts"]["active"]
         subs_today = await db.user_events.count_documents({
             **ev_filter, "event_type": "subscription_started", "timestamp": {"$gte": today}})
 

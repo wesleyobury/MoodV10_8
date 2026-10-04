@@ -14,11 +14,14 @@ import { Analytics } from './analytics';
 
 // Configure notification handler (foreground display)
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
+  handleNotification: async (n) => {
+    // V3 Guided Session timer notices are for a backgrounded / locked phone only; in the foreground the player already
+    // shows the timer, so a banner would be noise (utils/v3Session/notify.ts also cancels them on foreground).
+    if ((n?.request?.content?.data as any)?.type === 'v3_session_timer') {
+      return { shouldShowAlert: false, shouldShowBanner: false, shouldShowList: false, shouldPlaySound: false, shouldSetBadge: false };
+    }
+    return { shouldShowAlert: true, shouldShowBanner: true, shouldShowList: true, shouldPlaySound: true, shouldSetBadge: true };
+  },
 });
 
 // Types
@@ -455,6 +458,10 @@ class NotificationService {
         has_deep_link: !!data?.deep_link,
       });
     }
+
+    // V3 Guided Session timer notice: opening the app is the whole action. A warm app resumes on the player; a cold start
+    // lands on Home, which shows Continue Workout. Never navigate away from an in-progress session.
+    if (data?.type === 'v3_session_timer') return;
 
     if (data?.type === 'featured_workout') {
       this._handleFeaturedWorkoutTap(data);

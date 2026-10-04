@@ -23,6 +23,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../utils/apiConfig';
 import { NETWORK_ERROR_MESSAGE } from '../../utils/api';
 import { AUTH_TOKEN_KEY, secureStorage } from '../../utils/secureStorage';
+import { COLORS } from '../../constants/brand';
 
 const PRIVACY_ACCEPTED_KEY = 'privacy_policy_accepted';
 
@@ -450,11 +451,11 @@ export default function Login() {
           {/* Form */}
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-              <Ionicons name="person-outline" size={20} color="#666" style={styles.inputIcon} />
+              <Ionicons name="person-outline" size={20} color={COLORS.textTertiary} style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="Username or Email"
-                placeholderTextColor="#666"
+                placeholderTextColor={COLORS.textTertiary}
                 value={username}
                 onChangeText={setUsername}
                 autoCapitalize="none"
@@ -464,11 +465,11 @@ export default function Login() {
             </View>
 
             <View style={styles.inputContainer}>
-              <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.inputIcon} />
+              <Ionicons name="lock-closed-outline" size={20} color={COLORS.textTertiary} style={styles.inputIcon} />
               <TextInput
                 style={[styles.input, styles.passwordInput]}
                 placeholder="Password"
-                placeholderTextColor="#666"
+                placeholderTextColor={COLORS.textTertiary}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPassword}
@@ -482,7 +483,7 @@ export default function Login() {
                 <Ionicons 
                   name={showPassword ? 'eye-off-outline' : 'eye-outline'} 
                   size={20} 
-                  color="#666" 
+                  color={COLORS.textTertiary} 
                 />
               </TouchableOpacity>
             </View>
@@ -524,7 +525,7 @@ export default function Login() {
             style={styles.guestButton}
             onPress={handleContinueAsGuest}
           >
-            <Ionicons name="eye-outline" size={18} color="#888" style={{ marginRight: 8 }} />
+            <Ionicons name="eye-outline" size={18} color={COLORS.textSecondary} style={{ marginRight: 8 }} />
             <Text style={styles.guestButtonText}>Continue as Guest</Text>
           </TouchableOpacity>
         </View>
@@ -536,7 +537,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: COLORS.bg,
   },
   keyboardView: {
     flex: 1,
@@ -558,20 +559,20 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: '#888',
+    color: COLORS.textSecondary,
     textAlign: 'center',
   },
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#2a2a2a',
+    backgroundColor: COLORS.surface,
     borderRadius: 12,
     height: 50,
     marginBottom: 12,
     gap: 12,
     borderWidth: 1,
-    borderColor: '#3a3a3a',
+    borderColor: COLORS.border,
   },
   googleIconContainer: {
     backgroundColor: '#DB4437',
@@ -622,10 +623,10 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#333',
+    backgroundColor: COLORS.border,
   },
   dividerText: {
-    color: '#666',
+    color: COLORS.textTertiary,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -635,12 +636,12 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: COLORS.surface,
     borderRadius: 12,
     marginBottom: 16,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: COLORS.border,
   },
   inputIcon: {
     marginRight: 12,
@@ -690,13 +691,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1f1f1f',
+    backgroundColor: COLORS.surface,
     borderRadius: 12,
     height: 50,
     marginTop: 12,
     gap: 10,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: COLORS.border,
   },
   createAccountEmblem: {
     width: 26,
@@ -718,11 +719,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 14,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: COLORS.border,
     borderRadius: 12,
   },
   guestButtonText: {
-    color: '#888',
+    color: COLORS.textSecondary,
     fontSize: 15,
     fontWeight: '500',
   },

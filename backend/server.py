@@ -174,6 +174,10 @@ from notification_worker import (
 )
 from seed_data import PREVIEW_FEATURED_WORKOUTS, FEATURED_WORKOUT_IDS
 from exercises_seed_data import PREVIEW_EXERCISES
+from mood_v3.router import build_v3_router  # MOOD V3 unified workout generation
+from v3_explore import build_explore_router, v3_live_bucket, enrich_live_feed, feed_samples  # MOOD V3 Explore (Live) + Profile activity
+from mood_v3.completion import CompletionHooks as V3CompletionHooks  # MOOD V3 Guided Session completion side effects
+from training_profile import build_training_profile_router  # MOOD V3 persistent training profile
 from workout_drafts import (
     build_workout_drafts_router,
     ensure_workout_drafts_indexes,
@@ -190,7 +194,14 @@ from entitlement import (
     EntitlementReason,
     consume_free_workout_update,
     free_period_resets_at,
+    first_free_workout,
+    first_workout_claim_doc,
+    FIRST_FREE_WORKOUT_FIELD,
+    current_free_period_key,
 )
+from start_gate import gate_workout_start  # one free workout per week; paywall on starting a second one
+from v3_tracking import record_start_gate  # V3 server events + user milestones
+from admin_v3 import build_admin_v3_router  # V3 founder dashboard API
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -2164,7 +2175,9 @@ async def get_entitlement(current_user_id: str = Depends(get_current_user)):
         "free_workouts_remaining": (None if access else free_workouts_remaining(user)),
         # V2.1 — so the client can say "resets Monday" instead of showing a
         # permanent wall. Null for entitled users, who have no allowance.
+        # Weekly free workout (claimed at START since Oct 2026); resets Monday 00:00 UTC.
         "free_workouts_reset_at": (None if access else free_period_resets_at().isoformat()),
+        "first_workout_claimed": first_free_workout(user) is not None,
         "is_founding_member": is_founding,
         "founding_pricing_claimed": claimed,
         "founding_window_active": bool(window_open and is_founding and not claimed),
@@ -2173,40 +2186,46 @@ async def get_entitlement(current_user_id: str = Depends(get_current_user)):
     }
 
 
-# ── Workout start gate (Hard Paywall #3 server enforcement) ───────────────
+# ── Workout start gate (paywall on STARTING workout #2) ───────────────────
 @api_router.post("/workouts/start")
-async def start_workout_gate(current_user_id: str = Depends(get_current_user)):
-    """Phase 1.1 / 4.3 — server-side gate the client calls before starting a
-    guided session. Returns 402 when a non-entitled user has used their free
-    workout. Generation stays unlimited (Phase 4.5); only START is capped."""
-    user = await db.users.find_one({"_id": ObjectId(current_user_id)})
+async def start_workout_gate(request: Request, current_user_id: str = Depends(get_current_user)):
+    """The client calls this on an explicit Start, before a guided session begins.
+
+    Oct 2026 rule (backend/start_gate.py + entitlement.start_decision): the first
+    workout an account starts is free; starting a SECOND workout without full
+    access returns 402. Optional JSON body {"workout_id": "...", "source": "v3"}
+    makes the start idempotent per workout (reopen / resume / restart of the same
+    workout is always allowed). Legacy V2 callers send no body. Generation stays
+    unlimited; only START is capped."""
+    body: dict = {}
+    try:
+        raw = await request.body()
+        if raw:
+            parsed = await request.json()
+            if isinstance(parsed, dict):
+                body = parsed
+    except Exception:
+        body = {}
+    oid = ObjectId(current_user_id)
+
+    async def _load():
+        return await db.users.find_one({"_id": oid})
+
+    user = await _load()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     is_admin, _ = is_admin_effective_sync(user)
-    access, reason = has_full_access(user, is_admin)
-    remaining = free_workouts_remaining(user)
-    if not can_start_workout(user, is_admin):
-        sub_mirror = subscription_mirror_for_client(user)
-        raise HTTPException(
-            status_code=402,
-            detail={
-                "error": "payment_required",
-                "trigger": "start_workout_after_free_session",
-                "has_full_access": access,
-                "reason": reason.value,
-                "free_workouts_remaining": remaining,
-                "free_workouts_reset_at": free_period_resets_at().isoformat(),
-                **sub_mirror,
-            },
-        )
-    return {
-        "ok": True,
-        "can_start": True,
-        "has_full_access": access,
-        "reason": reason.value,
-        "free_workouts_remaining": remaining,
-        "free_workouts_reset_at": (None if access else free_period_resets_at().isoformat()),
-    }
+    status_code, payload = await gate_workout_start(
+        db, {"_id": oid}, current_user_id, _load, is_admin,
+        body.get("workout_id"), body.get("source"),
+    )
+    # V3 tracking: server-side workout_start_gate event + first-start / second-attempt milestones (v3_tracking.py)
+    await record_start_gate(db, user, current_user_id, status_code, payload, body.get("workout_id"), body.get("source"))
+    if status_code == 402:
+        raise HTTPException(status_code=402, detail={**payload["detail"], **subscription_mirror_for_client(user)})
+    if status_code == 404:
+        raise HTTPException(status_code=404, detail="User not found")
+    return payload
 
 
 # ── Comp accounts (admin-grantable lifetime access) ───────────────────────
@@ -5940,10 +5959,17 @@ async def get_workout_quality_metrics(
         ]
         
         completed_results = await db.user_events.aggregate(completed_pipeline).to_list(1000)
-        completed_map = {
-            (r["_id"].get("mood"), r["_id"].get("difficulty"), r["_id"].get("equipment")): r["completed_count"]
-            for r in completed_results
-        }
+        # Mood is normalised on both sides of this join so the same mood does
+        # not split into several rows on casing or phrasing alone.
+        from admin_analytics import normalize_mood_category
+        completed_map = {}
+        for r in completed_results:
+            key = (
+                normalize_mood_category(r["_id"].get("mood")),
+                r["_id"].get("difficulty") or "Unknown",
+                r["_id"].get("equipment") or "None",
+            )
+            completed_map[key] = completed_map.get(key, 0) + r["completed_count"]
         
         # Calculate by mood category
         by_mood = {}
@@ -5953,15 +5979,27 @@ async def get_workout_quality_metrics(
         total_started = 0
         total_completed = 0
         
+        # Collapse the raw rows onto the normalised key FIRST. Two spellings of
+        # the same mood are one row, and the completed count for that key is
+        # then applied once rather than once per spelling.
+        started_map: Dict[tuple, Dict[str, Any]] = {}
         for item in started_results:
-            mood = item["_id"].get("mood") or "Unknown"
-            difficulty = item["_id"].get("difficulty") or "Unknown"
-            equipment = item["_id"].get("equipment") or "None"
-            started = item["started_count"]
-            completed = completed_map.get(
-                (item["_id"].get("mood"), item["_id"].get("difficulty"), item["_id"].get("equipment")),
-                0
+            key = (
+                normalize_mood_category(item["_id"].get("mood")),
+                item["_id"].get("difficulty") or "Unknown",
+                item["_id"].get("equipment") or "None",
             )
+            bucket = started_map.setdefault(
+                key, {"started": 0, "user_ids": set()}
+            )
+            bucket["started"] += item["started_count"]
+            bucket["user_ids"].update(item.get("user_ids", []))
+
+        for (mood, difficulty, equipment), agg in started_map.items():
+            started = agg["started"]
+            completed = completed_map.get((mood, difficulty, equipment), 0)
+            # A completed count can never exceed starts once keys are merged.
+            completed = min(completed, started)
             
             total_started += started
             total_completed += completed
@@ -5971,7 +6009,7 @@ async def get_workout_quality_metrics(
                 by_mood[mood] = {"started": 0, "completed": 0, "unique_users": set()}
             by_mood[mood]["started"] += started
             by_mood[mood]["completed"] += completed
-            by_mood[mood]["unique_users"].update(item.get("user_ids", []))
+            by_mood[mood]["unique_users"].update(agg["user_ids"])
             
             # Aggregate by difficulty
             if difficulty not in by_difficulty:
@@ -9504,8 +9542,10 @@ async def get_user_workouts(current_user_id: str = Depends(get_current_user), li
 
 # File Upload Endpoints - Using Cloudinary for persistent cloud storage
 
-UPLOAD_DIR = Path("/app/backend/uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
+# Next to this file (= /app/backend/uploads on the hosted server, unchanged), so
+# the backend also starts from a local checkout for dev-build testing.
+UPLOAD_DIR = Path(__file__).resolve().parent / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # Helper function to generate video thumbnail URL from Cloudinary
 def get_cloudinary_video_thumbnail(public_id: str, timestamp: float = 2.0) -> str:
@@ -10151,9 +10191,16 @@ async def get_live_feed(
     async for row in db.user_events.aggregate(mood_pipeline):
         cls = _classify_live_mood(row.get("_id"))
         if cls:
-            bucket_counts[cls[0]] = bucket_counts.get(cls[0], 0) + row["count"]
-    top_bucket = max(bucket_counts.items(), key=lambda x: x[1])[0] if bucket_counts else None
-    most_common_mood = _LIVE_BUCKET_LABELS.get(top_bucket) if top_bucket else None
+            bucket_counts[cls[1]] = bucket_counts.get(cls[1], 0) + row["count"]
+    # MOOD V3 completions carry a Direction, not a mood_category: count them under "Strength" / "Sweat" / "Athletic"
+    async for row in db.user_events.aggregate([
+        {"$match": {"event_type": "workout_completed", "metadata.source": "v3", "timestamp": {"$gte": today_start}}},
+        {"$group": {"_id": "$metadata.direction", "count": {"$sum": 1}}},
+    ]):
+        cls = v3_live_bucket({"source": "v3", "direction": row.get("_id")})
+        if cls:
+            bucket_counts[cls[1]] = bucket_counts.get(cls[1], 0) + row["count"]
+    most_common_mood = max(bucket_counts.items(), key=lambda x: x[1])[0] if bucket_counts else None
 
     # ---------- ENTRIES ----------
     # Primary window: 48 hours (feed should feel "live").
@@ -10206,7 +10253,7 @@ async def get_live_feed(
         seen_user_action = set()
         for ev in events:
             mood = (ev.get("metadata") or {}).get("mood_category")
-            classified = _classify_live_mood(mood)
+            classified = v3_live_bucket(ev.get("metadata") or {}) or _classify_live_mood(mood)
             if not classified:
                 continue
             bucket_id, label = classified
@@ -10303,6 +10350,7 @@ async def get_live_feed(
                 "timestamp": ts.isoformat(),
                 "ago_text": _format_relative_time(ts),
                 "workout_snapshot_id": workout_snapshot_id,
+                "v3_workout_id": (ev.get("metadata") or {}).get("v3_workout_id"),
             })
 
         # Sort by timestamp desc and break if we have enough
@@ -10399,6 +10447,14 @@ async def get_live_feed(
             "timestamp": ts.isoformat(),
             "ago_text": _format_relative_time(ts),
         })
+
+    # MOOD V3: name V3 workouts + Try-this-workout presets, then sample rows to fill a quiet feed (EXPLORE_SYNTHETIC; never
+    # counted in the stats header above)
+    try:
+        raw_entries = await enrich_live_feed(db, raw_entries)
+        raw_entries += feed_samples(now, len(raw_entries), _format_relative_time)
+    except Exception as _fe:
+        logger.warning(f"live feed v3 / sample rows skipped: {_fe}")
 
     raw_entries.sort(key=lambda e: e["timestamp"], reverse=True)
 
@@ -15289,11 +15345,7 @@ async def admin_send_mass_workout_reminder(
         "message": f"Workout reminders sent to {count} users"
     }
 
-@api_router.get("/admin/notifications/delivery-health")
-async def admin_notification_delivery_health(
-    days: int = 7,
-    current_user_id: str = Depends(require_admin),
-):
+async def _compute_notification_delivery_health(days: int = 7) -> dict:
     """Is push actually REACHING people? One call, no DB console needed.
 
     `delivered_push_at` is stamped only when a device accepted the push, so the
@@ -15409,6 +15461,42 @@ async def admin_notification_delivery_health(
         "drip": drip,
         "worker_running": worker_running,
     }
+
+
+@api_router.get("/admin/notifications/delivery-health")
+async def admin_notification_delivery_health(
+    days: int = 7,
+    current_user_id: str = Depends(require_admin),
+):
+    """Push delivery health, for a signed-in admin."""
+    return await _compute_notification_delivery_health(days)
+
+
+@api_router.get("/metrics/notification-health")
+async def metrics_notification_health(
+    days: int = 7,
+    x_service_token: Optional[str] = Header(None),
+):
+    """Same numbers as /admin/notifications/delivery-health, for automation.
+
+    Takes a static shared secret rather than an admin JWT, because the caller is
+    an unattended weekly job with no way to log in as a person and no business
+    holding an admin password. Set METRICS_SERVICE_TOKEN in this app's
+    environment and give the identical value to the caller.
+
+    Read-only and scoped to these aggregate counts: it exposes no user record,
+    no message content and no device token, so a leak of this secret costs
+    delivery statistics and nothing else. Rotate by changing the env var.
+    """
+    expected = os.environ.get("METRICS_SERVICE_TOKEN", "")
+    if not expected:
+        # Unset means this door is closed. Say so rather than letting an empty
+        # string authenticate anybody.
+        raise HTTPException(status_code=503, detail="METRICS_SERVICE_TOKEN is not configured")
+    if not hmac.compare_digest(x_service_token or "", expected):
+        raise HTTPException(status_code=401, detail="Invalid service token")
+
+    return await _compute_notification_delivery_health(days)
 
 
 @api_router.get("/admin/notifications/worker-status")
@@ -15600,6 +15688,70 @@ async def debug_profile_posts_check(
 api_router.include_router(
     build_workout_drafts_router(db, get_current_user, get_optional_current_user)
 )
+
+# MOOD V3: unified Strength / Sweat / Athletic generation (/api/v3/workouts/*)
+# Guided Session completion (mood_v3/completion.py): POST /api/v3/workouts/{id}/complete records the workout exactly once and
+# runs the account side effects server-side: user_workouts row, workouts_count, the weekly free-workout allowance (booked only
+# here, on completion, for non-entitled users) and the canonical `workout_completed` event that drives retention streaks and
+# achievements (so a user who opts out of client analytics still gets streak credit).
+async def _v3_load_user(uid: str):
+    try:
+        return await db.users.find_one({"_id": ObjectId(uid)})
+    except Exception:
+        return None
+
+
+def _v3_has_access(u: dict) -> bool:
+    is_admin_u, _ = is_admin_effective_sync(u)
+    return has_full_access(u, is_admin_u)[0]
+
+
+async def _v3_track_completion_event(uid: str, event_type: str, md: dict):
+    # Same stamping + retention path as POST /api/analytics/track.
+    md = dict(md or {})
+    u = await _v3_load_user(uid)
+    if u:
+        md.setdefault("is_comp", bool(u.get("is_comp", False)))
+        md.setdefault("is_internal", bool(u.get("is_internal", False)))
+        md.setdefault("is_founding_member", bool(u.get("founding_member", False)))
+    await track_user_event(db, uid, event_type, md)
+
+    async def _emit(t: str, meta: dict):
+        await track_user_event(db, uid, t, meta)
+    try:
+        await retention_engine.process_retention_for_event(db, uid, event_type, _emit)
+    except Exception as _re:
+        logger.error(f"v3 completion retention hook error: {_re}")
+
+
+async def _v3_claim_first_workout(uid: str, workout_id: str):
+    # A completed workout is always a started one: if the start gate never saw it this week (offline fail-open), claim it now.
+    try:
+        await db.users.update_one(
+            {"_id": ObjectId(uid), f"{FIRST_FREE_WORKOUT_FIELD}.period": {"$ne": current_free_period_key()}},
+            {"$set": {FIRST_FREE_WORKOUT_FIELD: first_workout_claim_doc(f"v3:{workout_id}", "v3_completion")}},
+        )
+    except Exception as _ce:
+        logger.error(f"v3 first-workout claim on completion failed: {_ce}")
+
+
+_v3_completion_hooks = V3CompletionHooks(
+    load_user=_v3_load_user,
+    user_filter=lambda uid: {"_id": ObjectId(uid)},
+    has_access=_v3_has_access,
+    consume_free_update=consume_free_workout_update,
+    free_remaining=free_workouts_remaining,
+    free_reset_at=free_period_resets_at,
+    track_event=_v3_track_completion_event,
+    claim_first_workout=_v3_claim_first_workout,
+)
+api_router.include_router(build_v3_router(db, get_current_user, _v3_completion_hooks))
+# MOOD V3 Explore + Profile: GET /api/v3/explore, GET /api/v3/me/activity (EXPLORE_SYNTHETIC=off|labeled|realistic)
+api_router.include_router(build_explore_router(db, get_current_user))
+# MOOD V3: GET/PUT /api/users/me/training-profile (users.training_profile)
+api_router.include_router(build_training_profile_router(db, get_current_user))
+# MOOD V3 founder dashboard: /api/analytics/admin/v3/* (pulse, activation, workouts, retention, revenue, users)
+api_router.include_router(build_admin_v3_router(db, require_admin))
 
 # Subscriptions / IAP — StoreKit validate, Apple webhooks, founding claim
 api_router.include_router(
@@ -16269,6 +16421,15 @@ async def startup_db_client():
     """Start background services on app startup"""
     # Log environment info
     logger.info(f"🌍 Environment: APP_ENV={APP_ENV}, IS_STAGING={IS_STAGING}")
+
+    # Make sure admin/tester accounts carry is_internal before any analytics
+    # read happens. Without this the founder account is counted as a real user.
+    try:
+        from admin_analytics import sync_internal_flags
+        flagged = await sync_internal_flags(db, force=True)
+        logger.info(f"🔒 Internal-account sync complete ({flagged} newly flagged)")
+    except Exception as e:
+        logger.warning(f"Internal-account sync skipped: {e}")
     play_ready, play_message = google_play_verifier_config_status()
     if play_ready:
         logger.info(f"✅ Google Play subscription verifier {play_message}")

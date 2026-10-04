@@ -1,0 +1,317 @@
+{
+ "A_pure_low_energy": {
+  "builds": 180,
+  "hard_fails": 0,
+  "item_tiers": {
+   "preferred": 770,
+   "secondary": 40,
+   "avoid": 0
+  },
+  "preferred_share": 0.951,
+  "multi_item_blocks_by_secondary_count": {
+   "0": 140
+  },
+  "secondary_items_seen": {
+   "Treadmill Run": 20,
+   "Goblet Squat": 20
+  }
+ },
+ "C_multi_state_low_energy": {
+  "LE+Irritated": {
+   "builds": 60,
+   "hard_fails": 0,
+   "preferred_share": 0.611,
+   "secondary_share": 0.389,
+   "avoid_items": 0,
+   "blocks_with_more_than_2_secondary": 0,
+   "sessions_with_finisher": 0,
+   "pure_LE_preferred_share_same_inputs": 0.944
+  },
+  "LE+Bored": {
+   "builds": 60,
+   "hard_fails": 0,
+   "preferred_share": 0.778,
+   "secondary_share": 0.222,
+   "avoid_items": 0,
+   "blocks_with_more_than_2_secondary": 0,
+   "sessions_with_finisher": 0,
+   "pure_LE_preferred_share_same_inputs": 0.944
+  },
+  "LE+Amped": {
+   "builds": 60,
+   "hard_fails": 0,
+   "preferred_share": 0.611,
+   "secondary_share": 0.389,
+   "avoid_items": 0,
+   "blocks_with_more_than_2_secondary": 0,
+   "sessions_with_finisher": 0,
+   "pure_LE_preferred_share_same_inputs": 0.944
+  },
+  "LE+Irritated+Bored": {
+   "builds": 60,
+   "hard_fails": 0,
+   "preferred_share": 0.639,
+   "secondary_share": 0.361,
+   "avoid_items": 0,
+   "blocks_with_more_than_2_secondary": 0,
+   "sessions_with_finisher": 0,
+   "pure_LE_preferred_share_same_inputs": 0.944
+  },
+  "LE+Stressed": {
+   "builds": 60,
+   "hard_fails": 0,
+   "preferred_share": 0.944,
+   "secondary_share": 0.056,
+   "avoid_items": 0,
+   "blocks_with_more_than_2_secondary": 0,
+   "sessions_with_finisher": 0,
+   "pure_LE_preferred_share_same_inputs": 0.944
+  }
+ },
+ "D_irritated_vs_amped": {
+  "sweat_engine_30": {
+   "hard_fails": 0,
+   "amped": {
+    "conditioning_min": 17.1,
+    "primary_min": 11.5,
+    "primary_density": 1.0,
+    "primary_rest_s": 60,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 0.5,
+    "explosive_item_share": 0.25,
+    "finisher_rate": 0,
+    "primary_structures": {
+     "intervals": 20
+    },
+    "complements": {
+     "fixed_circuit": 20
+    },
+    "anchor_dose": null
+   },
+   "irritated": {
+    "conditioning_min": 16.45,
+    "primary_min": 13.71,
+    "primary_density": 1.0,
+    "primary_rest_s": 52.5,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 1.0,
+    "explosive_item_share": 0.0,
+    "finisher_rate": 0,
+    "primary_structures": {
+     "intervals": 20
+    },
+    "complements": {
+     "engine_intervals": 10
+    },
+    "anchor_dose": null
+   },
+   "exercise_overlap_jaccard": 0.12
+  },
+  "sweat_engine_60": {
+   "hard_fails": 0,
+   "amped": {
+    "conditioning_min": 37.55,
+    "primary_min": 27.75,
+    "primary_density": 1.0,
+    "primary_rest_s": 60,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 0.54,
+    "explosive_item_share": 0.27,
+    "finisher_rate": 0.25,
+    "primary_structures": {
+     "intervals": 20
+    },
+    "complements": {
+     "fixed_circuit": 20
+    },
+    "anchor_dose": null
+   },
+   "irritated": {
+    "conditioning_min": 30.6,
+    "primary_min": 15.58,
+    "primary_density": 1.0,
+    "primary_rest_s": 52.5,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 1.0,
+    "explosive_item_share": 0.0,
+    "finisher_rate": 1,
+    "primary_structures": {
+     "intervals": 20
+    },
+    "complements": {
+     "engine_intervals": 20
+    },
+    "anchor_dose": null
+   },
+   "exercise_overlap_jaccard": 0.12
+  },
+  "sweat_circuit_30": {
+   "hard_fails": 0,
+   "amped": {
+    "conditioning_min": 17.5,
+    "primary_min": 17.5,
+    "primary_density": 0.91,
+    "primary_rest_s": 30,
+    "timed_station_work_s": 45,
+    "cathartic_item_share": 0.25,
+    "explosive_item_share": 0.68,
+    "finisher_rate": 0,
+    "primary_structures": {
+     "intervals": 20
+    },
+    "complements": {},
+    "anchor_dose": null
+   },
+   "irritated": {
+    "conditioning_min": 16.21,
+    "primary_min": 16.18,
+    "primary_density": 0.88,
+    "primary_rest_s": 37.5,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 0.5,
+    "explosive_item_share": 0.25,
+    "finisher_rate": 0,
+    "primary_structures": {
+     "circuit": 20
+    },
+    "complements": {},
+    "anchor_dose": null
+   },
+   "exercise_overlap_jaccard": 0.22
+  },
+  "sweat_circuit_60": {
+   "hard_fails": 0,
+   "amped": {
+    "conditioning_min": 41.0,
+    "primary_min": 26.5,
+    "primary_density": 0.91,
+    "primary_rest_s": 30,
+    "timed_station_work_s": 45,
+    "cathartic_item_share": 0.38,
+    "explosive_item_share": 0.53,
+    "finisher_rate": 1,
+    "primary_structures": {
+     "intervals": 20
+    },
+    "complements": {
+     "couplet_emom": 20
+    },
+    "anchor_dose": null
+   },
+   "irritated": {
+    "conditioning_min": 34.96,
+    "primary_min": 20.94,
+    "primary_density": 0.87,
+    "primary_rest_s": 37.5,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 0.71,
+    "explosive_item_share": 0.29,
+    "finisher_rate": 1,
+    "primary_structures": {
+     "circuit": 20
+    },
+    "complements": {
+     "engine_intervals": 20
+    },
+    "anchor_dose": null
+   },
+   "exercise_overlap_jaccard": 0.39
+  },
+  "sweat_hybrid_30": {
+   "hard_fails": 0,
+   "amped": {
+    "conditioning_min": 16.6,
+    "primary_min": 15.85,
+    "primary_density": 0.92,
+    "primary_rest_s": 30,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 0.37,
+    "explosive_item_share": 0.64,
+    "finisher_rate": 0,
+    "primary_structures": {
+     "circuit": 20
+    },
+    "complements": {
+     "fixed_circuit": 3
+    },
+    "anchor_dose": {
+     "{\"kind\": \"distance\", \"value\": 600}": 20
+    }
+   },
+   "irritated": {
+    "conditioning_min": 17.62,
+    "primary_min": 14.89,
+    "primary_density": 0.88,
+    "primary_rest_s": 45,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 0.83,
+    "explosive_item_share": 0.0,
+    "finisher_rate": 0,
+    "primary_structures": {
+     "circuit": 20
+    },
+    "complements": {
+     "fixed_circuit": 10
+    },
+    "anchor_dose": {
+     "{\"kind\": \"distance\", \"value\": 400}": 10,
+     "{\"kind\": \"distance\", \"value\": 500}": 10
+    }
+   },
+   "exercise_overlap_jaccard": 0.19
+  },
+  "sweat_hybrid_60": {
+   "hard_fails": 0,
+   "amped": {
+    "conditioning_min": 39.09,
+    "primary_min": 26.22,
+    "primary_density": 0.9,
+    "primary_rest_s": 30,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 0.35,
+    "explosive_item_share": 0.55,
+    "finisher_rate": 1,
+    "primary_structures": {
+     "circuit": 20
+    },
+    "complements": {
+     "fixed_circuit": 20
+    },
+    "anchor_dose": {
+     "{\"kind\": \"distance\", \"value\": 700}": 10,
+     "{\"kind\": \"distance\", \"value\": 800}": 10
+    }
+   },
+   "irritated": {
+    "conditioning_min": 35.2,
+    "primary_min": 21.77,
+    "primary_density": 0.83,
+    "primary_rest_s": 45,
+    "timed_station_work_s": null,
+    "cathartic_item_share": 0.73,
+    "explosive_item_share": 0.09,
+    "finisher_rate": 1,
+    "primary_structures": {
+     "circuit": 20
+    },
+    "complements": {
+     "fixed_circuit": 20
+    },
+    "anchor_dose": {
+     "{\"kind\": \"distance\", \"value\": 500}": 10,
+     "{\"kind\": \"distance\", \"value\": 550}": 10
+    }
+   },
+   "exercise_overlap_jaccard": 0.36
+  }
+ },
+ "E_names": {
+  "air_bike": "Air Bike",
+  "suspension_row": "Suspension Trainer Row",
+  "display_aliases": {
+   "air_bike": "Air Bike / Assault Bike",
+   "suspension_row": "Suspension Trainer Row / TRX Row"
+  },
+  "name_used_in_logic": false
+ }
+}

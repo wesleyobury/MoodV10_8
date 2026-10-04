@@ -1,0 +1,2212 @@
+{
+ "cases": [
+  {
+   "id": "S0",
+   "label": "Strength \u00b7 no State",
+   "request": {
+    "direction": "strength",
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "The big lift comes first: Barbell Hip Thrust, heavy, while you've got the most to give. Then the targeted work fills in the volume around it. Hit the main lift hard, then let the volume do its job.",
+   "before": "As an intermediate lifter, rest-pause on the final set on Machine Glute Kickback is on the table. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+   "words": 38,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "sparse",
+    "facts": [
+     "lead_lift",
+     "accessory_build"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Trap-Bar Deadlift",
+    "Box Step-Up (Glute Bias)",
+    "Machine Glute Kickback",
+    "Sissy Squat"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+    "accessory_build: 2 accessory movements build out the session after the main work, partly paired."
+   ]
+  },
+  {
+   "id": "S1",
+   "label": "Strength \u00b7 Low Energy",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "low_energy"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Your working sets stop a little further from failure, so the energy you do have goes into quality work. The movements are stable and low-friction, so your effort goes into the muscle instead of the balancing act.",
+   "before": "You're low on energy today, so we're keeping you further from failure, leaning into stable, low-friction movements and trimming accessory volume. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+   "words": 38,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "lead",
+    "facts": [
+     "further_from_failure",
+     "stable_choices"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Trap-Bar Deadlift",
+    "Reverse Lunge",
+    "Machine Glute Kickback",
+    "Leg Extension"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "further_from_failure: Low Energy: working sets stop further from failure.",
+    "stable_choices: Low Energy: stable, supported, low-friction movements were chosen.",
+    "trimmed_extras: Low Energy: some accessory work was cut.",
+    "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "S2",
+   "label": "Strength \u00b7 Amped",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "amped"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "You've got extra juice today, so we're using it. The accessories run closer to the edge than usual; one of your lifts finishes with a rest-pause. Spend the energy on the work that matters, not on rushing.",
+   "before": "You're amped today, so we're taking Machine Glute Kickback and Leg Extension a rep closer to failure and using rest-pause on the final set on Machine Glute Kickback. As an intermediate lifter, rest-pause on the final set on Machine Glute Kickback is on the table. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+   "words": 38,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "closer_to_failure",
+     "intensifier"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Trap-Bar Deadlift",
+    "Reverse Lunge",
+    "Machine Glute Kickback",
+    "Leg Extension",
+    "Kettlebell Swing"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "closer_to_failure: Amped: Machine Glute Kickback and Leg Extension taken a rep closer to failure (accessories).",
+    "intensifier: Amped: rest-pause on the final set on Machine Glute Kickback.",
+    "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+    "finisher: A finisher (Kettlebell Swing) closes the session.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "S3",
+   "label": "Strength \u00b7 Irritated",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "irritated"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "When you're wound up, simple and heavy beats clever. The main lifts get heavier and the reps come down, and every rep of Barbell Hip Thrust moves with intent. Attack each set, then actually take your rest.",
+   "before": "You're irritated today, so we're building the session around heavy, simple compound work and driving every rep of Barbell Hip Thrust with intent.",
+   "words": 37,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "heavier_main",
+     "explosive_intent"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Trap-Bar Deadlift",
+    "Machine Glute Kickback",
+    "Leg Extension"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "heavier_main: Irritated: heavy, simple compound work at lower reps.",
+    "explosive_intent: Irritated: every rep of Barbell Hip Thrust is driven with intent.",
+    "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "S4",
+   "label": "Strength \u00b7 Bored",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "bored"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "A little novelty goes a long way, so we built some in. Frog Pump comes in where you'd usually see something more familiar, and one of your lifts switches to one-and-a-half reps on the last set.",
+   "before": "You're bored today, so we're changing the feel with 1.5 reps on the Frog Pump and bringing in 1 less-familiar movement. As an intermediate lifter, 1.5 reps on Frog Pump is on the table.",
+   "words": 39,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "fresh_movements",
+     "intensifier"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Trap-Bar Deadlift",
+    "Frog Pump",
+    "Sissy Squat"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "fresh_movements: Bored: 1 less-familiar movement brought in (Frog Pump).",
+    "intensifier: Bored: 1.5 reps on Frog Pump changes how the work feels.",
+    "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "S5",
+   "label": "Strength \u00b7 Sore shoulders",
+   "request": {
+    "direction": "strength",
+    "soreness": [
+     "shoulders"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Your sore shoulders get the day off, so today is a Glutes + Legs session instead. Heavy work leads the way today: Barbell Hip Thrust first, while you're fresh. Then the targeted work fills in the volume around it.",
+   "before": "Your shoulders are sore, so we're moving the work elsewhere: today is a Glutes + Legs session that leaves them alone. As an intermediate lifter, the top-set scheme is in play.",
+   "words": 38,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "sparse",
+    "facts": [
+     "sore_reroute",
+     "lead_lift",
+     "accessory_build"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Trap-Bar Deadlift",
+    "Reverse Lunge",
+    "Cable Glute Kickback",
+    "Leg Extension"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "sore_reroute: Sore shoulders: today's session was chosen to leave it alone (Glutes + Legs).",
+    "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "S6",
+   "label": "Strength \u00b7 Stressed",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "stressed"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Your head's full enough today, so the session isn't going to add to it. The reps stay controlled and rhythmic. Follow the plan, breathe between sets, and let the rhythm carry you.",
+   "before": "You're stressed today, so the session runs on autopilot: controlled, rhythmic reps. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+   "words": 32,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "controlled_tempo"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Trap-Bar Deadlift",
+    "Reverse Lunge",
+    "Cable Glute Kickback",
+    "Leg Extension"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "controlled_tempo: Stressed: controlled, rhythmic reps.",
+    "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "S7",
+   "label": "Strength \u00b7 Amped + Sore legs",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "amped"
+    ],
+    "soreness": [
+     "legs"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "With your legs sore, we built today around Upper Pull so they can recover. Neutral-Grip Lat Pulldown runs closer to the edge than usual, so that readiness turns into real work. Chest-Supported Machine Row finishes with a drop set.",
+   "before": "Your legs are sore, so we're moving the work elsewhere: today is an Upper Pull session that leaves them alone. You're amped today, so we're taking Neutral-Grip Lat Pulldown a rep closer to failure and using drop set on the final set on Chest-Supported Machine Row. As an intermediate lifter, drop set on the final set on Chest-Supported Machine Row is on the table.",
+   "words": 41,
+   "session": "Strength \u00b7 Upper Pull",
+   "meta": {
+    "source": "composer",
+    "frame": "lead",
+    "facts": [
+     "sore_reroute",
+     "closer_to_failure",
+     "intensifier"
+    ]
+   },
+   "exercises": [
+    "Neutral-Grip Lat Pulldown",
+    "Chest-Supported Machine Row",
+    "Single-Arm Dumbbell Row",
+    "Straight-Arm Pulldown",
+    "Machine Preacher Curl",
+    "Barbell Curl"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "sore_reroute: Sore legs: today's session was chosen to leave it alone (Upper Pull).",
+    "closer_to_failure: Amped: Neutral-Grip Lat Pulldown taken a rep closer to failure.",
+    "intensifier: Amped: drop set on the final set on Chest-Supported Machine Row.",
+    "lead_lift: Neutral-Grip Lat Pulldown leads the session as heavy, low-rep work.",
+    "accessory_build: 3 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "S8",
+   "label": "Strength \u00b7 Low Energy + Amped",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "low_energy",
+     "amped"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Machine Glute Kickback and Leg Extension leave a couple of good reps in the tank, but Barbell Hip Thrust runs closer to the edge than usual. Smooth reps today. You should walk out better than you walked in.",
+   "before": "You're amped but running on less energy than usual, so energy sets the budget and the readiness goes into one place: Barbell Hip Thrust. Everything around it stays further from failure. As an intermediate lifter, 1.5 reps on Machine Glute Kickback is on the table. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+   "words": 38,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "cue",
+    "facts": [
+     "further_from_failure",
+     "closer_to_failure"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Trap-Bar Deadlift",
+    "Box Step-Up (Glute Bias)",
+    "Machine Glute Kickback",
+    "Leg Extension"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "further_from_failure: Low Energy: Machine Glute Kickback and Leg Extension stop further from failure.",
+    "closer_to_failure: Amped: Barbell Hip Thrust taken a rep closer to failure.",
+    "stable_choices: Low Energy: stable, supported, low-friction movements were chosen.",
+    "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "S9",
+   "label": "Strength \u00b7 Bored + Stressed \u00b7 Upper Body",
+   "request": {
+    "direction": "strength",
+    "archetype": "strength_upper_mixed",
+    "states": [
+     "bored",
+     "stressed"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "You want something new but not something complicated, and you can have both. Every rep moves at a steady, unhurried tempo, and Parallel Bar Dip and Bayesian Cable Curl come in where you'd usually see something more familiar.",
+   "before": "You're bored and stressed, so the novelty is in the movements (3 less-familiar ones) while the structure stays plain and predictable.",
+   "words": 38,
+   "session": "Strength \u00b7 Upper Body",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "controlled_tempo",
+     "fresh_movements"
+    ]
+   },
+   "exercises": [
+    "Dumbbell Bench Press",
+    "Parallel Bar Dip",
+    "Pull-Up",
+    "Bayesian Cable Curl",
+    "Reverse Pec Deck"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "fresh_movements: Bored: 3 less-familiar movements brought in (Parallel Bar Dip and Bayesian Cable Curl).",
+    "controlled_tempo: Stressed: controlled, rhythmic reps.",
+    "lead_lift: Dumbbell Bench Press leads the session.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "W0",
+   "label": "Sweat \u00b7 no State",
+   "request": {
+    "direction": "sweat",
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Every round starts on the Row Erg, then hands off to the stations (Sled Push and Single-Arm Overhead Carry). Hard enough to count, controlled enough to repeat. The goal is your last round looking like your first.",
+   "before": null,
+   "words": 38,
+   "session": "Sweat \u00b7 Hybrid",
+   "meta": {
+    "source": "composer",
+    "frame": "sparse",
+    "facts": [
+     "sweat_shape",
+     "effort_band"
+    ]
+   },
+   "exercises": [
+    "Row Erg",
+    "Sled Push",
+    "Single-Arm Overhead Carry",
+    "Med-Ball Slam",
+    "Dumbbell Push Press",
+    "Treadmill Run"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "sweat_shape: Hybrid: a split anchor with Sled Push, Single-Arm Overhead Carry and Med-Ball Slam.",
+    "second_piece: A shorter second piece (closer) follows the main block.",
+    "effort_band: Main block effort RPE 7\u20138."
+   ]
+  },
+  {
+   "id": "W1",
+   "label": "Sweat \u00b7 Stressed",
+   "request": {
+    "direction": "sweat",
+    "states": [
+     "stressed"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Your head's full enough today, so the session isn't going to add to it. The pace stays somewhere you can repeat. Follow the plan, breathe between sets, and let the rhythm carry you.",
+   "before": "You're stressed, so the session runs in fixed, repeatable rounds of Farmer Carry, Kettlebell Deadlift, Dead Bug and Push-Up at a controlled effort: settle in and just work, no clock to race.",
+   "words": 33,
+   "session": "Sweat \u00b7 Circuit",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "sustainable_pace"
+    ]
+   },
+   "exercises": [
+    "Farmer Carry",
+    "Kettlebell Deadlift",
+    "Dead Bug",
+    "Push-Up",
+    "Jump Rope"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "sustainable_pace: stressed: the main block's target effort comes down to a pace you can repeat (RPE 6\u20137).",
+    "sweat_shape: Circuit: a timed circuit with Farmer Carry, Kettlebell Deadlift and Dead Bug.",
+    "second_piece: A shorter second piece (engine intervals) follows the main block.",
+    "effort_band: Main block effort RPE 6\u20137."
+   ]
+  },
+  {
+   "id": "W2",
+   "label": "Sweat \u00b7 Amped",
+   "request": {
+    "direction": "sweat",
+    "states": [
+     "amped"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "You showed up ready to go, and the session is built to take advantage. The main block runs at a harder pace. Spend the energy on the work that matters, not on rushing.",
+   "before": "You're amped, so that readiness goes into a harder pace.",
+   "words": 33,
+   "session": "Sweat \u00b7 Circuit",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "harder_pace"
+    ]
+   },
+   "exercises": [
+    "Box Jump",
+    "Devil Press",
+    "Dumbbell Push Press",
+    "Med-Ball Slam",
+    "Row Erg"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "harder_pace: amped: the main block's target effort goes up (now RPE 8\u20139).",
+    "sweat_shape: Circuit: an every-minute clock with Box Jump, Devil Press and Dumbbell Push Press.",
+    "second_piece: A shorter second piece (engine intervals) follows the main block.",
+    "effort_band: Main block effort RPE 8\u20139."
+   ]
+  },
+  {
+   "id": "W3",
+   "label": "Sweat \u00b7 Amped + Stressed",
+   "request": {
+    "direction": "sweat",
+    "states": [
+     "amped",
+     "stressed"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "You've got energy but a busy head, so the effort goes up while the plan stays simple. You get one more round than usual, but the breaks between efforts get a little longer.",
+   "before": "You're amped but stressed, so the session stays simple and predictable (long intervals) and the extra energy goes into an extra round on the Air Bike rather than into a busier structure. A balanced session, which is the point of a consistency goal.",
+   "words": 33,
+   "session": "Sweat \u00b7 Engine",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "extra_round",
+     "more_recovery"
+    ]
+   },
+   "exercises": [
+    "Air Bike / Assault Bike",
+    "Kettlebell Swing",
+    "Dumbbell Push Press",
+    "Front-Rack Carry"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "extra_round: An extra round of work.",
+    "more_recovery: More recovery between efforts so each one stays controlled.",
+    "sweat_shape: Engine: longer intervals on the Air Bike.",
+    "second_piece: A shorter second piece (fixed circuit) follows the main block.",
+    "effort_band: Main block effort RPE 7\u20138."
+   ]
+  },
+  {
+   "id": "W4",
+   "label": "Sweat \u00b7 Low Energy + Bored \u00b7 Engine",
+   "request": {
+    "direction": "sweat",
+    "archetype": "sweat_engine",
+    "states": [
+     "low_energy",
+     "bored"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "The effort sits at a level you can hold the whole way, so the energy you do have goes into quality work. Kickstand Dumbbell RDL and Dumbbell Floor Press come in where you'd usually see something more familiar.",
+   "before": "You're bored and low on energy, so the change of scenery comes from the modality and the stations, not from more work: long intervals at a sustainable effort. A balanced session, which is the point of a consistency goal.",
+   "words": 38,
+   "session": "Sweat \u00b7 Engine",
+   "meta": {
+    "source": "composer",
+    "frame": "lead",
+    "facts": [
+     "sustainable_pace",
+     "fresh_movements"
+    ]
+   },
+   "exercises": [
+    "Stationary Bike",
+    "Kickstand Dumbbell RDL",
+    "Dumbbell Floor Press",
+    "Single-Arm Overhead Carry"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "fresh_movements: Bored: fresh stations (Kickstand Dumbbell RDL and Dumbbell Floor Press).",
+    "sustainable_pace: low_energy: the main block's target effort comes down to a pace you can repeat (RPE 6\u20137).",
+    "simple_stations: low_energy: simple, stable stations (Kickstand Dumbbell RDL and Dumbbell Floor Press).",
+    "sweat_shape: Engine: longer intervals on the Stationary Bike.",
+    "second_piece: A shorter second piece (fixed circuit) follows the main block.",
+    "effort_band: Main block effort RPE 6\u20137."
+   ]
+  },
+  {
+   "id": "W5",
+   "label": "Sweat \u00b7 Irritated \u00b7 30 min",
+   "request": {
+    "direction": "sweat",
+    "states": [
+     "irritated"
+    ],
+    "duration": 30
+   },
+   "status": "ok",
+   "text": "It's straight rounds today instead of a timed circuit, so that edge has somewhere useful to go. Thirty minutes, so the main work stays and the filler goes.",
+   "before": "You're irritated, so that energy gets somewhere physical to go: Kettlebell Swing, Dumbbell Push Press and Sled Rope Pull around the Air Bike. The movements stay simple so you can focus on output, not coordination. A balanced session, which is the point of a consistency goal.",
+   "words": 28,
+   "session": "Sweat \u00b7 Circuit",
+   "meta": {
+    "source": "composer",
+    "frame": "context",
+    "facts": [
+     "shape_change",
+     "short_window"
+    ]
+   },
+   "exercises": [
+    "Air Bike / Assault Bike",
+    "Kettlebell Swing",
+    "Dumbbell Push Press",
+    "Sled Rope Pull"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "shape_change: irritated: the session runs as straight rounds instead of a timed circuit.",
+    "sweat_shape: Circuit: straight rounds with Kettlebell Swing, Dumbbell Push Press and Sled Rope Pull.",
+    "short_window: 30-minute window: the main work stays, nothing filler.",
+    "effort_band: Main block effort RPE 7\u20138."
+   ]
+  },
+  {
+   "id": "A0",
+   "label": "Athletic \u00b7 no State",
+   "request": {
+    "direction": "athletic",
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Dumbbell Jump Squat goes first, while your legs are fresh, because explosive work only counts when it's fast. Then Landmine Push Press and Kettlebell Swing keep the explosive theme going. Fresh, fast and crisp beats tired and busy.",
+   "before": "Today is primarily vertical power: Dumbbell Jump Squat comes first, while you're fresh, then Landmine Push Press for upper-body power and Kettlebell Swing for total-body explosiveness, and Front-Foot Elevated Split Squat and Push-Up, done for bar speed, build the strength behind it.",
+   "words": 38,
+   "session": "Athletic \u00b7 Power",
+   "meta": {
+    "source": "composer",
+    "frame": "sparse",
+    "facts": [
+     "quality_first",
+     "then_more"
+    ]
+   },
+   "exercises": [
+    "Dumbbell Jump Squat",
+    "Landmine Push Press",
+    "Kettlebell Swing",
+    "Front-Foot Elevated Split Squat",
+    "Push-Up"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "quality_first: Primary quality: vertical power. Dumbbell Jump Squat comes first while fresh.",
+    "strength_for_speed: Strength work (Front-Foot Elevated Split Squat and Push-Up) comes after the explosive work, done for bar speed.",
+    "then_more: Then Landmine Push Press (upper-body power) and Kettlebell Swing (total-body explosiveness).",
+    "full_rest_rule: 120 s between primary sets so every rep stays fast."
+   ]
+  },
+  {
+   "id": "A1",
+   "label": "Athletic \u00b7 Low Energy",
+   "request": {
+    "direction": "athletic",
+    "states": [
+     "low_energy"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "The number of explosive sets comes down while each one stays full intent, so the energy you do have goes into quality work. It's done in about 35 minutes because everything that matters is already there. No filler.",
+   "before": "You're low on energy, so today's athletic work stays focused: 2 athletic movements instead of 3, 6 explosive sets and simple movements. You still train explosively without turning the session into a grind. Today is primarily horizontal power: Lateral Box Jump comes first, while you're fresh, then Med-Ball Chest Pass for upper-body power, and Dumbbell Step-Up and Suspension Trainer Row, done for bar speed, build the strength behind it.",
+   "words": 38,
+   "session": "Athletic \u00b7 Power",
+   "meta": {
+    "source": "composer",
+    "frame": "context",
+    "facts": [
+     "fewer_efforts",
+     "complete_early"
+    ]
+   },
+   "exercises": [
+    "Lateral Box Jump",
+    "Med-Ball Chest Pass",
+    "Dumbbell Step-Up",
+    "Suspension Trainer Row"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "fewer_efforts: Low Energy: fewer explosive efforts (2 athletic movements instead of 3 and 6 explosive sets instead of 9), each still full intent.",
+    "less_impact: Low Energy: less landing impact (9 landings instead of 18).",
+    "simple_power: Low Energy: every movement is simple to coordinate.",
+    "full_recovery: Low Energy: longer recovery between primary sets (105 s between primary sets).",
+    "strength_held_back: Low Energy: the strength work stays well short of failure / carries less volume.",
+    "quality_first: Primary quality: horizontal power. Lateral Box Jump comes first while fresh."
+   ]
+  },
+  {
+   "id": "A2",
+   "label": "Athletic \u00b7 Amped",
+   "request": {
+    "direction": "athletic",
+    "states": [
+     "amped"
+    ],
+    "duration": 60,
+    "experience": "advanced"
+   },
+   "status": "ok",
+   "text": "Energy's high, so today asks a little more of you. Front Squat and Countermovement Jump are paired so the heavy set wakes up the explosive one. Push where it counts and let the rest take care of itself.",
+   "before": "You're amped, so we're spending that readiness on quality rather than piling on volume: a heavy-light contrast pair (Front Squat into Countermovement Jump) and heavier strength work (Front Squat at 3 reps, about 1 from failure), with the jumps, throws and lifts kept low-rep and explosive. Today is primarily vertical power: heavy Front Squat paired with Countermovement Jump, so the heavy set primes the explosive one, with full recovery after every pair, then Kettlebell Swing for total-body explosiveness, Dumbbell Push Press for upper-body power and Med-Ball Rotational Slam for rotational power.",
+   "words": 38,
+   "session": "Athletic \u00b7 Power",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "contrast"
+    ]
+   },
+   "exercises": [
+    "Front Squat",
+    "Countermovement Jump",
+    "Kettlebell Swing",
+    "Dumbbell Push Press",
+    "Med-Ball Rotational Slam"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "contrast: Amped: heavy-light contrast pairs (Front Squat into Countermovement Jump).",
+    "quality_first: Primary quality: vertical power. Countermovement Jump comes first while fresh.",
+    "then_more: Then Kettlebell Swing (total-body explosiveness), Dumbbell Push Press (upper-body power) and Med-Ball Rotational Slam (rotational power).",
+    "full_rest_rule: 150 s between primary sets so every rep stays fast."
+   ]
+  },
+  {
+   "id": "A3",
+   "label": "Athletic \u00b7 Sore legs",
+   "request": {
+    "direction": "athletic",
+    "soreness": [
+     "legs"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Your legs are sore, so the power work moves to the upper body with no jumping or sprinting. Today is built around upper-body power, starting with Dumbbell Push Press before any fatigue sets in. Every rep fast, every rest full.",
+   "before": "Your legs are sore, so the power work moves to the upper body: Dumbbell Push Press and Med-Ball Rotational Slam, with no jumping or sprinting. Today is primarily upper-body power: Dumbbell Push Press comes first, while you're fresh, then Med-Ball Rotational Slam for rotational power and Med-Ball Shot-Put Throw for more rotational power, and Single-Arm Dumbbell Row and Half-Kneeling Single-Arm Landmine Press, done for bar speed, build the strength behind it.",
+   "words": 41,
+   "session": "Athletic \u00b7 Power",
+   "meta": {
+    "source": "composer",
+    "frame": "sparse",
+    "facts": [
+     "sore_shift_upper",
+     "quality_first"
+    ]
+   },
+   "exercises": [
+    "Dumbbell Push Press",
+    "Med-Ball Rotational Slam",
+    "Med-Ball Shot-Put Throw",
+    "Single-Arm Dumbbell Row",
+    "Half-Kneeling Single-Arm Landmine Press"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "sore_shift_upper: Sore legs: the power work moves to the upper body; no jumping or sprinting.",
+    "quality_first: Primary quality: upper-body power. Dumbbell Push Press comes first while fresh.",
+    "strength_for_speed: Strength work (Single-Arm Dumbbell Row and Half-Kneeling Single-Arm Landmine Press) comes after the explosive work, done for bar speed.",
+    "then_more: Then Med-Ball Rotational Slam (rotational power) and Med-Ball Shot-Put Throw (rotational power).",
+    "full_rest_rule: 90 s between primary sets so every rep stays fast."
+   ]
+  },
+  {
+   "id": "A4",
+   "label": "Athletic \u00b7 Irritated + Stressed",
+   "request": {
+    "direction": "athletic",
+    "states": [
+     "irritated",
+     "stressed"
+    ],
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Broad Jump to Stick gives you something to hit hard, a few reps at a time, and the order is simple and nothing asks you to react on the fly. Attack each set, then actually take your rest.",
+   "before": "You're irritated and stressed, so it's simple explosive work without complicated drills: Broad Jump to Stick first, then straightforward strength. Today is primarily horizontal power: Broad Jump to Stick comes first, while you're fresh, then Dumbbell Push Press for upper-body power and Med-Ball Rotational Throw for rotational power, and Barbell Hip Thrust, done for bar speed, builds the strength behind it.",
+   "words": 38,
+   "session": "Athletic \u00b7 Full-Body Athlete",
+   "meta": {
+    "source": "composer",
+    "frame": "cue",
+    "facts": [
+     "forceful_athletic",
+     "no_chaos"
+    ]
+   },
+   "exercises": [
+    "Broad Jump to Stick",
+    "Dumbbell Push Press",
+    "Med-Ball Rotational Throw",
+    "Barbell Hip Thrust"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "forceful_athletic: Irritated: forceful, direct movements (Broad Jump to Stick and Dumbbell Push Press), low reps so they stay explosive.",
+    "no_chaos: Stressed: no reactive or complicated drills; a simple order with 4 exercises.",
+    "quality_first: Primary quality: horizontal power. Broad Jump to Stick comes first while fresh.",
+    "complete_early: The session is complete at about 39 minutes: quality, not filler.",
+    "strength_for_speed: Strength work (Barbell Hip Thrust) comes after the explosive work, done for bar speed.",
+    "then_more: Then Dumbbell Push Press (upper-body power) and Med-Ball Rotational Throw (rotational power)."
+   ]
+  },
+  {
+   "id": "A5",
+   "label": "Athletic \u00b7 Bored",
+   "request": {
+    "direction": "athletic",
+    "states": [
+     "bored"
+    ],
+    "duration": 60,
+    "experience": "advanced"
+   },
+   "status": "ok",
+   "text": "A little novelty goes a long way, so we built some in. Drop Jump brings something you haven't done lately. Treat the new pieces as a challenge, not a test.",
+   "before": "You're bored, so we're changing the movement experience with Drop Jump, lateral and rotational work and different tools (box, landmine, med ball) rather than simply adding more work. Today is primarily elastic, reactive ability: Drop Jump comes first, while you're fresh, then Lateral Bound to Box Jump for horizontal power, Landmine Rotational Punch for rotational power and Step-Behind Rotational Throw for more rotational power.",
+   "words": 30,
+   "session": "Athletic \u00b7 Speed + Plyo",
+   "meta": {
+    "source": "composer",
+    "frame": "feel",
+    "facts": [
+     "fresh_athletic"
+    ]
+   },
+   "exercises": [
+    "Drop Jump",
+    "Lateral Bound to Box Jump",
+    "Landmine Rotational Punch",
+    "Step-Behind Rotational Throw"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "fresh_athletic: Bored: a different movement experience (Drop Jump), lateral and rotational work.",
+    "quality_first: Primary quality: elastic, reactive ability. Drop Jump comes first while fresh.",
+    "then_more: Then Lateral Bound to Box Jump (horizontal power), Landmine Rotational Punch (rotational power) and Step-Behind Rotational Throw (rotational power).",
+    "full_rest_rule: 120 s between primary sets so every rep stays fast."
+   ]
+  },
+  {
+   "id": "X1",
+   "label": "Sparse \u00b7 Strength Arms \u00b7 30 min \u00b7 beginner",
+   "request": {
+    "direction": "strength",
+    "archetype": "strength_arms",
+    "duration": 30,
+    "experience": "beginner"
+   },
+   "status": "ok",
+   "text": "EZ-Bar Preacher Curl sets the tone today, and the rest of the session builds around it. Thirty minutes, so the main work stays and the filler goes. Straightforward, focused, and built to leave you better, not wrecked.",
+   "before": "As a newer lifter, you get approachable movements and two reps in reserve on the main work; the progress comes from adding load, not from grinding. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+   "words": 38,
+   "session": "Strength \u00b7 Arms",
+   "meta": {
+    "source": "composer",
+    "frame": "sparse",
+    "facts": [
+     "lead_lift",
+     "short_window"
+    ]
+   },
+   "exercises": [
+    "EZ-Bar Preacher Curl",
+    "Seated Dip Machine",
+    "Machine Lateral Raise"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "level_beginner: Beginner: approachable movements and reps left in reserve.",
+    "lead_lift: EZ-Bar Preacher Curl leads the session.",
+    "short_window: 30-minute window: the main work stays, nothing filler."
+   ]
+  },
+  {
+   "id": "X2",
+   "label": "Sparse \u00b7 Sweat Engine \u00b7 30 min",
+   "request": {
+    "direction": "sweat",
+    "archetype": "sweat_engine",
+    "duration": 30
+   },
+   "status": "ok",
+   "text": "The work comes in waves on the Treadmill Run so you can keep producing without fading halfway through. It should feel solidly hard, never frantic. Pace the first round like you'll have to repeat it, because you will.",
+   "before": "A balanced session, which is the point of a consistency goal.",
+   "words": 38,
+   "session": "Sweat \u00b7 Engine",
+   "meta": {
+    "source": "composer",
+    "frame": "sparse",
+    "facts": [
+     "sweat_shape",
+     "effort_band"
+    ]
+   },
+   "exercises": [
+    "Treadmill Run"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "sweat_shape: Engine: longer intervals on the Treadmill Run.",
+    "short_window: 30-minute window: the main work stays, nothing filler.",
+    "effort_band: Main block effort RPE 7\u20138."
+   ]
+  },
+  {
+   "id": "X3",
+   "label": "Sparse \u00b7 Athletic Speed + Plyo",
+   "request": {
+    "direction": "athletic",
+    "archetype": "athletic_speed_agility",
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Speed comes first while you're fresh: Pogo to Box Jump sets up today's vertical power work. The strength work comes last and still moves fast, building the engine behind the explosive stuff. Every rep fast, every rest full.",
+   "before": "Today is primarily vertical power: Pogo to Box Jump comes first, while you're fresh, then Lateral Bound to Box Jump for horizontal power, Landmine Push Press for upper-body power and Med-Ball Rotational Slam for rotational power, and Trap-Bar Jump Squat, done for bar speed, builds the strength behind it.",
+   "words": 38,
+   "session": "Athletic \u00b7 Speed + Plyo",
+   "meta": {
+    "source": "composer",
+    "frame": "sparse",
+    "facts": [
+     "quality_first",
+     "strength_for_speed"
+    ]
+   },
+   "exercises": [
+    "Pogo to Box Jump",
+    "Lateral Bound to Box Jump",
+    "Landmine Push Press",
+    "Med-Ball Rotational Slam",
+    "Trap-Bar Jump Squat"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "quality_first: Primary quality: vertical power. Pogo to Box Jump comes first while fresh.",
+    "strength_for_speed: Strength work (Trap-Bar Jump Squat) comes after the explosive work, done for bar speed.",
+    "then_more: Then Lateral Bound to Box Jump (horizontal power), Landmine Push Press (upper-body power) and Med-Ball Rotational Slam (rotational power).",
+    "full_rest_rule: 105 s between primary sets so every rep stays fast."
+   ]
+  },
+  {
+   "id": "P1",
+   "label": "Personal \u00b7 Strength \u00b7 Amped \u00b7 Chest + Triceps \u00b7 build muscle \u00b7 advanced",
+   "request": {
+    "direction": "strength",
+    "target": [
+     "chest",
+     "triceps"
+    ],
+    "states": [
+     "amped"
+    ],
+    "goal": "build_muscle",
+    "experience": "advanced",
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Your chest and triceps each get direct work, in that order. Parallel Bar Dip gets pushed a rep closer to failure, so that readiness turns into real work. For muscle, the volume lives in the accessory work.",
+   "before": "You're amped today, so we're taking Parallel Bar Dip a rep closer to failure and pushing the main lifts to the heavy end of their range. You're advanced, so Dumbbell Bench Press runs to a rep from failure, and your muscle goal is why 3 accessory movements sit behind the main lifts at moderate reps. Both chest and triceps get direct work, in that order.",
+   "words": 37,
+   "session": "Strength \u00b7 Upper Push",
+   "meta": {
+    "source": "composer",
+    "frame": "context",
+    "facts": [
+     "target_split",
+     "closer_to_failure",
+     "goal_muscle"
+    ]
+   },
+   "exercises": [
+    "Dumbbell Bench Press",
+    "Parallel Bar Dip",
+    "Plate-Loaded Incline Press",
+    "Cable Fly",
+    "JM Press",
+    "Machine Triceps Extension"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "closer_to_failure: Amped: Parallel Bar Dip taken a rep closer to failure.",
+    "heavier_main: Amped: main lifts move to the heavy end of their rep range.",
+    "target_split: Target Chest and Triceps: each gets direct work, in that order.",
+    "goal_muscle: Muscle goal: accessories carry real volume at moderate reps behind the main lifts.",
+    "level_advanced: Advanced: more demanding movements and methods are kept in.",
+    "lead_lift: Dumbbell Bench Press leads the session as heavy, low-rep work."
+   ]
+  },
+  {
+   "id": "P2",
+   "label": "Personal \u00b7 Strength \u00b7 Low Energy \u00b7 Quads + Glutes \u00b7 build strength",
+   "request": {
+    "direction": "strength",
+    "target": [
+     "quads",
+     "glutes"
+    ],
+    "states": [
+     "low_energy"
+    ],
+    "goal": "build_strength",
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Quads and glutes both get their own dedicated work. Every set leaves a couple of good reps in the tank, so every set you do has a purpose. Strength is the goal, so the main lift gets priority and everything else supports it.",
+   "before": "You're low on energy today, so we're keeping you further from failure. Your strength goal keeps Barbell Hip Thrust heavy and the accessories in a supporting role. Both quads and glutes get direct work, in that order.",
+   "words": 43,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "context",
+    "facts": [
+     "target_split",
+     "further_from_failure",
+     "goal_strength"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Pit Shark Belt Squat",
+    "Dumbbell Step-Up",
+    "Cable Glute Kickback",
+    "Leg Extension"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "further_from_failure: Low Energy: working sets stop further from failure.",
+    "target_split: Target Quads and Glutes: each gets direct work, in that order.",
+    "goal_strength: Strength goal: the main lift stays heavy and gets priority; everything else supports it.",
+    "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  },
+  {
+   "id": "P3",
+   "label": "Personal \u00b7 Sweat \u00b7 Irritated \u00b7 Chest + Back \u00b7 conditioning goal \u00b7 free weights",
+   "request": {
+    "direction": "sweat",
+    "target": [
+     "chest",
+     "back"
+    ],
+    "states": [
+     "irritated"
+    ],
+    "goal": "lose_weight_conditioning",
+    "equipment": "free_weight_limited",
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Your chest and back shape the station picks, but it's still a conditioning session. The main block runs at a harder pace, so you can push hard without overthinking it.",
+   "before": "You're irritated, so that energy gets somewhere physical to go: Burpee, Dumbbell Push Press and Front-Rack Carry. The movements stay simple so you can focus on output, not coordination. You asked for chest + back, so the stations lean that way. Your conditioning goal keeps the session moving: sustained active minutes rather than long breaks.",
+   "words": 30,
+   "session": "Sweat \u00b7 Circuit",
+   "meta": {
+    "source": "composer",
+    "frame": "target",
+    "facts": [
+     "target_lean",
+     "harder_pace"
+    ]
+   },
+   "exercises": [
+    "Burpee",
+    "Dumbbell Push Press",
+    "Bent-Over Dumbbell Row (Two-Arm)",
+    "Front-Rack Carry",
+    "Jump Rope"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "harder_pace: irritated: the main block's target effort goes up (now RPE 8\u20139).",
+    "target_lean: Stations lean toward Chest + Back while the session stays conditioning-first.",
+    "goal_conditioning: Conditioning goal: the session keeps moving with little standing around.",
+    "equipment: Built around the equipment available.",
+    "sweat_shape: Circuit: straight rounds with Burpee, Dumbbell Push Press and Bent-Over Dumbbell Row (Two-Arm).",
+    "second_piece: A shorter second piece (engine intervals) follows the main block."
+   ]
+  },
+  {
+   "id": "P4",
+   "label": "Personal \u00b7 Athletic \u00b7 Amped + Sore shoulders \u00b7 athleticism goal",
+   "request": {
+    "direction": "athletic",
+    "states": [
+     "amped"
+    ],
+    "soreness": [
+     "shoulders"
+    ],
+    "goal": "improve_athleticism",
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Your shoulders are sore, so the explosive work stays in the legs and nothing goes overhead. The main movement steps up to Dumbbell Jump Squat. Since athleticism is the goal, speed and power lead and strength backs them up.",
+   "before": "Your shoulders are sore, so the power work stays in the lower body (Dumbbell Jump Squat) and nothing is pressed or thrown overhead. You're amped, so we're spending that readiness on quality rather than piling on volume: one extra quality set of Dumbbell Jump Squat, with the jumps, throws and lifts kept low-rep and explosive. Today is primarily vertical power: Dumbbell Jump Squat comes first, while you're fresh, then Kettlebell Swing for total-body explosiveness and Med-Ball Shot-Put Throw for rotational power, and Bulgarian Split Squat, done for bar speed, builds the strength behind it.",
+   "words": 39,
+   "session": "Athletic \u00b7 Full-Body Athlete",
+   "meta": {
+    "source": "composer",
+    "frame": "context",
+    "facts": [
+     "sore_shift_lower",
+     "demanding_primary",
+     "goal_athletic"
+    ]
+   },
+   "exercises": [
+    "Dumbbell Jump Squat",
+    "Kettlebell Swing",
+    "Med-Ball Shot-Put Throw",
+    "Bulgarian Split Squat"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "sore_shift_lower: Sore shoulders: power stays in the lower body; nothing pressed or thrown overhead.",
+    "demanding_primary: Amped: a more demanding primary (Dumbbell Jump Squat).",
+    "extra_quality_set: Amped: one extra quality set of Dumbbell Jump Squat, still low-rep.",
+    "goal_athletic: Athleticism goal: speed and power lead; strength supports them.",
+    "quality_first: Primary quality: vertical power. Dumbbell Jump Squat comes first while fresh.",
+    "strength_for_speed: Strength work (Bulgarian Split Squat) comes after the explosive work, done for bar speed."
+   ]
+  },
+  {
+   "id": "P5",
+   "label": "Personal \u00b7 Strength \u00b7 Stressed + Sore lower back \u00b7 feel-better goal",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "stressed"
+    ],
+    "soreness": [
+     "lower_back"
+    ],
+    "goal": "feel_better_reduce_stress",
+    "duration": 60
+   },
+   "status": "ok",
+   "text": "Your lower back is sore, so today is a Glutes + Legs session that leaves it alone. Every rep moves at a steady, unhurried tempo. You're training to feel better, so the work stays steady rather than punishing.",
+   "before": "Your lower back is sore, so we're moving the work away from it: today is a Glutes + Legs session that leaves it alone. You're stressed today, so the session runs on autopilot: controlled, rhythmic reps. Your feel-better goal keeps the compound work two reps from failure: steady, not grinding.",
+   "words": 37,
+   "session": "Strength \u00b7 Glutes + Legs",
+   "meta": {
+    "source": "composer",
+    "frame": "context",
+    "facts": [
+     "sore_reroute",
+     "controlled_tempo",
+     "goal_feel"
+    ]
+   },
+   "exercises": [
+    "Barbell Hip Thrust",
+    "Trap-Bar Deadlift",
+    "Box Step-Up (Glute Bias)",
+    "Cable Glute Kickback",
+    "Leg Extension"
+   ],
+   "gate_ok": true,
+   "problems": [],
+   "sim": {
+    "max_jaccard": 0.0,
+    "opener_clash": false,
+    "closer_clash": false,
+    "sentence_clash": false,
+    "older_reuse": 0
+   },
+   "facts": [
+    "sore_reroute: Sore lower back: today's session was chosen to leave it alone (Glutes + Legs).",
+    "controlled_tempo: Stressed: controlled, rhythmic reps.",
+    "goal_feel: Feel-better goal: compound work stays two reps from failure.",
+    "lead_lift: Barbell Hip Thrust leads the session.",
+    "accessory_build: 2 accessory movements build out the session after the main work."
+   ]
+  }
+ ],
+ "repeats": [
+  {
+   "id": "R1",
+   "label": "Repeat \u00d75 \u00b7 Strength \u00b7 Low Energy",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "low_energy"
+    ],
+    "duration": 60
+   },
+   "runs": [
+    {
+     "status": "ok",
+     "text": "Nobody's grinding out ugly reps today. The plan: the extras that wouldn't pay you back today are gone, and there's no pairing or circuit, just one exercise at a time. Leave with something in the tank.",
+     "before": "You're low on energy today, so we're keeping you further from failure, trimming accessory volume and keeping the structure simple. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+     "words": 36,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "not",
+      "facts": [
+       "further_from_failure",
+       "trimmed_extras",
+       "straight_sets"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Box Step-Up (Glute Bias)",
+      "Machine Glute Kickback",
+      "Leg Extension"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "further_from_failure: Low Energy: working sets stop further from failure.",
+      "trimmed_extras: Low Energy: some accessory work was cut.",
+      "straight_sets: Low Energy: plain straight sets instead of a fancier scheme.",
+      "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+      "accessory_build: 2 accessory movements build out the session after the main work."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "Your working sets stop a little further from failure, so the energy you do have goes into quality work. The movements are stable and low-friction, so your effort goes into the muscle instead of the balancing act.",
+     "before": "You're low on energy today, so we're keeping you further from failure, leaning into stable, low-friction movements and trimming accessory volume. As an intermediate lifter, paused reps on Barbell Hip Thrust is on the table. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+     "words": 38,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "lead",
+      "facts": [
+       "further_from_failure",
+       "stable_choices"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Reverse Lunge",
+      "Machine Glute Kickback",
+      "Leg Extension"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "further_from_failure: Low Energy: working sets stop further from failure.",
+      "stable_choices: Low Energy: stable, supported, low-friction movements were chosen.",
+      "trimmed_extras: Low Energy: some accessory work was cut.",
+      "straight_sets: Low Energy: plain straight sets instead of a fancier scheme.",
+      "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+      "accessory_build: 2 accessory movements build out the session after the main work."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "We're not padding the session with extras, so every set you do has a purpose. Smooth reps today. You should walk out better than you walked in.",
+     "before": "You're low on energy today, so we're leaving Leg Extension out.",
+     "words": 27,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "not",
+      "facts": [
+       "trimmed_extras"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Machine Glute Kickback"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "trimmed_extras: Low Energy: some accessory work was cut (Leg Extension left out).",
+      "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "You're not running on a full tank today, so nothing here wastes energy. Every set leaves a couple of good reps in the tank, and the main lifts sit at moderate weights with a few more reps.",
+     "before": "You're low on energy today, so we're keeping you further from failure and keeping the main lifts at moderate loads. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+     "words": 37,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "feel",
+      "facts": [
+       "further_from_failure",
+       "moderate_loads"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Reverse Lunge",
+      "Machine Glute Kickback",
+      "Leg Extension"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.015,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "further_from_failure: Low Energy: working sets stop further from failure.",
+      "moderate_loads: Low Energy: main lifts use moderate loads in a higher rep range.",
+      "lead_lift: Barbell Hip Thrust leads the session.",
+      "accessory_build: 2 accessory movements build out the session after the main work."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "Today's about real work on a smaller budget. Your working sets stop a little further from failure, and we're leaning on stable, supported movements.",
+     "before": "You're low on energy today, so we're keeping you further from failure, leaning into stable, low-friction movements and trimming accessory volume.",
+     "words": 24,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "feel",
+      "facts": [
+       "further_from_failure",
+       "stable_choices"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Machine Glute Kickback",
+      "Leg Extension"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.137,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "further_from_failure: Low Energy: working sets stop further from failure.",
+      "stable_choices: Low Energy: stable, supported, low-friction movements were chosen.",
+      "trimmed_extras: Low Energy: some accessory work was cut.",
+      "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+      "accessory_build: 2 accessory movements build out the session after the main work."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R2",
+   "label": "Repeat \u00d75 \u00b7 Sweat \u00b7 no State",
+   "request": {
+    "direction": "sweat",
+    "duration": 60
+   },
+   "runs": [
+    {
+     "status": "ok",
+     "text": "Think of the Row Erg as home base: you keep coming back to it between stations. It should feel solidly hard, never frantic. Pace the first round like you'll have to repeat it, because you will.",
+     "before": null,
+     "words": 36,
+     "session": "Sweat \u00b7 Hybrid",
+     "meta": {
+      "source": "composer",
+      "frame": "sparse",
+      "facts": [
+       "sweat_shape",
+       "effort_band"
+      ]
+     },
+     "exercises": [
+      "Row Erg",
+      "Sled Push",
+      "Farmer Carry",
+      "Dumbbell Push Press",
+      "Med-Ball Slam",
+      "Air Bike / Assault Bike"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "sweat_shape: Hybrid: a split anchor with Sled Push, Farmer Carry and Dumbbell Push Press.",
+      "second_piece: A shorter second piece (closer) follows the main block.",
+      "effort_band: Main block effort RPE 7\u20138."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "We're building today around repeatable rounds of Kettlebell Snatch, Push-Up and Burpee, not one huge redline effort. Hard enough to count, controlled enough to repeat. The goal is your last round looking like your first.",
+     "before": null,
+     "words": 36,
+     "session": "Sweat \u00b7 Circuit",
+     "meta": {
+      "source": "composer",
+      "frame": "sparse",
+      "facts": [
+       "sweat_shape",
+       "effort_band"
+      ]
+     },
+     "exercises": [
+      "SkiErg",
+      "Kettlebell Snatch",
+      "Push-Up",
+      "Burpee",
+      "Air Bike / Assault Bike"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "sweat_shape: Circuit: a timed circuit with Kettlebell Snatch, Push-Up and Burpee.",
+      "second_piece: A shorter second piece (engine intervals) follows the main block.",
+      "effort_band: Main block effort RPE 7\u20138."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "The reps climb as you go, so the session builds on itself instead of staying flat. After that, a quick Treadmill Run piece tops off the conditioning. Start a little conservative and finish strong.",
+     "before": null,
+     "words": 34,
+     "session": "Sweat \u00b7 Hybrid",
+     "meta": {
+      "source": "composer",
+      "frame": "sparse",
+      "facts": [
+       "sweat_shape",
+       "second_piece"
+      ]
+     },
+     "exercises": [
+      "Row Erg",
+      "Goblet Squat",
+      "Overhead Carry",
+      "Treadmill Run"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "sweat_shape: Hybrid: a ladder with Goblet Squat and Overhead Carry.",
+      "second_piece: A shorter second piece (closer) follows the main block.",
+      "effort_band: Main block effort RPE 7\u20138."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "Today is about output you can repeat, round after round. A shorter second piece on the Air Bike rounds it out. Find a rhythm early and hold it.",
+     "before": "A balanced session, which is the point of a consistency goal.",
+     "words": 28,
+     "session": "Sweat \u00b7 Circuit",
+     "meta": {
+      "source": "composer",
+      "frame": "sparse",
+      "facts": [
+       "sweat_shape",
+       "second_piece"
+      ]
+     },
+     "exercises": [
+      "Treadmill Run",
+      "Kettlebell Swing",
+      "Push-Up",
+      "Overhead Carry",
+      "Air Bike / Assault Bike"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "sweat_shape: Circuit: straight rounds with Kettlebell Swing, Push-Up and Overhead Carry.",
+      "second_piece: A shorter second piece (engine intervals) follows the main block.",
+      "effort_band: Main block effort RPE 7\u20138."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "Every round starts on the Row Erg, then hands off to the stations (Sled Push and Front-Rack Carry). Then a short Stationary Bike block finishes the job. Keep moving, keep breathing, keep it repeatable.",
+     "before": null,
+     "words": 35,
+     "session": "Sweat \u00b7 Hybrid",
+     "meta": {
+      "source": "composer",
+      "frame": "sparse",
+      "facts": [
+       "sweat_shape",
+       "second_piece"
+      ]
+     },
+     "exercises": [
+      "Row Erg",
+      "Sled Push",
+      "Front-Rack Carry",
+      "Dumbbell Push Press",
+      "Med-Ball Slam",
+      "Stationary Bike"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.015,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "sweat_shape: Hybrid: a split anchor with Sled Push, Front-Rack Carry and Dumbbell Push Press.",
+      "second_piece: A shorter second piece (closer) follows the main block.",
+      "effort_band: Main block effort RPE 7\u20138."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R3",
+   "label": "Repeat \u00d75 \u00b7 Athletic \u00b7 Amped",
+   "request": {
+    "direction": "athletic",
+    "states": [
+     "amped"
+    ],
+    "duration": 60
+   },
+   "runs": [
+    {
+     "status": "ok",
+     "text": "You showed up ready to go, and the session is built to take advantage. The main movement steps up to Kettlebell Snatch. Push where it counts and let the rest take care of itself.",
+     "before": "You're amped, so we're spending that readiness on quality rather than piling on volume: a more demanding primary, Kettlebell Snatch, with the throws and lifts kept low-rep and explosive. Today is primarily total-body explosiveness: Kettlebell Snatch comes first, while you're fresh, then Landmine Split Jerk for upper-body power and Med-Ball Slam for more upper-body power, and Dumbbell Jump Squat, done for bar speed, builds the strength behind it.",
+     "words": 34,
+     "session": "Athletic \u00b7 Power",
+     "meta": {
+      "source": "composer",
+      "frame": "feel",
+      "facts": [
+       "demanding_primary"
+      ]
+     },
+     "exercises": [
+      "Kettlebell Snatch",
+      "Landmine Split Jerk",
+      "Med-Ball Slam",
+      "Dumbbell Jump Squat"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "demanding_primary: Amped: a more demanding primary (Kettlebell Snatch).",
+      "quality_first: Primary quality: total-body explosiveness. Kettlebell Snatch comes first while fresh.",
+      "strength_for_speed: Strength work (Dumbbell Jump Squat) comes after the explosive work, done for bar speed.",
+      "then_more: Then Landmine Split Jerk (upper-body power) and Med-Ball Slam (upper-body power).",
+      "full_rest_rule: 135 s between primary sets so every rep stays fast."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "Dumbbell Jump Squat is today's main movement, a step up from the usual, and Bulgarian Split Squat gets more weight on the bar than usual. Go after the hard sets. That's where today's energy belongs.",
+     "before": "You're amped, so we're spending that readiness on quality rather than piling on volume: heavier strength work (Bulgarian Split Squat at 4 reps, about 2 from failure) and one extra quality set of Dumbbell Jump Squat, with the jumps and throws kept low-rep and explosive. Today is primarily vertical power: two quick sets of Broad Jump to Vertical Jump prime the Dumbbell Jump Squat, which comes next while you're fresh, then Med-Ball Rotational Slam for rotational power, and Bulgarian Split Squat and Weighted Push-Up, done for bar speed, build the strength behind it.",
+     "words": 35,
+     "session": "Athletic \u00b7 Full-Body Athlete",
+     "meta": {
+      "source": "composer",
+      "frame": "cue",
+      "facts": [
+       "demanding_primary",
+       "heavier_strength"
+      ]
+     },
+     "exercises": [
+      "Broad Jump to Vertical Jump",
+      "Dumbbell Jump Squat",
+      "Med-Ball Rotational Slam",
+      "Bulgarian Split Squat",
+      "Weighted Push-Up"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "demanding_primary: Amped: a more demanding primary (Dumbbell Jump Squat).",
+      "heavier_strength: Amped: heavier strength work (Bulgarian Split Squat).",
+      "extra_quality_set: Amped: one extra quality set of Dumbbell Jump Squat, still low-rep.",
+      "quality_first: Primary quality: vertical power. Dumbbell Jump Squat comes first while fresh, primed by Broad Jump to Vertical Jump.",
+      "strength_for_speed: Strength work (Bulgarian Split Squat and Weighted Push-Up) comes after the explosive work, done for bar speed.",
+      "then_more: Then Med-Ball Rotational Slam (rotational power)."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "Energy's high, so today asks a little more of you. Front Squat and Box Jump are paired so the heavy set wakes up the explosive one. Spend the energy on the work that matters, not on rushing.",
+     "before": "You're amped, so we're spending that readiness on quality rather than piling on volume: a heavy-light contrast pair (Front Squat into Box Jump) and heavier strength work (Front Squat at 3 reps, about 1 from failure), with the jumps and throws kept low-rep and explosive. Today is primarily vertical power: heavy Front Squat paired with Box Jump, so the heavy set primes the explosive one, with full recovery after every pair, then Lateral Single-Leg Hop to Stick for horizontal power, Dumbbell Push Press for upper-body power and Med-Ball Rotational Throw for rotational power.",
+     "words": 37,
+     "session": "Athletic \u00b7 Power",
+     "meta": {
+      "source": "composer",
+      "frame": "feel",
+      "facts": [
+       "contrast"
+      ]
+     },
+     "exercises": [
+      "Front Squat",
+      "Box Jump",
+      "Lateral Single-Leg Hop to Stick",
+      "Dumbbell Push Press",
+      "Med-Ball Rotational Throw"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "contrast: Amped: heavy-light contrast pairs (Front Squat into Box Jump).",
+      "quality_first: Primary quality: vertical power. Box Jump comes first while fresh.",
+      "then_more: Then Lateral Single-Leg Hop to Stick (horizontal power), Dumbbell Push Press (upper-body power) and Med-Ball Rotational Throw (rotational power).",
+      "full_rest_rule: 120 s between primary sets so every rep stays fast."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "You've got extra juice today, so we're using it. Every heavy set of Barbell Romanian Deadlift is followed right away by Broad Jump to Stick, so the explosive reps get a boost.",
+     "before": "You're amped, so we're spending that readiness on quality rather than piling on volume: a heavy-light contrast pair (Barbell Romanian Deadlift into Broad Jump to Stick) and heavier strength work (Barbell Romanian Deadlift at 3 reps, about 1 from failure), with the jumps, throws and lifts kept low-rep and explosive. Today is primarily horizontal power: heavy Barbell Romanian Deadlift paired with Broad Jump to Stick, so the heavy set primes the explosive one, with full recovery after every pair, then Hang Clean to Box Knee Drive for total-body explosiveness, Single-Leg Box Jump for elastic, reactive ability and Med-Ball Slam for upper-body power.",
+     "words": 32,
+     "session": "Athletic \u00b7 Power",
+     "meta": {
+      "source": "composer",
+      "frame": "feel",
+      "facts": [
+       "contrast"
+      ]
+     },
+     "exercises": [
+      "Barbell Romanian Deadlift",
+      "Broad Jump to Stick",
+      "Hang Clean to Box Knee Drive",
+      "Single-Leg Box Jump",
+      "Med-Ball Slam"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "contrast: Amped: heavy-light contrast pairs (Barbell Romanian Deadlift into Broad Jump to Stick).",
+      "quality_first: Primary quality: horizontal power. Broad Jump to Stick comes first while fresh.",
+      "then_more: Then Hang Clean to Box Knee Drive (total-body explosiveness), Single-Leg Box Jump (elastic, reactive ability) and Med-Ball Slam (upper-body power).",
+      "full_rest_rule: 120 s between primary sets so every rep stays fast."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "You get a tougher main movement in Hang Clean to Box Knee Drive, so the extra drive goes where it pays off. The strength block goes heavier, starting with Front Squat.",
+     "before": "You're amped, so we're spending that readiness on quality rather than piling on volume: heavier strength work (Front Squat at 3 reps, about 2 from failure) and one extra quality set of Hang Clean to Box Knee Drive, with the sled pushes, throws and lifts kept low-rep and explosive. Today is primarily total-body explosiveness: Hang Clean to Box Knee Drive comes first, while you're fresh, then Sled Push for acceleration and Med-Ball Chest Pass for upper-body power, and Front Squat, done for bar speed, builds the strength behind it.",
+     "words": 31,
+     "session": "Athletic \u00b7 Full-Body Athlete",
+     "meta": {
+      "source": "composer",
+      "frame": "lead",
+      "facts": [
+       "demanding_primary",
+       "heavier_strength"
+      ]
+     },
+     "exercises": [
+      "Hang Clean to Box Knee Drive",
+      "Sled Push",
+      "Med-Ball Chest Pass",
+      "Front Squat"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "demanding_primary: Amped: a more demanding primary (Hang Clean to Box Knee Drive).",
+      "heavier_strength: Amped: heavier strength work (Front Squat).",
+      "extra_quality_set: Amped: one extra quality set of Hang Clean to Box Knee Drive, still low-rep.",
+      "quality_first: Primary quality: total-body explosiveness. Hang Clean to Box Knee Drive comes first while fresh.",
+      "strength_for_speed: Strength work (Front Squat) comes after the explosive work, done for bar speed.",
+      "then_more: Then Sled Push (acceleration) and Med-Ball Chest Pass (upper-body power)."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R4",
+   "label": "Repeat \u00d75 \u00b7 Strength \u00b7 Amped + Sore shoulders",
+   "request": {
+    "direction": "strength",
+    "states": [
+     "amped"
+    ],
+    "soreness": [
+     "shoulders"
+    ],
+    "duration": 60
+   },
+   "runs": [
+    {
+     "status": "ok",
+     "text": "Your shoulders are sore, so today is a Glutes + Legs session that leaves them alone. Trap-Bar Deadlift gets pushed a rep closer to failure, so that readiness turns into real work. You finish with 45\u00b0 Back Extension.",
+     "before": "Your shoulders are sore, so we're moving the work away from them: today is a Glutes + Legs session that leaves them alone. You're amped today, so we're taking Trap-Bar Deadlift a rep closer to failure, pushing the main lifts to the heavy end of their range and closing with a burnout finisher. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+     "words": 38,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "lead",
+      "facts": [
+       "sore_reroute",
+       "closer_to_failure",
+       "finisher"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Reverse Lunge",
+      "Machine Glute Kickback",
+      "Leg Extension",
+      "45\u00b0 Back Extension"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "sore_reroute: Sore shoulders: today's session was chosen to leave it alone (Glutes + Legs).",
+      "closer_to_failure: Amped: Trap-Bar Deadlift taken a rep closer to failure.",
+      "heavier_main: Amped: main lifts move to the heavy end of their rep range.",
+      "finisher: Amped: a finisher (45\u00b0 Back Extension) closes the session.",
+      "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+      "accessory_build: 2 accessory movements build out the session after the main work."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "Today is Glutes + Legs, picked so your sore shoulders can sit this one out. Barbell Hip Thrust goes heavy for fewer reps, without turning the whole thing into a grind. Machine Glute Kickback finishes with a rest-pause.",
+     "before": "Your shoulders are sore, so we're moving the work elsewhere: today is a Glutes + Legs session that leaves them alone. You're amped today, so we're taking Machine Glute Kickback and Leg Extension a rep closer to failure, pushing the main lifts to the heavy end of their range and using rest-pause on the final set on Machine Glute Kickback. As an intermediate lifter, rest-pause on the final set on Machine Glute Kickback is on the table.",
+     "words": 38,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "lead",
+      "facts": [
+       "sore_reroute",
+       "heavier_main",
+       "intensifier"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Reverse Lunge",
+      "Machine Glute Kickback",
+      "Leg Extension"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "sore_reroute: Sore shoulders: today's session was chosen to leave it alone (Glutes + Legs).",
+      "heavier_main: Amped: main lifts move to the heavy end of their rep range.",
+      "closer_to_failure: Amped: Machine Glute Kickback and Leg Extension taken a rep closer to failure (accessories).",
+      "intensifier: Amped: rest-pause on the final set on Machine Glute Kickback.",
+      "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+      "accessory_build: 2 accessory movements build out the session after the main work."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "With your shoulders sore, we built today around Glutes + Legs so they can recover. The accessories run closer to the edge than usual. Spend the energy on the work that matters, not on rushing.",
+     "before": "Your shoulders are sore, so we're moving the work elsewhere: today is a Glutes + Legs session that leaves them alone. You're amped today, so we're taking Cable Glute Kickback and Sissy Squat a rep closer to failure and using rest-pause on the final set on Cable Glute Kickback. As an intermediate lifter, rest-pause on the final set on Cable Glute Kickback is on the table.",
+     "words": 34,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "cue",
+      "facts": [
+       "sore_reroute",
+       "closer_to_failure"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Box Step-Up (Glute Bias)",
+      "Cable Glute Kickback",
+      "Sissy Squat"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.0,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "sore_reroute: Sore shoulders: today's session was chosen to leave it alone (Glutes + Legs).",
+      "closer_to_failure: Amped: Cable Glute Kickback and Sissy Squat taken a rep closer to failure (accessories).",
+      "intensifier: Amped: rest-pause on the final set on Cable Glute Kickback.",
+      "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+      "accessory_build: 2 accessory movements build out the session after the main work, partly paired."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "Lots of drive and one sore spot, and the session is built around both. Your sore shoulders get the day off, so today is a Glutes + Legs session instead. Trap-Bar Deadlift runs closer to the edge than usual.",
+     "before": "Your shoulders are sore, so we're moving the work elsewhere: today is a Glutes + Legs session that leaves them alone. You're amped today, so we're taking Trap-Bar Deadlift a rep closer to failure, pushing the main lifts to the heavy end of their range and closing with a forceful finisher. The session stays balanced rather than specialised, which is the point of a consistency goal.",
+     "words": 39,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "feel",
+      "facts": [
+       "sore_reroute",
+       "closer_to_failure"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Reverse Lunge",
+      "Cable Glute Kickback",
+      "Leg Extension",
+      "Kettlebell Swing"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.09,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 0
+     },
+     "facts": [
+      "sore_reroute: Sore shoulders: today's session was chosen to leave it alone (Glutes + Legs).",
+      "closer_to_failure: Amped: Trap-Bar Deadlift taken a rep closer to failure.",
+      "heavier_main: Amped: main lifts move to the heavy end of their rep range.",
+      "finisher: Amped: a finisher (Kettlebell Swing) closes the session.",
+      "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+      "accessory_build: 2 accessory movements build out the session after the main work."
+     ]
+    },
+    {
+     "status": "ok",
+     "text": "Plenty of drive today, so we're pointing it at the parts of you that are ready for it. Your shoulders are sore, so today is a Glutes + Legs session that leaves them alone. There's an extra set waiting on Barbell Hip Thrust.",
+     "before": "Your shoulders are sore, so we're moving the work away from them: today is a Glutes + Legs session that leaves them alone. You're amped today, so we're adding a working set to Barbell Hip Thrust. As an intermediate lifter, eccentrics on Reverse Lunge is on the table, and the session stays balanced rather than specialised, which is the point of a consistency goal.",
+     "words": 42,
+     "session": "Strength \u00b7 Glutes + Legs",
+     "meta": {
+      "source": "composer",
+      "frame": "feel",
+      "facts": [
+       "sore_reroute",
+       "extra_set"
+      ]
+     },
+     "exercises": [
+      "Barbell Hip Thrust",
+      "Trap-Bar Deadlift",
+      "Reverse Lunge",
+      "Cable Glute Kickback",
+      "Sissy Squat",
+      "Kettlebell Swing"
+     ],
+     "gate_ok": true,
+     "problems": [],
+     "sim": {
+      "max_jaccard": 0.206,
+      "opener_clash": false,
+      "closer_clash": false,
+      "sentence_clash": false,
+      "older_reuse": 1
+     },
+     "facts": [
+      "sore_reroute: Sore shoulders: today's session was chosen to leave it alone (Glutes + Legs).",
+      "extra_set: Amped: an extra working set on Barbell Hip Thrust.",
+      "lead_lift: Barbell Hip Thrust leads the session as heavy, low-rep work.",
+      "finisher: A finisher (Kettlebell Swing) closes the session.",
+      "accessory_build: 2 accessory movements build out the session after the main work, partly paired."
+     ]
+    }
+   ]
+  }
+ ]
+}

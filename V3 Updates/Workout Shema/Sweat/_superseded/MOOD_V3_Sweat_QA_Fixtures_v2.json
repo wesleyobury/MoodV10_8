@@ -1,0 +1,738 @@
+{
+ "version": "v2",
+ "generator": "MOOD_V3_Sweat_Reference_Generator_v2",
+ "fixtures": [
+  {
+   "id": "W01",
+   "name": "Engine canonical",
+   "inputs": {
+    "force_archetype": "sweat_engine",
+    "duration": 60,
+    "experience": "intermediate",
+    "history": [
+     {
+      "archetype": "sweat_circuit",
+      "primary_structure": "circuit",
+      "comp_type": "couplet_emom"
+     }
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W01"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_engine\", \"b\": [{\"dur\": null, \"i\": [\"air_bike\"], \"it\": {\"df_max\": 6, \"recovery\": 90, \"rounds\": 4, \"work\": 240}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_engine_block\", \"st\": \"intervals\"}, {\"dur\": null, \"i\": [\"goblet_squat\", \"push_up\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W02",
+   "name": "Circuit canonical",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "date": "2026-10-01",
+    "user": "fx_W02"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"row_erg\", \"box_step_up_glute\", \"push_up\", \"dead_bug\"], \"it\": null, \"l\": null, \"m\": 20, \"r\": 5, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"emom\"}, {\"dur\": null, \"i\": [\"farmer_carry\", \"goblet_squat\"], \"it\": null, \"l\": null, \"m\": 10, \"r\": 5, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"emom\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W03",
+   "name": "Hybrid canonical (sled default)",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "goal": "build_strength",
+    "date": "2026-10-01",
+    "user": "fx_W03"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"sled_push\", \"farmer_carry\", \"goblet_squat\", \"burpee\", \"db_step_up\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [[\"sled_push\"], [\"farmer_carry\"], [\"goblet_squat\"], [\"burpee\"], [\"db_step_up\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"push_up\", \"wall_ball\", \"dead_bug\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W03b",
+   "name": "Hybrid, user has no sled",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "goal": "build_strength",
+    "preset": "commercial_no_sled",
+    "date": "2026-10-01",
+    "user": "fx_W03b"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"wall_ball\", \"farmer_carry\", \"goblet_squat\", \"burpee\", \"jump_squat\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [[\"wall_ball\"], [\"farmer_carry\"], [\"goblet_squat\"], [\"burpee\"], [\"jump_squat\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"push_up\", \"med_ball_slam\", \"dead_bug\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W04",
+   "name": "Engine beginner 30",
+   "inputs": {
+    "force_archetype": "sweat_engine",
+    "duration": 30,
+    "experience": "beginner",
+    "goal": "stay_consistent",
+    "date": "2026-10-01",
+    "user": "fx_W04"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_engine\", \"b\": [{\"dur\": null, \"i\": [\"row_erg\"], \"it\": {\"df_max\": 12, \"recovery\": 60, \"rounds\": 8, \"work\": 60}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [], \"s\": \"primary_engine_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W05",
+   "name": "Explicit upper Target 30",
+   "inputs": {
+    "duration": 30,
+    "experience": "intermediate",
+    "target": [
+     "chest",
+     "back",
+     "shoulders"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W05"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"ski_erg\", \"push_up\", \"bent_over_db_row\", \"battle_rope_waves\"], \"it\": null, \"l\": null, \"m\": 16, \"r\": 4, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"emom\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W06",
+   "name": "Hybrid 30",
+   "inputs": {
+    "duration": 30,
+    "experience": "intermediate",
+    "goal": "build_strength",
+    "date": "2026-10-01",
+    "user": "fx_W06"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"sled_push\", \"farmer_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 7], \"rs\": [[\"sled_push\", \"farmer_carry\"], [\"sled_push\", \"farmer_carry\"], [\"sled_push\", \"farmer_carry\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W07",
+   "name": "Low Energy 60",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "low_energy"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W07"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"stationary_bike\", \"kickstand_db_rdl\", \"machine_chest_press\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 4, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": 540, \"i\": [\"row_erg\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [5, 6], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"continuous\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W08",
+   "name": "Stressed 60 (Engine steady)",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "stressed"
+    ],
+    "history": [
+     {
+      "archetype": "sweat_circuit",
+      "primary_structure": "circuit",
+      "comp_type": "couplet_emom"
+     }
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W08"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_engine\", \"b\": [{\"dur\": 1320, \"i\": [\"row_erg\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [5, 6], \"rs\": [], \"s\": \"primary_engine_block\", \"st\": \"continuous\"}, {\"dur\": null, \"i\": [\"goblet_squat\", \"push_up\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W08b",
+   "name": "Stressed 60 after a steady Engine session",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "stressed"
+    ],
+    "history": [
+     {
+      "archetype": "sweat_engine",
+      "engine_mode": "steady",
+      "engine_format": "aerobic",
+      "exercises": [
+       "row_erg"
+      ],
+      "families": [
+       "row_erg"
+      ]
+     },
+     {
+      "archetype": "sweat_circuit",
+      "primary_structure": "circuit"
+     }
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W08b"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_engine\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_incline_walk\"], \"it\": {\"df_max\": 6, \"recovery\": 120, \"rounds\": 3, \"work\": 360}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_engine_block\", \"st\": \"intervals\"}, {\"dur\": null, \"i\": [\"goblet_squat\", \"push_up\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W09",
+   "name": "Bored advanced 60",
+   "inputs": {
+    "force_archetype": "sweat_circuit",
+    "duration": 60,
+    "experience": "advanced",
+    "states": [
+     "bored"
+    ],
+    "history": [
+     {
+      "archetype": "sweat_circuit",
+      "primary_structure": "circuit",
+      "comp_type": "couplet_emom"
+     },
+     {
+      "archetype": "sweat_engine",
+      "engine_mode": "interval",
+      "engine_format": "long_even",
+      "exercises": [
+       "row_erg"
+      ],
+      "families": [
+       "row_erg"
+      ]
+     }
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W09"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"bear_crawl\", \"lateral_step_up\", \"db_floor_press\", \"battle_rope_waves\"], \"it\": null, \"l\": null, \"m\": 24, \"r\": 6, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"emom\"}, {\"dur\": null, \"i\": [\"med_ball_slam\", \"heel_elevated_db_squat\"], \"it\": null, \"l\": [12, 10, 8, 6, 4, 2], \"m\": null, \"r\": null, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"ladder\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W10",
+   "name": "Irritated Hybrid 60 (sled default)",
+   "inputs": {
+    "force_archetype": "sweat_hybrid",
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "irritated"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W10"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [{\"dur\": null, \"i\": [\"row_erg\", \"jump_squat\", \"med_ball_slam\", \"sled_push\", \"burpee\", \"farmer_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [8, 8], \"rs\": [[\"jump_squat\"], [\"med_ball_slam\"], [\"sled_push\"], [\"burpee\"], [\"farmer_carry\"]], \"s\": \"primary_hybrid_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"push_up\", \"wall_ball\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"battle_rope_waves\", \"sled_pull\"], \"it\": {\"alternate\": true, \"recovery\": 40, \"rounds\": 6, \"work\": 20}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [9, 9], \"rs\": [], \"s\": \"optional_extra\", \"st\": \"finisher\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W11",
+   "name": "Amped Engine 60 advanced",
+   "inputs": {
+    "force_archetype": "sweat_engine",
+    "duration": 60,
+    "experience": "advanced",
+    "states": [
+     "amped"
+    ],
+    "goal": "build_strength",
+    "date": "2026-10-01",
+    "user": "fx_W11"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_engine\", \"b\": [{\"dur\": null, \"i\": [\"ski_erg\"], \"it\": {\"df_max\": 10, \"recovery\": 60, \"rounds\": 11, \"work\": 40}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [9, 9], \"rs\": [], \"s\": \"primary_engine_block\", \"st\": \"intervals\"}, {\"dur\": null, \"i\": [\"goblet_squat\", \"push_up\", \"farmer_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 4, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"med_ball_slam\", \"air_bike\"], \"it\": {\"alternate\": true, \"recovery\": 40, \"rounds\": 6, \"work\": 20}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [9, 9], \"rs\": [], \"s\": \"optional_extra\", \"st\": \"finisher\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W12",
+   "name": "Amped Circuit 30",
+   "inputs": {
+    "duration": 30,
+    "experience": "intermediate",
+    "states": [
+     "amped"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W12"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"jump_squat\", \"db_rdl\", \"push_up\", \"med_ball_slam\"], \"it\": {\"recovery\": 20, \"rotate\": true, \"round_rest\": 60, \"rounds\": 4, \"work\": 40}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [8, 9], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W13",
+   "name": "Sore legs, MOOD's Pick",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "sore": [
+     "quads",
+     "hamstrings",
+     "glutes"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W13"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"farmer_carry\", \"push_up\", \"chest_supported_db_row\", \"battle_rope_waves\"], \"it\": {\"recovery\": 20, \"rotate\": true, \"round_rest\": 60, \"rounds\": 4, \"work\": 40}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"intervals\"}, {\"dur\": null, \"i\": [\"med_ball_slam\", \"db_shoulder_press\"], \"it\": null, \"l\": null, \"m\": 10, \"r\": 5, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"emom\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W13b",
+   "name": "Sore legs, Engine forced (SkiErg legal: not dependent)",
+   "inputs": {
+    "force_archetype": "sweat_engine",
+    "duration": 60,
+    "experience": "intermediate",
+    "sore": [
+     "quads",
+     "hamstrings",
+     "glutes"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W13b"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_engine\", \"b\": [{\"dur\": null, \"i\": [\"ski_erg\"], \"it\": {\"df_max\": 6, \"recovery\": 90, \"rounds\": 4, \"work\": 240}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_engine_block\", \"st\": \"intervals\"}, {\"dur\": null, \"i\": [\"push_up\", \"bent_over_db_row\", \"farmer_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W14",
+   "name": "Beginner limited equipment 30",
+   "inputs": {
+    "duration": 30,
+    "experience": "beginner",
+    "preset": "db_bodyweight_only",
+    "goal": "stay_consistent",
+    "date": "2026-10-01",
+    "user": "fx_W14"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"burpee\", \"db_rdl\", \"push_up\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 4, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"jump_rope\"], \"it\": {\"recovery\": 30, \"rounds\": 6, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W15",
+   "name": "Lower Target + Irritated + Low Energy",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "irritated",
+     "low_energy"
+    ],
+    "target": [
+     "quads",
+     "glutes"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W15"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"row_erg\", \"kickstand_db_rdl\", \"box_step_up_glute\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 4, \"rpe\": [8, 9], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": 540, \"i\": [\"stationary_bike\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"continuous\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "W16",
+   "name": "Engine Bored 30",
+   "inputs": {
+    "force_archetype": "sweat_engine",
+    "duration": 30,
+    "experience": "intermediate",
+    "states": [
+     "bored"
+    ],
+    "history": [
+     {
+      "archetype": "sweat_engine",
+      "engine_mode": "interval",
+      "engine_format": "long_even",
+      "exercises": [
+       "row_erg"
+      ],
+      "families": [
+       "row_erg"
+      ]
+     },
+     {
+      "archetype": "sweat_engine",
+      "engine_mode": "steady",
+      "engine_format": "aerobic",
+      "exercises": [
+       "stationary_bike"
+      ],
+      "families": [
+       "bike"
+      ]
+     }
+    ],
+    "date": "2026-10-01",
+    "user": "fx_W16"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_engine\", \"b\": [{\"dur\": null, \"i\": [\"ski_erg\"], \"it\": {\"recovery\": 60, \"steps\": [60, 120, 180, 120, 60]}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_engine_block\", \"st\": \"pyramid\"}, {\"dur\": null, \"i\": [\"jump_rope\"], \"it\": {\"recovery\": 30, \"rounds\": 6, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "M1",
+   "name": "Bored + Stressed",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "bored",
+     "stressed"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_M1"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"bear_crawl\", \"kickstand_db_rdl\", \"db_floor_press\", \"battle_rope_waves\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 5, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"front_foot_elevated_split_squat\", \"half_kneeling_landmine_press\", \"suitcase_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "M2",
+   "name": "Low Energy + Amped",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "low_energy",
+     "amped"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_M2"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"row_erg\", \"kickstand_db_rdl\", \"assisted_dip_triceps\", \"dead_bug\"], \"it\": {\"recovery\": 30, \"rotate\": true, \"round_rest\": 60, \"rounds\": 4, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [8, 9], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"intervals\"}, {\"dur\": 600, \"i\": [\"stationary_bike\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [5, 6], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"continuous\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "M3",
+   "name": "Irritated + Low Energy (pick)",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "irritated",
+     "low_energy"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_M3"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"row_erg\", \"kickstand_db_rdl\", \"chest_supported_db_row\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 4, \"rpe\": [8, 9], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": 540, \"i\": [\"stationary_bike\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"continuous\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "M4",
+   "name": "Sore shoulders + Amped",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "amped"
+    ],
+    "sore": [
+     "shoulders"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_M4"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"jump_squat\", \"kickstand_db_rdl\", \"db_floor_press\", \"sled_pull\"], \"it\": {\"recovery\": 20, \"rotate\": true, \"round_rest\": 60, \"rounds\": 5, \"work\": 40}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [8, 9], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"intervals\"}, {\"dur\": null, \"i\": [\"air_bike\", \"box_step_up_glute\"], \"it\": null, \"l\": null, \"m\": 10, \"r\": 5, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"emom\"}, {\"dur\": null, \"i\": [\"row_erg\"], \"it\": {\"alternate\": false, \"recovery\": 45, \"rounds\": 6, \"work\": 15}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [9, 9], \"rs\": [], \"s\": \"optional_extra\", \"st\": \"finisher\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "M5",
+   "name": "Stressed + Irritated",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "stressed",
+     "irritated"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_M5"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"jump_squat\", \"kettlebell_deadlift\", \"push_up\", \"med_ball_slam\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 6, \"rpe\": [8, 9], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"goblet_squat\", \"bench_dip\", \"farmer_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 3, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"wall_ball\"], \"it\": {\"alternate\": false, \"recovery\": 45, \"rounds\": 6, \"work\": 15}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [9, 9], \"rs\": [], \"s\": \"optional_extra\", \"st\": \"finisher\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "M6",
+   "name": "Bored + Amped 60",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "bored",
+     "amped"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_M6"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"med_ball_slam\", \"kickstand_db_rdl\", \"db_floor_press\", \"battle_rope_waves\"], \"it\": null, \"l\": null, \"m\": 28, \"r\": 7, \"rpe\": [8, 9], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"emom\"}, {\"dur\": null, \"i\": [\"jump_squat\", \"suspension_row\"], \"it\": null, \"l\": [12, 10, 8, 6, 4, 2], \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"ladder\"}, {\"dur\": null, \"i\": [\"sled_pull\", \"sled_push\"], \"it\": {\"alternate\": true, \"recovery\": 40, \"rounds\": 6, \"work\": 20}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [9, 9], \"rs\": [], \"s\": \"optional_extra\", \"st\": \"finisher\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "M7",
+   "name": "Bored + Amped 30",
+   "inputs": {
+    "duration": 30,
+    "experience": "intermediate",
+    "states": [
+     "bored",
+     "amped"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_M7"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"med_ball_slam\", \"front_foot_elevated_split_squat\", \"db_floor_press\", \"battle_rope_waves\"], \"it\": null, \"l\": null, \"m\": 16, \"r\": 4, \"rpe\": [8, 9], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"emom\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "M8",
+   "name": "Low Energy + Stressed + Bored",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "states": [
+     "low_energy",
+     "stressed",
+     "bored"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_M8"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"stationary_bike\", \"kickstand_db_rdl\", \"machine_high_row\", \"weighted_plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 4, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": 600, \"i\": [\"row_erg\"], \"it\": null, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [5, 6], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"continuous\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "T1",
+   "name": "Target core",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "target": [
+     "core"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_T1"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"farmer_carry\", \"dead_bug\", \"cable_wood_chop\", \"goblet_squat\"], \"it\": null, \"l\": null, \"m\": 20, \"r\": 5, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"emom\"}, {\"dur\": null, \"i\": [\"ski_erg\"], \"it\": {\"recovery\": 30, \"rounds\": 10, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "T2",
+   "name": "Target biceps (secondary coverage)",
+   "inputs": {
+    "duration": 30,
+    "experience": "intermediate",
+    "target": [
+     "biceps"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_T2"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"battle_rope_waves\", \"single_arm_db_row\", \"push_up\", \"plank\"], \"it\": {\"recovery\": 20, \"rotate\": true, \"round_rest\": 60, \"rounds\": 4, \"work\": 40}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "T3",
+   "name": "Target calves",
+   "inputs": {
+    "duration": 30,
+    "experience": "intermediate",
+    "target": [
+     "calves"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_T3"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"kettlebell_deadlift\", \"box_step_up_glute\", \"farmer_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 4, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "T4",
+   "name": "Target chest + quads",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "target": [
+     "chest",
+     "quads"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_T4"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"burpee\", \"box_step_up_glute\", \"push_up\", \"bear_crawl\"], \"it\": {\"recovery\": 20, \"rotate\": true, \"round_rest\": 60, \"rounds\": 5, \"work\": 40}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"intervals\"}, {\"dur\": null, \"i\": [\"air_bike\"], \"it\": {\"recovery\": 30, \"rounds\": 10, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "T5",
+   "name": "Target full_body",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "target": "full_body",
+    "date": "2026-10-01",
+    "user": "fx_T5"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"air_bike\", \"kettlebell_deadlift\", \"push_up\", \"farmer_carry\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 5, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"row_erg\", \"box_step_up_glute\"], \"it\": null, \"l\": null, \"m\": 10, \"r\": 5, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"emom\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "T6",
+   "name": "Target quads, sore quads (S2a override)",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "target": [
+     "quads"
+    ],
+    "sore": [
+     "quads"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_T6"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"reverse_lunge\", \"kettlebell_deadlift\", \"bear_crawl\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 5, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"row_erg\"], \"it\": {\"recovery\": 30, \"rounds\": 10, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "T7",
+   "name": "Target chest, sore shoulders (S2b substitution)",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "target": [
+     "chest"
+    ],
+    "sore": [
+     "shoulders"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_T7"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"air_bike\", \"db_floor_press\", \"assisted_pull_up_machine\", \"dead_bug\"], \"it\": null, \"l\": null, \"m\": 20, \"r\": 5, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"emom\"}, {\"dur\": null, \"i\": [\"row_erg\"], \"it\": {\"recovery\": 30, \"rounds\": 10, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "T8",
+   "name": "Target beginner lower",
+   "inputs": {
+    "duration": 30,
+    "experience": "beginner",
+    "target": [
+     "glutes"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_T8"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"sled_push\", \"cable_pull_through\", \"goblet_squat\", \"plank\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 4, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"air_bike\"], \"it\": {\"recovery\": 30, \"rounds\": 6, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "S1",
+   "name": "Sore chest+shoulders+triceps, pick",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "sore": [
+     "chest",
+     "shoulders",
+     "triceps"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_S1"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"sled_push\", \"kettlebell_deadlift\", \"chin_up\", \"dead_bug\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 5, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"row_erg\", \"reverse_lunge\"], \"it\": null, \"l\": null, \"m\": 10, \"r\": 5, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"emom\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "S2",
+   "name": "Sore back, pick",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "sore": [
+     "back"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_S2"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"sled_push\", \"kickstand_db_rdl\", \"push_up\", \"dead_bug\"], \"it\": {\"recovery\": 20, \"rotate\": true, \"round_rest\": 60, \"rounds\": 4, \"work\": 40}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"intervals\"}, {\"dur\": null, \"i\": [\"burpee\", \"db_incline_press\"], \"it\": null, \"l\": null, \"m\": 10, \"r\": 5, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"emom\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "S3",
+   "name": "Sore legs, Hybrid forced (dependent -> terminal)",
+   "inputs": {
+    "force_archetype": "sweat_hybrid",
+    "duration": 60,
+    "experience": "intermediate",
+    "sore": [
+     "quads",
+     "hamstrings",
+     "glutes"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_S3"
+   },
+   "expected_outcome": "VALID TERMINAL CONFLICT",
+   "reference_signature": "{\"a\": \"sweat_hybrid\", \"b\": [], \"o\": \"VALID TERMINAL CONFLICT\"}"
+  },
+  {
+   "id": "S4",
+   "name": "Sore legs + back + shoulders, pick",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "sore": [
+     "quads",
+     "hamstrings",
+     "glutes",
+     "back",
+     "shoulders"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_S4"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"suitcase_carry\", \"db_floor_press\", \"dead_bug\", \"diamond_push_up\"], \"it\": {\"recovery\": 20, \"rotate\": true, \"round_rest\": 60, \"rounds\": 4, \"work\": 40}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"intervals\"}, {\"dur\": null, \"i\": [\"jump_rope\", \"bench_dip\"], \"it\": null, \"l\": null, \"m\": 10, \"r\": 5, \"rpe\": [6, 7], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"emom\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "S5",
+   "name": "Sore legs, explicit upper Target",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "target": [
+     "back",
+     "biceps"
+    ],
+    "sore": [
+     "quads",
+     "hamstrings",
+     "glutes"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_S5"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"sled_pull\", \"push_up\", \"bent_over_db_row\", \"battle_rope_waves\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 5, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"ski_erg\"], \"it\": {\"recovery\": 30, \"rounds\": 10, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  },
+  {
+   "id": "S6",
+   "name": "Sore legs + back, explicit lower Target (named muscles override)",
+   "inputs": {
+    "duration": 60,
+    "experience": "intermediate",
+    "target": [
+     "quads",
+     "glutes",
+     "hamstrings"
+    ],
+    "sore": [
+     "quads",
+     "hamstrings",
+     "glutes",
+     "back"
+    ],
+    "date": "2026-10-01",
+    "user": "fx_S6"
+   },
+   "expected_outcome": "VALID BUILD",
+   "reference_signature": "{\"a\": \"sweat_circuit\", \"b\": [{\"dur\": null, \"i\": [\"treadmill_run\", \"reverse_lunge\", \"kickstand_db_rdl\", \"bear_crawl\"], \"it\": null, \"l\": null, \"m\": null, \"r\": 4, \"rpe\": [7, 8], \"rs\": [], \"s\": \"primary_circuit\", \"st\": \"circuit\"}, {\"dur\": null, \"i\": [\"stationary_bike\"], \"it\": {\"recovery\": 30, \"rounds\": 10, \"work\": 30}, \"l\": null, \"m\": null, \"r\": null, \"rpe\": [7, 8], \"rs\": [], \"s\": \"complementary_block\", \"st\": \"intervals\"}], \"o\": \"VALID BUILD\"}"
+  }
+ ]
+}

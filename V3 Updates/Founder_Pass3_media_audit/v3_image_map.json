@@ -1,0 +1,242 @@
+{
+ "barbell_back_squat": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241296/mood_app/workout_images/wwl8m04q_back_squat.jpg",
+  "match": "manual",
+  "source": "frontend/data/compound-legs-workouts-data.ts:Back Squat Burnout",
+  "note": "Squat Rack group, movement \"Back Squats\"; filename back_squat; visually verified"
+ },
+ "barbell_hip_thrust": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240679/mood_app/workout_images/mr69uwpz_bb_hip_thrust.jpg",
+  "match": "exact_id",
+  "source": "frontend/data/glutes-workouts-data.ts:Tempo Hip Thrust",
+  "note": "V2 movement tutorialSlug=barbell_hip_thrust; filename bb_hip_thrust; visually verified"
+ },
+ "barbell_rdl": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240638/mood_app/workout_images/46ki5rsl_download_15_.jpg",
+  "match": "exact_id",
+  "source": "frontend/data/hamstrings-workouts-data.ts:Barbell RDL",
+  "note": "tutorialSlug=barbell_rdl; same image also reused on Sumo/Smith RDL cards; visually verified"
+ },
+ "cable_fly": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240776/mood_app/workout_images/szkempjn_download_9_.jpg",
+  "match": "manual",
+  "source": "frontend/data/chest-workouts-data.ts:Cable Burn",
+  "note": "V2 movement \"Mid Cable Fly\" = standard (mid-height) cable fly; visually verified"
+ },
+ "cable_glute_kickback": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241390/mood_app/workout_images/coxrp5yp_gk.jpg",
+  "match": "manual",
+  "source": "frontend/data/glutes-workouts-data.ts:Cable High Kickback",
+  "note": "Single Stack Cable Machine group, movement Kickbacks; visually verified"
+ },
+ "cable_pressdown": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241086/mood_app/workout_images/ccill0t9_download_3_.jpg",
+  "match": "manual",
+  "source": "frontend/data/triceps-workouts-data.ts:Pushdown Builder",
+  "note": "Tricep pushdown machine group, movement Tricep Pushdowns; visually verified (first candidate rejected)"
+ },
+ "cable_pull_through": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241343/mood_app/workout_images/hgi9y71r_cpt.jpg",
+  "match": "normalized",
+  "source": "frontend/data/glutes-workouts-data.ts:Cable Pull\u2011Through",
+  "note": "card name differs only by non-breaking hyphen; visually verified"
+ },
+ "chest_supported_row_machine": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241290/mood_app/workout_images/m556b5a2_scsr_1.jpg",
+  "match": "manual",
+  "source": "frontend/data/back-workouts-data.ts:Pause Rows",
+  "note": "Seated Chest Supported Row Machine group; filename scsr_1; visually verified"
+ },
+ "chin_up": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240795/mood_app/workout_images/iac5dn06_cups.jpg",
+  "match": "normalized",
+  "source": "frontend/data/biceps-workouts-data.ts:Chin-Up Burn Builder",
+  "note": "movement Chin-Ups; filename cups; visually verified (first candidate rejected)"
+ },
+ "db_push_press": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240984/mood_app/workout_images/8rj9v297_db_push_press.jpg",
+  "match": "manual",
+  "source": "frontend/data/shoulders-workouts-data.ts:Heavy Push Press Builder",
+  "note": "Dumbbells group, movement \"Push Press\"; filename db_push_press; visually verified"
+ },
+ "db_rdl": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241323/mood_app/workout_images/5v2oyit3_dbrdl.jpg",
+  "match": "exact_id",
+  "source": "frontend/data/compound-legs-workouts-data.ts:DB RDL",
+  "note": "tutorialSlug=db_rdl; filename dbrdl; visually verified"
+ },
+ "db_skull_crusher": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240804/mood_app/workout_images/4yj3bfg1_lying_db_sc.jpg",
+  "match": "exact_id",
+  "source": "frontend/data/triceps-workouts-data.ts:Lying DB Skullcrushers",
+  "note": "tutorialSlug=db_skull_crusher; filename lying_db_sc; visually verified"
+ },
+ "db_snatch": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241147/mood_app/workout_images/gp7crm2s_dbsn.jpg",
+  "match": "manual",
+  "source": "frontend/data/explosiveness-weights-data.ts:DB Snatch Alternating",
+  "note": "alternating-arm DB snatch = same movement; filename dbsn; visually verified"
+ },
+ "db_step_up": {
+  "url": "https://customer-assets.emergentagent.com/job_b7d575ca-4d26-45c9-b472-973ba87a5be6/artifacts/7tvi5pvu_db%20step%20up.png",
+  "match": "manual",
+  "source": "frontend/data/compound-legs-workouts-data.ts:Tempo Step-Ups",
+  "note": "Dumbbells group, movement Tempo Step-Ups; filename db step up; visually verified"
+ },
+ "ez_skull_crusher": {
+  "url": "https://customer-assets.emergentagent.com/job_1e4509cd-7b58-4b0c-b78f-c8a74434260e/artifacts/4hcxd7ex_ez%20bar%20sc%202.avif",
+  "match": "normalized",
+  "source": "frontend/data/triceps-workouts-data.ts:EZ Skullcrusher Builder",
+  "note": "EZ bar group; filename ez bar sc 2 (.avif); visually verified; source is .avif, request with f_jpg/f_auto transform for RN"
+ },
+ "front_foot_elevated_split_squat": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241295/mood_app/workout_images/rvwet9i1_db_elevated_split_squat.jpg",
+  "match": "exact_name",
+  "source": "frontend/data/compound-legs-workouts-data.ts:Front-Foot Elevated Split Squat",
+  "note": "filename db_elevated_split_squat; visually verified"
+ },
+ "good_morning": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240665/mood_app/workout_images/9wufahvm_bb_goodmorning.jpg",
+  "match": "normalized",
+  "source": "frontend/data/hamstrings-workouts-data.ts:Barbell Hip Hinge Good Morning",
+  "note": "Barbell group, movement \"Good Mornings\"; filename bb_goodmorning; visually verified"
+ },
+ "hang_high_pull": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240999/mood_app/workout_images/ehcn1tsd_High_pull.jpg",
+  "match": "manual",
+  "source": "frontend/data/shoulders-workouts-data.ts:High Pull Control",
+  "note": "V2 \"Barbell High Pull\" (Powerlifting Platform); image shows the high-pull finish, which is the same for the hang start; visually verified. Borderline: drop if hang start must be depicted."
+ },
+ "hip_abduction_machine": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240686/mood_app/workout_images/swjfi31g_hip_abductor_2.jpg",
+  "match": "manual",
+  "source": "frontend/data/glutes-workouts-data.ts:Triple Drop Abduction",
+  "note": "Hip Abductor Machine group; filename hip_abductor_2; visually verified (first candidate rejected)"
+ },
+ "inverted_row": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241216/mood_app/workout_images/cvdrz3i5_inverted_rows.jpg",
+  "match": "manual",
+  "source": "frontend/data/calisthenics-all-workouts-data.ts:Volume Pull",
+  "note": "Image filename inverted_rows.jpg, used only on multi-movement cards (Bar Start, Volume Pull); visually verified as an inverted row. Only non-single-card entry."
+ },
+ "landmine_push_press": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241028/mood_app/workout_images/rrxbxdk3_image.jpg",
+  "match": "exact_id",
+  "source": "frontend/data/shoulders-workouts-data.ts:Landmine Push Press Builder",
+  "note": "tutorialSlug=landmine_push_press; movement \"Single-Arm Landmine Push Press\"; visually verified"
+ },
+ "landmine_rotational_punch": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241159/mood_app/workout_images/p9g3x5md_ssrp.jpg",
+  "match": "manual",
+  "source": "frontend/data/explosiveness-weights-data.ts:Split Stance Rotation Punch",
+  "note": "Landmine group, movement Rotation Punch; visually verified"
+ },
+ "landmine_split_jerk": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241145/mood_app/workout_images/g4orfvp8_lmsjl.jpg",
+  "match": "manual",
+  "source": "frontend/data/explosiveness-weights-data.ts:Landmine Split Jerk Ladder",
+  "note": "Landmine group, movement Split Jerks; filename lmsjl; visually verified"
+ },
+ "lat_pulldown": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240551/mood_app/workout_images/j967e9c7_download_9_.jpg",
+  "match": "manual",
+  "source": "frontend/data/back-workouts-data.ts:Pulldown + Hold",
+  "note": "Lat pull down machine group; visually verified (first candidate rejected)"
+ },
+ "leg_press_calf_raise": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240666/mood_app/workout_images/ccewdems_leg_press_calf_raise.jpg",
+  "match": "exact_name",
+  "source": "frontend/data/calves-workouts-data.ts:Leg Press Calf Raise",
+  "note": "filename leg_press_calf_raise; visually verified"
+ },
+ "lying_leg_curl": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240645/mood_app/workout_images/o9f5gltv_Screenshot_2025-12-02_at_10_29_39_PM.jpg",
+  "match": "exact_name",
+  "source": "frontend/data/hamstrings-workouts-data.ts:Lying Leg Curl",
+  "note": "Leg Curl Machine group; visually verified"
+ },
+ "machine_chest_press": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241305/mood_app/workout_images/67nyth7l_download_2_.jpg",
+  "match": "normalized",
+  "source": "frontend/data/chest-workouts-data.ts:Heavy Machine",
+  "note": "Chest press machine group, movement \"Chest Press\"; visually verified"
+ },
+ "machine_crunch": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240722/mood_app/workout_images/g9c1g1gr_ab_crunch_machine.jpg",
+  "match": "manual",
+  "source": "frontend/data/abs-workouts-data.ts:Slow Eccentric Machine Crunch",
+  "note": "Ab Crunch Machine group; filename ab_crunch_machine; visually verified"
+ },
+ "machine_glute_kickback": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240675/mood_app/workout_images/haz45wxi_glute_kickback_2.jpg",
+  "match": "manual",
+  "source": "frontend/data/glutes-workouts-data.ts:Single-Leg Kickback",
+  "note": "Glute Kick Machine group; filename glute_kickback_2; visually verified"
+ },
+ "med_ball_slam": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240600/mood_app/workout_images/dkiyafwm_download_1_.jpg",
+  "match": "manual",
+  "source": "frontend/data/bodyweight-explosiveness-data.ts:Slam Cluster Density",
+  "note": "Med Ball group, movement Slams; visually verified"
+ },
+ "pec_deck": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241303/mood_app/workout_images/5hd3my3c_pdm.jpg",
+  "match": "normalized",
+  "source": "frontend/data/chest-workouts-data.ts:Fly Control",
+  "note": "Pec dec machine group, movement \"Paused Pec Deck\"; filename pdm; visually verified"
+ },
+ "plank": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240908/mood_app/workout_images/rptdlvng_download_12_.jpg",
+  "match": "exact_id",
+  "source": "frontend/data/abs-workouts-data.ts:Forearm Plank Hold",
+  "note": "tutorialSlug=plank; V3 name Front Plank = forearm plank; visually verified"
+ },
+ "pull_up": {
+  "url": "https://customer-assets.emergentagent.com/job_ba98ecac-d9ff-4da8-8b26-c72f04702bfb/artifacts/67090cjn_pull%20up%202.avif",
+  "match": "normalized",
+  "source": "frontend/data/back-workouts-data.ts:Tempo Pull-Ups",
+  "note": "Straight pull up bar group, movement Pull-Ups; filename pull up 2 (.avif); visually verified; source is .avif, request with f_jpg/f_auto transform for RN"
+ },
+ "rope_pressdown": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241088/mood_app/workout_images/kn9gulrn_download_2_.jpg",
+  "match": "manual",
+  "source": "frontend/data/triceps-workouts-data.ts:Rope Pushdown",
+  "note": "Cable machine, movement Rope Pushdowns; visually verified"
+ },
+ "seated_cable_row": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240705/mood_app/workout_images/9zff190v_scr.jpg",
+  "match": "manual",
+  "source": "frontend/data/back-workouts-data.ts:Cable Row Drop Set",
+  "note": "Seated cable machine group, movement Cable Rows; filename scr; visually verified"
+ },
+ "single_leg_db_calf_raise": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241341/mood_app/workout_images/comj9q78_download_4_.jpg",
+  "match": "normalized",
+  "source": "frontend/data/calves-workouts-data.ts:Single\u2011Leg DB Calf Raise",
+  "note": "Dumbbells group; visually verified (first candidate rejected)"
+ },
+ "smith_squat": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770241300/mood_app/workout_images/ynnuugau_smith_squat.jpg",
+  "match": "manual",
+  "source": "frontend/data/compound-legs-workouts-data.ts:Heavy Smith Squat",
+  "note": "Smith Machine group; filename smith_squat; visually verified"
+ },
+ "split_jump": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240629/mood_app/workout_images/wpx96hu6_Screenshot_2025-12-03_at_11_25_54_AM.jpg",
+  "match": "normalized",
+  "source": "frontend/data/bodyweight-explosiveness-data.ts:Split Squat Jump Repeats",
+  "note": "Body Weight Only group; tutorialSlug=split_squat_jump; visually verified (first candidate rejected)"
+ },
+ "weighted_pull_up": {
+  "url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1770240752/mood_app/workout_images/z868brwr_wighted_pull_up.jpg",
+  "match": "normalized",
+  "source": "frontend/data/back-workouts-data.ts:Weighted Pull-Ups",
+  "note": "filename wighted_pull_up; visually verified"
+ },
+ "zercher_squat": {
+  "url": "https://customer-assets.emergentagent.com/job_9d0aea56-4cb2-4f62-99c8-0784f5144466/artifacts/5n35ypfy_zercher%20squat.png",
+  "match": "manual",
+  "source": "frontend/data/compound-legs-workouts-data.ts:Tempo Zercher Squat",
+  "note": "filename zercher squat; visually verified"
+ }
+}

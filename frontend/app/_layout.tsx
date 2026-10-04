@@ -16,6 +16,7 @@ import { AchievementsProvider } from '../contexts/AchievementsContext';
 import { DraftsProvider } from '../contexts/DraftsContext';
 import { HealthProvider } from '../contexts/HealthContext';
 import HealthOnboardingGate from '../components/HealthOnboardingGate';
+import V3ProfileGate from '../components/V3ProfileGate';
 import { PaywallModal } from '../components/PaywallModal';
 import { FoundingMemberGate } from '../components/FoundingMemberGate';
 import { LegalReacceptGate } from '../components/LegalReacceptGate';
@@ -177,6 +178,8 @@ function NavigationStack() {
       <Stack.Screen name="privacy-policy" options={{ headerShown: false }} />
       <Stack.Screen name="cart" options={{ headerShown: false }} />
       <Stack.Screen name='workout-session' options={{ headerShown: false }} />
+      {/* V3 Guided Session: no swipe-back; leaving goes through the exit sheet (pause and leave / end workout). */}
+      <Stack.Screen name="v3/session" options={{ headerShown: false, gestureEnabled: false, fullScreenGestureEnabled: false }} />
       <Stack.Screen name='settings' options={{ headerShown: false }} />
       <Stack.Screen name="admin-add-workout" options={{ headerShown: false }} />
       <Stack.Screen name="saved-builds" options={{ headerShown: false }} />
@@ -209,6 +212,7 @@ function AppContent() {
         <AppStateTracker />
         <NotificationInitializer />
         <HealthOnboardingGate />
+        <V3ProfileGate />
         <NavigationStack />
         <FloatingCart />
         <DevPill />

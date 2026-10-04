@@ -1,0 +1,126 @@
+{
+ "builds": 3785,
+ "seconds": 13,
+ "conflicts": {
+  "sore:generation_failed": 3,
+  "sore:sore_target_conflict": 24,
+  "equipment:cannot_build": 10
+ },
+ "gate_failures": {},
+ "examples": {},
+ "amped_variant_share": {
+  "traditional": 0.268,
+  "paired": 0.256,
+  "heavy_primary": 0.221,
+  "top_backoff": 0.108,
+  "volume": 0.095,
+  "efficient": 0.053
+ },
+ "amped_n": 399,
+ "assisted_by_level": {
+  "beginner": 124
+ },
+ "accessories": {
+  "strength_lower_hinge": [
+   [
+    "seated_leg_curl",
+    88
+   ],
+   [
+    "machine_glute_kickback",
+    79
+   ],
+   [
+    "frog_pump",
+    69
+   ],
+   [
+    "standing_single_leg_curl",
+    62
+   ],
+   [
+    "single_leg_leg_curl",
+    50
+   ],
+   [
+    "cable_glute_kickback",
+    37
+   ],
+   [
+    "slider_hamstring_curl",
+    29
+   ],
+   [
+    "roman_chair_ghd_raise",
+    29
+   ],
+   [
+    "lying_leg_curl",
+    26
+   ]
+  ],
+  "strength_full_body": [
+   [
+    "hollow_hold",
+    39
+   ],
+   [
+    "decline_sit_up",
+    27
+   ],
+   [
+    "weighted_plank",
+    24
+   ],
+   [
+    "machine_crunch",
+    24
+   ],
+   [
+    "side_plank",
+    21
+   ],
+   [
+    "pallof_step_out",
+    21
+   ],
+   [
+    "pallof_press",
+    20
+   ],
+   [
+    "weighted_sit_up",
+    18
+   ],
+   [
+    "standing_single_leg_curl",
+    18
+   ],
+   [
+    "ab_wheel_rollout",
+    17
+   ],
+   [
+    "dead_bug",
+    16
+   ],
+   [
+    "pec_deck",
+    16
+   ],
+   [
+    "bayesian_cable_curl",
+    16
+   ],
+   [
+    "reverse_crunch",
+    15
+   ],
+   [
+    "ez_preacher_curl",
+    15
+   ]
+  ]
+ },
+ "all_green": true
+}

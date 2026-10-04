@@ -1,0 +1,57 @@
+production-path builds 1404 (commercial gym); ok 1404; conflicts Counter()
+
+== Workload (medians)
+  beginner     30  n=234  exercises 3.0  explosive ex 2.0 (max 2)  explosive sets 6.0  contacts 0.0  sprints 0.0  strength sets 3.0  intent 4.8  est 22.1
+  beginner     60  n=234  exercises 4.0  explosive ex 2.0 (max 2)  explosive sets 6.0  contacts 6.0  sprints 0.0  strength sets 6.0  intent 4.8  est 36.2
+  intermediate 30  n=234  exercises 3.0  explosive ex 2.0 (max 2)  explosive sets 7.0  contacts 0.0  sprints 0.0  strength sets 3.0  intent 5.8  est 25.8
+  intermediate 60  n=234  exercises 4.0  explosive ex 2.0 (max 3)  explosive sets 7.0  contacts 9.0  sprints 0.0  strength sets 6.0  intent 6.6  est 43.4
+  advanced     30  n=234  exercises 3.0  explosive ex 2.0 (max 2)  explosive sets 7.0  contacts 0.0  sprints 0.0  strength sets 3.0  intent 6.8  est 28.1
+  advanced     60  n=234  exercises 4.0  explosive ex 2.0 (max 3)  explosive sets 8.5  contacts 12.0  sprints 0.0  strength sets 6.0  intent 8.7  est 47.8
+
+== Drills: sessions containing an agility / footwork drill (work or warm-up): 0 of 1404
+   structures seen: {'power_strength': 871, 'speed_strength': 343, 'jump_throw': 99, 'athletic_mixed': 59, 'contrast': 32}
+   primary qualities seen: {'total_body_power': 265, 'vertical_power': 364, 'acceleration': 369, 'horizontal_power': 331, 'rotational_power': 50, 'upper_power': 20, 'elastic_reactive': 5}
+
+== Olympic-derivative sessions (share of sessions with one; no State and all States)
+  beginner     0/468 = 0%   60 min 0/234
+  intermediate 23/468 = 5%   60 min 10/234
+  advanced     42/468 = 9%   60 min 15/234
+  by goal (intermediate / advanced, no State):
+    improve_athleticism        int 2/12 (17%)   adv 3/12 (25%)
+    build_strength             int 3/12 (25%)   adv 5/12 (42%)
+    build_muscle               int 0/12 (0%)   adv 6/12 (50%)
+    lose_weight_conditioning   int 0/12 (0%)   adv 1/12 (8%)
+    feel_better_reduce_stress  int 0/12 (0%)   adv 0/12 (0%)
+    stay_consistent            int 1/12 (8%)   adv 2/12 (17%)
+  by structure (intermediate + advanced):
+    athletic_mixed   10/54 (19%)
+    contrast         0/32 (0%)
+    jump_throw       0/62 (0%)
+    power_strength   55/576 (10%)
+    speed_strength   0/212 (0%)
+  by State (intermediate + advanced):
+    none                   23/144 (16%)
+    low_energy             0/72 (0%)
+    bored                  12/72 (17%)
+    irritated              8/72 (11%)
+    amped                  22/72 (31%)
+    stressed               0/72 (0%)
+    low_energy+amped       0/72 (0%)
+    amped+stressed         0/72 (0%)
+    bored+stressed         0/72 (0%)
+    irritated+low_energy   0/72 (0%)
+    irritated+stressed     0/72 (0%)
+    bored+low_energy       0/72 (0%)
+  exercises used: {'Hang High Pull': 30, 'Dumbbell Hang Power Clean': 3, 'Kettlebell Snatch': 1, 'Push Press': 4, 'Split Jerk': 8, 'Power Snatch': 6, 'Hang Power Clean': 7, 'Dumbbell Snatch': 6}
+  Olympic not in the primary / secondary block: 0 · Olympic dose outside <=3 reps / >=90 s rest: 0 · beginner Olympic: 0
+  max explosive exercises in any session: 3
+
+== State Satisfaction / Coherence
+  amped        n=324 satisfied 100.0% coherent 100.0%
+  bored        n=324 satisfied 100.0% coherent 100.0%
+  irritated    n=324 satisfied 100.0% coherent 100.0%
+  low_energy   n=432 satisfied 100.0% coherent 100.0%
+  stressed     n=432 satisfied 100.0% coherent 100.0%
+
+== Different Workout 12 runs: primary quality changed 12, primary exercise changed 12
+== Swap Exercise 53: valid 53, honest no-alternative 0, invalid 0

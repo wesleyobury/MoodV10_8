@@ -126,3 +126,11 @@ credentials.json
 *.pem
 *.key
 .credentials
+
+# Local-only working files (kept on disk, not in git)
+/Backups/
+/Claude outputs/
+/V3 Updates/*_screens/
+/V3 Updates/Cart Heroes/_retired/
+/V3 Updates/Exercise Thumbnails/*.png
+/V3 Updates/Exercise Thumbnails/*.jpg

@@ -4,115 +4,41 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import {
-  LayoutDashboard,
-  TrendingUp,
-  Repeat,
+  Activity,
+  Rocket,
   Dumbbell,
-  Heart,
+  Repeat,
+  DollarSign,
   Search,
   Settings,
   LogOut,
   Users,
-  Download,
-  CreditCard,
-  UserPlus,
-  Rocket,
-  DollarSign,
 } from "lucide-react";
 
 /**
- * Consolidated navigation: 3 clear groups instead of 11 flat tabs.
- * Analytics = the numbers; Explore = per-user digging; Admin = actions/config.
+ * V3 founder dashboard (Oct 2026): seven pages, one per question about the V3 loop
+ * (acquire, onboard, generate, start, complete, return, attempt #2, convert, retain), plus users and ops.
+ * Old routes redirect here (next.config.mjs).
  */
 const navSections: {
   title: string;
   items: { href: string; label: string; description: string; icon: React.ElementType }[];
 }[] = [
   {
-    title: "Analytics",
+    title: "The loop",
     items: [
-      {
-        href: "/overview",
-        label: "Overview",
-        description: "The headline numbers",
-        icon: LayoutDashboard,
-      },
-      {
-        href: "/growth",
-        label: "Growth",
-        description: "Signups, activation, funnels",
-        icon: TrendingUp,
-      },
-      {
-        href: "/acquisition",
-        label: "Acquisition",
-        description: "Store funnel: download → paid",
-        icon: Download,
-      },
-      {
-        href: "/onboarding",
-        label: "Onboarding",
-        description: "First-run funnel & drop-off",
-        icon: Rocket,
-      },
-      {
-        href: "/monetization",
-        label: "Monetization",
-        description: "Trials, subscriptions, revenue",
-        icon: DollarSign,
-      },
-      {
-        href: "/engagement",
-        label: "Engagement",
-        description: "Retention & workout quality",
-        icon: Repeat,
-      },
-      {
-        href: "/content",
-        label: "Content",
-        description: "Moods, equipment, exercises",
-        icon: Dumbbell,
-      },
-      {
-        href: "/social",
-        label: "Social",
-        description: "Posts, likes, community",
-        icon: Heart,
-      },
+      { href: "/pulse", label: "Pulse", description: "How is MOOD doing right now?", icon: Activity },
+      { href: "/activation", label: "Activation", description: "Signup to first finished workout", icon: Rocket },
+      { href: "/workouts", label: "Workouts", description: "Generated, started, finished", icon: Dumbbell },
+      { href: "/retention", label: "Retention", description: "Coming back, workout #2, habit", icon: Repeat },
+      { href: "/revenue", label: "Revenue", description: "Workout #2 gate to paid", icon: DollarSign },
     ],
   },
   {
-    title: "Explore",
+    title: "People & ops",
     items: [
-      {
-        href: "/users",
-        label: "User Explorer",
-        description: "Look up any user",
-        icon: Search,
-      },
-      {
-        href: "/subscribers",
-        label: "Subscribers",
-        description: "Who's paying (or comped)",
-        icon: CreditCard,
-      },
-    ],
-  },
-  {
-    title: "Admin",
-    items: [
-      {
-        href: "/admin",
-        label: "Admin & Config",
-        description: "Access, app config, ops",
-        icon: Settings,
-      },
-      {
-        href: "/creators",
-        label: "Creators",
-        description: "Applications & creator codes",
-        icon: UserPlus,
-      },
+      { href: "/users", label: "Users", description: "What did this person do?", icon: Search },
+      { href: "/admin", label: "Admin & Ops", description: "Tracking health, access, config", icon: Settings },
     ],
   },
 ];

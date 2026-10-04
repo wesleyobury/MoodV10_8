@@ -14,6 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinearGradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { apiFetch } from '../../utils/api';
+import { COLORS } from '../../constants/brand';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -73,11 +74,11 @@ export default function ForgotPassword() {
           {!submitted ? (
             <>
               <View style={styles.inputContainer}>
-                <Ionicons name="mail-outline" size={20} color="#666" style={styles.inputIcon} />
+                <Ionicons name="mail-outline" size={20} color={COLORS.textTertiary} style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
                   placeholder="Email address"
-                  placeholderTextColor="#666"
+                  placeholderTextColor={COLORS.textTertiary}
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -132,7 +133,7 @@ export default function ForgotPassword() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000000' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   keyboardView: { flex: 1 },
   content: { flex: 1, paddingHorizontal: 24 },
   backButton: {
@@ -142,11 +143,11 @@ const styles = StyleSheet.create({
   },
   header: { marginBottom: 36 },
   title: { fontSize: 28, fontWeight: '700', color: '#fff', marginBottom: 10 },
-  subtitle: { fontSize: 15, color: '#888', lineHeight: 22 },
+  subtitle: { fontSize: 15, color: COLORS.textSecondary, lineHeight: 22 },
   inputContainer: {
     flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#0c0c0c',
-    borderWidth: 1, borderColor: '#1d1d1d',
+    backgroundColor: COLORS.bg,
+    borderWidth: 1, borderColor: COLORS.border,
     borderRadius: 12, paddingHorizontal: 16,
     height: 56, marginBottom: 20,
   },
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
   successWrap: { alignItems: 'center', paddingTop: 8 },
   successIconWrap: { marginBottom: 20 },
   successTitle: { fontSize: 22, fontWeight: '700', color: '#fff', marginBottom: 12 },
-  successBody: { fontSize: 14, color: '#888', textAlign: 'center', lineHeight: 22, marginBottom: 28, paddingHorizontal: 12 },
+  successBody: { fontSize: 14, color: COLORS.textSecondary, textAlign: 'center', lineHeight: 22, marginBottom: 28, paddingHorizontal: 12 },
   successEmail: { color: '#FFD700' },
   secondaryButton: {
     paddingVertical: 14, paddingHorizontal: 28,

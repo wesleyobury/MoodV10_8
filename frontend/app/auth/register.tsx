@@ -21,6 +21,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import UserAvatar from '../../components/UserAvatar';
 import { API_URL } from '../../utils/apiConfig';
+import { COLORS } from '../../constants/brand';
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024; // 5MB
 const GOLD = '#F5C518';
@@ -236,13 +237,13 @@ export default function Register() {
                 <Ionicons
                   name="person-outline"
                   size={20}
-                  color="#666"
+                  color={COLORS.textTertiary}
                   style={styles.inputIcon}
                 />
                 <TextInput
                   style={styles.input}
                   placeholder="Username *"
-                  placeholderTextColor="#666"
+                  placeholderTextColor={COLORS.textTertiary}
                   value={username}
                   onChangeText={setUsername}
                   autoCapitalize="none"
@@ -255,13 +256,13 @@ export default function Register() {
                 <Ionicons
                   name="mail-outline"
                   size={20}
-                  color="#666"
+                  color={COLORS.textTertiary}
                   style={styles.inputIcon}
                 />
                 <TextInput
                   style={styles.input}
                   placeholder="Email *"
-                  placeholderTextColor="#666"
+                  placeholderTextColor={COLORS.textTertiary}
                   value={email}
                   onChangeText={setEmail}
                   autoCapitalize="none"
@@ -275,13 +276,13 @@ export default function Register() {
                 <Ionicons
                   name="person-circle-outline"
                   size={20}
-                  color="#666"
+                  color={COLORS.textTertiary}
                   style={styles.inputIcon}
                 />
                 <TextInput
                   style={styles.input}
                   placeholder="Display Name (optional)"
-                  placeholderTextColor="#666"
+                  placeholderTextColor={COLORS.textTertiary}
                   value={name}
                   onChangeText={setName}
                   autoCapitalize="words"
@@ -339,13 +340,13 @@ export default function Register() {
                 <Ionicons
                   name="lock-closed-outline"
                   size={20}
-                  color="#666"
+                  color={COLORS.textTertiary}
                   style={styles.inputIcon}
                 />
                 <TextInput
                   style={[styles.input, styles.passwordInput]}
                   placeholder="Password *"
-                  placeholderTextColor="#666"
+                  placeholderTextColor={COLORS.textTertiary}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
@@ -361,7 +362,7 @@ export default function Register() {
                   <Ionicons
                     name={showPassword ? 'eye-off-outline' : 'eye-outline'}
                     size={20}
-                    color="#666"
+                    color={COLORS.textTertiary}
                   />
                 </TouchableOpacity>
               </View>
@@ -370,13 +371,13 @@ export default function Register() {
                 <Ionicons
                   name="lock-closed-outline"
                   size={20}
-                  color="#666"
+                  color={COLORS.textTertiary}
                   style={styles.inputIcon}
                 />
                 <TextInput
                   style={styles.input}
                   placeholder="Confirm Password *"
-                  placeholderTextColor="#666"
+                  placeholderTextColor={COLORS.textTertiary}
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
                   secureTextEntry={true}
@@ -482,24 +483,24 @@ export default function Register() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000000' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   keyboardView: { flex: 1 },
   scrollView: { flex: 1 },
   content: { flex: 1, paddingHorizontal: 20, paddingTop: 40, paddingBottom: 40 },
   header: { marginBottom: 32, alignItems: 'center' },
   backButton: { position: 'absolute', left: 0, top: 0, padding: 8 },
   title: { fontSize: 32, fontWeight: 'bold', color: '#fff', marginBottom: 8 },
-  subtitle: { fontSize: 16, color: '#888', textAlign: 'center' },
+  subtitle: { fontSize: 16, color: COLORS.textSecondary, textAlign: 'center' },
   form: { marginBottom: 40 },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: COLORS.surface,
     borderRadius: 12,
     marginBottom: 16,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: COLORS.border,
   },
   inputIcon: { marginRight: 12 },
   input: { flex: 1, height: 50, fontSize: 16, color: '#fff' },
@@ -513,7 +514,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   registerButtonText: { fontSize: 16, fontWeight: 'bold', color: '#0c0c0c' },
-  registerButtonTextDisabled: { color: '#888' },
+  registerButtonTextDisabled: { color: COLORS.textSecondary },
   // App Store compliance acknowledgement row
   ackRow: {
     flexDirection: 'row',
@@ -526,7 +527,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 4,
     borderWidth: 1.5,
-    borderColor: '#666',
+    borderColor: COLORS.border,
     marginRight: 10,
     marginTop: 1,
     alignItems: 'center',
@@ -548,7 +549,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   footer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' },
-  footerText: { fontSize: 14, color: '#888' },
+  footerText: { fontSize: 14, color: COLORS.textSecondary },
   footerLink: { fontSize: 14, color: '#FFD700', fontWeight: '600' },
 
   // Avatar section
@@ -564,9 +565,9 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 130,
     borderRadius: 12,
-    backgroundColor: '#1a1a1a',
+    backgroundColor: COLORS.surface,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: COLORS.border,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 14,

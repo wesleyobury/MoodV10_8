@@ -17,9 +17,11 @@ import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { API_URL } from '../utils/apiConfig';
-import { Analytics } from '../utils/analytics';
+import { Analytics, trackEvent } from '../utils/analytics';
 import { useCart } from '../contexts/CartContext';
-import AchievementMedallion from './AchievementMedallion';
+import AchievementMedallion, { achievementValue } from './AchievementMedallion';
+import { BuildPreset, buildPresetParams } from '../utils/v3Explore';
+import { Shimmer } from './v3/Shimmer';
 
 // V2.1 — floor on automatic feed toasts. 3 minutes: frequent enough that an
 // active feed still feels live, rare enough that it stops being wallpaper.
@@ -36,6 +38,17 @@ const BORDER = '#1F1F1F';
 // Shared fixed height so every feed card matches the first "sessions today"
 // stat card — keeps the feed compact and uniform.
 const FEED_CARD_HEIGHT = 104;
+
+/** What this page is (Explore, Oct 2026): a headline and one short line, not a paragraph. */
+const LIVE_HEADLINE = 'See who’s training.';
+const LIVE_SUBLINE = 'Like what you see? Tap it. MOOD builds your version.';
+
+const Intro: React.FC = () => (
+  <View style={styles.intro} data-testid="live-feed-intro">
+    <Text style={styles.introHeadline}>{LIVE_HEADLINE}</Text>
+    <Text style={styles.introSub}>{LIVE_SUBLINE}</Text>
+  </View>
+);
 
 // ===== Mood palettes (dark, desaturated) =====
 type MoodBucket = 'sweat' | 'muscle' | 'explosive' | 'lazy' | 'calisthenics' | 'outdoor';
@@ -78,6 +91,15 @@ interface LiveEntry {
   // can hydrate the viewer's cart with the exact exercises the original
   // athlete ran (instead of dumping them into mood sub-selection).
   workout_snapshot_id?: string | null;
+  // MOOD V3 (Oct 2026): V3 workouts and sample sessions. Try this workout opens Build with this preset.
+  v3_workout_id?: string | null;
+  v3_preset?: BuildPreset | null;
+  /** a sample session (backend/v3_explore.feed_samples): not a real person */
+  sample?: boolean;
+  /** production: tag the row SAMPLE and show no name / face */
+  show_sample_tag?: boolean;
+  /** detail line: States · exercises · sets · level (V3 and sample rows) */
+  details?: string[];
 }
 
 interface LiveFeedData {
@@ -122,29 +144,25 @@ const PulseDot: React.FC<{ size?: number; color?: string }> = ({ size = 6, color
 
 // ===== Card for a single feed entry =====
 // ===== Badge unlock card (v2 gamification) — gold, premium, no gold-on-gold =====
-const BadgeCard: React.FC<{ entry: LiveEntry }> = ({ entry }) => {
+export const BadgeCard: React.FC<{ entry: LiveEntry }> = ({ entry }) => {
   const userName = entry.user.name || entry.user.username || 'Someone';
   const icon = (entry.badge_icon as any) || 'trophy';
   return (
     <View style={[styles.card, styles.badgeCard]} data-testid={`live-feed-card-badge-${entry.id}`}>
+      {/* founder pass, Oct 2026: the coin carries the tier; the card is a neutral surface like every other card */}
       <View style={styles.badgeRow}>
-        <AchievementMedallion icon={icon} size={48} />
+        <AchievementMedallion icon={icon} size={56} value={entry.badge_id ? achievementValue(entry.badge_id) : null} />
         <View style={styles.badgeTextCol}>
-          <Text style={styles.badgeEyebrow}>BADGE</Text>
+          <Text style={styles.badgeEyebrow} numberOfLines={1}>BADGE EARNED<Text style={styles.badgeAgo}>{entry.ago_text ? `  ·  ${entry.ago_text}` : ''}</Text></Text>
           <Text style={styles.badgeLabel} numberOfLines={1}>{entry.badge_label || 'New badge'}</Text>
-          <Text style={styles.sentence} numberOfLines={1}>
-            {userName} earned {entry.badge_label ? `“${entry.badge_label}”` : 'a new badge'}
-          </Text>
+          <Text style={styles.sentence} numberOfLines={1}>{userName} earned it</Text>
         </View>
-      </View>
-      <View style={styles.bottomRow}>
-        <Text style={[styles.timestamp, { color: 'rgba(255,215,0,0.5)' }]}>{entry.ago_text}</Text>
       </View>
     </View>
   );
 };
 
-const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void }> = ({ entry, onPress }) => {
+const FeedCard: React.FC<{ entry: LiveEntry; index?: number; onPress: (entry: LiveEntry) => void }> = ({ entry, index = 0, onPress }) => {
   if (entry.type === 'badge') {
     return <BadgeCard entry={entry} />;
   }
@@ -153,14 +171,19 @@ const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void
   const semiBg = withAlpha(palette.accent, 0.06); // very subtle accent wash on near-black
   const cardBg = palette.bg; // already dark, semi-tinted feel by design
 
-  const showLabel = entry.type === 'live_now' || entry.type === 'milestone';
+  const showLabel = entry.type === 'live_now' || entry.type === 'milestone' || !!entry.show_sample_tag;
   const labelText = entry.type === 'live_now' ? 'LIVE NOW' : entry.type === 'milestone' ? 'MILESTONE' : '';
   const labelColor = entry.type === 'milestone' ? GOLD : withAlpha(palette.accent, 0.7);
 
   // Sentence builder
+  const anonymous = !!entry.sample && !entry.user.name;
   const userName = entry.user.name || entry.user.username || 'Someone';
   let sentence = '';
-  if (entry.type === 'live_now') {
+  if (anonymous) {
+    // sample rows in production never name a person
+    const w = entry.workout_name || entry.mood_label;
+    sentence = entry.type === 'live_now' ? `${w} session just started` : `${entry.duration_minutes ? `${entry.duration_minutes}-min ` : ''}${w} session finished`;
+  } else if (entry.type === 'live_now') {
     sentence = `${userName} just started ${entry.workout_name ? `a ${entry.workout_name}` : `a ${entry.mood_label.toLowerCase()} workout`}`;
   } else if (entry.type === 'completion') {
     const dur = entry.duration_minutes ? `${entry.duration_minutes}-min ` : '';
@@ -174,7 +197,7 @@ const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void
     <TouchableOpacity
       activeOpacity={0.85}
       onPress={() => onPress(entry)}
-      style={[styles.card, { backgroundColor: cardBg }]}
+      style={[styles.card, { backgroundColor: cardBg }, !!entry.details?.length && { height: FEED_CARD_HEIGHT + (showLabel ? 30 : 20) }]}
       data-testid={`live-feed-card-${entry.type}-${entry.id}`}
     >
       {/* subtle accent wash to lift card off the black background */}
@@ -185,7 +208,11 @@ const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void
           around. Falls back to an initial-letter circle when the user
           hasn't uploaded an avatar. */}
       <View style={styles.cardAvatar} pointerEvents="none">
-        {entry.user.avatar ? (
+        {anonymous ? (
+          <View style={[styles.cardAvatarImg, styles.cardAvatarFallback, { borderColor: withAlpha(palette.accent, 0.4) }]}>
+            <Ionicons name="sparkles" size={13} color={palette.accent} />
+          </View>
+        ) : entry.user.avatar ? (
           <Image
             source={{ uri: entry.user.avatar }}
             style={styles.cardAvatarImg}
@@ -222,6 +249,11 @@ const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void
             >
               {labelText}
             </Text>
+            {entry.show_sample_tag ? (
+              <View style={[styles.sampleTag, { marginLeft: labelText ? 8 : 0 }]}>
+                <Text style={styles.sampleTagText}>SAMPLE</Text>
+              </View>
+            ) : null}
           </View>
         )}
 
@@ -236,6 +268,11 @@ const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void
         )}
 
         <Text style={styles.sentence} numberOfLines={1}>{sentence}</Text>
+        {entry.details?.length ? (
+          <Text style={[styles.details, { color: withAlpha(palette.accent, 0.75) }]} numberOfLines={1} data-testid={`live-feed-details-${entry.id}`}>
+            {entry.details.join('  ·  ')}
+          </Text>
+        ) : null}
       </View>
 
       <View style={styles.bottomRow}>
@@ -244,6 +281,8 @@ const FeedCard: React.FC<{ entry: LiveEntry; onPress: (entry: LiveEntry) => void
         </Text>
 
         <View style={[styles.tryButton, { borderColor: withAlpha(palette.accent, 0.35) }]}>
+          {/* a soft light band sweeps the button every few seconds, staggered down the list */}
+          <Shimmer size={130} offset={(index % 8) * 260} pause={2600} duration={1100} strength={0.4} />
           <Ionicons name="chevron-forward" size={11} color={palette.accent} />
           <Text style={[styles.tryButtonText, { color: palette.accent }]}>Try this workout</Text>
         </View>
@@ -295,6 +334,23 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
     }, 2500);
   }, [toastOpacity, toastTranslateY]);
 
+  // explore_viewed: once per focus of the Live feed, after its data is on screen. Counts real vs labelled sample
+  // sessions so the admin can see how much of Explore is real activity (sample rows are never counted as real).
+  const viewPendingRef = useRef(false);
+  const latestEntriesRef = useRef<LiveEntry[] | null>(null);
+  const fireExploreViewed = useCallback((entries: LiveEntry[], sessionsToday?: number) => {
+    viewPendingRef.current = false;
+    if (!token) return;
+    const sample = entries.filter((e) => e.sample).length;
+    trackEvent(token, 'explore_viewed', {
+      surface: 'explore',
+      real_count: entries.length - sample,
+      sample_count: sample,
+      v3_count: entries.filter((e) => !e.sample && !!e.v3_preset).length,
+      sessions_today: sessionsToday ?? null,
+    });
+  }, [token]);
+
   const fetchFeed = useCallback(async (isManualRefresh: boolean = false) => {
     try {
       const res = await fetch(`${API_URL}/api/feed/live?limit=30`, {
@@ -322,6 +378,8 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
       const merged = [...seenIdsRef.current, ...(json.entries || []).map((e) => e.id)];
       seenIdsRef.current = new Set(merged.slice(-SEEN_CAP));
       setData(json);
+      latestEntriesRef.current = json.entries || [];
+      if (viewPendingRef.current) fireExploreViewed(json.entries || [], json.stats?.sessions_today);
 
       // Toast logic — skip on the very first load (everything would be "new").
       //
@@ -350,7 +408,7 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [token, showToast]);
+  }, [token, showToast, fireExploreViewed]);
 
   useEffect(() => {
     fetchFeed(false);
@@ -364,15 +422,29 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
   // Poll every 30s while screen is focused
   useFocusEffect(
     useCallback(() => {
+      viewPendingRef.current = true;
+      if (latestEntriesRef.current) fireExploreViewed(latestEntriesRef.current);
       const id = setInterval(() => fetchFeed(false), 30000);
       return () => clearInterval(id);
-    }, [fetchFeed])
+    }, [fetchFeed, fireExploreViewed])
   );
 
   const handleCardPress = useCallback(
     async (entry: LiveEntry) => {
       // Badge cards are informational — no "Try this workout" hydration.
       if (entry.type === 'badge') return;
+      // MOOD V3 workouts and sample sessions: open Build with that kind of session preselected (generator unchanged).
+      if (entry.v3_preset) {
+        if (token) {
+          Analytics.tryWorkoutClicked(token, {
+            workout_name: entry.workout_name || entry.mood_label,
+            mood_category: entry.mood_label,
+            source: entry.sample ? 'live_feed_sample' : 'live_feed_v3',
+          });
+        }
+        router.push({ pathname: '/v3/build', params: buildPresetParams(entry.v3_preset, entry.sample ? 'live_sample' : 'live_v3') } as any);
+        return;
+      }
       const nav = MOOD_NAV[entry.mood_bucket] || MOOD_NAV.muscle;
 
       // Phase 7 — if the original completion event carried a snapshot ID,
@@ -477,6 +549,7 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
         contentContainerStyle={{ paddingBottom: 24 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={GOLD} />}
       >
+        <Intro />
         <StatHeader sessions={stats.sessions_today} mood={stats.most_common_mood} />
         <View style={styles.emptyState}>
           <Text style={styles.emptyText} data-testid="live-feed-empty">
@@ -521,10 +594,14 @@ const LiveFeed: React.FC<LiveFeedProps> = ({ token }) => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={GOLD} />}
         data-testid="live-feed-scroll"
       >
+        <Intro />
         <StatHeader sessions={stats.sessions_today} mood={stats.most_common_mood} />
+        {entries.some((e) => e.show_sample_tag) ? (
+          <Text style={styles.sampleNote}>Includes sample sessions while MOOD’s live community grows.</Text>
+        ) : null}
         <View style={{ paddingHorizontal: 16 }}>
-          {entries.map((entry) => (
-            <FeedCard key={entry.id} entry={entry} onPress={handleCardPress} />
+          {entries.map((entry, i) => (
+            <FeedCard key={entry.id} entry={entry} index={i} onPress={handleCardPress} />
           ))}
         </View>
       </ScrollView>
@@ -558,6 +635,9 @@ const StatHeader: React.FC<{ sessions: number; mood: string | null }> = ({ sessi
 );
 
 const styles = StyleSheet.create({
+  sampleTag: { paddingHorizontal: 5, height: 15, borderRadius: 4, justifyContent: 'center', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.28)' },
+  sampleTagText: { fontSize: 8.5, fontWeight: '800', letterSpacing: 0.8, color: 'rgba(255,255,255,0.62)' },
+  sampleNote: { fontSize: 11.5, color: 'rgba(255,255,255,0.42)', paddingHorizontal: 16, marginTop: -4, marginBottom: 10, lineHeight: 16 },
   container: {
     flex: 1,
     backgroundColor: '#000',
@@ -661,15 +741,20 @@ const styles = StyleSheet.create({
   },
   // Badge unlock card
   badgeCard: {
-    backgroundColor: '#161310',
-    borderWidth: 1,
-    borderColor: 'rgba(255,215,0,0.22)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(255,255,255,0.10)',
+    justifyContent: 'center',
   },
   badgeRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
-    marginBottom: 6,
+  },
+  badgeAgo: {
+    color: 'rgba(255,255,255,0.4)',
+    fontWeight: '600',
+    letterSpacing: 0.4,
   },
   badgeTextCol: {
     flex: 1,
@@ -685,7 +770,8 @@ const styles = StyleSheet.create({
   badgeLabel: {
     color: '#FFFFFF',
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '800',
+    letterSpacing: -0.3,
     marginBottom: 2,
   },
   // Top text column reserves space for the absolutely-positioned 44px avatar
@@ -731,7 +817,29 @@ const styles = StyleSheet.create({
   timestamp: {
     fontSize: 11,
   },
+  details: {
+    fontSize: 11.5,
+    fontWeight: '600',
+    marginTop: 3,
+  },
+  intro: {
+    paddingHorizontal: 16,
+    paddingTop: 18,
+  },
+  introHeadline: {
+    color: TEXT_PRIMARY,
+    fontSize: 24,
+    fontWeight: '800',
+    letterSpacing: -0.7,
+  },
+  introSub: {
+    color: TEXT_SECONDARY,
+    fontSize: 14,
+    fontWeight: '500',
+    marginTop: 4,
+  },
   tryButton: {
+    overflow: 'hidden',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,

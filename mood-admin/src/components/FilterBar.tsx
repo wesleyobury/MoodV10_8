@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, ChevronDown, Users, Check } from "lucide-react";
+import { createContext, useContext } from "react";
+import { Calendar, ChevronDown, Users, Check, Layers } from "lucide-react";
 import {
   useFilters,
   RANGE_PRESETS,
@@ -16,15 +17,25 @@ import { cn } from "@/lib/utils";
  * Backed by the global filter context, so switching pages keeps your
  * selected range, granularity, and internal-users setting.
  */
+/** Legacy pages rendered inside a new page's tab hide their own filter bar (the host page shows one). */
+export const EmbeddedContext = createContext(false);
+
 export function FilterBar({
   showGranularity = true,
+  showVersion = false,
+  versionNote,
   children,
 }: {
   showGranularity?: boolean;
+  showVersion?: boolean;
+  /** shown next to the toggle, e.g. "V3-only cards ignore this" */
+  versionNote?: string;
   children?: React.ReactNode;
 }) {
   const { filters, updateFilters, rangeLabel } = useFilters();
   const [dateOpen, setDateOpen] = useState(false);
+  const embedded = useContext(EmbeddedContext);
+  if (embedded) return null;
 
   return (
     <div className="bg-card border border-border rounded-lg p-3 mb-6">
@@ -86,6 +97,33 @@ export function FilterBar({
           </div>
         )}
 
+        {/* Version scope: All versions (V2 + V3) / V3 only */}
+        {showVersion && (
+          <div className="flex items-center gap-2">
+            <div className="flex items-center rounded-md border border-border bg-background p-0.5">
+              {([["all", "All versions"], ["v3", "V3 only"]] as const).map(([v, label]) => (
+                <button
+                  key={v}
+                  onClick={() => updateFilters({ version: v })}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1 text-sm rounded transition-colors",
+                    filters.version === v ? "bg-primary/15 text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {v === "v3" && <Layers className="h-3.5 w-3.5" />}
+                  {label}
+                </button>
+              ))}
+            </div>
+            <Tooltip
+              content={
+                versionNote ||
+                "All versions counts V2 and V3 together. V3 only keeps people who used the V3 app and events from V3 builds. Cards tagged V3 always show V3 data."
+              }
+            />
+          </div>
+        )}
+
         {/* Internal users toggle */}
         <button
           onClick={() => updateFilters({ includeInternal: !filters.includeInternal })}
@@ -107,8 +145,9 @@ export function FilterBar({
         <div className="flex-1" />
 
         <div className="text-xs text-muted-foreground">
-          {filters.rangeDays} days ·{" "}
-          {GRANULARITY_OPTIONS.find((g) => g.value === filters.granularity)?.label}
+          {rangeLabel}
+          {showGranularity && ` · ${GRANULARITY_OPTIONS.find((g) => g.value === filters.granularity)?.label}`}
+          {showVersion && (filters.version === "v3" ? " · V3 only" : " · all versions")}
           {filters.includeInternal && " · incl. internal"}
         </div>
       </div>

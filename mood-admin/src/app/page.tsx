@@ -10,7 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!isLoading && isAuthenticated && isAdmin) {
-      redirect("/overview");
+      redirect("/pulse");
     }
   }, [isLoading, isAuthenticated, isAdmin]);
 

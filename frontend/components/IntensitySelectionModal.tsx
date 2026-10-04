@@ -72,7 +72,9 @@ export default function IntensitySelectionModal({
   const { answers } = useOnboardingFunnel();
   const { currentDraftId, beginDraft } = useDrafts();
   const pathname = usePathname();
-  const recommended = recommendedIntensity(answers.fitnessLevel, answers.workoutLength);
+  // V2 answers first; V3 funnels have no fitnessLevel/workoutLength, so fall back
+  // to the V3 experience answer (same three tiers).
+  const recommended = recommendedIntensity(answers.fitnessLevel, answers.workoutLength) ?? answers.experience ?? null;
 
   const [selectedIntensity, setSelectedIntensity] = useState<IntensityLevel | null>(recommended);
 

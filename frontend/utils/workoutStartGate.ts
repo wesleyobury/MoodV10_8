@@ -18,21 +18,37 @@ const HARD_PAYWALL_TRIGGER: PaywallTrigger = 'start_workout_after_free_session';
 const GRANT_TTL_MS = 30 * 60 * 1000;
 
 let grantedUntil = 0;
-let grantedForToken: string | null = null;
+let grantedForKey: string | null = null;
+
+/**
+ * Oct 2026 — the grant is keyed by token AND workout. The server rule is now
+ * "one free workout a week, paywall on STARTING a second one", so a grant earned by
+ * workout A must never let a different workout B start without asking.
+ * Legacy V2 callers pass no workout id and keep one shared grant.
+ */
+function grantKey(token: string | null, workoutId?: string | null): string {
+  return `${token ?? ''}|${workoutId ?? ''}`;
+}
 
 /** Called after a workout completes, so the next session re-checks the server. */
 export function clearWorkoutStartGrant(): void {
   grantedUntil = 0;
-  grantedForToken = null;
+  grantedForKey = null;
 }
 
-function hasValidGrant(token: string | null): boolean {
-  return grantedForToken === token && Date.now() < grantedUntil;
+function hasValidGrant(token: string | null, workoutId?: string | null): boolean {
+  return grantedForKey === grantKey(token, workoutId) && Date.now() < grantedUntil;
 }
 
-function recordGrant(token: string | null): void {
-  grantedForToken = token;
+function recordGrant(token: string | null, workoutId?: string | null): void {
+  grantedForKey = grantKey(token, workoutId);
   grantedUntil = Date.now() + GRANT_TTL_MS;
+}
+
+export interface WorkoutStartOptions {
+  /** The specific workout being started. Makes the server gate idempotent per workout. */
+  workoutId?: string | null;
+  source?: 'v3';
 }
 
 /**
@@ -54,7 +70,9 @@ export async function tryBeginWorkoutSession(
   canStartWorkout: boolean,
   openPaywall: (trigger?: PaywallTrigger) => void,
   token: string | null,
+  opts: WorkoutStartOptions = {},
 ): Promise<boolean> {
+  const workoutId = opts.workoutId ?? null;
   if (!token) {
     if (!canStartWorkout) {
       openHardPaywall(openPaywall, token);
@@ -64,18 +82,21 @@ export async function tryBeginWorkoutSession(
   }
 
   // Already verified for this session — don't re-hit the network mid-workout.
-  if (hasValidGrant(token)) return true;
+  if (hasValidGrant(token, workoutId)) return true;
 
   // Server-side gate is the source of truth for returning users and second
   // workout attempts. Local state is only a fallback for signed-out/dev flows;
   // using it first can trap a newly-subscribed user behind stale Paywall #3.
   const res = await apiFetch<{ can_start: boolean }>('/api/workouts/start', {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
+    headers: workoutId
+      ? { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+      : { Authorization: `Bearer ${token}` },
+    ...(workoutId ? { body: JSON.stringify({ workout_id: workoutId, source: opts.source ?? 'v3' }) } : {}),
   });
 
   if (res.ok && res.data?.can_start !== false) {
-    recordGrant(token);
+    recordGrant(token, workoutId);
     return true;
   }
 
@@ -138,7 +159,7 @@ export async function tryBeginWorkoutSession(
   if (isNetwork) {
     Alert.alert(
       'You’re offline',
-      'We couldn’t reach MOOD to check your subscription, and your free session for this week is already used. Reconnect and try again.',
+      'We couldn’t reach MOOD to check your subscription, and your free workout for this week is already used. Reconnect and try again.',
     );
     return false;
   }

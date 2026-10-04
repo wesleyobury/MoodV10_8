@@ -99,6 +99,28 @@ export interface AuthTokenResponse {
   message?: string;
 }
 
+/* Auth refresh coordination (Oct 2026 fix). Refresh tokens rotate on every use, so two refreshes racing with the same
+ * refresh token make the second fail, which cleared the stored tokens ("Invalid token" storms, surfaced by the Built for
+ * your MOOD poller hitting the API several times a second with an expired access token). Now:
+ *   - one refresh at a time: concurrent 401s share the same in-flight refresh;
+ *   - once refreshed, a request still carrying a token we already know is stale is sent with the fresh one instead
+ *     (screens hold the token from AuthContext, which apiFetch's internal refresh does not update). */
+let refreshInFlight: Promise<string | null> | null = null;
+const staleAccessTokens = new Set<string>();
+let freshAccessToken: string | null = null;
+
+function withFreshAuth(headers: any): any {
+  if (!headers || !freshAccessToken) return headers;
+  const auth = headers.Authorization ?? headers.authorization;
+  if (typeof auth !== 'string' || !auth.startsWith('Bearer ')) return headers;
+  return staleAccessTokens.has(auth.slice(7)) ? { ...headers, Authorization: `Bearer ${freshAccessToken}` } : headers;
+}
+
+function bearerOf(headers: any): string | null {
+  const auth = headers?.Authorization ?? headers?.authorization;
+  return typeof auth === 'string' && auth.startsWith('Bearer ') ? auth.slice(7) : null;
+}
+
 /**
  * Safe fetch wrapper that handles both JSON and non-JSON responses
  * 
@@ -111,7 +133,8 @@ export async function apiFetch<T = any>(
   options: ApiFetchOptions = {}
 ): Promise<ApiResponse<T>> {
   const url = `${API_URL}${path}`;
-  const { timeoutMs = DEFAULT_TIMEOUT_MS, retries, ...fetchOptions } = options;
+  const { timeoutMs = DEFAULT_TIMEOUT_MS, retries, ...rawFetchOptions } = options;
+  const fetchOptions = { ...rawFetchOptions, headers: withFreshAuth(rawFetchOptions.headers) };
   const method = (fetchOptions.method || 'GET').toUpperCase();
   // GETs are idempotent → retry once by default. Mutations are not → never
   // auto-retry unless the caller explicitly opts in.
@@ -119,8 +142,16 @@ export async function apiFetch<T = any>(
   
   console.log(`📡 API Request: ${options.method || 'GET'} ${url}`);
   
-  // Helper to attempt token refresh once
-  const tryRefreshOnce = async (): Promise<string | null> => {
+  // Helper to attempt token refresh once (single-flight across concurrent requests)
+  const tryRefreshOnce = (): Promise<string | null> => {
+    if (!refreshInFlight) {
+      refreshInFlight = doRefresh().finally(() => {
+        refreshInFlight = null;
+      });
+    }
+    return refreshInFlight;
+  };
+  const doRefresh = async (): Promise<string | null> => {
     try {
       const refreshToken = await secureStorage.get(AUTH_REFRESH_TOKEN_KEY);
       if (!refreshToken) return null;
@@ -138,6 +169,8 @@ export async function apiFetch<T = any>(
 
       if (!refreshRes.ok) {
         console.warn('🔁 Refresh failed:', refreshRes.status, refreshText);
+        freshAccessToken = null;
+        staleAccessTokens.clear();
         // On failure, clear stored tokens
         await secureStorage.delete(AUTH_TOKEN_KEY);
         await secureStorage.delete(AUTH_REFRESH_TOKEN_KEY);
@@ -207,15 +240,24 @@ export async function apiFetch<T = any>(
     if (!res.ok) {
       // If 401, attempt refresh once and retry the original request
       if (res.status === 401 && !path.startsWith('/api/auth/refresh')) {
-        const newAccess = await tryRefreshOnce();
-        if (newAccess) {
+        const sentToken = bearerOf(fetchOptions.headers);
+        let retryToken: string | null;
+        if (sentToken && freshAccessToken && staleAccessTokens.has(sentToken)) {
+          // a token we already refreshed away from (raced with the refresh): no new refresh, use the fresh one
+          retryToken = freshAccessToken;
+        } else {
+          retryToken = await tryRefreshOnce();
+          if (retryToken) freshAccessToken = retryToken;
+        }
+        if (sentToken && retryToken && sentToken !== retryToken) staleAccessTokens.add(sentToken);
+        if (retryToken) {
           // retry original request with new Authorization header
           const retryRes = await fetchWithTimeout(url, {
             ...fetchOptions,
             headers: {
               'Content-Type': 'application/json',
               ...fetchOptions.headers,
-              'Authorization': `Bearer ${newAccess}`,
+              'Authorization': `Bearer ${retryToken}`,
             },
           }, timeoutMs);
 

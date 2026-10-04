@@ -15,6 +15,7 @@ import {
   isMedicalDisclaimerAcknowledged,
 } from '../utils/healthStorage';
 import { shouldDeferAuxiliaryOnboardingGates } from '../utils/onboardingFunnelDefer';
+import { isFirstWorkoutPending } from '../utils/v3Profile';
 
 export default function HealthOnboardingGate() {
   const { token, isGuest, isLoading, user } = useAuth();
@@ -34,11 +35,16 @@ export default function HealthOnboardingGate() {
     const seg = segments?.[0];
     const inOnboarding = seg === 'onboarding' || seg === 'onboarding-funnel';
     if (inOnboarding) return;
+    // Never interrupt building, reviewing or doing a V3 workout.
+    if (seg === 'v3') return;
 
     (async () => {
       // Health connect runs AFTER reveal-payoff (Spec §6). Never hijack a
       // fresh signup that still owes the onboarding funnel.
       if (await shouldDeferAuxiliaryOnboardingGates(user?.id)) return;
+      // Oct 2026: onboarding ends in workout #1, not in permission screens. Wearables wait until that workout is done
+      // (the flag clears when the first V3 session completes, or after 24 h).
+      if (await isFirstWorkoutPending(user?.id)) return;
 
       const [done, disclaimerAck] = await Promise.all([
         isHealthOnboardingComplete(),

@@ -10,14 +10,18 @@ import { subDays, format } from "date-fns";
  * - includeInternal: whether staff/test accounts are included (default OFF)
  */
 export type Granularity = "day" | "week" | "month";
+/** all = V2 + V3 blended (default); v3 = V3 users / V3 builds only. V3-only metrics ignore it. */
+export type VersionScope = "all" | "v3";
 
 export interface GlobalFilters {
   rangeDays: number;
   granularity: Granularity;
   includeInternal: boolean;
+  version: VersionScope;
 }
 
 export const RANGE_PRESETS: { label: string; days: number }[] = [
+  { label: "Today", days: 1 },
   { label: "Last 7 days", days: 7 },
   { label: "Last 30 days", days: 30 },
   { label: "Last 90 days", days: 90 },
@@ -35,6 +39,7 @@ export const defaultFilters: GlobalFilters = {
   rangeDays: 30,
   granularity: "day",
   includeInternal: false,
+  version: "all",
 };
 
 interface FilterContextType {
@@ -45,6 +50,9 @@ interface FilterContextType {
   days: number;
   granularity: Granularity;
   includeInternal: boolean;
+  version: VersionScope;
+  /** Query string for the V3 dashboard API: start/end (inclusive CT days), version, include_internal. */
+  v3Query: string;
   startDate: Date;
   endDate: Date;
   startDateStr: string;
@@ -83,6 +91,13 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
       days: filters.rangeDays,
       granularity: filters.granularity,
       includeInternal: filters.includeInternal,
+      version: filters.version,
+      v3Query: new URLSearchParams({
+        start: format(subDays(endDate, Math.max(filters.rangeDays, 1) - 1), "yyyy-MM-dd"),
+        end: format(endDate, "yyyy-MM-dd"),
+        version: filters.version,
+        include_internal: String(filters.includeInternal),
+      }).toString(),
       startDate,
       endDate,
       startDateStr: format(startDate, "yyyy-MM-dd"),

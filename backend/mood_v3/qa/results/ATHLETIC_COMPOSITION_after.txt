@@ -1,0 +1,41 @@
+== 60 minutes, by level
+  beginner     n= 234  athletic 1:   1%  2:  99%  3+:   0%  | mean athletic 1.99  strength 1.94  support 0.06  ratio 0.99
+                       strength+support outnumber athletic:   1%  | 1 athletic + 3 other:   0%  | carry   2%  secondary  99%  tertiary   0%  Olympic   0%
+                       medians: explosive sets 6.0  contacts 6.0  intent 4.8  strength sets 6.0  est 36.2
+  intermediate n= 234  athletic 1:   3%  2:  71%  3+:  26%  | mean athletic 2.23  strength 1.89  support 0.11  ratio 1.12
+                       strength+support outnumber athletic:   3%  | 1 athletic + 3 other:   0%  | carry   4%  secondary  97%  tertiary  26%  Olympic   4%
+                       medians: explosive sets 7.0  contacts 9.0  intent 6.6  strength sets 6.0  est 43.4
+  advanced     n= 234  athletic 1:   5%  2:  65%  3+:  30%  | mean athletic 2.26  strength 1.96  support 0.04  ratio 1.13
+                       strength+support outnumber athletic:   5%  | 1 athletic + 3 other:   0%  | carry   0%  secondary  95%  tertiary  30%  Olympic   6%
+                       medians: explosive sets 8.5  contacts 12.0  intent 8.7  strength sets 6.0  est 47.8
+  all          n= 702  athletic 1:   3%  2:  78%  3+:  19%  | mean athletic 2.16  strength 1.93  support 0.07  ratio 1.08
+                       strength+support outnumber athletic:   3%  | 1 athletic + 3 other:   0%  | carry   2%  secondary  97%  tertiary  19%  Olympic   4%
+                       medians: explosive sets 7.0  contacts 9.0  intent 6.1  strength sets 6.0  est 42.1
+
+== 60 minutes, by State (all levels)
+  amped                  n= 54  athletic 1/2/3+:   0%  41%  59%  other>athletic   0%  carry   6%
+  amped+stressed         n= 54  athletic 1/2/3+:   0% 100%   0%  other>athletic   0%  carry   0%
+  bored                  n= 54  athletic 1/2/3+:   0%  46%  54%  other>athletic   0%  carry   6%
+  bored+low_energy       n= 54  athletic 1/2/3+:  13%  87%   0%  other>athletic  13%  carry   0%
+  bored+stressed         n= 54  athletic 1/2/3+:   0% 100%   0%  other>athletic   0%  carry   0%
+  irritated              n= 54  athletic 1/2/3+:   0%  50%  50%  other>athletic   0%  carry   4%
+  irritated+low_energy   n= 54  athletic 1/2/3+:  13%  87%   0%  other>athletic  13%  carry   0%
+  irritated+stressed     n= 54  athletic 1/2/3+:   0% 100%   0%  other>athletic   0%  carry   0%
+  low_energy             n= 54  athletic 1/2/3+:   4%  96%   0%  other>athletic   4%  carry   0%
+  low_energy+amped       n= 54  athletic 1/2/3+:   9%  91%   0%  other>athletic   9%  carry   0%
+  none                   n=108  athletic 1/2/3+:   0%  59%  41%  other>athletic   0%  carry   6%
+  stressed               n= 54  athletic 1/2/3+:   0% 100%   0%  other>athletic   0%  carry   0%
+
+== 30 minutes, by level
+  beginner     n= 234  athletic 1:   5%  2:  95%  3+:   0%  | mean athletic 1.95  strength 1.05  support 0.00  ratio 1.85
+                       strength+support outnumber athletic:   5%  | 1 athletic + 3 other:   0%  | carry   0%  secondary  95%  tertiary   0%  Olympic   0%
+                       medians: explosive sets 6.0  contacts 0.0  intent 4.8  strength sets 3.0  est 22.1
+  intermediate n= 234  athletic 1:   6%  2:  94%  3+:   0%  | mean athletic 1.94  strength 1.06  support 0.00  ratio 1.83
+                       strength+support outnumber athletic:   6%  | 1 athletic + 3 other:   0%  | carry   0%  secondary  94%  tertiary   0%  Olympic   6%
+                       medians: explosive sets 7.0  contacts 0.0  intent 5.8  strength sets 3.0  est 25.8
+  advanced     n= 234  athletic 1:   3%  2:  97%  3+:   0%  | mean athletic 1.97  strength 1.03  support 0.00  ratio 1.91
+                       strength+support outnumber athletic:   3%  | 1 athletic + 3 other:   0%  | carry   0%  secondary  97%  tertiary   0%  Olympic  12%
+                       medians: explosive sets 7.0  contacts 0.0  intent 6.8  strength sets 3.0  est 28.1
+  all          n= 702  athletic 1:   5%  2:  95%  3+:   0%  | mean athletic 1.95  strength 1.05  support 0.00  ratio 1.87
+                       strength+support outnumber athletic:   5%  | 1 athletic + 3 other:   0%  | carry   0%  secondary  95%  tertiary   0%  Olympic   6%
+                       medians: explosive sets 6.0  contacts 0.0  intent 5.2  strength sets 3.0  est 25.1

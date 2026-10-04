@@ -1,0 +1,21 @@
+Olympic-derivative frequency, no State, commercial gym, 120 sessions per cell (60 users x 30/60 min), identical seeds.
+BEFORE = frozen v2 (pre composition pass), AFTER = composition pass. Format: any Olympic / barbell Olympic.
+
+beginner     improve_athleticism        before   0% /   0%   after   0% /   0%
+beginner     build_strength             before   0% /   0%   after   0% /   0%
+beginner     build_muscle               before   0% /   0%   after   0% /   0%
+beginner     stay_consistent            before   0% /   0%   after   0% /   0%
+beginner     lose_weight_conditioning   before   0% /   0%   after   0% /   0%
+beginner     feel_better_reduce_stress  before   0% /   0%   after   0% /   0%
+intermediate improve_athleticism        before  25% /  25%   after  25% /  25%
+intermediate build_strength             before  28% /  27%   after  28% /  27%
+intermediate build_muscle               before   4% /   2%   after   4% /   2%
+intermediate stay_consistent            before   2% /   1%   after   2% /   1%
+intermediate lose_weight_conditioning   before   3% /   2%   after   3% /   2%
+intermediate feel_better_reduce_stress  before   1% /   0%   after   1% /   0%
+advanced     improve_athleticism        before  28% /  28%   after  28% /  28%
+advanced     build_strength             before  35% /  35%   after  35% /  35%
+advanced     build_muscle               before  19% /   6%   after  21% /   8%
+advanced     stay_consistent            before  21% /   5%   after  21% /   6%
+advanced     lose_weight_conditioning   before  22% /   6%   after  23% /   8%
+advanced     feel_better_reduce_stress  before  16% /   7%   after  18% /   8%

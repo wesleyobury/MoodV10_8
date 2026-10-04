@@ -6,6 +6,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from '../utils/apiConfig';
 import { secureStorage, AUTH_TOKEN_KEY } from '../utils/secureStorage';
 
+/**
+ * Taupe Silk splash backdrop: black around the logo, a hint of warm taupe at the top and bottom edges.
+ * The stops are baked identically into the iOS native splash (assets/images/splash-screen-ios.png), so the handoff from
+ * the native splash to this screen shows no jump. If you change one, regenerate the other.
+ */
+export const SPLASH_STOPS = {
+  colors: ['#4E4540', '#3A332F', '#1E1A18', '#000000', '#000000', '#1E1A18', '#3A332F', '#4E4540'],
+  locations: [0, 0.07, 0.15, 0.25, 0.75, 0.85, 0.93, 1],
+};
+function SplashBackdrop() {
+  return (
+    <LinearGradient
+      colors={SPLASH_STOPS.colors}
+      locations={SPLASH_STOPS.locations}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.5, y: 1 }}
+      style={StyleSheet.absoluteFill as any}
+    />
+  );
+}
+
 interface AppBootstrapProps {
   children: React.ReactNode;
   onReady?: () => void;
@@ -332,6 +353,7 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady, onBootSc
     return (
       <View style={styles.container} onLayout={handleBootScreenLayout}>
         <View style={styles.recoveryScreen}>
+          <SplashBackdrop />
           {/* Logo (static - no animation on the recovery path) */}
           <View style={styles.recoveryLogoContainer}>
             <AnimatedSplashLogo size={150} animated={false} />
@@ -382,6 +404,8 @@ const AppBootstrap: React.FC<AppBootstrapProps> = ({ children, onReady, onBootSc
           { opacity: fadeAnim, transform: [{ scale: exitScale }] },
         ]}
       >
+        <SplashBackdrop />
+
         {/* Animated logo - matches the native splash so the handoff is seamless */}
         <View style={styles.logoContainer}>
           <AnimatedSplashLogo />
@@ -438,7 +462,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 13,
-    color: '#5c5c5c',
+    color: 'rgba(255,250,242,0.6)',
     letterSpacing: 2,
     textTransform: 'uppercase',
   },

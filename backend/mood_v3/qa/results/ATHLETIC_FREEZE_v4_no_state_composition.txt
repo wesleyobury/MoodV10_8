@@ -1,0 +1,8 @@
+NO STATE, 60 min, 120 per level
+  beginner     n= 120 1/2/3/4+:   0%  82%  18%   0% | mean ATH 2.18 STR 1.86 SUP 0.00 | carry 0% pull/row 28% | med expl sets 7.0 est 36.0
+  intermediate n= 120 1/2/3/4+:   0%   8%  78%  14% | mean ATH 3.07 STR 1.22 SUP 0.14 | carry 0% pull/row 8% | med expl sets 10.0 est 43.349999999999994
+  advanced     n= 120 1/2/3/4+:   0%   3%  52%  45% | mean ATH 3.42 STR 1.22 SUP 0.07 | carry 0% pull/row 14% | med expl sets 13.0 est 49.1
+FULL GRID (all States), 60 min
+  beginner     n= 234 1/2/3/4+:   0%  90%  10%   0% | mean ATH 2.10 STR 1.94 SUP 0.00 | carry 0% pull/row 30% | med expl sets 6.0 est 36.1
+  intermediate n= 234 1/2/3/4+:   0%  37%  59%   3% | mean ATH 2.66 STR 1.47 SUP 0.03 | carry 0% pull/row 16% | med expl sets 9.0 est 40.7
+  advanced     n= 234 1/2/3/4+:   0%  32%  52%  16% | mean ATH 2.83 STR 1.43 SUP 0.02 | carry 0% pull/row 18% | med expl sets 10.0 est 44.55
