@@ -367,7 +367,7 @@ export function Share(p: {
             <View style={styles.connectIcon}><Ionicons name="watch-outline" size={18} color={COLORS.accent} /></View>
             <View style={{ flex: 1 }}>
               <Text style={styles.connectTitle} numberOfLines={1}>Connect {HEALTH_NAME}</Text>
-              <Text style={styles.connectSub} numberOfLines={1}>Fill calories and heart rate from your watch, every workout.</Text>
+              <Text style={styles.connectSub} numberOfLines={1}>Auto-fill calories and heart rate.</Text>
             </View>
             <View style={styles.connectBtn}>
               {connecting ? <ActivityIndicator size="small" color={COLORS.accentInk} /> : <Text style={styles.connectBtnText}>Connect</Text>}
