@@ -382,23 +382,45 @@ def build_admin_v3_router(db, require_admin: Callable) -> APIRouter:
         }
 
     # ─────────────────────────────────────────────── ACTIVATION
+    # Onboarding screens that are NOT stages of the new-user funnel:
+    #  - first_name: conditional (only shown when the name is missing), so most people legitimately never see it
+    #  - wearables_connect: optional, reached from several places (finish screen, settings), not part of signup
+    #  - v3_upgrade_intro / v3_profile_edit: existing users re-onboarding or editing their profile
     ONB_EXTRA_STEPS = {"first_name", "first_name_skipped"}
+    ONB_NOT_FUNNEL = {"first_name", "first_name_skipped", "wearables_connect", "v3_upgrade_intro", "v3_profile_edit"}
 
     def is_v3_onboarding(ev: dict) -> bool:
         md = ev.get("metadata") or {}
         return (md.get("app_line") == "v3" or md.get("funnel_version") == "v3"
                 or str(md.get("funnel_design", "")).startswith("v3") or md.get("question") in ONB_EXTRA_STEPS)
 
+    def is_new_user_onboarding(ev: dict) -> bool:
+        md = ev.get("metadata") or {}
+        return md.get("mode") in (None, "new") and (md.get("question") or "") not in ONB_NOT_FUNNEL
+
     def step_label(q: str) -> str:
         names = {"intro": "Intro", "first_name": "Name", "training_preference": "Training preference", "goal": "Goal",
-                 "experience": "Experience", "training_frequency": "Frequency", "biggest_barrier": "Barrier"}
+                 "experience": "Experience", "training_frequency": "Frequency", "biggest_barrier": "Barrier",
+                 "social_proof": "Social proof"}
         return names.get(q, q.replace("_", " ").capitalize())
+
+    def reached(steps_sets: List[Tuple[str, str, Set[str]]]) -> List[Tuple[str, str, int]]:
+        """Make a funnel monotonic: someone counts at a step if they reached it OR any later step.
+        A missed client event (analytics opt-out, app killed mid-send) then can't make a later step look bigger than
+        an earlier one, and every step is a subset of the one before."""
+        out: List[Tuple[str, str, int]] = []
+        later: Set[str] = set()
+        for key, label, users in reversed(steps_sets):
+            later = later | users
+            out.append((key, label, len(later)))
+        return list(reversed(out))
 
     @r.get("/activation")
     async def activation(start: Optional[str] = None, end: Optional[str] = None, version: str = "all",
                          include_internal: bool = False, _: str = Depends(require_admin)):
         s, e = parse_range(start, end, 30)
         excl, keep = await scope(version, include_internal)
+        v3 = version == "v3"
         cohort_docs = await db.users.find(
             {"created_at": {"$gte": N(s), "$lt": N(e)}},
             {"created_at": 1, "milestones": 1, "training_profile.completed_at": 1, "training_profile.goal": 1,
@@ -411,76 +433,120 @@ def build_admin_v3_router(db, require_admin: Callable) -> APIRouter:
                     "note": "No signups in this range."}
 
         evq = {"user_id": {"$in": ids}, "event_type": {"$in": [
-            "onboarding_step_viewed", "reveal_screen_viewed", "onboarding_completed", "v3_home_viewed"]}}
+            "onboarding_step_viewed", "reveal_screen_viewed", "onboarding_completed", "v3_home_viewed", "paywall_viewed"]}}
         evs = await db.user_events.find(evq, {"user_id": 1, "event_type": 1, "timestamp": 1, "metadata": 1}).to_list(None)
 
-        # Onboarding steps, ordered as people actually move through them (median offset from their first step),
-        # so the funnel follows the production flow without hard-coding question counts.
-        first_onb: Dict[str, datetime] = {}
-        step_users: Dict[str, Set[str]] = defaultdict(set)
-        step_offsets: Dict[str, List[float]] = defaultdict(list)
-        onb = [ev for ev in evs if ev["event_type"] == "onboarding_step_viewed" and is_v3_onboarding(ev)]
-        for ev in onb:
-            t, u = _utc(ev["timestamp"]), str(ev["user_id"])
-            if u not in first_onb or t < first_onb[u]:
-                first_onb[u] = t
-        for ev in onb:
-            md = ev.get("metadata") or {}
-            q = md.get("question") or f"step {md.get('step')}"
-            if q == "first_name_skipped":
-                q = "first_name"
-            u = str(ev["user_id"])
-            if u not in step_users[q]:
-                step_offsets[q].append((_utc(ev["timestamp"]) - first_onb[u]).total_seconds())
-            step_users[q].add(u)
-        min_users = max(1, int(0.03 * len(ids)))
-        onb_steps = sorted([q for q in step_users if len(step_users[q]) >= min_users], key=lambda q: statistics.median(step_offsets[q]))
-
-        def has(ev_type):
-            return {str(ev["user_id"]) for ev in evs if ev["event_type"] == ev_type}
+        def has(ev_type, pred=lambda ev: True):
+            return {str(ev["user_id"]) for ev in evs if ev["event_type"] == ev_type and pred(ev)}
 
         def ms(u, f):
             return _utc(((cohort[u].get("milestones") or {}).get(f)))
 
-        profile = {u for u in ids if ms(u, "v3_onboarded_at") or (cohort[u].get("training_profile") or {}).get("completed_at")}
-        gen_users = {u for u in ids if ms(u, "first_workout_generated_at")}
-        # users who generated before the server event existed: fall back to their saved V3 workouts
-        async for d in db.v3_workouts.find({"user_id": {"$in": ids}}, {"user_id": 1}):
-            gen_users.add(str(d["user_id"]))
+        # first V3 workout per user (ground truth for "generated" in V3; also used for timing)
+        first_v3_workout: Dict[str, datetime] = {}
+        async for d in db.v3_workouts.find({"user_id": {"$in": ids}}, {"user_id": 1, "created_at": 1}):
+            u, t = str(d["user_id"]), _utc(d.get("created_at"))
+            if t and (u not in first_v3_workout or t < first_v3_workout[u]):
+                first_v3_workout[u] = t
+
+        gen_users = {u for u in ids if ms(u, "first_workout_generated_at")} | set(first_v3_workout)
         start_users = {u for u in ids if ms(u, "first_workout_started_at")}
         done_users = {u for u in ids if ms(u, "first_workout_completed_at")}
 
-        steps = [("signup", "Signed up", len(ids))]
-        steps += [(f"onb:{q}", step_label(q), len(step_users[q])) for q in onb_steps]
-        steps += [
-            ("profile", "Training profile saved", len(profile)),
-            ("reveal", "Profile reveal viewed", len(has("reveal_screen_viewed"))),
-            ("onboarding_completed", "Onboarding completed", len(has("onboarding_completed"))),
-            ("home", "Reached Home", len(has("v3_home_viewed"))),
-            ("first_generated", "First workout generated", len(gen_users)),
-            ("first_started", "First workout started", len(start_users)),
-            ("first_completed", "First workout completed", len(done_users)),
-        ]
+        if v3:
+            # Full V3 new-user funnel. Onboarding steps ordered the way people actually move through them (median
+            # offset from their first step), so the funnel follows the production flow without hard-coding questions.
+            first_onb: Dict[str, datetime] = {}
+            step_users: Dict[str, Set[str]] = defaultdict(set)
+            step_offsets: Dict[str, List[float]] = defaultdict(list)
+            onb = [ev for ev in evs if ev["event_type"] == "onboarding_step_viewed"
+                   and is_v3_onboarding(ev) and is_new_user_onboarding(ev)]
+            for ev in onb:
+                t, u = _utc(ev["timestamp"]), str(ev["user_id"])
+                if u not in first_onb or t < first_onb[u]:
+                    first_onb[u] = t
+            for ev in onb:
+                md = ev.get("metadata") or {}
+                q = md.get("question") or f"step {md.get('step')}"
+                u = str(ev["user_id"])
+                if u not in step_users[q]:
+                    step_offsets[q].append((_utc(ev["timestamp"]) - first_onb[u]).total_seconds())
+                step_users[q].add(u)
+            min_users = max(1, int(0.03 * len(ids)))
+            onb_steps = sorted([q for q in step_users if len(step_users[q]) >= min_users],
+                               key=lambda q: statistics.median(step_offsets[q]))
+            profile = {u for u in ids if ms(u, "v3_onboarded_at") or (cohort[u].get("training_profile") or {}).get("completed_at")}
+            raw = [("signup", "Signed up", set(ids))]
+            raw += [(f"onb:{q}", step_label(q), step_users[q]) for q in onb_steps]
+            raw += [
+                ("profile", "Training profile saved", profile),
+                ("reveal", "Profile reveal viewed", has("reveal_screen_viewed", is_v3_event)),
+                ("onboarding_completed", "Onboarding completed", has("onboarding_completed", is_v3_event)),
+                ("home", "Reached Home", has("v3_home_viewed")),
+                ("first_generated", "First workout generated", set(first_v3_workout)),
+                ("first_started", "First workout started", start_users),
+                ("first_completed", "First workout completed", done_users),
+            ]
+            funnel_note = ("V3 signups in the range and the furthest step each reached. Someone counts at a step if they "
+                           "reached it or any later one, so each step is a subset of the one before. Optional screens "
+                           "(Name, Wearables) and profile edits by existing users are left out.")
+        else:
+            # Blended V2 + V3: only the steps both apps share. The V3 onboarding questions live under V3 only.
+            raw = [
+                ("signup", "Signed up", set(ids)),
+                ("onboarding_completed", "Onboarding completed", has("onboarding_completed") | {
+                    u for u in ids if ms(u, "v3_onboarded_at") or (cohort[u].get("training_profile") or {}).get("completed_at")}),
+                ("first_generated", "First workout generated", gen_users),
+                ("first_started", "First workout started", start_users),
+                ("first_completed", "First workout completed", done_users),
+            ]
+            funnel_note = ("V2 and V3 signups in the range and the furthest shared step each reached (each step is a "
+                           "subset of the one before). Switch to V3 only for the step-by-step V3 onboarding funnel.")
+        steps = reached(raw)
+        reached_sets = {}
+        acc: Set[str] = set()
+        for key, _label, users in reversed(raw):
+            acc = acc | users
+            reached_sets[key] = acc
+        start_users = reached_sets["first_started"]
+        done_users = reached_sets["first_completed"]
 
-        # continuation: what first completers do next
+        # continuation: what first completers do next. Every later step must happen AFTER the workout #2 attempt,
+        # so a paywall seen in onboarding or a trial started earlier is not credited to the workout #2 gate.
         act = await db.daily_activity.find({"user_id": {"$in": list(done_users)}}, {"user_id": 1, "date": 1}).to_list(None)
         active_days: Dict[str, Set[date]] = defaultdict(set)
         for a in act:
             active_days[str(a["user_id"])].add(_utc(a["date"]).date())
-        returned = {u for u in done_users if any(d > ms(u, "first_workout_completed_at").date() for d in active_days.get(u, ()))}
-        # nested: each step is a subset of the one before (trying workout #2 means they came back)
+
+        def first_done(u):
+            return ms(u, "first_workout_completed_at") or ms(u, "first_workout_started_at")
+
+        returned = {u for u in done_users if first_done(u)
+                    and any(d > first_done(u).date() for d in active_days.get(u, ()))}
         w2 = {u for u in done_users if ms(u, "second_workout_attempted_at")}
-        returned |= w2
-        paywall = {u for u in w2 if ms(u, "first_paywall_at")}
-        trial = {u for u in paywall if ms(u, "trial_started_at") or ms(u, "first_paid_at")}
-        cont = [("first_completed", "First workout completed", len(done_users)), ("returned", "Came back another day", len(returned)),
-                ("w2_attempt", "Tried to start workout #2", len(w2)), ("paywall", "Saw the paywall", len(paywall)),
-                ("trial", "Started a trial or paid", len(trial))]
+        returned |= w2  # trying workout #2 means they came back
+        paywall_times: Dict[str, List[datetime]] = defaultdict(list)
+        for ev in evs:
+            if ev["event_type"] == "paywall_viewed":
+                paywall_times[str(ev["user_id"])].append(_utc(ev["timestamp"]))
+        paywall = {u for u in w2 if any(t >= ms(u, "second_workout_attempted_at") - timedelta(minutes=1)
+                                       for t in paywall_times.get(u, ()))}
+        trial = {u for u in paywall if any(
+            t and t >= ms(u, "second_workout_attempted_at") - timedelta(minutes=1)
+            for t in (ms(u, "trial_started_at"), ms(u, "first_paid_at")))}
+        cont = [("first_completed", "First workout completed", len(done_users)),
+                ("returned", "Came back (another day or another workout)", len(returned)),
+                ("w2_attempt", "Tried to start workout #2", len(w2)),
+                ("paywall", "Saw the paywall after that attempt", len(paywall)),
+                ("trial", "Then started a trial or paid", len(trial))]
 
         def hours_to(f):
             out = []
             for u in ids:
-                t, c = ms(u, f), _utc(cohort[u].get("created_at"))
+                t = ms(u, f)
+                if f == "first_workout_generated_at" and v3:
+                    t = first_v3_workout.get(u)  # V3: the first saved V3 workout, not a V2 Choose For Me tap
+                c = _utc(cohort[u].get("created_at"))
                 if t and c and t >= c:
                     out.append((t - c).total_seconds() / 3600)
             return median(out)
@@ -523,7 +589,7 @@ def build_admin_v3_router(db, require_admin: Callable) -> APIRouter:
 
         return {
             "range": {"start": s.isoformat(), "end": e.isoformat()}, "version": version, "cohort_size": len(ids),
-            "funnel": funnel(steps, "People who signed up in the range, and how far each got. Onboarding steps are ordered the way people actually move through them."),
+            "funnel": funnel(steps, funnel_note),
             "continuation": funnel(cont, "Of those who finished their first workout: did they come back and try another?"),
             "timing": timing, "rates": rates,
             "splits": {

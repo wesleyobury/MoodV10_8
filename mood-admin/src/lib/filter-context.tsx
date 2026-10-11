@@ -20,7 +20,21 @@ export interface GlobalFilters {
   version: VersionScope;
 }
 
+/** MOOD V3 went live on this day (first V3 tracking events). The "Since V3 launch" preset starts here. */
+export const V3_LAUNCH_DATE = "2026-10-04";
+/** rangeDays sentinel for "Since V3 launch": resolved to the day count from V3_LAUNCH_DATE through today. */
+export const SINCE_V3_LAUNCH = -1;
+
+export function resolveRangeDays(rangeDays: number, today: Date = new Date()): number {
+  if (rangeDays !== SINCE_V3_LAUNCH) return rangeDays;
+  const [y, m, d] = V3_LAUNCH_DATE.split("-").map(Number);
+  const launch = new Date(y, m - 1, d);
+  const t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  return Math.max(1, Math.round((t.getTime() - launch.getTime()) / 86400000) + 1);
+}
+
 export const RANGE_PRESETS: { label: string; days: number }[] = [
+  { label: "Since V3 launch", days: SINCE_V3_LAUNCH },
   { label: "Today", days: 1 },
   { label: "Last 7 days", days: 7 },
   { label: "Last 30 days", days: 30 },
@@ -68,11 +82,12 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
   const updateFilters = useCallback((updates: Partial<GlobalFilters>) => {
     setFilters((prev) => {
       const next = { ...prev, ...updates };
+      const span = resolveRangeDays(next.rangeDays);
       // Keep granularity sensible for the chosen range:
       // daily buckets over 6+ months are unreadable; monthly over a week is empty.
       if (updates.rangeDays !== undefined && updates.granularity === undefined) {
-        if (next.rangeDays >= 180 && next.granularity === "day") next.granularity = "week";
-        if (next.rangeDays <= 14 && next.granularity !== "day") next.granularity = "day";
+        if (span >= 180 && next.granularity === "day") next.granularity = "week";
+        if (span <= 14 && next.granularity !== "day") next.granularity = "day";
       }
       return next;
     });
@@ -82,18 +97,19 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo<FilterContextType>(() => {
     const endDate = new Date();
-    const startDate = subDays(endDate, filters.rangeDays);
+    const span = resolveRangeDays(filters.rangeDays, endDate);
+    const startDate = subDays(endDate, span);
     const preset = RANGE_PRESETS.find((p) => p.days === filters.rangeDays);
     return {
       filters,
       updateFilters,
       resetFilters,
-      days: filters.rangeDays,
+      days: span,
       granularity: filters.granularity,
       includeInternal: filters.includeInternal,
       version: filters.version,
       v3Query: new URLSearchParams({
-        start: format(subDays(endDate, Math.max(filters.rangeDays, 1) - 1), "yyyy-MM-dd"),
+        start: format(subDays(endDate, Math.max(span, 1) - 1), "yyyy-MM-dd"),
         end: format(endDate, "yyyy-MM-dd"),
         version: filters.version,
         include_internal: String(filters.includeInternal),
@@ -102,7 +118,7 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
       endDate,
       startDateStr: format(startDate, "yyyy-MM-dd"),
       endDateStr: format(endDate, "yyyy-MM-dd"),
-      rangeLabel: preset ? preset.label : `Last ${filters.rangeDays} days`,
+      rangeLabel: preset ? preset.label : `Last ${span} days`,
     };
   }, [filters, updateFilters, resetFilters]);
 
