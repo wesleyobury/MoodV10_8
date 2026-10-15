@@ -11,7 +11,7 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.official.moodapp",
-      "buildNumber": "82",
+      "buildNumber": "83",
       "supportsTablet": true,
       "infoPlist": {
         "CFBundleDisplayName": "MOOD",
@@ -30,7 +30,7 @@
     },
     "android": {
       "package": "com.official.moodapp",
-      "versionCode": 10,
+      "versionCode": 13,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
@@ -45,6 +45,11 @@
         "RECORD_AUDIO",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
+      ],
+      "blockedPermissions": [
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_AUDIO"
       ]
     },
     "web": {

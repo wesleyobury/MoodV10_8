@@ -11,6 +11,8 @@ dashboard never has to guess what a number counts.
   GET  /revenue          Does the workout #2 gate convert?
   GET  /users            User list with lifecycle stage + V3 status
   GET  /users/{id}       One user: milestones, profile, V3 workouts, lifecycle
+  GET  /directory        Every account: email type, sign-in method, push status, emailed flag
+  POST /directory/emailed  Mark users emailed / not emailed
   POST /backfill-milestones   Rebuild users.milestones from event history (idempotent)
 
 Shared query params: start, end (YYYY-MM-DD, America/Chicago days, end inclusive), version (all | v3),
@@ -36,7 +38,7 @@ from typing import Any, Callable, Dict, Iterable, List, Optional, Set, Tuple
 from zoneinfo import ZoneInfo
 
 from bson import ObjectId
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Body, Depends, HTTPException, Query
 
 logger = logging.getLogger(__name__)
 
@@ -1144,6 +1146,91 @@ def build_admin_v3_router(db, require_admin: Callable) -> APIRouter:
             raise HTTPException(404, "User not found")
         cache.clear()
         return {"ok": True, "user_id": user_id, "is_internal": bool(value)}
+
+    # ---- Directory: every account with contactability, push status and an outreach flag ----------------
+    APPLE_PLACEHOLDER_SUFFIX = "@apple.privaterelay.com"   # what /auth/apple saves when Apple sends no email (undeliverable)
+    APPLE_RELAY_SUFFIX = "@privaterelay.appleid.com"        # real Hide My Email relay (deliverable once the domain is registered with Apple)
+
+    def email_kind(email: Optional[str]) -> str:
+        e = (email or "").strip().lower()
+        if not e or "@" not in e or e.endswith(APPLE_PLACEHOLDER_SUFFIX):
+            return "none"
+        if e.endswith(APPLE_RELAY_SUFFIX):
+            return "relay"
+        return "real"
+
+    @r.get("/directory")
+    async def directory(include_internal: bool = False, _: str = Depends(require_admin)):
+        """Every account (not capped), with email type, sign-in method, push status and the admin 'emailed' flag."""
+        excl = set() if include_internal else await internal_ids()
+        users = await db.users.find({}, {
+            "username": 1, "email": 1, "name": 1, "created_at": 1, "auth_provider": 1, "apple_user_id": 1, "google_user_id": 1,
+            "subscription": 1, "is_comp": 1, "is_internal": 1, "founding_member": 1, "workouts_count": 1, "admin_outreach": 1,
+        }).to_list(None)
+        tokens: Dict[str, List[dict]] = defaultdict(list)
+        async for t in db.device_tokens.find({}, {"user_id": 1, "platform": 1, "is_valid": 1, "last_active": 1, "created_at": 1}):
+            tokens[str(t.get("user_id") or "")].append(t)
+        app_setting: Dict[str, Any] = {}
+        async for s in db.notification_settings.find({}, {"user_id": 1, "notifications_enabled": 1}):
+            app_setting[str(s.get("user_id") or "")] = s.get("notifications_enabled")
+
+        rows = []
+        for u in users:
+            uid = str(u["_id"])
+            if uid in excl:
+                continue
+            ts = tokens.get(uid, [])
+            valid = [t for t in ts if t.get("is_valid")]
+            if valid:
+                push = "off_in_app" if app_setting.get(uid) is False else "on"
+            elif ts:
+                push = "expired"
+            else:
+                push = "never"
+            seen = [x for x in (_utc(t.get("last_active") or t.get("created_at")) for t in ts) if x]
+            provider = u.get("auth_provider") or ("apple" if u.get("apple_user_id") else "google" if u.get("google_user_id") else "email")
+            out = u.get("admin_outreach") or {}
+            rows.append({
+                "user_id": uid, "name": u.get("name"), "username": u.get("username"), "email": u.get("email"),
+                "email_kind": email_kind(u.get("email")), "provider": provider,
+                "created_at": _utc(u.get("created_at")).isoformat() if _utc(u.get("created_at")) else None,
+                "subscription": sub_state(u), "founding_member": bool(u.get("founding_member")), "is_comp": bool(u.get("is_comp")),
+                "is_internal": bool(u.get("is_internal")), "workouts_count": int(u.get("workouts_count") or 0),
+                "push": push, "push_platforms": sorted({t.get("platform") for t in valid if t.get("platform")}),
+                "push_last_seen": max(seen).isoformat() if seen else None,
+                "emailed": bool(out.get("emailed")),
+                "emailed_at": _utc(out.get("emailed_at")).isoformat() if _utc(out.get("emailed_at")) else None,
+            })
+        rows.sort(key=lambda x: x["created_at"] or "", reverse=True)
+        return {
+            "total": len(rows), "users": rows,
+            "email": dict(Counter(x["email_kind"] for x in rows)),
+            "push": dict(Counter(x["push"] for x in rows)),
+            "emailed": sum(1 for x in rows if x["emailed"]),
+            "note": "Push: On = valid device token and notifications on in MOOD settings. Off in app = token but the user turned "
+                    "notifications off in MOOD. Expired = had a token that Apple/Google later rejected (usually app deleted). "
+                    "Never = no token (declined the iOS prompt or never saw it). Email: Apple relay = Hide My Email address; "
+                    "No email = Apple sent no address, so the saved one is a placeholder that will bounce.",
+        }
+
+    @r.post("/directory/emailed")
+    async def set_emailed(body: Dict[str, Any] = Body(...), admin_id: str = Depends(require_admin)):
+        """Mark one or many users as emailed / not emailed. Body: {"user_ids": [...], "value": true}."""
+        ids = body.get("user_ids") or []
+        if not isinstance(ids, list) or not ids or len(ids) > 5000:
+            raise HTTPException(400, "user_ids must be a non-empty list (max 5000)")
+        oids = []
+        for i in ids:
+            try:
+                oids.append(ObjectId(str(i)))
+            except Exception:
+                raise HTTPException(400, f"Bad user id: {i}")
+        value = bool(body.get("value", True))
+        now = datetime.now(UTC)
+        res = await db.users.update_many({"_id": {"$in": oids}}, {"$set": {
+            "admin_outreach.emailed": value, "admin_outreach.emailed_at": now if value else None,
+            "admin_outreach.updated_by": admin_id, "admin_outreach.updated_at": now}})
+        return {"ok": True, "updated": res.matched_count, "value": value, "emailed_at": now.isoformat() if value else None}
 
     TRACKED = [("workout_start_gate", "Workout start gate (server)"), ("v3_workout_generated", "Workout generated (server)"),
                ("explore_viewed", "Explore viewed"), ("workout_completed", "Workout completed (server for V3)"),

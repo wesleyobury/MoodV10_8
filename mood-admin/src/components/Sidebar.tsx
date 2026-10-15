@@ -13,6 +13,7 @@ import {
   Settings,
   LogOut,
   Users,
+  BookUser,
 } from "lucide-react";
 
 /**
@@ -38,6 +39,7 @@ const navSections: {
     title: "People & ops",
     items: [
       { href: "/users", label: "Users", description: "What did this person do?", icon: Search },
+      { href: "/directory", label: "Directory", description: "All accounts, push, emailed", icon: BookUser },
       { href: "/admin", label: "Admin & Ops", description: "Tracking health, access, config", icon: Settings },
     ],
   },
