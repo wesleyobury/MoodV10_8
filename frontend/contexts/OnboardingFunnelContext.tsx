@@ -234,6 +234,13 @@ async function readPersistedForUser(userId: string | null): Promise<FunnelAnswer
 async function writePersistedForUser(userId: string | null, next: FunnelAnswers): Promise<void> {
   if (!userId) return;
   try {
+    // Never drop a completion marker: resolveHasCompletedFunnel can restore it from the server while the provider still
+    // holds pre-restore answers in memory. Clearing completion is reset()'s job (removeItem), not a write's.
+    if (!next.completedAt) {
+      const raw = await AsyncStorage.getItem(funnelStorageKey(userId));
+      const existing = raw ? (JSON.parse(raw) as FunnelAnswers) : null;
+      if (existing?.completedAt) next = { ...next, completedAt: existing.completedAt };
+    }
     await AsyncStorage.setItem(funnelStorageKey(userId), JSON.stringify(next));
     await AsyncStorage.removeItem(LEGACY_STORAGE_KEY);
   } catch {
