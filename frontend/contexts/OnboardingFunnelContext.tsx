@@ -22,6 +22,7 @@ import React, {
 } from 'react';
 import { useAuth } from './AuthContext';
 import { API_URL } from '../utils/apiConfig';
+import { fetchWithTimeout } from '../utils/api';
 import type {
   Barrier,
   Experience,
@@ -129,6 +130,60 @@ export async function readHasCompletedFunnel(userId?: string | null): Promise<bo
   }
 }
 
+/**
+ * Server-aware version of readHasCompletedFunnel (Oct 2026 fix).
+ *
+ * Completion used to be remembered ONLY on the device, so a reinstall, a new phone or a new build sent a fully onboarded
+ * account back into the intro funnel. When the local marker is missing we now ask the server whether this account has
+ * onboarded (an onboarding_completed event, a complete V3 training profile, or any logged workout). A yes is written back
+ * locally, so every other gate (FunnelEntryGate, V3ProfileGate, health/profile-pic gates) sees it too.
+ *
+ * `onUnknown` is the answer when the server can't be reached: true = let them into the app (returning-user paths),
+ * false = keep the old behaviour (paths where this may be a brand-new account).
+ */
+export async function resolveHasCompletedFunnel(
+  userId: string | null | undefined,
+  token: string | null | undefined,
+  opts: { onUnknown: boolean },
+): Promise<boolean> {
+  const local = await readPersistedForUser(userId ?? null).catch(() => ({} as FunnelAnswers));
+  if (local.completedAt) return true;
+  if (!userId || !token) return opts.onUnknown;
+
+  const headers = { Authorization: `Bearer ${token}` };
+  let completed: boolean | null = null;
+  let recovered: FunnelAnswers = {};
+  try {
+    const res = await fetchWithTimeout(`${API_URL}/api/users/me/funnel-answers`, { headers }, 6000);
+    if (res.ok) {
+      const data = await res.json();
+      recovered = (data?.answers || {}) as FunnelAnswers;
+      // `completed` is the new server flag; older backends only send `recovered` (answers found = they finished).
+      completed = typeof data?.completed === 'boolean' ? data.completed : Boolean(data?.recovered);
+    }
+  } catch {
+    // fall through to the training-profile check
+  }
+  if (!completed) {
+    try {
+      const res = await fetchWithTimeout(`${API_URL}/api/users/me/training-profile`, { headers }, 6000);
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.complete) completed = true;
+        else if (completed === null) completed = false;
+      }
+    } catch {
+      // unknown
+    }
+  }
+
+  if (completed === null) return opts.onUnknown;
+  if (completed) {
+    await writePersistedForUser(userId, { ...recovered, ...local, completedAt: new Date().toISOString() });
+  }
+  return completed;
+}
+
 /** MOOD V3 — one-shot read of the persisted funnel answers for a user, for
  *  gates that run before the provider has rehydrated (V3ProfileGate uses it
  *  to retry a training-profile save that failed at the end of the funnel). */
@@ -179,6 +234,13 @@ async function readPersistedForUser(userId: string | null): Promise<FunnelAnswer
 async function writePersistedForUser(userId: string | null, next: FunnelAnswers): Promise<void> {
   if (!userId) return;
   try {
+    // Never drop a completion marker: resolveHasCompletedFunnel can restore it from the server while the provider still
+    // holds pre-restore answers in memory. Clearing completion is reset()'s job (removeItem), not a write's.
+    if (!next.completedAt) {
+      const raw = await AsyncStorage.getItem(funnelStorageKey(userId));
+      const existing = raw ? (JSON.parse(raw) as FunnelAnswers) : null;
+      if (existing?.completedAt) next = { ...next, completedAt: existing.completedAt };
+    }
     await AsyncStorage.setItem(funnelStorageKey(userId), JSON.stringify(next));
     await AsyncStorage.removeItem(LEGACY_STORAGE_KEY);
   } catch {

@@ -664,7 +664,12 @@ async def root_health_check():
 security = HTTPBearer()
 
 # Helper functions
-def create_access_token(user_id: str, minutes: int = 15) -> str:
+# Access-token lifetime (Oct 2026). V2 issued 10-year tokens; V3 moved to expiring access tokens + rotating refresh
+# tokens, but issued 24 h (login) and 15 min (refresh) lifetimes, which logged users out daily. 30 days everywhere;
+# the app refreshes on 401 and rolls the token after 7 days, so active users never see an expiry.
+ACCESS_TOKEN_MINUTES = 60 * 24 * 30
+
+def create_access_token(user_id: str, minutes: int = ACCESS_TOKEN_MINUTES) -> str:
     """Create a short-lived JWT access token."""
     payload = {
         'user_id': user_id,
@@ -1135,7 +1140,7 @@ async def register(user_data: UserCreate):
     await send_welcome_message(mongodb_id)
     
     # Generate access + refresh tokens
-    access_token = create_access_token(mongodb_id, minutes=60*24)  # 24h initial access token for new registrants
+    access_token = create_access_token(mongodb_id)
     refresh_token = await create_and_store_refresh_token(mongodb_id, days=365)
     
     return {
@@ -1214,7 +1219,7 @@ async def login(login_data: UserLogin, request: Request):
             raise HTTPException(status_code=401, detail="Invalid credentials")
         
         # Generate access + refresh tokens
-        access_token = create_access_token(str(user["_id"]), minutes=60*24)  # 24h access token
+        access_token = create_access_token(str(user["_id"]))
         refresh_token = await create_and_store_refresh_token(str(user["_id"]), days=365)
         
         # Track successful login
@@ -1330,7 +1335,7 @@ async def refresh_token_endpoint(body: RefreshRequest):
         await db.refresh_tokens.update_one({'token': body.refresh_token}, {'$set': {'revoked': True}})
 
         # Issue new tokens
-        access_token = create_access_token(user_id, minutes=15)
+        access_token = create_access_token(user_id)
         new_refresh = await create_and_store_refresh_token(user_id, days=365)
 
         # Record session for auditing
@@ -8364,7 +8369,30 @@ async def get_my_funnel_answers(current_user_id: str = Depends(get_current_user)
         if val is not None:
             out[dest] = val
 
-    return {"answers": out, "recovered": bool(out)}
+    # Oct 2026: `completed` lets a reinstalled / new-device app skip the intro funnel for an account that already
+    # onboarded. Any of: the V2 completion event, a V3 training profile / v3_onboarded_at milestone, or a logged workout.
+    completed = doc is not None
+    if not completed:
+        user_doc = None
+        try:
+            user_doc = await db.users.find_one(
+                {"_id": ObjectId(current_user_id)},
+                {"training_profile.completed_at": 1, "milestones.v3_onboarded_at": 1},
+            )
+        except Exception:
+            user_doc = None
+        if user_doc:
+            completed = bool(
+                (user_doc.get("training_profile") or {}).get("completed_at")
+                or (user_doc.get("milestones") or {}).get("v3_onboarded_at")
+            )
+    if not completed:
+        completed = await db.user_events.count_documents(
+            {"user_id": current_user_id, "event_type": {"$in": ["workout_started", "workout_completed"]}},
+            limit=1,
+        ) > 0
+
+    return {"answers": out, "recovered": bool(out), "completed": completed}
 
 
 @api_router.get("/users/me/stats")

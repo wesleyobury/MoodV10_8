@@ -105,7 +105,6 @@ export interface AuthTokenResponse {
  *   - one refresh at a time: concurrent 401s share the same in-flight refresh;
  *   - once refreshed, a request still carrying a token we already know is stale is sent with the fresh one instead
  *     (screens hold the token from AuthContext, which apiFetch's internal refresh does not update). */
-let refreshInFlight: Promise<string | null> | null = null;
 const staleAccessTokens = new Set<string>();
 let freshAccessToken: string | null = null;
 
@@ -119,6 +118,99 @@ function withFreshAuth(headers: any): any {
 function bearerOf(headers: any): string | null {
   const auth = headers?.Authorization ?? headers?.authorization;
   return typeof auth === 'string' && auth.startsWith('Bearer ') ? auth.slice(7) : null;
+}
+
+/* Shared access-token refresh (Oct 2026, V3 logout fix).
+ * Access tokens now expire, so every refresh goes through this ONE single-flight function: apiFetch's 401 retry,
+ * AuthContext's cold-start validation, and the rolling background refresh. Listeners (AuthContext) are told about the
+ * new token so screens that read `token` from context stop sending the expired one.
+ *   - rejected: the server said no (401/403) or there is no refresh token -> the caller should sign the user out.
+ *   - unavailable: network/server error -> keep the stored tokens and try again later. Never log out for this. */
+export type RefreshOutcome =
+  | { kind: 'ok'; token: string }
+  | { kind: 'rejected' }
+  | { kind: 'unavailable' };
+
+type AccessTokenListener = (token: string) => void;
+const accessTokenListeners = new Set<AccessTokenListener>();
+
+export function subscribeAccessToken(listener: AccessTokenListener): () => void {
+  accessTokenListeners.add(listener);
+  return () => {
+    accessTokenListeners.delete(listener);
+  };
+}
+
+let refreshOutcomeInFlight: Promise<RefreshOutcome> | null = null;
+
+async function doRefresh(): Promise<RefreshOutcome> {
+  try {
+    const refreshToken = await secureStorage.get(AUTH_REFRESH_TOKEN_KEY);
+    if (!refreshToken) return { kind: 'rejected' };
+
+    console.log('🔁 Attempting token refresh...');
+    const refreshRes = await fetchWithTimeout(`${API_URL}/api/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: refreshToken }),
+    }, DEFAULT_TIMEOUT_MS);
+
+    const refreshText = await refreshRes.text();
+    let refreshJson: any = null;
+    try { refreshJson = refreshText ? JSON.parse(refreshText) : null; } catch {}
+
+    if (refreshRes.status === 401 || refreshRes.status === 403) {
+      console.warn('🔁 Refresh rejected:', refreshRes.status, refreshText);
+      freshAccessToken = null;
+      staleAccessTokens.clear();
+      await secureStorage.delete(AUTH_TOKEN_KEY);
+      await secureStorage.delete(AUTH_REFRESH_TOKEN_KEY);
+      return { kind: 'rejected' };
+    }
+    if (!refreshRes.ok) {
+      // 5xx / gateway: the refresh token may still be good. Keep everything.
+      console.warn('🔁 Refresh unavailable:', refreshRes.status);
+      return { kind: 'unavailable' };
+    }
+
+    const newAccess: string | undefined = refreshJson?.access_token;
+    const newRefresh: string | undefined = refreshJson?.refresh_token;
+    if (!newAccess) return { kind: 'unavailable' };
+    await secureStorage.set(AUTH_TOKEN_KEY, newAccess);
+    await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, new Date().toISOString());
+    if (newRefresh) await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, newRefresh);
+    freshAccessToken = newAccess;
+    console.log('🔁 Token refresh succeeded');
+    accessTokenListeners.forEach((l) => {
+      try { l(newAccess); } catch {}
+    });
+    return { kind: 'ok', token: newAccess };
+  } catch (e) {
+    console.error('🔁 Token refresh error:', e);
+    return { kind: 'unavailable' };
+  }
+}
+
+/** Refresh once, shared across concurrent callers (refresh tokens rotate, so parallel refreshes would revoke each other). */
+export function refreshAccessTokenDetailed(): Promise<RefreshOutcome> {
+  if (!refreshOutcomeInFlight) {
+    refreshOutcomeInFlight = doRefresh().finally(() => {
+      refreshOutcomeInFlight = null;
+    });
+  }
+  return refreshOutcomeInFlight;
+}
+
+/** The new access token, or null when it could not be refreshed. */
+export async function refreshAccessToken(): Promise<string | null> {
+  const out = await refreshAccessTokenDetailed();
+  return out.kind === 'ok' ? out.token : null;
+}
+
+/** Remember the token a fresh login/registration returned, so a stale one in flight is swapped for it. */
+export function noteSignedIn(): void {
+  freshAccessToken = null;
+  staleAccessTokens.clear();
 }
 
 /**
@@ -142,58 +234,6 @@ export async function apiFetch<T = any>(
   
   console.log(`📡 API Request: ${options.method || 'GET'} ${url}`);
   
-  // Helper to attempt token refresh once (single-flight across concurrent requests)
-  const tryRefreshOnce = (): Promise<string | null> => {
-    if (!refreshInFlight) {
-      refreshInFlight = doRefresh().finally(() => {
-        refreshInFlight = null;
-      });
-    }
-    return refreshInFlight;
-  };
-  const doRefresh = async (): Promise<string | null> => {
-    try {
-      const refreshToken = await secureStorage.get(AUTH_REFRESH_TOKEN_KEY);
-      if (!refreshToken) return null;
-
-      console.log('🔁 Attempting token refresh...');
-      const refreshRes = await fetchWithTimeout(`${API_URL}/api/auth/refresh`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh_token: refreshToken }),
-      }, timeoutMs);
-
-      const refreshText = await refreshRes.text();
-      let refreshJson: any = null;
-      try { refreshJson = refreshText ? JSON.parse(refreshText) : null; } catch {}
-
-      if (!refreshRes.ok) {
-        console.warn('🔁 Refresh failed:', refreshRes.status, refreshText);
-        freshAccessToken = null;
-        staleAccessTokens.clear();
-        // On failure, clear stored tokens
-        await secureStorage.delete(AUTH_TOKEN_KEY);
-        await secureStorage.delete(AUTH_REFRESH_TOKEN_KEY);
-        return null;
-      }
-
-      const newAccess = refreshJson?.access_token;
-      const newRefresh = refreshJson?.refresh_token;
-      if (newAccess) {
-        await secureStorage.set(AUTH_TOKEN_KEY, newAccess);
-        await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, new Date().toISOString());
-      }
-      if (newRefresh) {
-        await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, newRefresh);
-      }
-      console.log('🔁 Token refresh succeeded');
-      return newAccess || null;
-    } catch (e) {
-      console.error('🔁 Token refresh error:', e);
-      return null;
-    }
-  };
-
   // Attempt the request, retrying on network failure/timeout for idempotent
   // calls. A brief backoff gives flaky connections a moment to recover.
   const doFetch = async (): Promise<Response> => {
@@ -246,8 +286,7 @@ export async function apiFetch<T = any>(
           // a token we already refreshed away from (raced with the refresh): no new refresh, use the fresh one
           retryToken = freshAccessToken;
         } else {
-          retryToken = await tryRefreshOnce();
-          if (retryToken) freshAccessToken = retryToken;
+          retryToken = await refreshAccessToken();
         }
         if (sentToken && retryToken && sentToken !== retryToken) staleAccessTokens.add(sentToken);
         if (retryToken) {

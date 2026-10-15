@@ -124,8 +124,16 @@ def test_pulse_blended_and_v3(client):
 def test_activation_funnel(client):
     a = client.get("/api/analytics/admin/v3/activation").json()
     steps = [(s["key"], s["users"]) for s in a["funnel"]["steps"]]
-    assert steps == [("signup", 2), ("onb:intro", 2), ("onb:first_name", 1), ("onb:goal", 2), ("profile", 2), ("reveal", 1),
-                     ("onboarding_completed", 1), ("home", 2), ("first_generated", 2), ("first_started", 2), ("first_completed", 1)]
+    # Blended: only the steps V2 and V3 share. B never fired onboarding_completed but saved a V3 profile.
+    assert steps == [("signup", 2), ("onboarding_completed", 2), ("first_generated", 2), ("first_started", 2), ("first_completed", 1)]
+    v = client.get("/api/analytics/admin/v3/activation?version=v3").json()
+    vsteps = [(s["key"], s["users"]) for s in v["funnel"]["steps"]]
+    # Name is conditional and left out; B is missing the reveal events but reached Home, so counts as having passed them.
+    assert vsteps == [("signup", 2), ("onb:intro", 2), ("onb:goal", 2), ("profile", 2), ("reveal", 2),
+                      ("onboarding_completed", 2), ("home", 2), ("first_generated", 2), ("first_started", 2), ("first_completed", 1)]
+    for f in (a["funnel"], v["funnel"], a["continuation"]):  # every funnel is nested: no step bigger than the one before
+        users = [s["users"] for s in f["steps"]]
+        assert users == sorted(users, reverse=True)
     assert [s["users"] for s in a["continuation"]["steps"]] == [1, 1, 1, 1, 1]
     r = cards(a, "rates")
     assert r["first_completion_rate"]["value"] == 50.0 and r["w2_attempt_rate"]["value"] == 100.0
@@ -160,3 +168,24 @@ def test_retention_and_users(client):
     assert st == {"anna": "Returned", "ben": "Onboarded", "carl_v2": "Onboarding"}
     d = client.get(f"/api/analytics/admin/v3/users/{A}").json()
     assert d["v3_summary"] == {"generated": 2, "started": 1, "completed": 1, "states_used": [{"state": "stressed", "count": 1}]}
+
+
+def test_activation_paywall_must_follow_w2_attempt():
+    """A paywall seen (and a trial started) during onboarding is not credited to the workout #2 gate."""
+    import asyncio
+    P = ObjectId()
+    db = mongomock_motor.AsyncMongoMockClient()["admin_v3_test_paywall"]
+
+    async def seed_p():
+        await db.users.insert_one({"_id": P, "created_at": D(6), "training_profile": {"completed_at": D(6)},
+                                   "milestones": {"v3_onboarded_at": D(6), "first_workout_generated_at": D(6),
+                                                  "first_workout_started_at": D(5), "first_workout_completed_at": D(5),
+                                                  "second_workout_attempted_at": D(3), "first_paywall_at": D(6),
+                                                  "trial_started_at": D(6)}})
+        await db.user_events.insert_one(ev(P, "paywall_viewed", D(6), app_line="v3"))
+    asyncio.run(seed_p())
+    app = FastAPI()
+    app.include_router(admin_v3.build_admin_v3_router(db, lambda: "admin"), prefix="/api")
+    with TestClient(app) as c:
+        a = c.get("/api/analytics/admin/v3/activation").json()
+    assert [s["users"] for s in a["continuation"]["steps"]] == [1, 1, 1, 0, 0]
