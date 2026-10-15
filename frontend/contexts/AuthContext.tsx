@@ -1,20 +1,38 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
+import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import { trackEvent, aliasGuestToUser, GuestAnalytics, setAnalyticsAuthToken } from '../utils/analytics';
 import TermsAcceptanceModal from '../components/TermsAcceptanceModal';
 import { resetNotificationSession } from '../utils/notificationUtils';
 import { API_URL, validateApiConfig } from '../utils/apiConfig';
-import { apiFetch, AuthTokenResponse, fetchWithTimeout } from '../utils/api';
+import { apiFetch, AuthTokenResponse, fetchWithTimeout, noteSignedIn, refreshAccessTokenDetailed, subscribeAccessToken } from '../utils/api';
 import { secureStorage, AUTH_TOKEN_KEY, AUTH_REFRESH_TOKEN_KEY, AUTH_TOKEN_STORED_AT_KEY, AUTH_TOKEN_LAST_VALIDATED_KEY } from '../utils/secureStorage';
 import { DEV_MOCKS_ENABLED, getDevMockEntitlement } from '../utils/devMocks';
 import { refreshSubscriptionFromServer } from '../hooks/subscription/subscriptionState';
-import { readHasCompletedFunnel } from './OnboardingFunnelContext';
+import { resolveHasCompletedFunnel } from './OnboardingFunnelContext';
 import { unregisterPushToken } from '../utils/notifications';
 
 // Terms version must match backend CURRENT_TERMS_VERSION
 // Update this when terms change to force re-acceptance for all users
 const CURRENT_TERMS_VERSION = "2025-01-19";
+
+/** Rolling refresh: once the access token is this old, swap it for a new one in the background, so an active user's
+ *  token never reaches its expiry (V3 access tokens expire; V2's lasted 10 years). */
+const ROLLING_REFRESH_AFTER_MS = 7 * 24 * 3600 * 1000;
+
+async function refreshIfAging(): Promise<void> {
+  try {
+    const storedAt = await secureStorage.get(AUTH_TOKEN_STORED_AT_KEY);
+    const age = storedAt ? Date.now() - new Date(storedAt).getTime() : Infinity;
+    if (!(age > ROLLING_REFRESH_AFTER_MS)) return;
+    // No refresh token (V2-era 10-year token, Apple/Google session token): nothing to roll, and nothing to log out for.
+    if (!(await secureStorage.get(AUTH_REFRESH_TOKEN_KEY))) return;
+    await refreshAccessTokenDetailed();
+  } catch {
+    // best effort
+  }
+}
 
 interface User {
   id: string;
@@ -126,6 +144,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setAnalyticsAuthToken(token);
   }, [token]);
 
+  // A refresh anywhere (apiFetch 401 retry, cold start, rolling refresh) hands the new token to every screen.
+  useEffect(() => subscribeAccessToken((fresh) => setToken(fresh)), []);
+
+  // Coming back to the foreground after a long background stretch: roll the token before it can expire.
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active' && token) void refreshIfAging();
+    });
+    return () => sub.remove();
+  }, [token]);
+
   // Derived state: Check if user has accepted the CURRENT version of terms
   // User must have accepted terms AND their version must match current version
   const hasAcceptedTerms = Boolean(
@@ -220,13 +249,37 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 restored_session: true,
               }).catch(() => { }); // Ignore tracking errors
 
+              // Keep an active user's token from ever expiring (background, never blocks startup).
+              void refreshIfAging();
+
               setIsLoading(false);
               if (timeoutId) clearTimeout(timeoutId);
               return;
             } else if (userResp.status === 401 || userResp.status === 403) {
-              // Token is truly invalid/expired per the auth endpoint — clear it
-              console.log(`Stored token invalid (${userResp.status}), clearing...`);
+              // The access token expired (V3 tokens do). Swap it with the refresh token BEFORE signing anyone out:
+              // this used to delete the token straight away, which logged out every user who skipped a day.
+              console.log(`Stored token rejected (${userResp.status}), trying refresh...`);
+              const out = await refreshAccessTokenDetailed();
+              if (out.kind === 'ok') {
+                setToken(out.token);
+                await fetchCurrentUser(out.token);
+                trackEvent(out.token, 'app_session_start', { restored_session: true, refreshed: true }).catch(() => { });
+                setIsLoading(false);
+                if (timeoutId) clearTimeout(timeoutId);
+                return;
+              }
+              if (out.kind === 'unavailable') {
+                // Server/network trouble during refresh: keep the session, a later request refreshes it.
+                console.warn('⚠️ Refresh unavailable, keeping session');
+                setToken(storedToken);
+                setIsLoading(false);
+                if (timeoutId) clearTimeout(timeoutId);
+                return;
+              }
+              // Refresh rejected (or no refresh token): the session is really over.
+              console.log('Refresh rejected, clearing session');
               await secureStorage.delete(AUTH_TOKEN_KEY);
+              await secureStorage.delete(AUTH_REFRESH_TOKEN_KEY);
             } else {
               // Server error (404, 500, 502, 503, etc.) — keep token, proceed optimistically
               // Don't log out users due to transient server issues
@@ -291,7 +344,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const fetchCurrentUser = async (authToken: string): Promise<User | null> => {
+  const fetchCurrentUser = async (authToken: string, allowRefresh = true): Promise<User | null> => {
     try {
       // Timeout so a stalled connection can't hang login/registration flows
       // that await this call.
@@ -300,6 +353,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
           'Authorization': `Bearer ${authToken}`,
         },
       }, 12000);
+
+      if ((response.status === 401 || response.status === 403) && allowRefresh) {
+        // Expired access token: another path may already have refreshed it, otherwise refresh now. Only a rejected
+        // refresh signs the user out.
+        const current = await secureStorage.get(AUTH_TOKEN_KEY);
+        if (current && current !== authToken) {
+          setToken(current);
+          return fetchCurrentUser(current, false);
+        }
+        const out = await refreshAccessTokenDetailed();
+        if (out.kind === 'ok') return fetchCurrentUser(out.token, false);
+        if (out.kind === 'unavailable') {
+          console.warn('⚠️ /users/me rejected and refresh unavailable, keeping session');
+          return null;
+        }
+      }
 
       if (response.ok) {
         const userData = await response.json();
@@ -353,6 +422,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
         if (refreshToken) await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, refreshToken);
+        noteSignedIn();
         const nowIso = new Date().toISOString();
         await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
         await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
@@ -372,7 +442,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.log(`✅ Merged ${mergedCount} guest events to user account`);
         }
 
-        await fetchCurrentUser(authToken);
+        const me = await fetchCurrentUser(authToken);
+        // Returning user on a fresh install / new device: their onboarding was only remembered on the old phone.
+        // Restore it from the server now, so the next cold start doesn't send them back into the intro funnel.
+        if (me?.id) await resolveHasCompletedFunnel(me.id, authToken, { onUnknown: true }).catch(() => true);
       } else {
         throw new Error(result.error || 'Login failed');
       }
@@ -399,6 +472,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setToken(authToken);
         await secureStorage.set(AUTH_TOKEN_KEY, authToken);
         if (refreshToken) await secureStorage.set(AUTH_REFRESH_TOKEN_KEY, refreshToken);
+        noteSignedIn();
         const nowIso = new Date().toISOString();
         await secureStorage.set(AUTH_TOKEN_STORED_AT_KEY, nowIso);
         await secureStorage.set(AUTH_TOKEN_LAST_VALIDATED_KEY, nowIso);
@@ -654,7 +728,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     const userId = userData?.id;
-    if (userId && !(await readHasCompletedFunnel(userId))) {
+    // Server-aware: a returning user on a new device / reinstall is not a new signup. If the check can't reach the
+    // server, fall back to the old behaviour (funnel) since a social sign-in may be a brand-new account.
+    if (userId && !(await resolveHasCompletedFunnel(userId, storedToken, { onUnknown: false }))) {
       await AsyncStorage.removeItem('@mood_funnel_answers_v1');
       await AsyncStorage.removeItem('@mood_subscription_state_v1');
       await AsyncStorage.removeItem('@mood_post_first_workout_paywall_shown_v1');

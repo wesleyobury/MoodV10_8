@@ -46,7 +46,9 @@ import { BodyMapSheet } from './BodyMapSheet';
 import GuestPromptModal from '../GuestPromptModal';
 import { StateCard } from './StateCard';
 import { MoodWorkoutCard } from './MoodWorkoutCard';
-import { resolveV3HomeHeroes } from '../../utils/cartHero';
+import { V3_HERO_LIBRARY, resolveV3HomeHeroes } from '../../utils/cartHero';
+import { Image as CachedImage } from 'expo-image';
+import { heroImageSource } from './v3Images';
 import { HomeSession, homeSession } from '../../utils/v3Session/record';
 import { readSession, updateSession } from '../../utils/v3Session/store';
 import { syncCompletion } from '../../utils/v3Session/sync';
@@ -314,6 +316,15 @@ export default function V3Home() {
   // 9:16 when there is room; otherwise just short enough that the card bottoms stay on the first screen (utils/v3HomeRecs fitCards)
   const fit = fitCards(cardW, extra916);
   const card = { width: cardW, height: fit.height };
+
+  // Oct 2026 speed fix: warm the disk cache with every Home card photo at the exact URL the cards request (card width
+  // x3 via Cloudinary), so a card's photo is already on the phone when its workout arrives. Small images (~card size),
+  // fetched once per install; later launches read from disk.
+  useEffect(() => {
+    if (!cardW) return;
+    const urls = Array.from(new Set(V3_HERO_LIBRARY.map((p) => (heroImageSource({ kind: 'remote', uri: p.uri }, cardW) as { uri: string }).uri)));
+    CachedImage.prefetch(urls, 'disk').catch(() => undefined);
+  }, [cardW]);
   const extra = fit.extra;
   const week = weekStrip(new Date(), [...workoutTimes, ...history.map((h) => h.completed_at)]);
   const sp = homeSpacing(extra);

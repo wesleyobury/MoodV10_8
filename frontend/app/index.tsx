@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Video, ResizeMode } from 'expo-av';
 import { useSubscription, PaywallTrigger } from '../contexts/SubscriptionContext';
-import { readHasCompletedFunnel } from '../contexts/OnboardingFunnelContext';
+import { readHasCompletedFunnel, resolveHasCompletedFunnel } from '../contexts/OnboardingFunnelContext';
 import { useAuth } from '../contexts/AuthContext';
 
 const { width, height } = Dimensions.get('window');
@@ -186,7 +186,8 @@ export default function Welcome() {
       if (redirectedRef.current) return;
       redirectedRef.current = true;
       try {
-        const completed = await readHasCompletedFunnel(user.id);
+        // Server-aware: a reinstall / new device must not send an onboarded account back through the intro.
+        const completed = await resolveHasCompletedFunnel(user.id, token, { onUnknown: true });
         if (completed) {
           router.replace('/(tabs)');
         } else {

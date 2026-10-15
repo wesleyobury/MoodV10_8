@@ -11,7 +11,8 @@
  * generator could not fit this Direction today: not selectable) and error (tap to retry). Presentational only.
  */
 import React, { useEffect, useRef } from 'react';
-import { ActivityIndicator, Animated, Easing, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image as CachedImage } from 'expo-image';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeLinearGradient as LinearGradient } from '../SafeLinearGradient';
 import { BRAND_GRADIENT, COLORS } from '../../constants/brand';
@@ -20,7 +21,7 @@ import { DIRECTION_NAME, STATE_LABEL } from '../../utils/v3HomeModel';
 import { STATE_THEME } from './StateCard';
 import { previewTitle } from '../../utils/v3PreviewFormat';
 import { resolveV3CartHero, type V3HeroSource } from '../../utils/cartHero';
-import { heroImageSource } from './v3Images';
+import { V3_ASSETS, heroImageSource } from './v3Images';
 
 export type RecStatus = 'loading' | 'ok' | 'conflict' | 'error';
 
@@ -129,10 +130,26 @@ export function MoodWorkoutCard(p: Props) {
         testID={p.testID}
         style={({ pressed }) => [styles.card, selected ? styles.cardOn : styles.cardOff, pressed && selectable && { opacity: 0.92 }]}
       >
+        {/* Oct 2026 speed fix: expo-image (memory + disk cache, the cache V3Home prefetches into, decoded off the main
+            thread) instead of RN Image, which re-downloaded every photo on every launch. While the workout is still being
+            built, the Direction's bundled photo shows (dimmed, pulsing) instead of an empty grey box; the real hero then
+            crossfades in. */}
         {skeleton ? (
-          <Animated.View style={[StyleSheet.absoluteFill, styles.skeleton, { opacity: pulse }]} />
+          <>
+            <CachedImage source={V3_ASSETS[direction]} contentFit="cover" style={[StyleSheet.absoluteFill, { opacity: 0.45 }]} />
+            <Animated.View style={[StyleSheet.absoluteFill, styles.skeleton, { opacity: pulse }]} />
+          </>
         ) : (
-          <Image source={heroImageSource(heroSrc, width)} resizeMode="cover" style={[StyleSheet.absoluteFill, (status === 'conflict' || refreshing) && { opacity: 0.4 }]} />
+          <CachedImage
+            source={heroImageSource(heroSrc, width) as any}
+            placeholder={V3_ASSETS[direction] as any}
+            placeholderContentFit="cover"
+            contentFit="cover"
+            cachePolicy="memory-disk"
+            priority="high"
+            transition={180}
+            style={[StyleSheet.absoluteFill, (status === 'conflict' || refreshing) && { opacity: 0.4 }]}
+          />
         )}
         <LinearGradient
           colors={['rgba(8,8,8,0)', 'rgba(8,8,8,0.55)', 'rgba(8,8,8,0.96)']}
