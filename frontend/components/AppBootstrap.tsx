@@ -7,13 +7,13 @@ import { API_URL } from '../utils/apiConfig';
 import { secureStorage, AUTH_TOKEN_KEY } from '../utils/secureStorage';
 
 /**
- * Taupe Silk splash backdrop: black around the logo, a hint of warm taupe at the top and bottom edges.
- * The stops are baked identically into the iOS native splash (assets/images/splash-screen-ios.png), so the handoff from
- * the native splash to this screen shows no jump. If you change one, regenerate the other.
+ * Splash backdrop: pure black (founder call, Oct 2026: the Taupe Silk edges broke the blend into the app). Must match the
+ * iOS native splash (assets/images/splash-screen-ios.png, also pure black around the logo) so the handoff shows no jump.
+ * If you change one, regenerate the other.
  */
 export const SPLASH_STOPS = {
-  colors: ['#4E4540', '#3A332F', '#1E1A18', '#000000', '#000000', '#1E1A18', '#3A332F', '#4E4540'],
-  locations: [0, 0.07, 0.15, 0.25, 0.75, 0.85, 0.93, 1],
+  colors: ['#000000', '#000000'],
+  locations: [0, 1],
 };
 function SplashBackdrop() {
   return (
