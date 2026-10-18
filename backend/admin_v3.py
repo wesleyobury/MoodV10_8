@@ -377,6 +377,17 @@ def build_admin_v3_router(db, require_admin: Callable) -> APIRouter:
         if fresh_min is None or fresh_min > 120:
             alerts.append({"level": "warning", "title": "No events received recently",
                            "detail": f"Last event {fresh_min} minutes ago." if fresh_min is not None else "No events found."})
+        try:
+            import store_metrics as _sm
+            dl = await _sm.get_downloads_in_range(db, datetime.now(UTC) - timedelta(days=30), now)
+            last_sync = dl.get("last_synced_date")
+            stale_days = (date.today() - date.fromisoformat(last_sync)).days if last_sync else None
+            if dl["configured"].get("apple") and (stale_days is None or stale_days > 2):
+                alerts.append({"level": "warning", "title": "iOS downloads feed is stale",
+                               "detail": (f"Last synced {last_sync} ({stale_days}d ago)." if last_sync else "Never synced.")
+                                         + " Apple's own Analytics tab is the source of truth until this catches up."})
+        except Exception as e:
+            logger.warning("pulse: downloads health check failed: %s", e)
         return {
             "range": {"start": s.isoformat(), "end": e.isoformat(), "prev_start": ps.isoformat()},
             "version": version, "cards": cards, "alerts": alerts,

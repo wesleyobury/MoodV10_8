@@ -21,6 +21,7 @@ from typing import Any, Dict, List, Optional
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
 import app_store_connect as asc
+import app_store_analytics as asca
 import google_play_reports as gpr
 
 logger = logging.getLogger(__name__)
@@ -51,7 +52,7 @@ async def upsert_daily(
 
 
 def _platform_status() -> Dict[str, Dict[str, object]]:
-    return {"apple": asc.config_status(), "google": gpr.config_status()}
+    return {"apple": asc.config_status(), "apple_analytics": asca.config_status(), "google": gpr.config_status()}
 
 
 async def sync_store_metrics(db: AsyncIOMotorDatabase, days: int = 7) -> Dict[str, Any]:
@@ -91,6 +92,32 @@ async def sync_store_metrics(db: AsyncIOMotorDatabase, days: int = 7) -> Dict[st
             extra = {k: v for k, v in data.items() if k not in ("downloads", "date", "platform")}
             await upsert_daily(db, platform, d.isoformat(), data["downloads"], extra)
             result["synced"].append({"platform": platform, "date": d.isoformat(), "downloads": data["downloads"]})
+
+    # ── Apple Analytics fallback ─────────────────────────────────────────
+    # Sales/Trends (above) has been empty since 2026-06-22 — see app_store_analytics.py for why.
+    # It reads the SAME number App Store Connect's "App Analytics" tab shows. Only fills dates that
+    # the Sales feed didn't already give us a confirmed value for, so it never overwrites Sales data.
+    result["apple_analytics"] = {"status": "skipped", "note": "not configured"}
+    if asca.is_configured():
+        try:
+            already = {s["date"] for s in result["synced"] if s["platform"] == "apple"}
+            existing_docs = await db[COLLECTION].find(
+                {"platform": "apple", "date": {"$in": [d.isoformat() for d in dates]}}
+            ).to_list(length=len(dates) + 1)
+            have_nonzero = already | {d["date"] for d in existing_docs if int(d.get("downloads", 0) or 0) > 0}
+
+            fetched = await asca.fetch_recent_first_time_downloads(days=min(days, 60))
+            result["apple_analytics"] = {"status": fetched.get("status"), "note": fetched.get("note")}
+            for d_iso, n in (fetched.get("by_date") or {}).items():
+                if d_iso in have_nonzero:
+                    continue  # trust confirmed Sales Reports data over Analytics for the same day
+                await upsert_daily(db, "apple", d_iso, n, {"source": "analytics"})
+                result["synced"].append({"platform": "apple", "date": d_iso, "downloads": n, "source": "analytics"})
+        except asca.NotConfigured:
+            result["apple_analytics"] = {"status": "skipped", "note": "not configured"}
+        except Exception as e:
+            logger.warning("apple analytics sync failed: %s", e)
+            result["apple_analytics"] = {"status": "error", "note": str(e)}
 
     return result
 
