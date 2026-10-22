@@ -11,7 +11,7 @@ import math
 
 SCHEMA_VERSION = 'v3.0'
 
-DIRECTION_NAMES = {'strength': 'Strength', 'sweat': 'Sweat', 'athletic': 'Athletic'}
+DIRECTION_NAMES = {'strength': 'Strength', 'sweat': 'Sweat', 'athletic': 'Athletic', 'specialty': 'Specialty'}  # additive: Specialty Workout Generator (independent of the 3 frozen Directions)
 ARCHETYPE_NAMES = {
     'strength_upper_push': 'Upper Push', 'strength_upper_pull': 'Upper Pull', 'strength_upper_mixed': 'Upper Body',
     'strength_arms': 'Arms', 'strength_lower_squat': 'Lower Body: Squat', 'strength_lower_hinge': 'Lower Body: Hinge',

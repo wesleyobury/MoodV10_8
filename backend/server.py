@@ -175,6 +175,7 @@ from notification_worker import (
 from seed_data import PREVIEW_FEATURED_WORKOUTS, FEATURED_WORKOUT_IDS
 from exercises_seed_data import PREVIEW_EXERCISES
 from mood_v3.router import build_v3_router  # MOOD V3 unified workout generation
+from mood_v3.specialty_router import build_specialty_router  # MOOD V3 Specialty Workout Generator (independent of the 3 frozen Directions)
 from v3_explore import build_explore_router, v3_live_bucket, enrich_live_feed, feed_samples, sample_day_stats  # MOOD V3 Explore (Live) + Profile activity
 from mood_v3.completion import CompletionHooks as V3CompletionHooks  # MOOD V3 Guided Session completion side effects
 from training_profile import build_training_profile_router  # MOOD V3 persistent training profile
@@ -15794,6 +15795,8 @@ _v3_completion_hooks = V3CompletionHooks(
     claim_first_workout=_v3_claim_first_workout,
 )
 api_router.include_router(build_v3_router(db, get_current_user, _v3_completion_hooks))
+# MOOD V3 Specialty Workout Generator: /api/v3/specialty/* (18 presets, independent generator, reuses the shared v3 schema)
+api_router.include_router(build_specialty_router(db, get_current_user))
 # MOOD V3 Explore + Profile: GET /api/v3/explore, GET /api/v3/me/activity (EXPLORE_SYNTHETIC=off|labeled|realistic)
 api_router.include_router(build_explore_router(db, get_current_user))
 # MOOD V3: GET/PUT /api/users/me/training-profile (users.training_profile)
