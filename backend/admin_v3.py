@@ -1045,6 +1045,7 @@ def build_admin_v3_router(db, require_admin: Callable) -> APIRouter:
     @r.get("/users")
     async def users_list(q: Optional[str] = None, stage: Optional[str] = None, paying: Optional[bool] = None,
                          version: str = "all", include_internal: bool = False, limit: int = Query(50, le=500), skip: int = 0,
+                         sort: str = "active", joined_days: Optional[int] = Query(None, ge=1, le=365),
                          _: str = Depends(require_admin)):
         excl, keep = await scope(version, include_internal)
         filt: Dict[str, Any] = {}
@@ -1057,6 +1058,8 @@ def build_admin_v3_router(db, require_admin: Callable) -> APIRouter:
             except Exception:
                 pass
             filt["$or"] = ors
+        if joined_days:
+            filt["created_at"] = {"$gte": N(datetime.now(UTC) - timedelta(days=joined_days))}
         docs = [u for u in await db.users.find(filt, USER_FIELDS).to_list(None) if keep(str(u["_id"]))]
         rw = await recent_workouts()
         now = datetime.now(UTC)
@@ -1080,12 +1083,16 @@ def build_admin_v3_router(db, require_admin: Callable) -> APIRouter:
             rows = [r_ for r_ in rows if r_["stage"] == stage]
         if paying is not None:
             rows = [r_ for r_ in rows if r_["paying"] == paying]
-        rows.sort(key=lambda r_: (r_["last_workout_at"] or "", r_["created_at"] or ""), reverse=True)
+        if sort == "joined":
+            rows.sort(key=lambda r_: r_["created_at"] or "", reverse=True)
+        else:
+            rows.sort(key=lambda r_: (r_["last_workout_at"] or "", r_["created_at"] or ""), reverse=True)
         return {"total": len(rows), "users": rows[skip:skip + limit],
                 "stages": [{"stage": k, "users": stage_counts.get(k, 0)} for k in STAGES],
                 "paying": sum(1 for r_ in rows if r_["paying"]),
                 "note": "Lifecycle: Onboarding (no V3 profile), Onboarded (profile, no finished workout), Activated (first workout done), "
-                        "Returned (tried another), Habit (2+ workouts in 7 days), At risk (none in 14 days), Lapsed (none in 30). Paying is shown separately."}
+                        "Returned (tried another), Habit (2+ workouts in 7 days), At risk (none in 14 days), Lapsed (none in 30). Paying is shown separately. "
+                        + (f"Showing people who joined in the last {joined_days} day(s)." if joined_days else "")}
 
     @r.get("/users/{user_id}")
     async def user_detail(user_id: str, _: str = Depends(require_admin)):

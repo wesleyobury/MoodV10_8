@@ -42,6 +42,28 @@ const STAGE_STYLE: Record<string, string> = {
 const d = (iso: string | null | undefined, time = false) =>
   iso ? new Date(iso).toLocaleString("en-US", time ? { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" } : { month: "short", day: "numeric", year: "numeric" }) : "—";
 
+// The event stream already carries full metadata; pull out the one detail that makes
+// a funnel/paywall event legible at a glance (which trigger, which plan, which direction)
+// instead of making you open the raw metadata for every row.
+function eventDetail(eventType: string, metadata: Record<string, unknown>): string | null {
+  const s = (k: string) => (typeof metadata[k] === "string" ? (metadata[k] as string) : undefined);
+  switch (eventType) {
+    case "paywall_viewed":
+      return humanize(s("trigger_source") || s("trigger") || "") || null;
+    case "plan_selected":
+    case "subscription_started":
+    case "subscription_renewed":
+      return s("plan_id") || s("product_id") || null;
+    case "workout_start_gate":
+      return [metadata.attempt === "second_plus" ? "2nd+ attempt" : null, metadata.allowed === false ? "blocked" : metadata.allowed === true ? "allowed" : null]
+        .filter(Boolean).join(" · ") || null;
+    case "v3_workout_generated":
+      return s("direction") ? humanize(s("direction")!) : null;
+    default:
+      return null;
+  }
+}
+
 function Badge({ children, className }: { children: React.ReactNode; className?: string }) {
   return <span className={cn("inline-flex items-center rounded border border-border px-1.5 py-0.5 text-[10px] font-medium", className)}>{children}</span>;
 }
@@ -124,12 +146,18 @@ function UserDrawer({ id, onClose }: { id: string; onClose: () => void }) {
             <Section title="Event timeline" note="Every tracked event, newest first.">
               {!tl ? <Spinner label="Loading timeline..." /> : !tl.events?.length ? <Empty text="No events." /> : (
                 <ul className="text-sm divide-y divide-border/50 max-h-[420px] overflow-y-auto">
-                  {tl.events.slice(0, 200).map((e) => (
-                    <li key={e.event_id} className="py-1.5 flex justify-between gap-3">
-                      <span>{e.event_label || humanize(e.event_type)}</span>
-                      <span className="text-muted-foreground tabular-nums whitespace-nowrap">{d(e.timestamp, true)}</span>
-                    </li>
-                  ))}
+                  {tl.events.slice(0, 200).map((e) => {
+                    const detail = eventDetail(e.event_type, e.metadata || {});
+                    return (
+                      <li key={e.event_id} className="py-1.5 flex justify-between gap-3">
+                        <span>
+                          {e.event_label || humanize(e.event_type)}
+                          {detail && <span className="text-muted-foreground"> · {detail}</span>}
+                        </span>
+                        <span className="text-muted-foreground tabular-nums whitespace-nowrap">{d(e.timestamp, true)}</span>
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </Section>
@@ -146,7 +174,9 @@ function V3Users() {
   const [query, setQuery] = useState(params.get("q") || "");
   const [stage, setStage] = useState<string>("");
   const [open, setOpen] = useState<string | null>(params.get("user"));
-  const { data, error, loading } = useV3<UsersData>("/users", { q: query, stage, limit: 200 });
+  const [joinedDays, setJoinedDays] = useState<number | undefined>(undefined);
+  const sort = joinedDays ? "joined" : "active";
+  const { data, error, loading } = useV3<UsersData>("/users", { q: query, stage, limit: 200, sort, joined_days: joinedDays });
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
@@ -159,6 +189,15 @@ function V3Users() {
       <Gate loading={loading} error={error} label="users">
         {data && (
           <>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-xs text-muted-foreground mr-1">New signups:</span>
+              {[{ label: "Today", days: 1 }, { label: "Last 3 days", days: 3 }, { label: "Last 7 days", days: 7 }].map((o) => (
+                <button key={o.days} onClick={() => setJoinedDays(joinedDays === o.days ? undefined : o.days)}
+                  className={cn("rounded-md border px-3 py-1.5 text-sm", joinedDays === o.days ? "border-primary/50 bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground")}>
+                  {o.label}
+                </button>
+              ))}
+            </div>
             <div className="flex flex-wrap gap-2">
               <button onClick={() => setStage("")} className={cn("rounded-md border px-3 py-1.5 text-sm", !stage ? "border-primary/50 bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground")}>
                 All
@@ -171,7 +210,7 @@ function V3Users() {
               ))}
             </div>
             <p className="text-xs text-muted-foreground">{data.note}</p>
-            <Section title={`${data.total.toLocaleString()} people`} note="Most recently active first. Click a row for the full story.">
+            <Section title={`${data.total.toLocaleString()} people`} note={joinedDays ? "Newest signup first. Click a row for the full story: milestones, workouts, every event including which paywall they saw." : "Most recently active first. Click a row for the full story."}>
               <DataTable
                 rows={data.users.map((u) => ({ ...u, who: u.username || u.email || u.user_id, joined: d(u.created_at), last: d(u.last_workout_at),
                   v3: u.is_v3 ? "V3" : "—", sub: u.subscription ? humanize(u.subscription) : "—", flags: [u.founding_member && "Founding", u.is_comp && "Comp", u.is_internal && "Internal"].filter(Boolean).join(", ") || "" }))}
