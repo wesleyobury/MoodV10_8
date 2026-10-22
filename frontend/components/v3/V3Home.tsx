@@ -43,6 +43,7 @@ import { MAX_STATES, STATES, defaultDuration, requestSignature, soreSummary } fr
 import { RecSlot, fitCards, weekStrip, cardHeight916, homeHeadline, homeSpacing, persistRequest, recCardSize, recSlots, recoveryPlan, recsMessage, featuredMoods, stateCta, stateTileSize, streakLabel } from '../../utils/v3HomeRecs';
 import { V3DayStates, V3TodayEntry, readDayStates, readLastDirection, readTodayBySignature, writeDayStates, writeLastDirection, writeToday } from '../../utils/v3Today';
 import { BodyMapSheet } from './BodyMapSheet';
+import { SpecialtyPresetsRow } from './SpecialtyPresetsRow';
 import GuestPromptModal from '../GuestPromptModal';
 import { StateCard } from './StateCard';
 import { MoodWorkoutCard } from './MoodWorkoutCard';
@@ -727,6 +728,11 @@ export default function V3Home() {
             });
           })()}
         </View>
+
+        {/* ============================================================ SPECIALTY WORKOUTS (founder build, Oct 2026)
+            New Home content, not a 4th Direction -- see SpecialtyPresetsRow.tsx. Static cards, no live preview;
+            generates on tap and opens the existing Cart with kind=specialty. */}
+        <SpecialtyPresetsRow />
 
         {/* ============================================================ WEARABLES (the V2 Home ribbon, below the fold) */}
         <View style={styles.wearables} testID="v3-home-wearables">

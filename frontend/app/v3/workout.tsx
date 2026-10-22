@@ -31,7 +31,7 @@ import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinea
 import { BRAND_GRADIENT, COLORS, bgA } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { trackEvent } from '../../utils/analytics';
-import { V3Envelope, getV3Workout, swapV3Exercise, swapV3Workout } from '../../utils/v3Api';
+import { V3Envelope, getSpecialtyWorkout, getV3Workout, swapSpecialtyExercise, swapV3Exercise, swapV3Workout } from '../../utils/v3Api';
 import { readCachedEnvelope, updateTodayEnvelope } from '../../utils/v3Today';
 import { findSavedV3, saveV3, unsaveV3 } from '../../utils/v3Saved';
 import * as Haptics from 'expo-haptics';
@@ -65,7 +65,11 @@ function V3WorkoutCartScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
-  const { id, saved: savedParam, completed } = useLocalSearchParams<{ id?: string; saved?: string; completed?: string }>();
+  const { id, saved: savedParam, completed, kind } = useLocalSearchParams<{ id?: string; saved?: string; completed?: string; kind?: string }>();
+  /** Set by SpecialtyPresetsRow.tsx on navigation. The Specialty Generator is a separate backend (separate
+   *  db.specialty_workouts collection, separate /api/v3/specialty/* routes) -- this screen otherwise renders the
+   *  same envelope shape unchanged, but fetch / swap-exercise must hit the specialty endpoints for this id. */
+  const isSpecialty = kind === 'specialty';
   /** read-only: opened from Profile > Workout History */
   const isDone = !!completed;
   const [statsOpen, setStatsOpen] = useState(false);
@@ -179,11 +183,13 @@ function V3WorkoutCartScreen() {
     if (!id || !token) return;
     let alive = true;
     (async () => {
-      if (uid) {
+      // Specialty workouts are never written to the Direction-only `v3Today` cache (see SpecialtyPresetsRow.tsx),
+      // so there is nothing to read instantly here -- go straight to the network fetch.
+      if (uid && !isSpecialty) {
         const cached = await readCachedEnvelope(uid, id);
         if (alive) accept(cached, false);
       }
-      const res = await getV3Workout(token, id);
+      const res = isSpecialty ? await getSpecialtyWorkout(token, id) : await getV3Workout(token, id);
       if (!alive) return;
       if (res.ok) accept(res.envelope, true);
       else setLoadError(res.error.message);
@@ -191,7 +197,7 @@ function V3WorkoutCartScreen() {
     return () => {
       alive = false;
     };
-  }, [id, token, uid, accept]);
+  }, [id, token, uid, accept, isSpecialty]);
 
   useFocusEffect(
     useCallback(() => {
@@ -284,7 +290,7 @@ function V3WorkoutCartScreen() {
     const before = w.blocks.flatMap((b) => b.items).find((i) => i.item_id === itemId);
     setSwappingItem(itemId);
     track('v3_swap_exercise_tapped', { item_id: itemId, from: before?.exercise.id });
-    const res = await swapV3Exercise(token, id, itemId);
+    const res = isSpecialty ? await swapSpecialtyExercise(token, id, before?.exercise.id ?? '') : await swapV3Exercise(token, id, itemId);
     setSwappingItem(null);
     // From the detail sheet the message shows inside the sheet; from a Cart row it is a quiet toast.
     const notify = (m: string) => {
@@ -328,6 +334,13 @@ function V3WorkoutCartScreen() {
   const onStart = async () => {
     const w = env?.workout;
     if (!w || !id || starting) return;
+    if (isSpecialty) {
+      // The Guided Session's completion call (POST /api/v3/workouts/{id}/complete) has no specialty equivalent
+      // wired yet (specialty completion is POST /api/v3/specialty/{id}/complete, a separate, unverified path) --
+      // intercepting here rather than letting a real session run into a 404 at the finish line.
+      showToast('Guided sessions for Specialty Workouts are coming soon. Browse the plan here for now.');
+      return;
+    }
     track('v3_start_workout_tapped', { direction: w.direction, archetype: w.archetype.id });
     // Start = the activation moment, and the paywall point for workout #2 (utils/v3Session/access.ts). A different
     // workout still in progress is not gated here: the session screen asks Continue / Replace first, and a Replace is
@@ -482,7 +495,7 @@ function V3WorkoutCartScreen() {
                   {`${exerciseTotal(w)} exercises · ${header.facts[0]}${w.warmup ? ' · warm-up included' : ''}`}
                 </Text>
 
-                {!isDone ? (
+                {!isDone && !isSpecialty ? (
                   <Pressable
                     onPress={onDifferent}
                     disabled={building}
@@ -515,7 +528,7 @@ function V3WorkoutCartScreen() {
               >
                 {saving ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name={savedId ? 'bookmark' : 'bookmark-outline'} size={18} color={savedId ? COLORS.accent : COLORS.textPrimary} />}
               </Pressable>
-              {!isDone ? (
+              {!isDone && !isSpecialty ? (
                 <Pressable onPress={onDifferent} disabled={building} hitSlop={10} style={[styles.glassBtn, { overflow: 'hidden' }]} accessibilityLabel="Different workout" testID="v3-cart-different-top">
                   {!building ? <Shimmer size={38} /> : null}
                   {building ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name="shuffle" size={19} color={COLORS.textPrimary} />}

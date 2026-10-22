@@ -362,6 +362,39 @@ export function previewV3Workout(req: V3GenerateRequest): Promise<V3Result> {
   return call('/api/v3/workouts/preview', '', { method: 'POST', body: { ...req, persist: false }, timeoutMs: GENERATE_TIMEOUT_MS });
 }
 
+/* ------------------------------------------------------------------ specialty presets
+ * The 18 Specialty Workout Presets (backend/mood_v3/specialty_router.py) -- a separate, independent generator, NOT
+ * a 4th Direction. Separate collection (db.specialty_workouts), separate endpoints. The envelope shape returned is
+ * the SAME schema as V3Envelope (engines/specialty/render.py reuses formatter.py's shared builders), so V3Envelope /
+ * V3Workout / V3Result are reused as-is here -- no new response types needed. `workout.direction` comes back as the
+ * literal string 'specialty' (not a V3Direction value); every existing consumer of `w.direction` either only uses it
+ * for analytics tracking or reads it through an optional lookup with a fallback, so this flows through safely.
+ */
+export type V3SpecialtyFlavor = 'strength' | 'complex_flow' | 'circuit_density' | 'power_athletic';
+
+export interface V3SpecialtyGenerateRequest {
+  preset_id: string;
+  flavor?: V3SpecialtyFlavor;
+  experience?: V3Experience;
+  duration?: 30 | 60;
+  persist?: boolean;
+}
+
+export function generateSpecialtyWorkout(token: string, req: V3SpecialtyGenerateRequest): Promise<V3Result> {
+  return call('/api/v3/specialty/generate', token, { method: 'POST', body: { experience: 'intermediate', duration: 60, persist: true, ...req }, timeoutMs: GENERATE_TIMEOUT_MS });
+}
+
+export function getSpecialtyWorkout(token: string, workoutId: string): Promise<V3Result> {
+  return call(`/api/v3/specialty/${encodeURIComponent(workoutId)}`, token);
+}
+
+export function swapSpecialtyExercise(token: string, workoutId: string, exerciseId: string): Promise<V3Result> {
+  return call(`/api/v3/specialty/${encodeURIComponent(workoutId)}/swap-exercise`, token, {
+    method: 'POST',
+    body: { exercise_id: exerciseId },
+  });
+}
+
 /** A fresh, un-completed copy of a workout (Saved Workouts: do it again). Same plan, new workout id. */
 export function repeatV3Workout(token: string, workoutId: string): Promise<V3Result> {
   return call(`/api/v3/workouts/${encodeURIComponent(workoutId)}/repeat`, token, { method: 'POST' });
