@@ -12,69 +12,63 @@ inserted the specialty catalog's exercises into that collection, so right now
 the Specialty Generator can build a workout referencing e.g. "Landmine Thruster"
 with no way for the app to find an image for it.
 
-TWO FINDINGS FROM THIS SCRIPT'S VALIDATION PASS -- READ BEFORE RUNNING
-------------------------------------------------------------------------
-This script was built against static files only (no live Mongo connection was
-available from this environment -- see "ENVIRONMENT CHECK" below). Using the
-best available proxies (the 301-row production exercise inventory and a
-174-entry preview db.exercises snapshot in exercises_seed_data.py), two classes
-of catalog exercise were found and are HARD-EXCLUDED from this import:
+BOTH EARLIER FINDINGS FROM THIS SCRIPT'S VALIDATION PASS ARE NOW RESOLVED
+----------------------------------------------------------------------------
+An earlier version of this script hard-excluded 21 exercises (6 name collisions + 15 false
+"no media" positives). Both findings turned out to be bugs in THIS script, not in the catalog
+or the media pipeline -- both are now fixed, see commit history for the two prior passes.
 
-(A) EXACT-NAME COLLISION WITH AN EXISTING PRODUCTION EXERCISE (6 exercises):
-    Power Clean, Hang Clean, Barbell Push Press, Dumbbell Hang Clean,
-    Barbell Front Squat, Barbell Reverse Lunge.
-    Each of these already exists as its own document in db.exercises (fed by
-    the frozen Strength/Sweat/Athletic engines' own exercise references), AND
-    the specialty catalog has its OWN newly-generated image for the same name.
-    attach_media() keys its lookup index by normalized name with FIRST-WRITE-
-    WINS (MediaIndex.get() in router.py: `if k and k not in idx: idx[k] = d`),
-    and the existing production document was inserted first -- so the
-    established add_exercises_batchN.py convention of "update_one if name
-    already exists" would silently overwrite the EXISTING production
-    document's video/thumbnail with the specialty image, changing what every
-    Strength/Sweat/Athletic-generated workout shows for that exercise name.
-    This script refuses to import these 6 under their current names. A human
-    product decision is needed: rename the specialty version to disambiguate
-    (e.g. append a qualifier), or decide the new image should replace the old
-    one everywhere (intentional, not accidental). See EXACT_NAME_COLLISIONS.
+(A) EXACT-NAME COLLISION, now RESOLVED (was 6, now 0 excluded):
+    Power Clean, Hang Clean, Barbell Push Press, Dumbbell Hang Clean, Barbell Front Squat,
+    Barbell Reverse Lunge all collided on exact name with a document already in
+    exercises_seed_data.py / db.exercises.
+    - 'Barbell Push Press' and 'Barbell Front Squat' were REMOVED from catalog.py entirely:
+      the frozen Strength engine's own pool (engines/strength -- AE.EX) already has 'Push
+      Press' and 'Front Squat', both eq='barbell', auto-included in the specialty generator's
+      pool via adapter.py's full_pool() = _production_pool() + _catalog_pool(). True
+      duplicates; removing them loses nothing.
+    - 'Power Clean', 'Hang Clean', 'Dumbbell Hang Clean', 'Barbell Reverse Lunge' were KEPT:
+      checked AE.EX directly, the frozen pool has no barbell/dumbbell equivalent for these
+      (only unrelated kettlebell/dumbbell clean-and-press variants, and a dumbbell -- not
+      barbell -- Reverse Lunge), so they're genuinely new, equipment-specific pool entries the
+      Specialty Generator needs. A real production document already exists under each exact
+      name with real media. This script's insert logic already refuses to overwrite any
+      existing document (`if existing: skip`, never update_one) -- so letting them through the
+      normal `ready` list is safe. Their newly-generated specialty thumbnails simply go unused
+      at import time: correct, since it's the same real lift and the existing photo is fine.
+    EXACT_NAME_COLLISIONS is now an empty set, kept as a named hook for any future collision a
+    new catalog addition might introduce.
 
-(B) TAGGED production_ready IN THE CATALOG BUT NO HOSTED MEDIA FOUND ANYWHERE
-    (15 exercises): Single-Arm Kettlebell Strict Press, Single-Arm Kettlebell
-    Row, Standard Push-Up, Incline Bench Push-Up, Decline Bench Push-Up, Pike
-    Push-Up, Hand-Release Push-Up, Bench Step-Up, Assisted Pistol Squat
-    (bench), Feet-Elevated Glute Bridge (bench), Inchworm to Push-Up,
-    Wide-Grip Pull-Up, Archer Push-Up, Pull-Up to Knee Raise, Bench Step-Up to
-    Knee Drive.
-    None of these have a hosted image_url in the specialty thumbnail batch's
-    manifest, NOR a matching entry (exact or fuzzy) in the 301-exercise
-    production inventory, NOR in the 174-entry preview seed snapshot. The
-    catalog's media_status='production_ready' tag for these 15 appears to be
-    incorrect (the same class of bug already found and fixed for 8 other
-    exercises earlier in this build -- see commits eeeca416, f7ac2907 -- except
-    for these 15 no hosted URL exists under ANY filename to fall back to).
-    This script does NOT invent URLs. These 15 are skipped entirely and
-    reported as missing media. Recommend re-auditing catalog.py's media_status
-    for these 15 (they likely need re-tagging to dev_only) as a follow-up --
-    deliberately NOT done automatically here since flipping media_status
-    changes the Specialty Generator's exercise pool per preset, which affects
-    pool-thinness in ways a human should review. See NO_MEDIA_FOUND.
+(B) FALSE "NO MEDIA FOUND", now RESOLVED (was 15, now 0 excluded):
+    All 15 (Single-Arm Kettlebell Strict Press, Single-Arm Kettlebell Row, Standard Push-Up,
+    Incline/Decline Bench Push-Up, Pike Push-Up, Hand-Release Push-Up, Bench Step-Up,
+    Assisted Pistol Squat (bench), Feet-Elevated Glute Bridge (bench), Inchworm to Push-Up,
+    Wide-Grip Pull-Up, Archer Push-Up, Pull-Up to Knee Raise, Bench Step-Up to Knee Drive) DO
+    have real hosted image_url entries in the manifest -- this script's own _find_media() just
+    failed to find them, because it matched by exercise_id SLUG only, and the manifest's slug
+    column doesn't reliably align with catalog.py's internal ids (e.g. catalog slug
+    'single_arm_kettlebell_strict_press' vs manifest slug
+    'kettlebell_strict_press_single_arm' -- same exercise, reversed word order; or
+    'standard_push_up' vs 'standard_pushup' -- same exercise, no underscore). Fixed by
+    matching on NORMALIZED DISPLAY NAME first (see _normalize_name / _find_media), falling
+    back to the slug match only if the name match finds nothing. NO_MEDIA_FOUND is now an
+    empty set; any future catalog addition with genuinely no hosted media will still surface
+    dynamically in build_import_records()'s `excluded['no_media_found']` list.
 
-After excluding those 21, 67 of the 88 standalone catalog exercises (the 5
-assembled complexes are never imported as their own library entries -- they
-resolve entirely to sub-exercise references at generation time) are ready to
-import cleanly.
+Net result: 86 of catalog.py's 86 standalone exercises (after the 2 true-duplicate removals
+above; the 5 assembled complexes are never imported as their own library entries -- they
+resolve entirely to sub-exercise references at generation time) are ready to import cleanly.
 
-A THIRD, LOWER-SEVERITY FINDING (not excluded, just flagged): 7 of those 67
-exercises share their canonical name with an ALIAS (not primary name) of an
-existing production exercise (e.g. "Kettlebell Goblet Squat" is listed as an
-alias of both "KB Squat" and "Dumbbell Goblet Squat"). Because of the same
-first-write-wins indexing, attach_media() will likely resolve these 7 to the
-OLDER production exercise's image rather than the specialty catalog's own new
-one, even after this import succeeds -- a display quality issue (wrong but
-plausible photo), not a regression risk to the frozen engines. See
-ALIAS_LEVEL_SOFT_COLLISIONS. Flagged for a follow-up decision (e.g. remove the
-conflicting alias from the old document, or give the new document a
-disambiguating alias of its own) -- out of scope for this script to decide.
+A THIRD, LOWER-SEVERITY FINDING remains (not excluded, just flagged, UNCHANGED by the above
+fixes): 7 of those 86 exercises share their canonical name with an ALIAS (not primary name) of
+an existing production exercise (e.g. "Kettlebell Goblet Squat" is listed as an alias of both
+"KB Squat" and "Dumbbell Goblet Squat"). Because of the same first-write-wins indexing,
+attach_media() will likely resolve these 7 to the OLDER production exercise's image rather
+than the specialty catalog's own new one, even after this import succeeds -- a display quality
+issue (wrong but plausible photo), not a regression risk to the frozen engines. See
+ALIAS_LEVEL_SOFT_COLLISIONS. Flagged for a follow-up decision (e.g. remove the conflicting
+alias from the old document, or give the new document a disambiguating alias of its own) --
+out of scope for this script to decide.
 
 ENVIRONMENT CHECK (done, see report)
 -------------------------------------
@@ -147,20 +141,34 @@ EQUIPMENT_LABELS = {
     'bench': 'Bench',
 }
 
-# -- (A) exact-name collision with an existing production exercise. See module docstring. --
-EXACT_NAME_COLLISIONS = {
-    'power clean', 'hang clean', 'barbell push press', 'dumbbell hang clean',
-    'barbell front squat', 'barbell reverse lunge',
-}
+# -- (A) exact-name collision with an existing production exercise. See module docstring.
+#    RESOLVED: 'Barbell Push Press' and 'Barbell Front Squat' were REMOVED from catalog.py
+#    entirely -- the frozen Strength engine's own pool already has 'Push Press' and
+#    'Front Squat', both eq='barbell' (same movement, auto-included via _production_pool()
+#    merge in adapter.py's full_pool()). Nothing lost by removing the catalog duplicates.
+#    'Power Clean', 'Hang Clean', 'Dumbbell Hang Clean', and 'Barbell Reverse Lunge' are KEPT
+#    in catalog.py -- the frozen pool has no barbell/dumbbell equivalent for these (checked
+#    AE.EX directly: no exact or near match), so they're genuinely needed, equipment-specific
+#    pool entries. They are NOT hard-excluded here: a real production document already exists
+#    under each exact name (confirmed in exercises_seed_data.py) with real existing media, and
+#    this script's own insert logic (see main(): `if existing: skip`) already refuses to
+#    overwrite any document that exists, under any source -- so letting them through the normal
+#    `ready` list is safe. Their newly-generated specialty thumbnails simply go unused at import
+#    time, which is correct: don't clobber a real existing photo of the same real lift.
+EXACT_NAME_COLLISIONS = set()
 
-# -- (B) tagged production_ready but no hosted media found anywhere. See module docstring. --
-NO_MEDIA_FOUND = {
-    'Single-Arm Kettlebell Strict Press', 'Single-Arm Kettlebell Row', 'Standard Push-Up',
-    'Incline Bench Push-Up', 'Decline Bench Push-Up', 'Pike Push-Up', 'Hand-Release Push-Up',
-    'Bench Step-Up', 'Assisted Pistol Squat (bench)', 'Feet-Elevated Glute Bridge (bench)',
-    'Inchworm to Push-Up', 'Wide-Grip Pull-Up', 'Archer Push-Up', 'Pull-Up to Knee Raise',
-    'Bench Step-Up to Knee Drive',
-}
+# -- (B) RESOLVED: the 15 names once listed here were a FALSE NEGATIVE from this script's own
+#    _find_media(), which matched by exercise_id slug only. The manifest's slug column doesn't
+#    reliably align with catalog.py's ids (e.g. catalog slug 'single_arm_kettlebell_strict_press'
+#    vs manifest slug 'kettlebell_strict_press_single_arm' -- same exercise, different word
+#    order; or 'standard_push_up' vs 'standard_pushup' -- same exercise, no underscore). All 15
+#    were confirmed by hand to have real hosted image_url entries in the manifest under their
+#    display name (e.g. 'Standard Push-Up' -> F386, 'Pull-Up to Knee Raise' -> F411). Fixed by
+#    matching on normalized display NAME first (see _normalize_name / _find_media). This set is
+#    now empty and kept only as a hook: if a future catalog addition genuinely has no hosted
+#    media anywhere, it will still show up dynamically in build_import_records()'s `excluded`
+#    reporting (via _find_media returning None) -- nothing here needs to be hand-maintained.
+NO_MEDIA_FOUND = set()
 
 # -- flagged (not excluded): shares a name with an EXISTING exercise's ALIAS, not its primary
 #    name. attach_media's first-write-wins index means these will likely still resolve to the
@@ -186,18 +194,38 @@ def _load_manifest_rows():
         return list(csv.DictReader(f))
 
 
-def _find_media(manifest_rows, catalog_id):
-    """Match manifest rows by exercise_id slug, preferring an exact slug match with a non-empty
-    image_url; falls back to a later-filename variant (e.g. '..._v2') if that's the one that's
-    actually hosted. Never returns a URL for a row where image_url is empty."""
+def _normalize_name(s):
+    """Lowercase, strip everything but letters/digits, so 'Pull-Up to Knee Raise' and
+    'pullup_to_knee_raise' and 'Pull Up To Knee Raise' all collapse to the same key. This is
+    the robust match: catalog.py's internal id/slug strings do NOT reliably align with the
+    manifest's exercise_id slug column (e.g. catalog id 'single_arm_kettlebell_strict_press'
+    vs manifest slug 'kettlebell_strict_press_single_arm' -- same exercise, different word
+    order), but catalog.py's display `name` and the manifest's `exercise` display-name column
+    are written by humans describing the same real-world movement and match reliably once
+    normalized."""
+    return ''.join(ch for ch in s.lower() if ch.isalnum())
+
+
+def _find_media(manifest_rows, catalog_id, name):
+    """Primary match: normalized display name against the manifest's `exercise` column (see
+    _normalize_name). Falls back to the old exercise_id slug match only if the name match finds
+    nothing, since the slug column doesn't reliably align with catalog.py's ids. Either way, when
+    several manifest rows match (duplicates / "_v2" reuploads), ALWAYS prefer a row with a
+    non-empty image_url, and among those, the LAST one in file order (the later, presumably
+    final, hosted upload) -- this is the same "pick the hosted duplicate, not just the first
+    match" rule that already fixed 8 other exercises earlier in this build (commits eeeca416,
+    f7ac2907). Never returns a URL for a row where image_url is empty."""
+    target = _normalize_name(name)
+    name_candidates = [r for r in manifest_rows if _normalize_name(r['exercise']) == target]
+    hosted = [r for r in name_candidates if r['image_url']]
+    if hosted:
+        return hosted[-1]['image_url']
+
     slug = catalog_id[3:] if catalog_id.startswith('sp_') else catalog_id
-    candidates = [r for r in manifest_rows if r['exercise_id'] == slug or r['exercise_id'].startswith(slug + '_')]
-    exact = [r for r in candidates if r['exercise_id'] == slug and r['image_url']]
-    if exact:
-        return exact[-1]['image_url']
-    any_hosted = [r for r in candidates if r['image_url']]
-    if any_hosted:
-        return any_hosted[-1]['image_url']
+    slug_candidates = [r for r in manifest_rows if r['exercise_id'] == slug or r['exercise_id'].startswith(slug + '_')]
+    hosted = [r for r in slug_candidates if r['image_url']]
+    if hosted:
+        return hosted[-1]['image_url']
     return None
 
 
@@ -218,11 +246,11 @@ def build_import_records():
         if name in NO_MEDIA_FOUND:
             excluded['no_media_found'].append(name)
             continue
-        url = _find_media(manifest_rows, ex_id)
+        url = _find_media(manifest_rows, ex_id, name)
         if not url:
-            # Shouldn't happen given the two exclusion sets above are exhaustive per this
-            # script's own validation pass, but never invent a URL if it does.
-            excluded['no_media_found'].append(name + ' (unexpected: found at script-run time)')
+            # No hosted image_url found under this exercise's name (primary match) or its
+            # catalog slug (fallback match), anywhere in the manifest. Never invent a URL.
+            excluded['no_media_found'].append(name)
             continue
         eq = EQUIPMENT_LABELS.get(rec.get('eq'), str(rec.get('eq', '')).title())
         ready.append(dict(
