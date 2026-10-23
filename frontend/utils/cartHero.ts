@@ -61,7 +61,7 @@ export const isFeaturedHeroBroken = (
 
 export type V3HeroAssetKey = 'strength' | 'sweat' | 'athletic' | 'calisthenics' | 'outdoor';
 export type V3HeroSource = { kind: 'asset'; key: V3HeroAssetKey } | { kind: 'remote'; uri: string };
-export type V3HeroReason = 'archetype' | 'target' | 'direction';
+export type V3HeroReason = 'archetype' | 'target' | 'direction' | 'exercise';
 
 /**
  * V3 Cart hero library (Oct 2026): one primary image per archetype (plus alternates below), same dark-gym look as the Direction covers.
@@ -312,8 +312,34 @@ function heroPlan(w: V3HeroWorkout): HeroPlan {
     const hit = V3_TARGET_HERO.find((t) => t.muscles.includes(m));
     if (hit) return { kind: 'pool', reason: 'target', pool: v3WorkoutHeroPool(w, hit.hero), seed, salt: hit.hero };
   }
+  // Specialty: no curated pool and no target muscles (render.py always sends target_muscles=[]) -- use the cart's
+  // own first exercise thumbnail instead of one static generic image for all 18 presets (Wes, Oct 2026).
+  if (w.direction === 'specialty') {
+    const thumb = firstExerciseThumb(w);
+    if (thumb) return { kind: 'fixed', reason: 'exercise', source: { kind: 'remote', uri: thumb } };
+  }
   // Exercise-video thumbnails are never used as Cart imagery (founder policy: static photos only); fall to the Direction image.
   return { kind: 'fixed', reason: 'direction', source: V3_DIRECTION_HERO[w.direction] ?? A('strength') };
+}
+
+/**
+ * The first exercise's own thumbnail in cart order (first block, first item that has one) -- Specialty's hero source
+ * (see heroPlan below). Specialty has no curated hero-photo shoot (18 equipment x target presets is too many to
+ * shoot), so showing one static generic image for every preset (the prior behavior) read as broken ("the hero is
+ * always the same" -- Wes, Oct 2026). This does not touch Strength / Sweat / Athletic, which keep the
+ * "curated photo or nothing, never an exercise thumbnail" policy below unchanged.
+ */
+function firstExerciseThumb(w: V3HeroWorkout): string | null {
+  for (const b of w.blocks ?? []) {
+    for (const it of b.items ?? []) {
+      const direct = it.exercise?.media?.thumbnail_url;
+      if (direct) return direct;
+      const id = it.exercise?.id;
+      const u = id ? thumbUrl(id) : null;
+      if (u) return u;
+    }
+  }
+  return null;
 }
 
 /** Who is in a hero photo (curated hero shots and exercise-library photos); null when unknown. */
