@@ -395,6 +395,42 @@ export function swapSpecialtyExercise(token: string, workoutId: string, exercise
   });
 }
 
+/**
+ * POST /api/v3/specialty/{id}/complete -- same request/response contract as completeV3Workout (backend/mood_v3/
+ * specialty_router.py reuses mood_v3.completion.complete_workout, just pointed at db.specialty_workouts with
+ * source='specialty'), so V3CompletionBody / V3CompletionResult are reused as-is. Per product decision, a
+ * specialty completion runs the same side effects as a Direction one (counters, weekly free workout, streak event).
+ */
+export async function completeSpecialtyWorkout(
+  token: string,
+  workoutId: string,
+  body: V3CompletionBody,
+): Promise<{ ok: true; result: V3CompletionResult } | { ok: false; retryable: boolean; status: number; message: string }> {
+  const res = await apiFetch<V3CompletionResult>(`/api/v3/specialty/${encodeURIComponent(workoutId)}/complete`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(body),
+    timeoutMs: 20000,
+  });
+  if (res.ok && res.data && (res.data as any).status) return { ok: true, result: res.data };
+  if (res.isNetworkError) return { ok: false, retryable: true, status: 0, message: 'offline' };
+  const retryable = res.status === 401 || res.status === 408 || res.status === 429 || res.status >= 500 || !res.status;
+  return { ok: false, retryable, status: res.status, message: typeof res.error === 'string' ? res.error : `HTTP ${res.status}` };
+}
+
+/** POST /api/v3/specialty/{id}/after -- same contract as afterV3Workout. */
+export async function afterSpecialtyWorkout(token: string, workoutId: string, body: V3AfterBody): Promise<{ ok: true } | { ok: false; retryable: boolean; status: number }> {
+  const res = await apiFetch<any>(`/api/v3/specialty/${encodeURIComponent(workoutId)}/after`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(body),
+    timeoutMs: 15000,
+  });
+  if (res.ok) return { ok: true };
+  if (res.isNetworkError) return { ok: false, retryable: true, status: 0 };
+  return { ok: false, retryable: res.status === 401 || res.status === 408 || res.status === 429 || res.status >= 500 || !res.status, status: res.status };
+}
+
 /** A fresh, un-completed copy of a workout (Saved Workouts: do it again). Same plan, new workout id. */
 export function repeatV3Workout(token: string, workoutId: string): Promise<V3Result> {
   return call(`/api/v3/workouts/${encodeURIComponent(workoutId)}/repeat`, token, { method: 'POST' });

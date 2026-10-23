@@ -334,13 +334,9 @@ function V3WorkoutCartScreen() {
   const onStart = async () => {
     const w = env?.workout;
     if (!w || !id || starting) return;
-    if (isSpecialty) {
-      // The Guided Session's completion call (POST /api/v3/workouts/{id}/complete) has no specialty equivalent
-      // wired yet (specialty completion is POST /api/v3/specialty/{id}/complete, a separate, unverified path) --
-      // intercepting here rather than letting a real session run into a 404 at the finish line.
-      showToast('Guided sessions for Specialty Workouts are coming soon. Browse the plan here for now.');
-      return;
-    }
+    // Specialty presets count against the same weekly free workout as a Direction workout (product decision, Oct
+    // 2026) and now run through the real Guided Session, same as any other workout -- just under the 'specialty'
+    // source/kind so the paywall claim and the session screen's API calls hit the right collection.
     track('v3_start_workout_tapped', { direction: w.direction, archetype: w.archetype.id });
     // Start = the activation moment, and the paywall point for workout #2 (utils/v3Session/access.ts). A different
     // workout still in progress is not gated here: the session screen asks Continue / Replace first, and a Replace is
@@ -349,11 +345,11 @@ function V3WorkoutCartScreen() {
     try {
       const active = uid ? (await readSession(uid)).record : null;
       const otherActive = !!active && active.status === 'active' && active.workoutId !== id;
-      if (!otherActive && !(await startGate(id))) {
+      if (!otherActive && !(await startGate(id, isSpecialty ? 'specialty' : 'v3'))) {
         track('v3_start_workout_paywalled', { direction: w.direction, archetype: w.archetype.id, workout_id: id });
         return;
       }
-      router.push({ pathname: V3_SESSION_ROUTE, params: { id } } as any);
+      router.push({ pathname: V3_SESSION_ROUTE, params: isSpecialty ? { id, kind: 'specialty' } : { id } } as any);
     } finally {
       setStarting(false);
     }

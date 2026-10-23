@@ -484,7 +484,11 @@ export default function V3Home() {
   const continueWorkout = () => {
     if (!session) return;
     track('v3_continue_tapped', { workout_id: session.workoutId });
-    router.push({ pathname: '/v3/session', params: { id: session.workoutId, from: 'home' } } as any);
+    // session.direction already carries the runtime-only 'specialty' value when it's a specialty preset (see
+    // isSpecialtyRecord in utils/v3Session/record.ts) -- forward it as `kind` so the session screen fetches/
+    // completes against the right collection if it ever needs a fresh fetch, same as the conflict sheet's Continue.
+    const isSpecialty = (session.direction as string) === 'specialty';
+    router.push({ pathname: '/v3/session', params: isSpecialty ? { id: session.workoutId, from: 'home', kind: 'specialty' } : { id: session.workoutId, from: 'home' } } as any);
   };
 
   const onSelectCard = (slot: RecSlot) => {

@@ -31,6 +31,11 @@ export function localStartAllowed(input: { entitled: boolean; serverClaimed: boo
 
 export const v3StartKey = (workoutId: string) => `v3:${workoutId}`;
 
+/** Same idea as v3StartKey, generalized to source: the server's workout_key() (backend/start_gate.py) already keys a
+ * claim by "<source>:<workout_id>", and per product decision a specialty preset counts against the weekly free
+ * workout exactly like a Direction workout, so it needs its own correctly-prefixed key, not v3's. */
+export const startKey = (workoutId: string, source: 'v3' | 'specialty' = 'v3') => `${source}:${workoutId}`;
+
 export type PostCompletionPlacement = 'none' | 'after_celebration' | 'after_done' | 'next_build' | 'next_start';
 
 /** The one switch for a post-completion paywall. 'none': the paywall is at the START of workout #2 instead (startGate.ts). */

@@ -22,7 +22,7 @@ import { COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import type { V3Workout } from '../../utils/v3Api';
 import { backTarget, currentStep, nextWorkStep } from '../../utils/v3Session/engine';
-import { isLoadLoggable } from '../../utils/v3Session/record';
+import { isLoadLoggable, isSpecialtyRecord } from '../../utils/v3Session/record';
 import { stepView } from '../../utils/v3Session/viewModel';
 import { overall } from '../../utils/v3Session/coach';
 import { overviewModel } from '../../utils/v3Session/overview';
@@ -44,9 +44,9 @@ const HOME = '/(tabs)';
 function V3GuidedSessionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { id, from } = useLocalSearchParams<{ id?: string; from?: string }>();
+  const { id, from, kind } = useLocalSearchParams<{ id?: string; from?: string; kind?: string }>();
   const { user, token } = useAuth();
-  const g = useGuidedSession(user?.id ?? null, token ?? null, id ?? null, from ?? null);
+  const g = useGuidedSession(user?.id ?? null, token ?? null, id ?? null, from ?? null, kind === 'specialty' ? 'specialty' : 'v3');
   const [exitOpen, setExitOpen] = useState(false);
   const [confirmEnd, setConfirmEnd] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
@@ -136,7 +136,7 @@ function V3GuidedSessionScreen() {
           bottomInset={insets.bottom}
           onClose={() => router.back()}
           options={[
-            { label: 'Continue', tone: 'primary', testID: 'v3-conflict-continue', onPress: () => router.replace({ pathname: '/v3/session', params: { id: active.workoutId, from: 'conflict' } } as any) },
+            { label: 'Continue', tone: 'primary', testID: 'v3-conflict-continue', onPress: () => router.replace({ pathname: '/v3/session', params: isSpecialtyRecord(active) ? { id: active.workoutId, from: 'conflict', kind: 'specialty' } : { id: active.workoutId, from: 'conflict' } } as any) },
             { label: 'End it and start this workout', tone: 'plain', testID: 'v3-conflict-replace', onPress: () => g.endActiveAndStart() },
             { label: 'Cancel', tone: 'plain', onPress: () => router.back() },
           ]}

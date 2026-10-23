@@ -10,7 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { currentFreePeriodKey, useSubscription } from '../../contexts/SubscriptionContext';
 import type { PaywallTrigger } from '../../contexts/SubscriptionContext';
 import { tryBeginWorkoutSession } from '../workoutStartGate';
-import { localStartAllowed, v3StartKey } from './access';
+import { localStartAllowed, startKey } from './access';
 
 // This week's free workout as last seen on this device: "<ISO week>|v3:<workout_id>". A key from an earlier week is stale.
 const KEY = (uid: string) => `@mood_week_free_workout_v1:${uid}`;
@@ -38,13 +38,17 @@ export interface V3StartGateInput {
   /** Last entitlement read says the free first workout is already claimed. */
   serverClaimed: boolean;
   openPaywall: (trigger?: PaywallTrigger) => void;
+  /** Which kind of workout is starting. Defaults to 'v3' (the original Directions); a specialty preset counts
+   * against the same weekly free workout, just under its own key prefix (backend/start_gate.py workout_key()). */
+  source?: 'v3' | 'specialty';
 }
 
 export async function gateV3WorkoutStart(input: V3StartGateInput): Promise<boolean> {
-  const key = v3StartKey(input.workoutId);
+  const source = input.source ?? 'v3';
+  const key = startKey(input.workoutId, source);
   const claimedKey = await readLocalFirstWorkoutKey(input.uid);
   const localOk = localStartAllowed({ entitled: input.entitled, serverClaimed: input.serverClaimed, claimedKey, key });
-  const ok = await tryBeginWorkoutSession(localOk, input.openPaywall, input.token, { workoutId: input.workoutId, source: 'v3' });
+  const ok = await tryBeginWorkoutSession(localOk, input.openPaywall, input.token, { workoutId: input.workoutId, source });
   // Mirror the server claim locally (used only when a later check cannot reach the server). Entitled starts are claimed
   // server-side too, but a subscriber never needs the offline fallback.
   if (ok && !input.entitled && claimedKey !== key) await rememberFirstWorkoutKey(input.uid, key);
@@ -55,17 +59,17 @@ export async function gateV3WorkoutStart(input: V3StartGateInput): Promise<boole
  * Hook form for screens: `const gate = useV3StartGate(); if (!(await gate(workoutId))) return;`
  * Reads entitlement through refs, so a callback captured early still sees a purchase made a moment ago.
  */
-export function useV3StartGate(): (workoutId: string) => Promise<boolean> {
+export function useV3StartGate(): (workoutId: string, source?: 'v3' | 'specialty') => Promise<boolean> {
   const { user, token, entitlement, refreshEntitlement } = useAuth();
   const { hasActiveAccess, openPaywall } = useSubscription();
   const live = useRef({ user, token, entitlement, refreshEntitlement, hasActiveAccess, openPaywall });
   live.current = { user, token, entitlement, refreshEntitlement, hasActiveAccess, openPaywall };
-  return useCallback(async (workoutId: string) => {
+  return useCallback(async (workoutId: string, source: 'v3' | 'specialty' = 'v3') => {
     const l = live.current;
     if (!l.user?.id) return true; // guests never reach V3 (it needs an account); nothing to gate
     const serverClaimed = !l.hasActiveAccess && (l.entitlement?.first_workout_claimed === true || l.entitlement?.free_workouts_remaining === 0);
     const ok = await gateV3WorkoutStart({
-      uid: l.user.id, token: l.token, workoutId, entitled: l.hasActiveAccess, serverClaimed, openPaywall: l.openPaywall,
+      uid: l.user.id, token: l.token, workoutId, entitled: l.hasActiveAccess, serverClaimed, openPaywall: l.openPaywall, source,
     });
     // keep "free workouts remaining" in sync after this week's claim
     if (ok && !l.hasActiveAccess && !serverClaimed) l.refreshEntitlement().catch(() => undefined);

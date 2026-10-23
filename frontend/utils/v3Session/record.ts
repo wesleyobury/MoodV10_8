@@ -100,6 +100,16 @@ export interface SessionRecord {
   endReason: 'ended_early' | 'expired' | 'replaced' | null;
 }
 
+/**
+ * True when this record's workout is a Specialty preset, not a Direction workout. Runtime-only distinction: V3Direction's
+ * TS type intentionally does NOT include 'specialty' (engines/specialty/render.py sends the literal string 'specialty'
+ * for `workout.direction`, which is reused here as-is -- see utils/v3Api.ts's comment on V3SpecialtyFlavor), so this
+ * reads the field as the wider string it actually is at runtime, rather than widening V3Direction everywhere it's used.
+ */
+export function isSpecialtyRecord(r: Pick<SessionRecord, 'direction'>): boolean {
+  return (r.direction as string) === 'specialty';
+}
+
 export function newSessionId(now: number, rand: () => number = Math.random): string {
   return `s_${now.toString(36)}_${Math.floor(rand() * 1e9).toString(36)}`;
 }

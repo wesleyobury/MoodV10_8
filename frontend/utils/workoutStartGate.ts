@@ -48,7 +48,7 @@ function recordGrant(token: string | null, workoutId?: string | null): void {
 export interface WorkoutStartOptions {
   /** The specific workout being started. Makes the server gate idempotent per workout. */
   workoutId?: string | null;
-  source?: 'v3';
+  source?: 'v3' | 'specialty';
 }
 
 /**

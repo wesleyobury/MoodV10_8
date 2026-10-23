@@ -7,11 +7,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { V3AfterBody, V3Envelope, afterV3Workout, completeV3Workout, getV3Workout, localDateISO } from '../../../utils/v3Api';
+import {
+  V3AfterBody, V3Envelope, afterSpecialtyWorkout, afterV3Workout, completeSpecialtyWorkout, completeV3Workout, getSpecialtyWorkout, getV3Workout, localDateISO,
+} from '../../../utils/v3Api';
 import { readCachedEnvelope } from '../../../utils/v3Today';
 import { SessionAction, SessionState, canFinish, currentStep, finishFromLast, finishState, hasMainWork, reduce, resolve, stepEndAt, tally } from '../../../utils/v3Session/engine';
 import {
-  AfterIntent, SessionMode, SessionRecord, SetLog, WeightUnit, afterPayload, buildCompletion, endEarly, newRecord, newSessionId, removeLog, restore, shouldSendAfter, timerNotice, upsertLog, withAfter, withState,
+  AfterIntent, SessionMode, SessionRecord, SetLog, WeightUnit, afterPayload, buildCompletion, endEarly, isSpecialtyRecord, newRecord, newSessionId, removeLog, restore, shouldSendAfter, timerNotice, upsertLog, withAfter, withState,
 } from '../../../utils/v3Session/record';
 import { readPreferredMode, readSession, readWeightUnit, updateSession, writePreferredMode, writeSession, writeWeightUnit } from '../../../utils/v3Session/store';
 import { structureKey } from '../../../utils/v3Session/coach';
@@ -33,11 +35,20 @@ export type ScreenMode =
   | { kind: 'player' }
   | { kind: 'complete' };
 
-export function syncDeps() {
-  return { update: updateSession, send: completeV3Workout, now: () => Date.now() };
+/** `source` selects which completion endpoint a sync actually hits; callers derive it from the record (isSpecialtyRecord)
+ * rather than threading a separate flag, since the record is always what's being synced. */
+export function syncDeps(source: 'v3' | 'specialty' = 'v3') {
+  return { update: updateSession, send: source === 'specialty' ? completeSpecialtyWorkout : completeV3Workout, now: () => Date.now() };
 }
 
-export function useGuidedSession(uid: string | null, token: string | null, workoutId: string | null, from: string | null) {
+/**
+ * `kind` disambiguates ONLY the one case where there's nothing yet to introspect: a fresh session with no stored
+ * record and no cached envelope, which must fetch the workout from the right collection (getV3Workout vs
+ * getSpecialtyWorkout) before a SessionRecord -- and thus a `direction` -- exists. Every other branch (resume,
+ * sync, after) already has a record or envelope in hand and reads isSpecialtyRecord(...) off it directly, so a
+ * stale or missing `kind` route param never desyncs an in-progress or finished session.
+ */
+export function useGuidedSession(uid: string | null, token: string | null, workoutId: string | null, from: string | null, kind: 'v3' | 'specialty' = 'v3') {
   const [mode, setMode] = useState<ScreenMode>({ kind: 'loading' });
   const [record, setRecord] = useState<SessionRecord | null>(null);
   const [plan, setPlan] = useState<SessionPlan | null>(null);
@@ -128,9 +139,12 @@ export function useGuidedSession(uid: string | null, token: string | null, worko
   const startFresh = useCallback(
     async (env: V3Envelope) => {
       if (!uid) return;
+      // The envelope itself already says which family this is (w.direction === 'specialty', see isSpecialtyRecord) --
+      // read it from there rather than from `kind`, so a start is correct even if the caller's route param were wrong.
+      const src: 'v3' | 'specialty' = isSpecialtyRecord({ direction: env.workout!.direction }) ? 'specialty' : 'v3';
       // A FRESH session is a start (resume / relaunch never reaches here). The Cart already gated this workout, so this
       // is normally a cached grant; it matters for starts that skip the Cart (Replace on the conflict sheet, deep links).
-      if (!(await startGate(env.workout!.workout_id!))) { setMode({ kind: 'error', message: START_BLOCKED_MESSAGE }); return; }
+      if (!(await startGate(env.workout!.workout_id!, src))) { setMode({ kind: 'error', message: START_BLOCKED_MESSAGE }); return; }
       const t = Date.now();
       const preferred = uid ? await readPreferredMode(uid) : 'guided';
       const { record: r, plan: p, state: s } = newRecord(env, t, localDateISO(), newSessionId(t), preferred);
@@ -142,7 +156,7 @@ export function useGuidedSession(uid: string | null, token: string | null, worko
         workout_id: r.workoutId, session_id: r.sessionId, direction: w.direction, archetype: w.archetype?.id, version: w.version, mode: preferred,
         estimated_minutes: w.duration?.estimated_minutes, work_steps: p.workSteps, blocks: w.blocks.length,
       });
-      trackSession(token, 'workout_started', { source: 'v3', v3_workout_id: r.workoutId, direction: w.direction, difficulty: w.experience, workout_name: w.archetype?.name });
+      trackSession(token, 'workout_started', { source: src, v3_workout_id: r.workoutId, direction: w.direction, difficulty: w.experience, workout_name: w.archetype?.name });
     },
     [uid, token, persist, startGate],
   );
@@ -176,7 +190,9 @@ export function useGuidedSession(uid: string | null, token: string | null, worko
     }
     let env = await readCachedEnvelope(uid, workoutId);
     if (!env?.workout && token) {
-      const res = await getV3Workout(token, workoutId);
+      // No stored record and no cached envelope yet: there's nothing to introspect a direction from, so this is the
+      // one spot that genuinely needs the caller's `kind` hint to pick the right collection to fetch from.
+      const res = kind === 'specialty' ? await getSpecialtyWorkout(token, workoutId) : await getV3Workout(token, workoutId);
       if (res.ok) env = res.envelope;
     }
     if (!env?.workout) {
@@ -184,7 +200,7 @@ export function useGuidedSession(uid: string | null, token: string | null, worko
       return;
     }
     await startFresh(env);
-  }, [uid, workoutId, token, from, resume, startFresh]);
+  }, [uid, workoutId, token, from, kind, resume, startFresh]);
 
   useEffect(() => {
     load();
@@ -311,7 +327,8 @@ export function useGuidedSession(uid: string | null, token: string | null, worko
   const runSync = useCallback(async (trigger: 'timer' | 'foreground' | 'home' | 'screen') => {
     if (!uid || !token) return;
     setSyncing(true);
-    const out = await syncCompletion(uid, token, trigger, syncDeps());
+    const src: 'v3' | 'specialty' = rec.current && isSpecialtyRecord(rec.current) ? 'specialty' : 'v3';
+    const out = await syncCompletion(uid, token, trigger, syncDeps(src));
     setSyncing(false);
     if (out.kind === 'synced') { rec.current = out.record; setRecord(out.record); }
     else if (out.kind === 'failed') {
@@ -398,7 +415,7 @@ export function useGuidedSession(uid: string | null, token: string | null, worko
     const r = rec.current;
     if (!shouldSendAfter(r, Date.now(), trigger)) return;
     const body = afterPayload(r!.after!) as V3AfterBody;
-    const res = await afterV3Workout(token, r!.workoutId, body);
+    const res = isSpecialtyRecord(r!) ? await afterSpecialtyWorkout(token, r!.workoutId, body) : await afterV3Workout(token, r!.workoutId, body);
     const saved = await updateSession(uid, (cur) => {
       if (!cur || !cur.after || cur.sessionId !== r!.sessionId) return cur;
       const t = Date.now();
