@@ -105,10 +105,12 @@ export function cartHeader(w: V3Workout): CartHeader {
 
 /* ------------------------------------------------------------------ blocks */
 
-const ROLE_LABEL: Record<V3Direction, Record<string, string>> = {
+const ROLE_LABEL: Record<V3Direction | 'specialty', Record<string, string>> = {
   strength: { main: 'Main Lift', secondary: 'Secondary', target: 'Target', accessory: 'Accessory', finisher: 'Finisher' },
   sweat: { primary: 'Primary', complement: 'Complement', finisher: 'Finisher' },
   athletic: { primer: 'Primer', primary: 'Primary', secondary: 'Secondary', strength: 'Athletic Strength', support: 'Support', finisher: 'Finisher' },
+  // Specialty blocks reuse Strength's own type vocabulary -- see engines/specialty/blueprints.py.
+  specialty: { main: 'Main Lift', secondary: 'Secondary', accessory: 'Accessory', finisher: 'Finisher' },
 };
 
 /**
@@ -471,10 +473,13 @@ export interface ScanBlock {
   terms: TermId[];
 }
 
-const MAIN_TYPES: Record<V3Direction, Set<string>> = {
+const MAIN_TYPES: Record<V3Direction | 'specialty', Set<string>> = {
   strength: new Set(['main']),
   sweat: new Set(['primary']),
   athletic: new Set(['primary', 'strength']),
+  // Specialty blocks reuse Strength's own type vocabulary (main/secondary/accessory/finisher)
+  // -- see backend/mood_v3/engines/specialty/blueprints.py.
+  specialty: new Set(['main']),
 };
 
 function secs(s: number): string {
@@ -541,7 +546,7 @@ export function cartScan(w: V3Workout): ScanBlock[] {
       sublabel,
       structure: b.structure,
       // Athletic: the Power phase is the session's centre of gravity; Primer and Athletic Strength read as its lead-in and support
-      emphasis: w.direction === 'athletic' && b.phase ? (b.phase === 'power' ? 'main' : 'secondary') : MAIN_TYPES[w.direction].has(b.type) ? 'main' : 'secondary',
+      emphasis: w.direction === 'athletic' && b.phase ? (b.phase === 'power' ? 'main' : 'secondary') : (MAIN_TYPES[w.direction as V3Direction | 'specialty'] ?? MAIN_TYPES.strength).has(b.type) ? 'main' : 'secondary',
       grouped,
       rows,
       terms: termsIn(structure ?? '', grouped ? 'superset' : ''),
@@ -563,10 +568,11 @@ export interface ScanSection {
   blocks: ScanBlock[];
 }
 
-const PHASE: Record<V3Direction, Record<string, string>> = {
+const PHASE: Record<V3Direction | 'specialty', Record<string, string>> = {
   strength: { main: 'Primary', secondary: 'Secondary', accessory: 'Accessories', finisher: 'Finisher' },
   sweat: { primary: 'Primary', complement: 'Complement', finisher: 'Finisher' },
   athletic: { primary: 'Primary', secondary: 'Secondary', repeats: 'Secondary', strength: 'Strength', support: 'Support', finisher: 'Finisher' },
+  specialty: { main: 'Primary', secondary: 'Secondary', accessory: 'Accessories', finisher: 'Finisher' },
 };
 
 function phaseOf(w: V3Workout, b: V3Block): string {
