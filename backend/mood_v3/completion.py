@@ -63,13 +63,18 @@ async def _claim(col, workout_id: str, name: str) -> bool:
 REPAIR_AFTER_SEC = 30
 
 
-async def run_effects(db, workout_id: str, user_id: str, hooks: Optional[CompletionHooks], *, repair_only: bool = False) -> dict:
+async def run_effects(db, workout_id: str, user_id: str, hooks: Optional[CompletionHooks], *, repair_only: bool = False,
+                      col=None, source: str = 'v3') -> dict:
     """Run every completion side effect that has not run yet. Returns what this call did (for tests / logs).
-    repair_only: called from a duplicate request; skip while the winning request may still be running its effects."""
+    repair_only: called from a duplicate request; skip while the winning request may still be running its effects.
+    col: the workout's own collection (defaults to db.v3_workouts for the original V3 Directions). source: tag
+    stored on the user_workouts row and the workout_completed event's metadata.source -- e.g. 'specialty' for
+    the Specialty Generator, so the two keep real provenance without inventing a second effects implementation."""
     did = {'user_workout': False, 'counters': False, 'event': False, 'free_workout_consumed': False}
     if hooks is None:
         return did
-    col = db.v3_workouts
+    if col is None:
+        col = db.v3_workouts
     doc = await col.find_one({'_id': workout_id})
     if not doc or doc.get('status') != 'completed' or doc.get('effects_done'):
         return did
@@ -83,7 +88,7 @@ async def run_effects(db, workout_id: str, user_id: str, hooks: Optional[Complet
     # user_workouts row (idempotent upsert)
     try:
         row = {
-            'user_id': user_id, 'workout_id': workout_id, 'v3_workout_id': workout_id, 'source': 'v3',
+            'user_id': user_id, 'workout_id': workout_id, 'v3_workout_id': workout_id, 'source': source,
             'completed_at': completed_at, 'created_at': _now(), 'duration_actual': doc.get('duration_actual'),
             'direction': w.get('direction'), 'archetype': (w.get('archetype') or {}).get('id'),
         }
@@ -113,7 +118,7 @@ async def run_effects(db, workout_id: str, user_id: str, hooks: Optional[Complet
         did['event'] = True
         items = [it for b in (w.get('blocks') or []) for it in (b.get('items') or [])]
         md = {
-            'source': 'v3', 'v3_workout_id': workout_id, 'direction': w.get('direction'), 'archetype': (w.get('archetype') or {}).get('id'),
+            'source': source, 'v3_workout_id': workout_id, 'direction': w.get('direction'), 'archetype': (w.get('archetype') or {}).get('id'),
             'difficulty': w.get('experience'), 'states': list(w.get('states') or []),
             'duration_minutes': doc.get('duration_actual'), 'exercises_completed': len({it.get('exercise', {}).get('id') for it in items}),
             'completed_steps': doc.get('completed_steps'), 'total_steps': doc.get('total_steps'),
@@ -159,9 +164,11 @@ async def streak_summary(user_id: str, hooks: Optional[CompletionHooks]) -> Opti
         return None
 
 
-async def complete_workout(db, workout_id: str, user_id: str, body, hooks: Optional[CompletionHooks], entries_from_performance) -> dict:
-    """The /complete handler body. `_load` (ownership + 404/403) has already run."""
-    col = db.v3_workouts
+async def complete_workout(db, workout_id: str, user_id: str, body, hooks: Optional[CompletionHooks], entries_from_performance,
+                           *, col=None, source: str = 'v3') -> dict:
+    """The /complete handler body. `_load` (ownership + 404/403) has already run. col/source: see run_effects()."""
+    if col is None:
+        col = db.v3_workouts
     doc = await col.find_one({'_id': workout_id})
     w = doc['envelope']['workout']
     # Guided Session sends item_id + exercise_id. If the slot now holds a different exercise (the workout was swapped after the
@@ -182,7 +189,7 @@ async def complete_workout(db, workout_id: str, user_id: str, body, hooks: Optio
         'local_date': body.local_date, 'client_session_id': body.client_session_id,
     }
     won = await col.find_one_and_update({'_id': workout_id, 'user_id': user_id, 'status': {'$ne': 'completed'}}, {'$set': fields})
-    await run_effects(db, workout_id, user_id, hooks, repair_only=won is None)
+    await run_effects(db, workout_id, user_id, hooks, repair_only=won is None, col=col, source=source)
     cur = await col.find_one({'_id': workout_id})
     out = {
         'status': 'completed' if won is not None else 'already_completed',
@@ -204,13 +211,16 @@ _AFTER_ROW = {'calories': 'calories_burned', 'avg_heart_rate': 'avg_heart_rate',
               'hrv_sdnn': 'session_hrv_sdnn', 'duration_actual': 'duration_actual', 'mood_after': 'mood_after'}
 
 
-async def apply_after(db, workout_id: str, user_id: str, fields: dict) -> dict:
-    """Idempotent $set of post-workout additions on the completed V3 workout and its user_workouts row. Never estimates."""
+async def apply_after(db, workout_id: str, user_id: str, fields: dict, *, col=None) -> dict:
+    """Idempotent $set of post-workout additions on the completed workout and its user_workouts row. Never estimates.
+    col: the workout's own collection (defaults to db.v3_workouts)."""
+    if col is None:
+        col = db.v3_workouts
     v3 = {k: v for k, v in fields.items() if k in _AFTER_V3}
     if not v3:
         return {'status': 'unchanged', 'workout_id': workout_id}
     now = _now()
-    await db.v3_workouts.update_one({'_id': workout_id, 'user_id': user_id, 'status': 'completed'}, {'$set': {**{f'after.{k}': v for k, v in v3.items()}, 'after.updated_at': now, 'updated_at': now,
+    await col.update_one({'_id': workout_id, 'user_id': user_id, 'status': 'completed'}, {'$set': {**{f'after.{k}': v for k, v in v3.items()}, 'after.updated_at': now, 'updated_at': now,
                                                                                                           **({'fit_rating': v3['fit_rating']} if 'fit_rating' in v3 else {}),
                                                                                                           **({'mood_after': v3['mood_after']} if 'mood_after' in v3 else {}),
                                                                                                           **({'duration_actual': v3['duration_actual']} if 'duration_actual' in v3 else {})}})

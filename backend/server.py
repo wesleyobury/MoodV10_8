@@ -15796,7 +15796,7 @@ _v3_completion_hooks = V3CompletionHooks(
 )
 api_router.include_router(build_v3_router(db, get_current_user, _v3_completion_hooks))
 # MOOD V3 Specialty Workout Generator: /api/v3/specialty/* (18 presets, independent generator, reuses the shared v3 schema)
-api_router.include_router(build_specialty_router(db, get_current_user))
+api_router.include_router(build_specialty_router(db, get_current_user, _v3_completion_hooks))
 # MOOD V3 Explore + Profile: GET /api/v3/explore, GET /api/v3/me/activity (EXPLORE_SYNTHETIC=off|labeled|realistic)
 api_router.include_router(build_explore_router(db, get_current_user))
 # MOOD V3: GET/PUT /api/users/me/training-profile (users.training_profile)

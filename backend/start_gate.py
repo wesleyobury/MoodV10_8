@@ -39,15 +39,23 @@ def workout_key(workout_id: str | None, source: str | None) -> str | None:
     return f"{src}:{wid}"
 
 
+# Which Mongo collection stores a claimed workout's completion status, keyed by the workout_key() prefix
+# (workout_key() already makes the WRITE side collection-agnostic -- see gate_workout_start -- this is the
+# one place that still needs to know where to READ a given source's workout back from).
+_SOURCE_COLLECTION = {"v3": "v3_workouts", "specialty": "specialty_workouts"}
+
+
 async def _claimed_completed(db, user_id: str, claim: dict | None) -> bool:
-    """True when the claimed first workout is a V3 workout that was completed."""
+    """True when the claimed first workout (any known source) was completed."""
     if not claim:
         return False
     key = str(claim.get("key") or "")
-    if not key.startswith("v3:"):
+    src, _, wid = key.partition(":")
+    coll_name = _SOURCE_COLLECTION.get(src)
+    if not coll_name or not wid:
         return False
     try:
-        doc = await db.v3_workouts.find_one({"_id": key[3:], "user_id": user_id}, {"status": 1})
+        doc = await getattr(db, coll_name).find_one({"_id": wid, "user_id": user_id}, {"status": 1})
     except Exception:
         return False
     return bool(doc and doc.get("status") == "completed")

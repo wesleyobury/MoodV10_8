@@ -10,11 +10,21 @@ POST /api/v3/specialty/generate                 generate a specialty workout
 GET  /api/v3/specialty/{id}                     latest envelope
 POST /api/v3/specialty/{id}/swap-exercise       {"exercise_id": "..."} -> new envelope, or 409 no_alternative
 POST /api/v3/specialty/{id}/swap-complex        {"block_index": N} -> swap an assembled-complex block
-POST /api/v3/specialty/{id}/complete            {"performance": [...]} -- minimal completion record (history only;
-                                                 does not call the Strength/Sweat/Athletic completion_hooks)
+POST /api/v3/specialty/{id}/complete            {"performance": [...], "fit_rating", "duration_actual", ...} -- same
+                                                 shape/contract as POST /api/v3/workouts/{id}/complete (mood_v3.completion.
+                                                 complete_workout, reused here with col=db.specialty_workouts and
+                                                 source='specialty'): records performance, runs the SAME completion_hooks
+                                                 as the Strength/Sweat/Athletic Directions (user_workouts row, workouts_
+                                                 count + weekly free-workout allowance, canonical workout_completed event
+                                                 for streaks/achievements) -- per product decision, a specialty workout
+                                                 counts the same as a Direction workout.
+POST /api/v3/specialty/{id}/after               post-workout additions on a completed specialty workout: fit rating,
+                                                 real metrics (mood_v3.completion.apply_after, same contract as
+                                                 POST /api/v3/workouts/{id}/after).
 
 Collection: db.specialty_workouts (separate from db.v3_workouts -- no shared document shape, no risk of touching the
-frozen Directions' stored history).
+frozen Directions' own stored history). completion.py's effects/after helpers are shared, generic code (outside
+engines/strength|sweat|athletic/), parametrized by collection + source tag -- reusing them is not a frozen-engine edit.
 """
 from __future__ import annotations
 import datetime as _dt, logging, uuid as _uuid
@@ -23,7 +33,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field, ConfigDict
 
 from .engines.specialty import blueprints as BP, adapter as SPA, render as SR, catalog as CAT
-from .router import attach_media, MEDIA, _utc_iso
+from .router import attach_media, MEDIA, _utc_iso, AfterBody, ItemLog
+from .completion import complete_workout, apply_after
+from .progression import entries_from_performance
 
 log = logging.getLogger('mood_v3.specialty')
 
@@ -48,12 +60,26 @@ class SwapComplexBody(BaseModel):
 
 
 class SpecialtyCompleteBody(BaseModel):
+    """Same shape as mood_v3.router.CompleteBody (the Direction completion body) -- kept as its own class (not an
+    import) only because specialty's Guided Session wiring is new and this makes its exact accepted shape explicit
+    at the point a client reads this router, same values and types otherwise."""
     model_config = ConfigDict(extra='forbid')
+    performance: list[ItemLog] = Field(default_factory=list)
     fit_rating: Optional[Literal['too_easy', 'just_right', 'too_much']] = None
+    mood_after: Optional[str] = None
     duration_actual: Optional[int] = None
+    started_at: Optional[str] = None
+    completed_steps: Optional[int] = None
+    total_steps: Optional[int] = None
+    local_date: Optional[str] = None
+    client_session_id: Optional[str] = Field(default=None, max_length=80)
 
 
-def build_specialty_router(db, get_current_user):
+def build_specialty_router(db, get_current_user, completion_hooks=None):
+    """completion_hooks: mood_v3.completion.CompletionHooks from server.py -- the SAME instance passed to
+    build_v3_router, reused here so a specialty completion runs identical side effects (counters, weekly free-
+    workout allowance, workout_completed event) to a Direction completion. Without hooks (tests, older mounts)
+    /complete only records the completion itself, same fallback as build_v3_router."""
     r = APIRouter(prefix='/v3/specialty', tags=['v3-specialty'])
     col = db.specialty_workouts
 
@@ -141,10 +167,15 @@ def build_specialty_router(db, get_current_user):
 
     @r.post('/{workout_id}/complete')
     async def complete(workout_id: str, body: SpecialtyCompleteBody, user_id: str = Depends(get_current_user)):
+        await _load(workout_id, user_id)
+        return await complete_workout(db, workout_id, user_id, body, completion_hooks, entries_from_performance,
+                                       col=col, source='specialty')
+
+    @r.post('/{workout_id}/after')
+    async def after(workout_id: str, body: AfterBody, user_id: str = Depends(get_current_user)):
         d = await _load(workout_id, user_id)
-        await col.update_one({'_id': workout_id}, {'$set': dict(
-            status='completed', completed_at=_dt.datetime.now(_dt.timezone.utc),
-            fit_rating=body.fit_rating, duration_actual=body.duration_actual)})
-        return dict(status='ok')
+        if d['status'] != 'completed':
+            raise HTTPException(409, 'Workout is not completed')
+        return await apply_after(db, workout_id, user_id, body.model_dump(exclude_none=True), col=col)
 
     return r

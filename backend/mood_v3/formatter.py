@@ -112,14 +112,17 @@ def rest_contract(block, direction):
         kind, sec, trans = 'emom', None, None
     elif s == 'continuous':
         kind, sec, trans = 'continuous', None, None
-    elif s == 'ladder' and direction == 'sweat':
+    elif s == 'ladder' and direction in ('sweat', 'specialty'):
         kind, sec, trans = 'self_paced', None, None
     else:   # straight, exposure, repeats without an interval, strength ladder / pyramid / finisher: rest after each set
         kind, sec, trans = 'between_sets', None, None
     longest = max([x for x in [sec] + item_rests if x] or [0])
-    full = bool(longest >= FULL_RECOVERY_SEC and (power or direction == 'strength' or kind == 'after_pair' and direction == 'athletic'))
+    # Specialty's rest values are already set correctly per-flavor by engines/specialty/blueprints.py (150s for
+    # Strength, 0s for Complex/Flow, short for Circuit/Density, full for Power/Athletic) -- there is no separate
+    # per-flavor "direction" string here to branch on, so for specialty the actual rest length alone decides.
+    full = bool(longest >= FULL_RECOVERY_SEC and (power or direction in ('strength', 'specialty') or kind == 'after_pair' and direction == 'athletic'))
     return dict(kind=kind, seconds=sec, transition_sec=trans, work_sec=iv.get('work_sec'), recovery_sec=iv.get('recovery_sec'),
-                full_recovery=full, reason=('power' if power else ('heavy' if direction == 'strength' else None)) if full else None)
+                full_recovery=full, reason=('power' if power else ('heavy' if direction in ('strength', 'specialty') else None)) if full else None)
 
 
 def attach_rest_contract(blocks, direction):
