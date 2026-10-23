@@ -389,16 +389,17 @@ function mkSpecialtyWorkout(blocks: any[]): any {
   };
 }
 
-test('Specialty cart sections: one section per block, titled by the block\'s own title -- no Main Lift / Primary / Accessories vocabulary imposed', () => {
+test('Specialty cart sections: one flat list, no block/section headings at all (Wes, Oct 2026 -- "no blocks needed, just list exercises")', () => {
   const w = mkSpecialtyWorkout([
     mkSpecialtyBlock('B1', 'main', 'Main Block', [mkSpecialtyItem('goblet_squat', 'Kettlebell Goblet Squat')]),
     mkSpecialtyBlock('B2', 'accessory', 'Kettlebell Swing to Goblet Squat', [mkSpecialtyItem('kb_swing', 'Two-Hand Kettlebell Swing')]),
   ]);
   const sections = cartSections(w);
-  assert.equal(sections.length, 2, 'one section per block, never merged under a shared phase header');
-  assert.equal(sections[0].title, 'MAIN BLOCK');
-  assert.equal(sections[1].title, 'KETTLEBELL SWING TO GOBLET SQUAT');
-  for (const s of sections) assert.ok(!['PRIMARY', 'SECONDARY', 'ACCESSORIES', 'MAIN LIFT'].includes(s.title), s.title);
+  assert.equal(sections.length, 1, 'every block flows into one section, not one section per block');
+  assert.equal(sections[0].title, '', 'no section heading at all for Specialty');
+  assert.equal(sections[0].blocks.length, 2, 'both blocks still present (their items flow continuously)');
+  for (const b of sections[0].blocks) assert.equal(b.label, '', 'no per-block heading either -- a true flat list');
+  assert.equal(sections[0].exercises, 2);
 });
 
 test('Specialty cart block heading prefers the API\'s own title over the shared Strength vocabulary', () => {

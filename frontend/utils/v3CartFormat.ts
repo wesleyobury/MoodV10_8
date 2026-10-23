@@ -652,15 +652,20 @@ const STRENGTH_ROLE: Record<string, string> = { main: 'Main lift', secondary: 'S
  * forcing it through that vocabulary invents a story the session doesn't have. Here every block is its own section,
  * titled by its own API title (always set by engines/specialty/render.py), with no phase merging and no super-label.
  */
+/**
+ * Specialty: one flat exercise list, no Main Block / Secondary Block / Accessory sectioning (Wes, Oct 2026 --
+ * these are simple 1-3 block sessions that don't need the core generator's role taxonomy). Every block's rows
+ * flow into a single section with no title; each block's own internal label was already stripped to '' below,
+ * so CartBlockView renders no header either -- the rows just divide continuously, like one list. A block's
+ * actual programming (its items' sets/reps/rest, and chain tags on complex/circuit items) is unchanged; only
+ * the section/block HEADINGS are gone.
+ */
 function specialtySections(w: V3Workout): ScanSection[] {
   const scan = cartScan(w);
-  return w.blocks.map((b, i) => {
-    const sb = scan[i];
-    const title = (b.title || sb.label || 'Block').toUpperCase();
-    const block: ScanBlock = { ...sb, label: '', sublabel: null };
-    return { key: `${title}-${b.block_id}`, title, muscles: topMuscles([b]), exercises: b.items.length,
-             minutes: b.est_minutes ?? null, emphasis: sb.emphasis, blocks: [block] };
-  });
+  const blocks: ScanBlock[] = w.blocks.map((b, i) => ({ ...scan[i], label: '', sublabel: null }));
+  const exercises = w.blocks.reduce((n, b) => n + b.items.length, 0);
+  const minutes = w.blocks.reduce<number | null>((sum, b) => (sum != null && b.est_minutes != null ? sum + b.est_minutes : sum ?? b.est_minutes ?? null), null);
+  return [{ key: 'specialty-flat', title: '', muscles: null, exercises, minutes, emphasis: 'main', blocks }];
 }
 
 export function cartSections(w: V3Workout): ScanSection[] {
