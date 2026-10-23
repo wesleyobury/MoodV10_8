@@ -1,0 +1,435 @@
+{
+  "mapping": {
+    "sp_single_arm_kettlebell_strict_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_012103_42025d08-d01f-4544-b589-48b85131fcd9.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782003/mood/v3/exercises_specialty/sp_single_arm_kettlebell_strict_press.png",
+      "name": "Single-Arm Kettlebell Strict Press"
+    },
+    "sp_half_kneeling_kettlebell_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_010949_eacbb6d8-2e5d-4f5b-927f-e465da06a0d4.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782005/mood/v3/exercises_specialty/sp_half_kneeling_kettlebell_press.png",
+      "name": "Half-Kneeling Kettlebell Press"
+    },
+    "sp_kettlebell_floor_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_010925_553bdb24-88ac-41de-b437-e233023ae12b.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782006/mood/v3/exercises_specialty/sp_kettlebell_floor_press.png",
+      "name": "Kettlebell Floor Press"
+    },
+    "sp_kettlebell_bent_over_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_010925_8e6568a9-3a34-4361-a269-e99a17d1ea9a.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782009/mood/v3/exercises_specialty/sp_kettlebell_bent_over_row.png",
+      "name": "Kettlebell Bent-Over Row"
+    },
+    "sp_single_arm_kettlebell_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_010925_a57b4ecd-4116-48a7-8d8f-117bce142ffd.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782009/mood/v3/exercises_specialty/sp_single_arm_kettlebell_row.png",
+      "name": "Single-Arm Kettlebell Row"
+    },
+    "sp_kettlebell_renegade_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_010926_2910f8d7-9ce4-402e-a572-2850b3c49e23.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782012/mood/v3/exercises_specialty/sp_kettlebell_renegade_row.png",
+      "name": "Kettlebell Renegade Row"
+    },
+    "sp_kettlebell_goblet_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_040027_98742378-934b-449b-841a-4a6f60a35201.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782014/mood/v3/exercises_specialty/sp_kettlebell_goblet_squat.png",
+      "name": "Kettlebell Goblet Squat"
+    },
+    "sp_kettlebell_sumo_deadlift": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_040827_54040b65-d24c-4a7e-8b87-e448b1df574d.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782015/mood/v3/exercises_specialty/sp_kettlebell_sumo_deadlift.png",
+      "name": "Kettlebell Sumo Deadlift"
+    },
+    "sp_kettlebell_single_leg_rdl": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_040913_6775f8ed-18d3-452f-955b-b7f512baa877.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782017/mood/v3/exercises_specialty/sp_kettlebell_single_leg_rdl.png",
+      "name": "Kettlebell Single-Leg RDL"
+    },
+    "sp_kettlebell_reverse_lunge": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_040028_7076dec3-0752-436f-a12c-c8f7a38a1e4e.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782018/mood/v3/exercises_specialty/sp_kettlebell_reverse_lunge.png",
+      "name": "Kettlebell Reverse Lunge"
+    },
+    "sp_kettlebell_bulgarian_split_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_035925_16030ba9-b937-41a5-a0ac-cb2f816cbf70.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782019/mood/v3/exercises_specialty/sp_kettlebell_bulgarian_split_squat.png",
+      "name": "Kettlebell Bulgarian Split Squat"
+    },
+    "sp_kettlebell_step_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_035926_9f0e05d6-03f7-469d-bad8-801ecd08069f.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782021/mood/v3/exercises_specialty/sp_kettlebell_step_up.png",
+      "name": "Kettlebell Step-Up"
+    },
+    "sp_kettlebell_turkish_get_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_040827_35261336-16b6-4aec-8189-362169fb0717.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782022/mood/v3/exercises_specialty/sp_kettlebell_turkish_get_up.png",
+      "name": "Kettlebell Turkish Get-Up"
+    },
+    "sp_alternating_kettlebell_clean_and_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_040827_1dea0ac1-4d12-45f2-8348-f4ccbb36ab14.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782024/mood/v3/exercises_specialty/sp_alternating_kettlebell_clean_and_press.png",
+      "name": "Alternating Kettlebell Clean and Press"
+    },
+    "sp_kettlebell_thruster": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_041004_2bec95af-edef-44ae-aa40-be5f9dcb0157.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782027/mood/v3/exercises_specialty/sp_kettlebell_thruster.png",
+      "name": "Kettlebell Thruster"
+    },
+    "sp_two_hand_kettlebell_swing": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_040913_98261bbb-13d9-4785-817f-25d6612825cf.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782029/mood/v3/exercises_specialty/sp_two_hand_kettlebell_swing.png",
+      "name": "Two-Hand Kettlebell Swing"
+    },
+    "sp_single_arm_kettlebell_swing": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_040913_02fe46bf-6189-43dc-b090-f55e68e3c21c.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782031/mood/v3/exercises_specialty/sp_single_arm_kettlebell_swing.png",
+      "name": "Single-Arm Kettlebell Swing"
+    },
+    "sp_kettlebell_clean_to_front_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_041004_8c07e6ff-d7c3-47ca-a43b-e0c5893ca2e5.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782033/mood/v3/exercises_specialty/sp_kettlebell_clean_to_front_squat.png",
+      "name": "Kettlebell Clean to Front Squat"
+    },
+    "sp_half_kneeling_landmine_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_041632_3b1d67de-5eec-4a96-a783-d7a78d76c2fe.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782035/mood/v3/exercises_specialty/sp_half_kneeling_landmine_press.png",
+      "name": "Half-Kneeling Landmine Press"
+    },
+    "sp_landmine_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_043956_264be4fb-8133-4bb0-81a0-63a09decbe68.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782037/mood/v3/exercises_specialty/sp_landmine_row.png",
+      "name": "Landmine Row"
+    },
+    "sp_single_arm_landmine_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_043955_9e253205-c56b-4cea-a2f2-aa4f1a815800.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782038/mood/v3/exercises_specialty/sp_single_arm_landmine_row.png",
+      "name": "Single-Arm Landmine Row"
+    },
+    "sp_landmine_floor_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_043956_65525c13-3a83-4f86-b2a9-55a00327754e.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782040/mood/v3/exercises_specialty/sp_landmine_floor_press.png",
+      "name": "Landmine Floor Press"
+    },
+    "sp_landmine_front_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_012103_290524e4-2548-476d-900a-eb7b34af1bd8.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782042/mood/v3/exercises_specialty/sp_landmine_front_squat.png",
+      "name": "Landmine Front Squat"
+    },
+    "sp_landmine_reverse_lunge": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_011054_1d7222a4-c5f3-49b2-86e1-8360efe89ad2.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782044/mood/v3/exercises_specialty/sp_landmine_reverse_lunge.png",
+      "name": "Landmine Reverse Lunge"
+    },
+    "sp_landmine_romanian_deadlift": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_011125_ab3fb720-ecbf-418d-b630-1f7442416d00.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782045/mood/v3/exercises_specialty/sp_landmine_romanian_deadlift.png",
+      "name": "Landmine Romanian Deadlift"
+    },
+    "sp_landmine_split_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_012104_e68426f6-ee19-468c-ad35-c3ee5affe171.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782046/mood/v3/exercises_specialty/sp_landmine_split_squat.png",
+      "name": "Landmine Split Squat"
+    },
+    "sp_landmine_step_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_012103_6d8ef7dc-bbb4-4dcf-b6ec-e5e3dc82b9c4.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782048/mood/v3/exercises_specialty/sp_landmine_step_up.png",
+      "name": "Landmine Step-Up"
+    },
+    "sp_landmine_deadlift_to_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_175108_203eb995-e700-4c2c-ae59-8cbbf7d8a7a0.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782048/mood/v3/exercises_specialty/sp_landmine_deadlift_to_row.png",
+      "name": "Landmine Deadlift to Row"
+    },
+    "sp_landmine_clean_to_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_175108_ac865a43-45fd-473a-a338-e084a5b3b6ea.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782050/mood/v3/exercises_specialty/sp_landmine_clean_to_squat.png",
+      "name": "Landmine Clean to Squat"
+    },
+    "sp_landmine_thruster": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_175108_67d6df8e-a097-424c-8861-049ce65efe30.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782052/mood/v3/exercises_specialty/sp_landmine_thruster.png",
+      "name": "Landmine Thruster"
+    },
+    "sp_landmine_squat_to_rotational_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_175108_93f3f9c8-6d5f-4ad8-9423-160385814231.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782053/mood/v3/exercises_specialty/sp_landmine_squat_to_rotational_press.png",
+      "name": "Landmine Squat to Rotational Press"
+    },
+    "sp_landmine_rotational_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_043955_b31f12df-babc-4865-9d31-9c4118f1147b.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782054/mood/v3/exercises_specialty/sp_landmine_rotational_press.png",
+      "name": "Landmine Rotational Press"
+    },
+    "sp_seated_barbell_overhead_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_051702_3fe19ed3-dcc5-4505-8335-a4b9a0484df8.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782056/mood/v3/exercises_specialty/sp_seated_barbell_overhead_press.png",
+      "name": "Seated Barbell Overhead Press"
+    },
+    "sp_barbell_bent_over_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_052531_16185d76-fac2-4793-93c2-0f9ca67ebd89.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782057/mood/v3/exercises_specialty/sp_barbell_bent_over_row.png",
+      "name": "Barbell Bent-Over Row"
+    },
+    "sp_barbell_floor_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_052621_3fff5edc-534f-4809-b644-9e87d69c9e21.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782058/mood/v3/exercises_specialty/sp_barbell_floor_press.png",
+      "name": "Barbell Floor Press"
+    },
+    "sp_incline_barbell_bench_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_051702_82a75087-3cf8-4c8c-aa61-c5c6ef329ed4.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782059/mood/v3/exercises_specialty/sp_incline_barbell_bench_press.png",
+      "name": "Incline Barbell Bench Press"
+    },
+    "sp_barbell_reverse_lunge": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_053110_23c77630-6bc6-4db9-ad2c-3f2d92fc5684.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782060/mood/v3/exercises_specialty/sp_barbell_reverse_lunge.png",
+      "name": "Barbell Reverse Lunge"
+    },
+    "sp_barbell_bulgarian_split_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_053110_27ac652a-5a92-44ba-a1b5-ed02b8938d70.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782062/mood/v3/exercises_specialty/sp_barbell_bulgarian_split_squat.png",
+      "name": "Barbell Bulgarian Split Squat"
+    },
+    "sp_barbell_stiff_leg_deadlift": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_053110_65a5d4b5-5eec-445e-aa1f-0571deb6b514.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782063/mood/v3/exercises_specialty/sp_barbell_stiff_leg_deadlift.png",
+      "name": "Barbell Stiff-Leg Deadlift"
+    },
+    "sp_barbell_step_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_053109_db114ea2-4fd2-418c-915f-3ae438a41c46.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782065/mood/v3/exercises_specialty/sp_barbell_step_up.png",
+      "name": "Barbell Step-Up"
+    },
+    "sp_power_clean": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_053603_6437e09e-74bb-4d0a-be78-24d29d4de231.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782067/mood/v3/exercises_specialty/sp_power_clean.png",
+      "name": "Power Clean"
+    },
+    "sp_hang_clean": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_053603_ec087c6f-6f4f-4429-900f-ad16d570604e.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782068/mood/v3/exercises_specialty/sp_hang_clean.png",
+      "name": "Hang Clean"
+    },
+    "sp_barbell_clean_and_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_053602_6e3da767-93ad-4921-b376-23886b5916ca.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782070/mood/v3/exercises_specialty/sp_barbell_clean_and_press.png",
+      "name": "Barbell Clean and Press"
+    },
+    "sp_barbell_front_squat_to_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_053625_33531319-4600-4842-8af9-a157e613bea1.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782071/mood/v3/exercises_specialty/sp_barbell_front_squat_to_press.png",
+      "name": "Barbell Front Squat to Press"
+    },
+    "sp_barbell_deadlift_to_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_053603_aa635bf8-4def-4438-a9a5-84037a7bde34.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782073/mood/v3/exercises_specialty/sp_barbell_deadlift_to_row.png",
+      "name": "Barbell Deadlift to Row"
+    },
+    "sp_standing_dumbbell_shoulder_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_060745_9d70e147-d605-4a3a-9ff3-887879c32080.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782074/mood/v3/exercises_specialty/sp_standing_dumbbell_shoulder_press.png",
+      "name": "Standing Dumbbell Shoulder Press"
+    },
+    "sp_single_arm_dumbbell_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_060745_6af188f1-acc1-4547-ac9c-b7800019fa7a.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782076/mood/v3/exercises_specialty/sp_single_arm_dumbbell_press.png",
+      "name": "Single-Arm Dumbbell Press"
+    },
+    "sp_alternating_dumbbell_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_062031_31ec4ffa-5bd4-49a3-b9b6-c7c10e38e207.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782078/mood/v3/exercises_specialty/sp_alternating_dumbbell_row.png",
+      "name": "Alternating Dumbbell Row"
+    },
+    "sp_flat_dumbbell_bench_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_062118_ccf4bd87-e731-46c3-bb26-ada9b0262482.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782079/mood/v3/exercises_specialty/sp_flat_dumbbell_bench_press.png",
+      "name": "Flat Dumbbell Bench Press"
+    },
+    "sp_single_arm_bench_supported_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_060746_fe5a95b6-8f85-458d-b0fc-f3a306a4b11e.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782080/mood/v3/exercises_specialty/sp_single_arm_bench_supported_row.png",
+      "name": "Single-Arm Bench-Supported Row"
+    },
+    "sp_dumbbell_reverse_lunge": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_062633_b67d3061-a9a8-45bb-9e34-921a714efcc7.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782082/mood/v3/exercises_specialty/sp_dumbbell_reverse_lunge.png",
+      "name": "Dumbbell Reverse Lunge"
+    },
+    "sp_dumbbell_bulgarian_split_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_062632_95e950c9-94bb-4751-9c3a-352d91e7bc6b.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782083/mood/v3/exercises_specialty/sp_dumbbell_bulgarian_split_squat.png",
+      "name": "Dumbbell Bulgarian Split Squat"
+    },
+    "sp_dumbbell_single_leg_rdl": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_062633_a57a0688-6b98-4143-9001-8307542b667e.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782085/mood/v3/exercises_specialty/sp_dumbbell_single_leg_rdl.png",
+      "name": "Dumbbell Single-Leg RDL"
+    },
+    "sp_dumbbell_sumo_deadlift": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_062633_2186d65a-98b7-4abd-a04a-5845f12e12fb.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782085/mood/v3/exercises_specialty/sp_dumbbell_sumo_deadlift.png",
+      "name": "Dumbbell Sumo Deadlift"
+    },
+    "sp_dumbbell_lateral_step_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_062654_673383a5-86c6-49e5-ae4a-4165acef35c4.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782087/mood/v3/exercises_specialty/sp_dumbbell_lateral_step_up.png",
+      "name": "Dumbbell Lateral Step-Up"
+    },
+    "sp_dumbbell_renegade_row": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_063723_4402452c-45b9-4566-96d4-f426500aa65e.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782088/mood/v3/exercises_specialty/sp_dumbbell_renegade_row.png",
+      "name": "Dumbbell Renegade Row"
+    },
+    "sp_dumbbell_man_maker": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_063701_4ec7b392-c45e-42af-a631-957cfca727e1.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782090/mood/v3/exercises_specialty/sp_dumbbell_man_maker.png",
+      "name": "Dumbbell Man Maker"
+    },
+    "sp_dumbbell_hang_clean": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_064502_b9f0e764-77e4-40d5-abaa-1d0d2995fb47.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782092/mood/v3/exercises_specialty/sp_dumbbell_hang_clean.png",
+      "name": "Dumbbell Hang Clean"
+    },
+    "sp_alternating_dumbbell_snatch": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_063724_07e6907c-92ec-441f-893a-76372203174d.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782093/mood/v3/exercises_specialty/sp_alternating_dumbbell_snatch.png",
+      "name": "Alternating Dumbbell Snatch"
+    },
+    "sp_dumbbell_reverse_lunge_to_press": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_064215_a6e852c1-8379-4b30-8cf1-244ab80a7603.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782094/mood/v3/exercises_specialty/sp_dumbbell_reverse_lunge_to_press.png",
+      "name": "Dumbbell Reverse Lunge to Press"
+    },
+    "sp_dumbbell_clean_to_front_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_064215_a991c6d3-6ca6-4506-b3a4-5b565e5794c6.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782097/mood/v3/exercises_specialty/sp_dumbbell_clean_to_front_squat.png",
+      "name": "Dumbbell Clean to Front Squat"
+    },
+    "sp_standard_push_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071316_8a8e9e5e-74a2-4397-9046-35634f76b886.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782099/mood/v3/exercises_specialty/sp_standard_push_up.png",
+      "name": "Standard Push-Up"
+    },
+    "sp_incline_bench_push_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_065320_a8dbef87-0300-497c-9148-c59fa98d6dc2.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782100/mood/v3/exercises_specialty/sp_incline_bench_push_up.png",
+      "name": "Incline Bench Push-Up"
+    },
+    "sp_decline_bench_push_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_065245_6a09c44b-a2cc-4146-9064-db36a630fd3a.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782101/mood/v3/exercises_specialty/sp_decline_bench_push_up.png",
+      "name": "Decline Bench Push-Up"
+    },
+    "sp_pike_push_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071316_c4754f02-f06d-4a2c-b480-14500e556059.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782102/mood/v3/exercises_specialty/sp_pike_push_up.png",
+      "name": "Pike Push-Up"
+    },
+    "sp_hand_release_push_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_065244_a2c69c8e-9d0e-4e94-8132-ea077c35c480.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782104/mood/v3/exercises_specialty/sp_hand_release_push_up.png",
+      "name": "Hand-Release Push-Up"
+    },
+    "sp_bodyweight_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071247_8244c384-b830-4e9b-adc2-9e6e6aeefd3b.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782104/mood/v3/exercises_specialty/sp_bodyweight_squat.png",
+      "name": "Bodyweight Squat"
+    },
+    "sp_split_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_065738_c91ec64d-9e79-4e21-8693-371eae619f5e.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782106/mood/v3/exercises_specialty/sp_split_squat.png",
+      "name": "Split Squat"
+    },
+    "sp_bench_step_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071246_9e4965e7-e796-4c23-9f0f-632a3881e45c.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782107/mood/v3/exercises_specialty/sp_bench_step_up.png",
+      "name": "Bench Step-Up"
+    },
+    "sp_single_leg_rdl": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_065556_473ff28d-f3b8-4e0c-8566-8da17c07e181.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782109/mood/v3/exercises_specialty/sp_single_leg_rdl.png",
+      "name": "Single-Leg RDL"
+    },
+    "sp_assisted_pistol_squat_bench": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_065453_097d2123-da8e-40db-b474-de66613f5c13.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782110/mood/v3/exercises_specialty/sp_assisted_pistol_squat_bench.png",
+      "name": "Assisted Pistol Squat (bench)"
+    },
+    "sp_feet_elevated_glute_bridge_bench": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_065453_6da43f8b-452d-4d5e-9f20-f39f7b3492bb.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782112/mood/v3/exercises_specialty/sp_feet_elevated_glute_bridge_bench.png",
+      "name": "Feet-Elevated Glute Bridge (bench)"
+    },
+    "sp_bear_crawl": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071541_006fb83c-e23d-4f3a-9ccd-58f63dfdd595.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782113/mood/v3/exercises_specialty/sp_bear_crawl.png",
+      "name": "Bear Crawl"
+    },
+    "sp_squat_thrust": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_070716_361bd19a-ce39-49ab-84be-5fa6855e314c.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782114/mood/v3/exercises_specialty/sp_squat_thrust.png",
+      "name": "Squat Thrust"
+    },
+    "sp_inchworm_to_push_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_070716_1ae287f9-55c7-4ea8-a9dd-461b1db7fd15.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782115/mood/v3/exercises_specialty/sp_inchworm_to_push_up.png",
+      "name": "Inchworm to Push-Up"
+    },
+    "sp_wide_grip_pull_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071247_d99286d4-4111-4df8-ba42-3913ad78686d.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782117/mood/v3/exercises_specialty/sp_wide_grip_pull_up.png",
+      "name": "Wide-Grip Pull-Up"
+    },
+    "sp_archer_push_up": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071316_5ef4bd6b-9600-4337-9199-cd7ad750ccf8.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782118/mood/v3/exercises_specialty/sp_archer_push_up.png",
+      "name": "Archer Push-Up"
+    },
+    "sp_bench_triceps_dip": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261022_011053_c4f3153d-7b04-4742-bd0c-f17290a48d20.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782119/mood/v3/exercises_specialty/sp_bench_triceps_dip.png",
+      "name": "Bench Triceps Dip"
+    },
+    "sp_cossack_squat": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071316_0a82bbd0-7aac-4277-beba-92ce4b6b8a5a.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782121/mood/v3/exercises_specialty/sp_cossack_squat.png",
+      "name": "Cossack Squat"
+    },
+    "sp_bench_elevated_glute_bridge": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071247_3f47fe66-ee57-47a4-8626-aa609de29235.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782121/mood/v3/exercises_specialty/sp_bench_elevated_glute_bridge.png",
+      "name": "Bench-Elevated Glute Bridge"
+    },
+    "sp_bench_single_leg_sit_to_stand": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071424_7f878c05-407e-43c0-9d95-212349587a5c.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782296/mood/v3/exercises_specialty/sp_bench_single_leg_sit_to_stand.png",
+      "name": "Bench Single-Leg Sit-to-Stand"
+    },
+    "sp_pull_up_to_knee_raise": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071423_c53bee92-500f-4c0e-b526-d40e382c39f8.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782298/mood/v3/exercises_specialty/sp_pull_up_to_knee_raise.png",
+      "name": "Pull-Up to Knee Raise"
+    },
+    "sp_bench_step_up_to_knee_drive": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071423_a1790a4b-1ff3-460f-ac6b-c6470c5b3434.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782298/mood/v3/exercises_specialty/sp_bench_step_up_to_knee_drive.png",
+      "name": "Bench Step-Up to Knee Drive"
+    },
+    "sp_broad_jump": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071514_ff2b78cf-b172-4f6b-84ba-9958a2766753.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782300/mood/v3/exercises_specialty/sp_broad_jump.png",
+      "name": "Broad Jump"
+    },
+    "sp_bounding": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071424_d9d44a1d-701c-4858-a34f-39220ba20b2f.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782301/mood/v3/exercises_specialty/sp_bounding.png",
+      "name": "Bounding"
+    },
+    "sp_shuttle_run": {
+      "old_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FS08NDvOnniU88xskYvPiIVl2E/hf_20261018_071541_22d4fa63-bfcd-466e-971c-ae3f698c4985.png",
+      "new_url": "https://res.cloudinary.com/dfsygar5c/image/upload/v1792782302/mood/v3/exercises_specialty/sp_shuttle_run.png",
+      "name": "Shuttle Run"
+    }
+  },
+  "failures": []
+}
