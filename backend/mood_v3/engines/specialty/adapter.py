@@ -18,6 +18,22 @@ from . import blueprints as BP
 
 UPPER = AE.UPPER
 LOWER = AE.LOWER
+
+# Same-movement pairs across the production pool and the specialty catalog (one named production
+# exercise and one named specialty-catalog exercise that are the same lift under a different
+# name/id -- e.g. the catalog's "Bench Triceps Dip" and production's "Bench Dip"). Kept as two
+# distinct catalog/pool entries (deleting either would thin an equipment's swap pool -- see
+# test_swap_preserves_equipment_role_and_flavor), but never selected into the SAME generated
+# session together: once either side is picked, the other is excluded from that session's pool
+# for the rest of generation, the same way used_ids already blocks re-picking one exercise twice.
+ALIAS_EXCLUDE_PAIRS = {
+    'bench_dip': {'sp_bench_triceps_dip'},
+    'sp_bench_triceps_dip': {'bench_dip'},
+}
+
+
+def _exclude_aliases(used_ids, picked_id):
+    used_ids.update(ALIAS_EXCLUDE_PAIRS.get(picked_id, ()))
 SKILL_RANK = {'beginner': 0, 'intermediate': 1, 'advanced': 2}
 
 
@@ -168,6 +184,7 @@ def _build_block(bspec, pool, used_ids, rng, *, complexes=(), block_index=0, dos
                 rec = CAT.SPECIALTY_EXERCISES.get(ref)
                 rec = _as_pool_record_specialty(rec) if rec else _as_pool_record(AE.EX[ref.replace('sp_', '')])
             used_ids.add(rec['id'])
+            _exclude_aliases(used_ids, rec['id'])
             items.append(_item_raw(rec, reps=step['reps'], rest_sec=0, swappable=False, chain_pos=i))
         return dict(items_raw=items, structure='circuit', log=log, used_complex=c['id'])
 
@@ -177,6 +194,7 @@ def _build_block(bspec, pool, used_ids, rng, *, complexes=(), block_index=0, dos
         if ex is None: continue
         if ex.get('anchor_exclusive'): has_anchor_exclusive_in_block = True
         used_ids.add(ex['id'])
+        _exclude_aliases(used_ids, ex['id'])
         sets = bspec.get('sets'); reps = bspec.get('reps')
         if reps is None:
             reps = '3' if bspec.get('low_rep') else ('6' if ex['role'] in ('anchor', 'primary') else '10')
@@ -364,6 +382,7 @@ def swap_complex(nctx, res, complex_block_index, excluded=frozenset()):
         else:
             rec = _as_pool_record_specialty(CAT.SPECIALTY_EXERCISES[ref])
         used_ids.add(rec['id'])
+        _exclude_aliases(used_ids, rec['id'])
         items.append(_item_raw(rec, reps=step['reps'], rest_sec=0, swappable=False, chain_pos=i))
     res2['blocks_raw'][complex_block_index] = dict(block, items_raw=items, used_complex=new_c['id'])
     res2['log'] = list(res.get('log', [])) + [dict(reason_code='complex_swapped', from_=cur_id, to=new_c['id'])]
