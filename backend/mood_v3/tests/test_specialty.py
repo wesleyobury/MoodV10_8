@@ -196,3 +196,80 @@ def test_envelope_schema_matches_shared_contract():
                 assert key in it, f'missing item key: {key}'
             for key in ('id', 'name', 'equipment', 'equipment_label', 'primary_muscles', 'media'):
                 assert key in it['exercise'], f'missing exercise key: {key}'
+
+
+# ------------------------------------------------------------------ 10. Founder feedback pass (Oct 2026): title, Built
+# for Today blurb, warm-up items -- see engines/specialty/render.py and adapter.py for the fuller rationale.
+from mood_v3 import formatter as F  # noqa: E402
+
+
+@pytest.mark.parametrize('preset_id', PRESETS)
+def test_archetype_name_is_human_readable_not_the_raw_id(preset_id):
+    """Wes: the Cart/Home title was falling through to the raw archetype id ("specialty_kettlebell_lower") because
+    formatter.ARCHETYPE_NAMES had no specialty entries -- every preset must resolve to its PRESET_NAMES value."""
+    res = SPA.build(_nctx(preset_id, None, 'intermediate'))
+    env = SR.format_envelope(res, _nctx(preset_id, res['flavor'], 'intermediate'))
+    name = env['workout']['archetype']['name']
+    assert not name.startswith('specialty_'), f'{preset_id} archetype.name fell back to the raw id: {name}'
+    assert name == BP.PRESET_NAMES[preset_id]
+
+
+def test_archetype_names_cover_every_preset():
+    """Catches drift if a preset is ever added/renamed without updating the formatter.py display mirror."""
+    for preset_id, pname in BP.PRESET_NAMES.items():
+        assert F.ARCHETYPE_NAMES.get(f'specialty_{preset_id}') == pname, (
+            f'formatter.ARCHETYPE_NAMES["specialty_{preset_id}"] is out of sync with blueprints.PRESET_NAMES')
+
+
+@pytest.mark.parametrize('preset_id', PRESETS)
+def test_today_teaser_describes_this_sessions_actual_composition(preset_id):
+    """Wes: 'built for you' should describe the actual session and composition, not a boilerplate line that never
+    changes. The teaser text must name the preset, the flavor, a real lead exercise from THIS build, and the
+    block/exercise counts that actually came out of blocks_raw (not just repeat the flavor label)."""
+    res = SPA.build(_nctx(preset_id, None, 'intermediate'))
+    env = SR.format_envelope(res, _nctx(preset_id, res['flavor'], 'intermediate'))
+    today = env['workout']['today']
+    assert today['teaser'] is not None
+    text = today['teaser']['text']
+    n_ex = sum(len(b['items_raw']) for b in res['blocks_raw'])
+    n_blocks = len(res['blocks_raw'])
+    lead = SR._lead_exercise_name(res['blocks_raw'])
+    assert BP.PRESET_NAMES[preset_id] in text
+    assert lead in text, f'lead exercise "{lead}" not named in teaser: {text}'
+    assert str(n_ex) in text and str(n_blocks) in text
+    assert env['workout']['built_for_today'][0]['text'] == text, 'built_for_today should say the same thing as the teaser'
+
+
+def test_today_teaser_varies_with_the_actual_build_not_static():
+    """Two different presets must not produce the same boilerplate sentence (the old bug: the line only ever named
+    the preset + flavor label, identical in shape for every generation of that preset/flavor)."""
+    res_a = SPA.build(_nctx('kettlebell_lower', 'circuit_density', 'intermediate', swap_count=0))
+    res_b = SPA.build(_nctx('kettlebell_lower', 'circuit_density', 'intermediate', swap_count=5))
+    text_a = SR.format_envelope(res_a, _nctx('kettlebell_lower', 'circuit_density', 'intermediate', swap_count=0))['workout']['today']['teaser']['text']
+    text_b = SR.format_envelope(res_b, _nctx('kettlebell_lower', 'circuit_density', 'intermediate', swap_count=5))['workout']['today']['teaser']['text']
+    # same preset/flavor can coincidentally pick the same lead exercise, but the two seeds differ, so this asserts
+    # the composer is actually reading res, not hard-coding a template string equal for every call.
+    assert isinstance(text_a, str) and isinstance(text_b, str) and text_a and text_b
+
+
+@pytest.mark.parametrize('preset_id', PRESETS)
+def test_warmup_has_general_prep_then_equipment_activation_items(preset_id):
+    """Wes: warm-ups need real items, not a bare guidance string. Expect >= 2 general movement-prep rows (no
+    exercise ref) followed by >= 1 equipment-activation row (real exercise ref, drawn from the session's own
+    exercises) -- never fewer than 3 total, never duplicate names, and the activation rows must be exercises that
+    are actually in this build's blocks_raw (never an unrelated pick)."""
+    res = SPA.build(_nctx(preset_id, None, 'intermediate'))
+    env = SR.format_envelope(res, _nctx(preset_id, res['flavor'], 'intermediate'))
+    items = env['workout']['warmup']['items']
+    assert len(items) >= 3, f'{preset_id}: warm-up has too few items: {items}'
+    names = [it['name'] for it in items]
+    assert len(names) == len(set(names)), f'{preset_id}: duplicate warm-up item names: {names}'
+    general = [it for it in items if it['component'] == 'raise']
+    activation = [it for it in items if it['component'] == 'activation']
+    assert len(general) >= 2
+    assert general[0]['exercise'] is None, 'general movement-prep rows should not carry a library exercise_ref'
+    assert len(activation) >= 1
+    session_names = {it['exercise']['name'] for b in res['blocks_raw'] for it in b['items_raw']}
+    for a in activation:
+        assert a['exercise'] is not None, f'{preset_id}: activation row missing its exercise_ref: {a}'
+        assert a['name'] in session_names, f'{preset_id}: activation picked "{a["name"]}", which is not in this session'

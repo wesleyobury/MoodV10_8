@@ -187,6 +187,45 @@ def _build_block(bspec, pool, used_ids, rng, *, complexes=(), block_index=0, dos
     return dict(items_raw=items, structure=structure, log=log, used_complex=None)
 
 
+# ------------------------------------------------------------------ warm-up (general movement prep -> equipment-specific activation)
+# Wes (Oct 2026, feedback #4): the warm-up shipped as a bare guidance string with zero items -- nothing to check off
+# in Guided Session. Specialty has no warmup.raise/prep/primer library (that pool belongs to engines/athletic/
+# athletic_gen.py, and is athletic-specific); this builds from the same equipment pool the rest of the generator
+# already draws from instead: general, equipment-agnostic movement prep first, then 1-2 light-load reps of the
+# session's own equipment at the lowest skill/complexity available, across distinct movement patterns -- a real
+# activation set, never a repeat of the working session.
+GENERAL_WARMUP = [
+    dict(name='Jumping Jacks', note='30 s, easy pace'),
+    dict(name='Arm Circles', note='30 s each direction'),
+    dict(name='Bodyweight Squat', note='10 reps, easy pace'),
+    dict(name='Walking Lunge', note='8 / side'),
+]
+
+
+def _general_warmup(target):
+    """Always a heart-rate raiser, then one mobility move matched to where the session will load: a squat-pattern
+    opener for Lower/Full Body targets, a shoulder opener for Upper Body."""
+    return [GENERAL_WARMUP[0], GENERAL_WARMUP[2] if target in ('lower', 'full') else GENERAL_WARMUP[1]]
+
+
+def _activation_warmup(blocks_raw, exclude_names=()):
+    """1-2 light reps of movements the session is ABOUT to use -- the earliest-appearing exercises in build order,
+    by distinct movement pattern, so the warm-up rehearses what's coming next instead of a random equipment-matched
+    pick from exercises the session never touches. `exclude_names` keeps it from repeating a general-prep pick
+    (e.g. Bodyweight Squat chosen as both the general mobility move and the session's own main lift)."""
+    seen_pat = set(); picks = []
+    for b in blocks_raw:
+        for it in b['items_raw']:
+            e = it['exercise']
+            if e['name'] in exclude_names: continue
+            pat = e.get('pat')   # only specialty-catalog records carry 'pat'; a production record is never skipped for a dupe pattern
+            if pat and pat in seen_pat: continue
+            if pat: seen_pat.add(pat)
+            picks.append(e)
+            if len(picks) == 2: return picks
+    return picks
+
+
 def build(nctx, history_records=(), swap_count=0):
     preset_id = nctx['preset_id']; flavor = nctx.get('flavor')
     if preset_id not in BP.PRESETS:
@@ -223,9 +262,13 @@ def build(nctx, history_records=(), swap_count=0):
     if not blocks_raw:
         raise Conflict('generation_failed', f'Specialty generator produced no blocks for "{preset_id}" / "{flavor}".')
     est = sum(_estimate_block_minutes(b) for b in blocks_raw)
+    eq_label = BP.EQUIPMENT_PROFILES[BP.PRESETS[preset_id]['equipment']]['label']
+    general_raw = _general_warmup(BP.PRESETS[preset_id]['target'])
+    warmup = dict(minutes=6, general_raw=general_raw,
+                  activation_raw=_activation_warmup(blocks_raw, exclude_names={g['name'] for g in general_raw}),
+                  guidance=f'5-6 min: general movement prep, then light {eq_label.lower()} activation before working weight.')
     return dict(preset_id=preset_id, flavor=flavor, blocks_raw=blocks_raw, estimated_minutes=est, log=log,
-                archetype=f'specialty_{preset_id}', target_muscles=[], warmup=dict(minutes=6, items=[],
-                guidance='5-6 min: easy movement prep for ' + BP.EQUIPMENT_PROFILES[BP.PRESETS[preset_id]["equipment"]]["label"] + '.'),
+                archetype=f'specialty_{preset_id}', target_muscles=[], warmup=warmup,
                 history_record=dict(direction='specialty', archetype=f'specialty_{preset_id}',
                                      exercise_ids=sorted(used_ids), preset_id=preset_id, flavor=flavor))
 

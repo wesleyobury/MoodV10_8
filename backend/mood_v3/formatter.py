@@ -19,6 +19,16 @@ ARCHETYPE_NAMES = {
     'strength_custom_target': 'Custom Target',
     'sweat_engine': 'Engine', 'sweat_circuit': 'Circuit', 'sweat_hybrid': 'Hybrid',
     'athletic_power': 'Power', 'athletic_speed_agility': 'Speed + Plyo', 'athletic_full_body': 'Full-Body Athlete',
+    # Specialty (additive, Oct 2026): display mirror of engines/specialty/blueprints.PRESET_NAMES. Kept as a literal
+    # copy rather than imported -- specialty already imports this module (formatter.py), so importing back would
+    # cycle. Wes: the Cart/Home title was falling through to the raw archetype id ("specialty_kettlebell_lower")
+    # because this dict had no entries for it; keep the two lists in sync by hand if a preset name changes.
+    'specialty_barbell_full': 'Full Body Barbell', 'specialty_barbell_upper': 'Barbell Upper Body', 'specialty_barbell_lower': 'Barbell Leg Day',
+    'specialty_kettlebell_full': 'Full Body Kettlebells', 'specialty_kettlebell_upper': 'Kettlebell Upper Body', 'specialty_kettlebell_lower': 'Kettlebell Leg Day',
+    'specialty_dumbbells_full': 'Full Body Dumbbells', 'specialty_dumbbells_upper': 'Dumbbell Upper Body', 'specialty_dumbbells_lower': 'Dumbbell Leg Day',
+    'specialty_landmine_full': 'Full Body Landmine', 'specialty_landmine_upper': 'Landmine Upper Body', 'specialty_landmine_lower': 'Landmine Leg Day',
+    'specialty_bodyweight_full': 'Full Body Bodyweight', 'specialty_bodyweight_upper': 'Bodyweight Upper Body', 'specialty_bodyweight_lower': 'Bodyweight Leg Day',
+    'specialty_park_full': 'Park Full Body', 'specialty_park_upper': 'Park Upper Body', 'specialty_park_lower': 'Park Leg Day',
 }
 MUSCLE_NAMES = {'chest': 'Chest', 'back': 'Back', 'shoulders': 'Shoulders', 'biceps': 'Biceps', 'triceps': 'Triceps', 'forearms': 'Forearms',
                 'quads': 'Quads', 'hamstrings': 'Hamstrings', 'glutes': 'Glutes', 'calves': 'Calves', 'hip_adductors': 'Adductors',
