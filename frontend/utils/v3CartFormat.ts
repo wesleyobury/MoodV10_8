@@ -109,8 +109,11 @@ const ROLE_LABEL: Record<V3Direction | 'specialty', Record<string, string>> = {
   strength: { main: 'Main Lift', secondary: 'Secondary', target: 'Target', accessory: 'Accessory', finisher: 'Finisher' },
   sweat: { primary: 'Primary', complement: 'Complement', finisher: 'Finisher' },
   athletic: { primer: 'Primer', primary: 'Primary', secondary: 'Secondary', strength: 'Athletic Strength', support: 'Support', finisher: 'Finisher' },
-  // Specialty blocks reuse Strength's own type vocabulary -- see engines/specialty/blueprints.py.
-  specialty: { main: 'Main Lift', secondary: 'Secondary', accessory: 'Accessory', finisher: 'Finisher' },
+  // Specialty blocks reuse Strength's own type vocabulary for the TYPE field (see engines/specialty/blueprints.py),
+  // but this fallback is rarely hit in practice: cartBlocks() below prefers the block's own API title for specialty
+  // (render.py always sets one -- "Main Block", or the assembled complex's name), since most specialty sessions are
+  // 1-3 blocks with no real Main Lift / Accessory split (Wes, Oct 2026 feedback #6).
+  specialty: { main: 'Main Block', secondary: 'Secondary Block', accessory: 'Accessory', finisher: 'Finisher' },
 };
 
 /**
@@ -185,7 +188,13 @@ export function cartBlocks(w: V3Workout): CartBlock[] {
   let letter = 0;
   const isHybrid = w.archetype.id === 'sweat_hybrid';
   return w.blocks.map((b, idx) => {
-    const heading = ROLE_LABEL[w.direction]?.[b.type] ?? (b.title || prettyMuscle(b.type));
+    // Specialty: the API's own block title (set per-block by engines/specialty/render.py -- "Main Block", or an
+    // assembled complex's real name like "Kettlebell Swing to Goblet Squat") is more specific than the shared
+    // Main Lift / Secondary / Accessory vocabulary, and is what most specialty sessions actually need (they're
+    // rarely more than 1-3 blocks). ROLE_LABEL.specialty is only the fallback for the rare block with no title.
+    const heading = (w.direction as V3Direction | 'specialty') === 'specialty'
+      ? (b.title || ROLE_LABEL.specialty[b.type] || prettyMuscle(b.type))
+      : (ROLE_LABEL[w.direction]?.[b.type] ?? (b.title || prettyMuscle(b.type)));
     const structWord = b.structure === 'anchor_circuit' ? (isHybrid ? 'Hybrid' : 'Anchor circuit') : STRUCTURE_LABEL[b.structure] ?? prettyMuscle(b.structure);
     const meta = blockMeta(b, w.direction);
     // Straight sets are the default (rest shows per row); blockMeta already leads with the format for Sweat intervals /
@@ -635,8 +644,28 @@ const STRENGTH_ROLE: Record<string, string> = { main: 'Main lift', secondary: 'S
  * (PRIMARY, SECONDARY, ACCESSORIES, FINISHER for Strength). Inside a section a straight block needs no label of its own; a
  * grouped or clocked block keeps its structure line (SUPERSET · 3 ROUNDS).
  */
+/**
+ * Specialty's own Cart sections (Wes, Oct 2026 feedback #6): "the carts don't need to be structured the same as
+ * the core generator's -- most don't have blocks, target, accessories or primaries." Direction's cartSections groups
+ * consecutive same-phase blocks under a PRIMARY / SECONDARY / ACCESSORIES / FINISHER super-header designed for a
+ * multi-block Strength/Sweat/Athletic session; a specialty session is usually 1-3 blocks with no such split, so
+ * forcing it through that vocabulary invents a story the session doesn't have. Here every block is its own section,
+ * titled by its own API title (always set by engines/specialty/render.py), with no phase merging and no super-label.
+ */
+function specialtySections(w: V3Workout): ScanSection[] {
+  const scan = cartScan(w);
+  return w.blocks.map((b, i) => {
+    const sb = scan[i];
+    const title = (b.title || sb.label || 'Block').toUpperCase();
+    const block: ScanBlock = { ...sb, label: '', sublabel: null };
+    return { key: `${title}-${b.block_id}`, title, muscles: topMuscles([b]), exercises: b.items.length,
+             minutes: b.est_minutes ?? null, emphasis: sb.emphasis, blocks: [block] };
+  });
+}
+
 export function cartSections(w: V3Workout): ScanSection[] {
   if (w.direction === 'strength') return strengthMuscleSections(w);
+  if ((w.direction as V3Direction | 'specialty') === 'specialty') return specialtySections(w);
   const scan = cartScan(w);
   const out: ScanSection[] = [];
   w.blocks.forEach((b, i) => {

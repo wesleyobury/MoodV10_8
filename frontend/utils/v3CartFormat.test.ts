@@ -361,3 +361,55 @@ test('Athletic cart: one sequenced session in phases (Primer -> Power -> Athleti
   assert.equal(secs[2].muscles, null);                                          // "Velocity Strength" is said on the row, not repeated
   assert.deepEqual(secs.flatMap((s) => s.blocks.flatMap((b) => b.rows.map((r) => r.context))), ['PRIMER', null, null, null, 'FOR VELOCITY']);
 });
+
+/* ---------------------------------------------------------------- Specialty cart (Wes, Oct 2026 feedback #2 / #6) */
+// Specialty isn't in V3Direction yet (documented debt -- see app/v3/workout.tsx's `kind === 'specialty'` discriminator),
+// so these fixtures are built loosely and cast at the edge rather than fighting the type that's already known to lag
+// the runtime shape; everything under test here is the plain data cartSections/cartBlocks actually read.
+function mkSpecialtyItem(id: string, name: string): any {
+  return { item_id: `i_${id}`, role: 'primary', exercise: { id, name, media: null },
+    prescription: { kind: 'reps', sets: 3, reps: 8, per_side: false, seconds: null, distance_m: null, calories: null,
+      rest_sec: 90, rir: null, rpe: null, load_guidance: null, display: '3 x 8' },
+    cues: [], quality_stop: null, swap: { swappable: true }, progression: null };
+}
+function mkSpecialtyBlock(block_id: string, type: string, title: string, items: any[]): any {
+  return { block_id, sequence: 1, type, structure: 'straight', title, rounds: null, rest_between_items_sec: null,
+    rest_between_rounds_sec: null, interval: null, effort: null, instructions: null, est_minutes: 8, items,
+    rest: { kind: 'between_sets', seconds: null, transition_sec: null, full_recovery: false } };
+}
+function mkSpecialtyWorkout(blocks: any[]): any {
+  return {
+    workout_id: 'sp_1', version: 1, direction: 'specialty', direction_name: 'Specialty',
+    archetype: { id: 'specialty_kettlebell_lower', name: 'Kettlebell Leg Day' }, requested_archetype: null,
+    target: { mode: 'explicit', muscles: [], label: '' },
+    duration: { requested_minutes: 60, estimated_minutes: 42, display: '~42 min' },
+    experience: 'intermediate', states: [], soreness: { regions: [], muscles: [], trained_anyway: [] },
+    equipment: { preset: 'commercial_gym', label: 'Commercial Gym' }, swap_count: 0, built_for_today: [],
+    warmup: null, blocks, cooldown: null, relaxations: [], adjustments: [],
+  };
+}
+
+test('Specialty cart sections: one section per block, titled by the block\'s own title -- no Main Lift / Primary / Accessories vocabulary imposed', () => {
+  const w = mkSpecialtyWorkout([
+    mkSpecialtyBlock('B1', 'main', 'Main Block', [mkSpecialtyItem('goblet_squat', 'Kettlebell Goblet Squat')]),
+    mkSpecialtyBlock('B2', 'accessory', 'Kettlebell Swing to Goblet Squat', [mkSpecialtyItem('kb_swing', 'Two-Hand Kettlebell Swing')]),
+  ]);
+  const sections = cartSections(w);
+  assert.equal(sections.length, 2, 'one section per block, never merged under a shared phase header');
+  assert.equal(sections[0].title, 'MAIN BLOCK');
+  assert.equal(sections[1].title, 'KETTLEBELL SWING TO GOBLET SQUAT');
+  for (const s of sections) assert.ok(!['PRIMARY', 'SECONDARY', 'ACCESSORIES', 'MAIN LIFT'].includes(s.title), s.title);
+});
+
+test('Specialty cart block heading prefers the API\'s own title over the shared Strength vocabulary', () => {
+  const w = mkSpecialtyWorkout([mkSpecialtyBlock('B1', 'main', 'Main Block', [mkSpecialtyItem('goblet_squat', 'Kettlebell Goblet Squat')])]);
+  const blocks = cartBlocks(w);
+  assert.equal(blocks[0].heading, 'Main Block');
+  assert.notEqual(blocks[0].heading, 'Main Lift', 'specialty should not inherit Strength\'s "Main Lift" label');
+});
+
+test('Specialty cart block heading falls back to ROLE_LABEL.specialty only when the API block has no title', () => {
+  const w = mkSpecialtyWorkout([mkSpecialtyBlock('B1', 'main', '', [mkSpecialtyItem('goblet_squat', 'Kettlebell Goblet Squat')])]);
+  const blocks = cartBlocks(w);
+  assert.equal(blocks[0].heading, 'Main Block');
+});
