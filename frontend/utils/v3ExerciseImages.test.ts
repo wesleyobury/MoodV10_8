@@ -33,12 +33,16 @@ test('library covers every exercise the generator produces (blocks and Athletic 
   assert.ok(ids.size > 200);
 });
 
-test('resolution order: library first, legacy photo second, monogram last; video thumbnails ignored', () => {
+test('resolution order: library first, legacy photo second, server media third (Specialty catalog), monogram last', () => {
   assert.equal(exerciseImageSource({ exercise: { id: 'barbell_back_squat', media: { thumbnail_url: 'https://x/y.jpg' } } }), 'library');
   assert.equal(exerciseImageUrl({ exercise: { id: 'barbell_back_squat', media: null } }), thumbUrl('barbell_back_squat'));
   assert.equal(exerciseImageUrl({ exercise: { id: 'chin_up', media: { thumbnail_url: 'https://x/chin.jpg' } } }), thumbUrl('chin_up'));
-  assert.equal(exerciseImageSource({ exercise: { id: 'no_such_exercise', media: { thumbnail_url: 'https://x/y.jpg' } } }), 'none');
+  // An id in neither static map (every Specialty catalog id, e.g. 'sp_bench_triceps_dip') falls to its server-attached
+  // db.exercises photo rather than the monogram tile -- added Oct 2026, see v3ExerciseImages.ts's exerciseImageUrl doc.
+  assert.equal(exerciseImageUrl({ exercise: { id: 'sp_bench_triceps_dip', media: { thumbnail_url: 'https://x/y.jpg' } } }), 'https://x/y.jpg');
+  assert.equal(exerciseImageSource({ exercise: { id: 'sp_bench_triceps_dip', media: { thumbnail_url: 'https://x/y.jpg' } } }), 'mood');
   assert.equal(exerciseImageUrl({ exercise: { id: 'no_such_exercise', media: null } }), null);
+  assert.equal(exerciseImageSource({ exercise: { id: 'no_such_exercise', media: null } }), 'none');
   assert.equal(exerciseImageUrl({ exercise: null }), null);
 });
 

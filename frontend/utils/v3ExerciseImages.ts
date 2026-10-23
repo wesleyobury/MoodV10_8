@@ -106,13 +106,20 @@ export const V3_EXERCISE_IMAGES: Record<string, string> = {
  *   1. the V3 exercise thumbnail library (utils/v3ExerciseThumbs, one visual theme, keyed by canonical exercise id;
  *      every exercise the generator can produce is covered);
  *   2. the older verified static photo above (kept only as a fallback for an id that ever leaves the library);
- *   3. null: the caller renders its monogram tile. Nothing here ever blocks a workout.
- * Video-library thumbnails (exercise.media.thumbnail_url) are intentionally ignored; video only drives the Watch demo button.
+ *   3. exercise.media.thumbnail_url, the server-attached db.exercises photo -- LOWEST priority, never overrides
+ *      either static map above. Added for the Specialty Generator's catalog (Wes, Oct 2026): those exercises are
+ *      imported straight into db.exercises with a real static photo (see backend/add_specialty_exercises.py --
+ *      video_url is always '' for this import, so this is never a video-library thumbnail), but were never meant
+ *      to be hand-added to the two curated maps above one by one. A Direction exercise always has an entry in (1)
+ *      or (2), so this tier is unreachable for Direction and the "no video thumbnails" policy below is unaffected.
+ *   4. null: the caller renders its monogram tile. Nothing here ever blocks a workout.
+ * Video-DEMO thumbnails (a record whose media came from the video library, not this import) are intentionally
+ * still never used as Cart imagery; video only drives the Watch demo button.
  */
 export function exerciseImageUrl(item: { exercise?: { id?: string; media?: { thumbnail_url?: string | null } | null } | null }): string | null {
   const id = item.exercise?.id;
   if (!id) return null;
-  return thumbUrl(id) ?? V3_EXERCISE_IMAGES[id] ?? null;
+  return thumbUrl(id) ?? V3_EXERCISE_IMAGES[id] ?? item.exercise?.media?.thumbnail_url ?? null;
 }
 
 export function exerciseImageSource(item: Parameters<typeof exerciseImageUrl>[0]): 'library' | 'mood' | 'none' {
