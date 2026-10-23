@@ -15733,64 +15733,6 @@ async def debug_profile_posts_check(
         "profile_pipeline_error": pipeline_error,
     }
 
-
-@api_router.post("/admin/specialty-exercises/import")
-async def admin_import_specialty_exercises(
-    apply: bool = False,
-    rollback: bool = False,
-    current_user_id: str = Depends(require_admin)
-):
-    """
-    Admin-only: import (or roll back) the MOOD V3 Specialty Workout Generator's catalog
-    exercises into db.exercises, using this backend process's own already-configured `db`
-    connection (the real production/staging database when this is called on the deployed
-    app, or the preview database when called here) -- see backend/add_specialty_exercises.py
-    for the full write-up of what/why. Mirrors that script's logic exactly, minus its own
-    standalone Motor client and localhost guard (not needed: this reuses the server's db).
-    Default is a dry run; pass ?apply=true to actually write. Pass ?rollback=true to delete
-    only the documents this import created (source == 'specialty_catalog_import').
-    """
-    from add_specialty_exercises import build_import_records, SOURCE_TAG
-
-    if rollback:
-        existing = await db.exercises.find({"source": SOURCE_TAG}, {"name": 1}).to_list(1000)
-        deleted_count = 0
-        if apply:
-            result = await db.exercises.delete_many({"source": SOURCE_TAG})
-            deleted_count = result.deleted_count
-        return {
-            "mode": "rollback",
-            "applied": apply,
-            "tagged_documents_found": [d["name"] for d in existing],
-            "deleted_count": deleted_count,
-        }
-
-    ready, excluded = build_import_records()
-    inserted_or_would_insert = []
-    skipped_existing = []
-    for rec in ready:
-        existing_doc = await db.exercises.find_one({"name": rec["name"]})
-        if existing_doc:
-            skipped_existing.append(rec["name"])
-            continue
-        if apply:
-            doc = {k: v for k, v in rec.items() if k != "alias_soft_collision"}
-            doc["created_at"] = datetime.now(timezone.utc)
-            doc["imported_at"] = datetime.now(timezone.utc)
-            await db.exercises.insert_one(doc)
-        inserted_or_would_insert.append(rec["name"])
-
-    return {
-        "mode": "import",
-        "applied": apply,
-        "ready_count": len(ready),
-        "inserted_or_would_insert": inserted_or_would_insert,
-        "skipped_existing": skipped_existing,
-        "excluded": excluded,
-        "alias_soft_collisions": [r["name"] for r in ready if r["alias_soft_collision"]],
-        "total_exercises_in_library_after": (await db.exercises.count_documents({})) if apply else None,
-    }
-
 # Workout Drafts (Saved Builds) — guests + authenticated, lifecycle-aware
 api_router.include_router(
     build_workout_drafts_router(db, get_current_user, get_optional_current_user)
