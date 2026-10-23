@@ -38,6 +38,7 @@ import * as Haptics from 'expo-haptics';
 import { exerciseIds, workoutDiff } from '../../utils/v3PreviewFormat';
 import { rerouteNotice } from '../../utils/v3OverviewFormat';
 import { cartExplain, cartHeader, cartSections, exerciseTotal } from '../../utils/v3CartFormat';
+import { titleParts } from '../../utils/v3Specialty';
 import { resolveV3CartHero } from '../../utils/cartHero';
 import { CartSectionView } from '../../components/v3/CartSectionView';
 import { TermChips, TermSheet } from '../../components/v3/TermSheet';
@@ -406,7 +407,16 @@ function V3WorkoutCartScreen() {
                     {header.eyebrow}
                   </Text>
                   <Text style={styles.title} testID="v3-cart-title">
-                    {header.title}
+                    {/* Specialty titles are "<Equipment> Only: <Target> Day" (Wes, Oct 2026); the "<Target> Day"
+                        half renders lighter/secondary, inline on the same title line. */}
+                    {titleParts(header.title).secondary ? (
+                      <>
+                        {titleParts(header.title).primary}{' '}
+                        <Text style={styles.titleSecondary}>{titleParts(header.title).secondary}</Text>
+                      </>
+                    ) : (
+                      header.title
+                    )}
                   </Text>
                   {header.subtitle ? <Text style={styles.subtitle}>{header.subtitle}</Text> : null}
                   <Text style={styles.facts} testID="v3-cart-meta">
@@ -613,6 +623,7 @@ const styles = StyleSheet.create({
   heroText: { position: 'absolute', left: 22, right: 22, bottom: 14 },
   eyebrow: { fontSize: 11.5, fontWeight: '800', letterSpacing: 1.9, color: COLORS.accent },
   title: { fontSize: 36, lineHeight: 41, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: -0.9, marginTop: 6 },
+  titleSecondary: { fontWeight: '400', opacity: 0.68 },
   subtitle: { fontSize: 16, fontWeight: '600', color: 'rgba(255,255,255,0.78)', marginTop: 2 },
   facts: { fontSize: 14, fontWeight: '600', color: 'rgba(255,255,255,0.82)', marginTop: 8 },
 

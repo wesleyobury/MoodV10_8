@@ -22,7 +22,7 @@ import { COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { trackEvent } from '../../utils/analytics';
 import { generateSpecialtyWorkout } from '../../utils/v3Api';
-import { SPECIALTY_EQUIPMENT_ICON, SPECIALTY_EQUIPMENT_LABEL, SPECIALTY_PRESETS } from '../../utils/v3Specialty';
+import { SPECIALTY_EQUIPMENT_ICON, SPECIALTY_EQUIPMENT_LABEL, SPECIALTY_PRESETS, titleParts } from '../../utils/v3Specialty';
 
 const TARGET_LABEL: Record<string, string> = { full: 'Full Body', upper: 'Upper Body', lower: 'Lower Body' };
 
@@ -83,7 +83,14 @@ export function SpecialtyPresetsRow() {
                 {busy ? <ActivityIndicator color={COLORS.textPrimary} /> : <Ionicons name={SPECIALTY_EQUIPMENT_ICON[p.equipment] as any} size={26} color={COLORS.accent} />}
               </View>
               <Text style={styles.cardName} numberOfLines={2}>
-                {p.name}
+                {titleParts(p.name).secondary ? (
+                  <>
+                    {titleParts(p.name).primary}{' '}
+                    <Text style={styles.cardNameSecondary}>{titleParts(p.name).secondary}</Text>
+                  </>
+                ) : (
+                  p.name
+                )}
               </Text>
               <Text style={styles.cardSub} numberOfLines={1}>
                 {SPECIALTY_EQUIPMENT_LABEL[p.equipment]} · {TARGET_LABEL[p.target]}
@@ -116,5 +123,6 @@ const styles = StyleSheet.create({
   },
   iconWrap: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.08)' },
   cardName: { fontSize: 13, fontWeight: '800', color: COLORS.textPrimary, marginTop: 10 },
+  cardNameSecondary: { fontWeight: '500', opacity: 0.7 },
   cardSub: { fontSize: 10, color: 'rgba(255,255,255,0.55)', marginTop: 4 },
 });
