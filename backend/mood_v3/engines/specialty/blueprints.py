@@ -109,13 +109,16 @@ PRESETS = {
     'park_lower': dict(equipment='outdoor_park', target='lower', default='circuit_density',  secondary=['strength', 'power_athletic']),
 }
 
+# "<Equipment> Only: <Target> Day" (Wes, Oct 2026) -- the frontend splits each name on ": " to style the
+# "<Target> Day" half in a secondary font/weight (see v3CartFormat.ts's titleParts()). Keep every name in this
+# exact "X Only: Y Day" shape; a name without ": " renders as one plain string with no secondary styling.
 PRESET_NAMES = {
-    'barbell_full': 'Full Body Barbell', 'barbell_upper': 'Barbell Upper Body', 'barbell_lower': 'Barbell Leg Day',
-    'kettlebell_full': 'Full Body Kettlebells', 'kettlebell_upper': 'Kettlebell Upper Body', 'kettlebell_lower': 'Kettlebell Leg Day',
-    'dumbbells_full': 'Full Body Dumbbells', 'dumbbells_upper': 'Dumbbell Upper Body', 'dumbbells_lower': 'Dumbbell Leg Day',
-    'landmine_full': 'Full Body Landmine', 'landmine_upper': 'Landmine Upper Body', 'landmine_lower': 'Landmine Leg Day',
-    'bodyweight_full': 'Full Body Bodyweight', 'bodyweight_upper': 'Bodyweight Upper Body', 'bodyweight_lower': 'Bodyweight Leg Day',
-    'park_full': 'Park Full Body', 'park_upper': 'Park Upper Body', 'park_lower': 'Park Leg Day',
+    'barbell_full': 'Barbell Only: Full Body Day', 'barbell_upper': 'Barbell Only: Upper Body Day', 'barbell_lower': 'Barbell Only: Leg Day',
+    'kettlebell_full': 'Kettlebell Only: Full Body Day', 'kettlebell_upper': 'Kettlebell Only: Upper Body Day', 'kettlebell_lower': 'Kettlebell Only: Leg Day',
+    'dumbbells_full': 'Dumbbell Only: Full Body Day', 'dumbbells_upper': 'Dumbbell Only: Upper Body Day', 'dumbbells_lower': 'Dumbbell Only: Leg Day',
+    'landmine_full': 'Landmine Only: Full Body Day', 'landmine_upper': 'Landmine Only: Upper Body Day', 'landmine_lower': 'Landmine Only: Leg Day',
+    'bodyweight_full': 'Bodyweight Only: Full Body Day', 'bodyweight_upper': 'Bodyweight Only: Upper Body Day', 'bodyweight_lower': 'Bodyweight Only: Leg Day',
+    'park_full': 'Park Only: Full Body Day', 'park_upper': 'Park Only: Upper Body Day', 'park_lower': 'Park Only: Leg Day',
 }
 
 assert len(PRESETS) == 18, f'expected 18 presets, got {len(PRESETS)}'

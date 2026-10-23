@@ -23,12 +23,14 @@ ARCHETYPE_NAMES = {
     # copy rather than imported -- specialty already imports this module (formatter.py), so importing back would
     # cycle. Wes: the Cart/Home title was falling through to the raw archetype id ("specialty_kettlebell_lower")
     # because this dict had no entries for it; keep the two lists in sync by hand if a preset name changes.
-    'specialty_barbell_full': 'Full Body Barbell', 'specialty_barbell_upper': 'Barbell Upper Body', 'specialty_barbell_lower': 'Barbell Leg Day',
-    'specialty_kettlebell_full': 'Full Body Kettlebells', 'specialty_kettlebell_upper': 'Kettlebell Upper Body', 'specialty_kettlebell_lower': 'Kettlebell Leg Day',
-    'specialty_dumbbells_full': 'Full Body Dumbbells', 'specialty_dumbbells_upper': 'Dumbbell Upper Body', 'specialty_dumbbells_lower': 'Dumbbell Leg Day',
-    'specialty_landmine_full': 'Full Body Landmine', 'specialty_landmine_upper': 'Landmine Upper Body', 'specialty_landmine_lower': 'Landmine Leg Day',
-    'specialty_bodyweight_full': 'Full Body Bodyweight', 'specialty_bodyweight_upper': 'Bodyweight Upper Body', 'specialty_bodyweight_lower': 'Bodyweight Leg Day',
-    'specialty_park_full': 'Park Full Body', 'specialty_park_upper': 'Park Upper Body', 'specialty_park_lower': 'Park Leg Day',
+    # "<Equipment> Only: <Target> Day" (Wes, Oct 2026) -- must exactly match blueprints.PRESET_NAMES above; the
+    # frontend splits on ": " to style "<Target> Day" with a secondary font/weight.
+    'specialty_barbell_full': 'Barbell Only: Full Body Day', 'specialty_barbell_upper': 'Barbell Only: Upper Body Day', 'specialty_barbell_lower': 'Barbell Only: Leg Day',
+    'specialty_kettlebell_full': 'Kettlebell Only: Full Body Day', 'specialty_kettlebell_upper': 'Kettlebell Only: Upper Body Day', 'specialty_kettlebell_lower': 'Kettlebell Only: Leg Day',
+    'specialty_dumbbells_full': 'Dumbbell Only: Full Body Day', 'specialty_dumbbells_upper': 'Dumbbell Only: Upper Body Day', 'specialty_dumbbells_lower': 'Dumbbell Only: Leg Day',
+    'specialty_landmine_full': 'Landmine Only: Full Body Day', 'specialty_landmine_upper': 'Landmine Only: Upper Body Day', 'specialty_landmine_lower': 'Landmine Only: Leg Day',
+    'specialty_bodyweight_full': 'Bodyweight Only: Full Body Day', 'specialty_bodyweight_upper': 'Bodyweight Only: Upper Body Day', 'specialty_bodyweight_lower': 'Bodyweight Only: Leg Day',
+    'specialty_park_full': 'Park Only: Full Body Day', 'specialty_park_upper': 'Park Only: Upper Body Day', 'specialty_park_lower': 'Park Only: Leg Day',
 }
 MUSCLE_NAMES = {'chest': 'Chest', 'back': 'Back', 'shoulders': 'Shoulders', 'biceps': 'Biceps', 'triceps': 'Triceps', 'forearms': 'Forearms',
                 'quads': 'Quads', 'hamstrings': 'Hamstrings', 'glutes': 'Glutes', 'calves': 'Calves', 'hip_adductors': 'Adductors',
