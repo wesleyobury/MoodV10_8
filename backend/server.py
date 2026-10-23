@@ -15733,6 +15733,50 @@ async def debug_profile_posts_check(
         "profile_pipeline_error": pipeline_error,
     }
 
+
+@api_router.post("/admin/specialty-exercises/sync-media")
+async def admin_sync_specialty_exercise_media(
+    apply: bool = False,
+    current_user_id: str = Depends(require_admin)
+):
+    """
+    Admin-only, one-time: update the thumbnail_url of the 86 specialty catalog documents already imported into
+    db.exercises (source == 'specialty_catalog_import') to their new Cloudinary URLs -- see
+    backend/migrate_specialty_thumbnails_to_cloudinary.py and thumbnail_manifest.csv, both already updated.
+    Those 86 live documents still point at the old CloudFront host (d8j0ntlcm91z4.cloudfront.net), which never
+    gets Cloudinary's on-the-fly resize/recompress treatment -- root cause of "Specialty hero loads slowly"
+    (Wes, Oct 2026). This only ever UPDATES thumbnail_url on a document matched by specialty_catalog_id; it
+    never inserts, deletes, or touches any other field. Default is a dry run; pass ?apply=true to write.
+    """
+    from add_specialty_exercises import build_import_records, SOURCE_TAG
+
+    ready, _ = build_import_records()
+    cloudinary_by_id = {r['specialty_catalog_id']: r['thumbnail_url'] for r in ready if 'cloudinary.com' in r['thumbnail_url']}
+
+    would_update, already_current, not_found, updated = [], [], [], []
+    for cat_id, new_url in cloudinary_by_id.items():
+        doc = await db.exercises.find_one({'source': SOURCE_TAG, 'specialty_catalog_id': cat_id})
+        if not doc:
+            not_found.append(cat_id)
+            continue
+        if doc.get('thumbnail_url') == new_url:
+            already_current.append(doc['name'])
+            continue
+        if apply:
+            await db.exercises.update_one({'_id': doc['_id']}, {'$set': {'thumbnail_url': new_url, 'media_synced_at': datetime.now(timezone.utc)}})
+            updated.append(doc['name'])
+        else:
+            would_update.append(doc['name'])
+
+    return {
+        'mode': 'sync-media',
+        'applied': apply,
+        'candidates': len(cloudinary_by_id),
+        'already_current': already_current,
+        'not_found_in_db': not_found,
+        ('updated' if apply else 'would_update'): (updated if apply else would_update),
+    }
+
 # Workout Drafts (Saved Builds) — guests + authenticated, lifecycle-aware
 api_router.include_router(
     build_workout_drafts_router(db, get_current_user, get_optional_current_user)
