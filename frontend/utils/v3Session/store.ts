@@ -8,11 +8,10 @@
  * after a newer one. A stale active record (12 h idle) is turned into `abandoned` when it is read.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SessionMode, SessionRecord, WeightUnit, expireIfStale, parseRecord } from './record';
+import { SessionRecord, WeightUnit, expireIfStale, parseRecord } from './record';
 
 const SESSION_KEY = (uid: string) => `@mood_v3_session_v1:${uid}`;
 const UNIT_KEY = (uid: string) => `@mood_v3_weight_unit_v1:${uid}`;
-const MODE_KEY = (uid: string) => `@mood_v3_session_mode_v1:${uid}`;
 
 const queues = new Map<string, Promise<unknown>>();
 function serialized<T>(key: string, job: () => Promise<T>): Promise<T> {
@@ -74,15 +73,3 @@ export async function writeWeightUnit(uid: string, unit: WeightUnit): Promise<vo
   try { await AsyncStorage.setItem(UNIT_KEY(uid), unit); } catch { /* ignore */ }
 }
 
-/** The athlete's most recent session mode (Guided by default); the next session starts in it. */
-export async function readPreferredMode(uid: string): Promise<SessionMode> {
-  try {
-    return (await AsyncStorage.getItem(MODE_KEY(uid))) === 'overview' ? 'overview' : 'guided';
-  } catch {
-    return 'guided';
-  }
-}
-
-export async function writePreferredMode(uid: string, mode: SessionMode): Promise<void> {
-  try { await AsyncStorage.setItem(MODE_KEY(uid), mode); } catch { /* ignore */ }
-}

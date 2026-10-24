@@ -15,7 +15,7 @@ import { SessionAction, SessionState, canFinish, currentStep, finishFromLast, fi
 import {
   AfterIntent, SessionMode, SessionRecord, SetLog, WeightUnit, afterPayload, buildCompletion, endEarly, isSpecialtyRecord, newRecord, newSessionId, removeLog, restore, shouldSendAfter, timerNotice, upsertLog, withAfter, withState,
 } from '../../../utils/v3Session/record';
-import { readPreferredMode, readSession, readWeightUnit, updateSession, writePreferredMode, writeSession, writeWeightUnit } from '../../../utils/v3Session/store';
+import { readSession, readWeightUnit, updateSession, writeSession, writeWeightUnit } from '../../../utils/v3Session/store';
 import { structureKey } from '../../../utils/v3Session/coach';
 import { syncCompletion } from '../../../utils/v3Session/sync';
 import { timerNotifier } from '../../../utils/v3Session/notify';
@@ -146,7 +146,11 @@ export function useGuidedSession(uid: string | null, token: string | null, worko
       // is normally a cached grant; it matters for starts that skip the Cart (Replace on the conflict sheet, deep links).
       if (!(await startGate(env.workout!.workout_id!, src))) { setMode({ kind: 'error', message: START_BLOCKED_MESSAGE }); return; }
       const t = Date.now();
-      const preferred = uid ? await readPreferredMode(uid) : 'guided';
+      // Every fresh session starts in Guided/in-depth, never Overview (Wes, Oct 2026 feedback #9): "make sure
+      // users default guided session is the in depth one not the overview style, every time even if they switch
+      // to it." Switching to Overview mid-session (setSessionMode below) no longer persists as a future default --
+      // it's a view toggle for THIS session only.
+      const preferred: SessionMode = 'guided';
       const { record: r, plan: p, state: s } = newRecord(env, t, localDateISO(), newSessionId(t), preferred);
       planRef.current = p; stRef.current = s; blockEnteredAt.current = t;
       setPlan(p); setState(s); persist(r); setNow(t);
@@ -299,9 +303,10 @@ export function useGuidedSession(uid: string | null, token: string | null, worko
     const r = rec.current;
     if (!r || r.mode === m) return;
     persist({ ...r, mode: m });
-    if (uid) writePreferredMode(uid, m);
+    // Intentionally not persisted as a future default -- see startFresh: Guided/in-depth is always the next
+    // session's starting mode, regardless of what the athlete switched to in a past or even this session.
     trackSession(token, 'v3_session_mode', { workout_id: r.workoutId, session_id: r.sessionId, mode: m });
-  }, [persist, uid, token]);
+  }, [persist, token]);
 
   /* ------------------------------------------------------------------ weight logging (F2) */
 
