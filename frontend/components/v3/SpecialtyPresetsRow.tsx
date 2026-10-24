@@ -5,30 +5,25 @@
  * touch the Build flow's 3-card Direction step (Strength/Sweat/Athletic stays exactly as it is). This is new,
  * additive content on Home.
  *
- * Shape (Wes, Oct 2026 feedback #11/#12/#13 -- a full redo of the original flat 18-card scroll row, then a
- * hero-source correction, then two animation/polish passes): a one-at-a-time hero carousel of the 6 EQUIPMENT
- * groups ("Barbell Only", "Dumbbell Only", ... -- SPECIALTY_EQUIPMENT_GROUPS), each a true-16:9 photo
- * (SPECIALTY_EQUIPMENT_GROUPS[i].heroUri, from the "Cart Heroes/preset heros" shoot -- NOT a per-preset photo).
- * The previous/next cards sit almost entirely BEHIND the centered one (heavy horizontal overlap, a sliver
- * peeking at each edge, lower zIndex, slight rotateY tilt for a "revolving circle" read) at full opacity --
- * no fade -- rather than beside it with a faded slideshow feel. It auto-shuffles to a random next card on a
- * timer, and can be swiped manually (which pauses and restarts the auto-shuffle, so a manual swipe never gets
- * immediately overridden). Starts on a random equipment every time Home mounts -- there is intentionally no
- * fixed/first card.
+ * Shape (Wes, Oct 2026 feedback #14 -- a full simplification after the peek/overlap carousel read as
+ * "glitchy"): ONE card, one equipment at a time, the same width as the Home content column (the same width
+ * the mood-pick recommendation cards' row spans above -- GUTTER-based, no separate measurement). No
+ * neighboring cards visible at all. It cross-fades to a random other equipment on a timer, and can be swiped
+ * left/right to step through manually (a swipe restarts the auto-shuffle window rather than being immediately
+ * overridden). Starts on a random equipment every time Home mounts -- there is intentionally no fixed/first
+ * card.
  *
- * Tapping an equipment card animates a cross-fade into that equipment's 3 body-part cards (Full/Upper/Lower),
- * each showing a real exercise thumbnail (SPECIALTY_DRILLDOWN_THUMB -- a fixed representative exercise per
- * preset, not a live preview; see that constant's own comment for why). The drill-down tiles deliberately
- * reuse the hero card's own format (16:9 aspect, same gradient stops, same bold-title/sub-caption layout) so
- * the drill-down reads as a continuation of the same card family, not a jump into a separate section. Tapping
- * one of THOSE calls the independent specialty generator (POST /api/v3/specialty/generate) and opens the
- * existing Cart screen (/v3/workout) with a `kind=specialty` param, same as before. A back chevron returns to
- * the equipment carousel.
+ * Tapping the card does a literal 3D flip (rotateY + backfaceVisibility, not a slide-in section) to its back
+ * face: the same equipment's 3 body-part presets (Full/Upper/Lower), each a real exercise thumbnail
+ * (SPECIALTY_DRILLDOWN_THUMB -- a fixed representative exercise per preset, not a live preview; see that
+ * constant's own comment for why) -- within the EXACT same card bounds as the front face, so this reads as
+ * the hero card turning over, not a jump into a separate section. Tapping one of those calls the independent
+ * specialty generator (POST /api/v3/specialty/generate) and opens the existing Cart screen (/v3/workout) with
+ * a `kind=specialty` param, same as before. A back chevron on the back face flips it back to the hero.
  */
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator, Animated, Dimensions, Easing, ImageBackground, NativeScrollEvent, NativeSyntheticEvent,
-  Pressable, StyleSheet, Text, View,
+  ActivityIndicator, Animated, Dimensions, Easing, ImageBackground, PanResponder, Pressable, StyleSheet, Text, View,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -41,27 +36,28 @@ import { generateSpecialtyWorkout } from '../../utils/v3Api';
 import { SPECIALTY_DRILLDOWN_THUMB, SPECIALTY_EQUIPMENT_GROUPS, SPECIALTY_EQUIPMENT_ICON, SPECIALTY_PRESETS, titleParts } from '../../utils/v3Specialty';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const CARD_WIDTH = Math.round(SCREEN_WIDTH * 0.78);
-const CARD_GAP = 12;
-const STEP = CARD_WIDTH + CARD_GAP;
-const SIDE_PAD = (SCREEN_WIDTH - CARD_WIDTH) / 2;
+const GUTTER = 16; // same content gutter V3Home.tsx uses for its own `pad` -- this card spans the recs row's own width
+const CARD_WIDTH = SCREEN_WIDTH - GUTTER * 2;
 const CARD_HEIGHT = Math.round((CARD_WIDTH * 9) / 16); // 16:9, on purpose (Wes, Oct 2026)
 const AUTO_SHUFFLE_MS = 4500;
+const SWIPE_THRESHOLD = 40;
 const DRILL_GAP = 10;
-// Drill-down tiles keep the SAME 16:9 format as the hero card, just smaller (3-across) -- so the drill-down
-// reads as the hero card's own family, not a differently-shaped new section (Wes, Oct 2026 feedback #13).
-const DRILL_TILE_WIDTH = Math.round((SCREEN_WIDTH - 32 - DRILL_GAP * 2) / 3);
-const DRILL_TILE_HEIGHT = Math.round((DRILL_TILE_WIDTH * 9) / 16);
-// How much of a side card peeks out from behind the centered one (Wes, Oct 2026 feedback #13: "behind, no fade").
-const PEEK = 20;
+// Back-face tiles fill the exact same CARD_WIDTH x CARD_HEIGHT box as the front -- 3-across, full card height.
+const DRILL_TILE_WIDTH = Math.round((CARD_WIDTH - DRILL_GAP * 2) / 3);
 const PRESET_BY_ID = new Map(SPECIALTY_PRESETS.map((p) => [p.id, p]));
+const N = SPECIALTY_EQUIPMENT_GROUPS.length;
 
 export function SpecialtyPresetsRow() {
   const { token } = useAuth();
   const router = useRouter();
   const [generatingId, setGeneratingId] = useState<string | null>(null);
   const [errorText, setErrorText] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState<string | null>(null); // equipment key, or null = carousel showing
+  const [index, setIndex] = useState(() => Math.floor(Math.random() * N)); // no fixed starting equipment
+  const [flipped, setFlipped] = useState(false);
+  const indexRef = useRef(index);
+  indexRef.current = index;
+  const flippedRef = useRef(flipped);
+  flippedRef.current = flipped;
 
   const onPressPreset = useCallback(async (presetId: string) => {
     if (!token || generatingId) return;
@@ -84,62 +80,66 @@ export function SpecialtyPresetsRow() {
     router.push({ pathname: '/v3/workout', params: { id: workoutId, kind: 'specialty' } } as any);
   }, [token, generatingId, router]);
 
-  /* ------------------------------------------------------------------ equipment carousel */
-  const scrollRef = useRef<any>(null);
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const indexRef = useRef(Math.floor(Math.random() * SPECIALTY_EQUIPMENT_GROUPS.length)); // no fixed starting preset
-  const [initialIndex] = useState(indexRef.current);
+  /* ------------------------------------------------------------------ single card, cross-fade between equipment */
+  const fadeAnim = useRef(new Animated.Value(1)).current;
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const scrollToIndex = useCallback((i: number, animated = true) => {
-    indexRef.current = i;
-    scrollRef.current?.scrollTo?.({ x: i * STEP, animated });
-  }, []);
+  const changeIndex = useCallback((next: number) => {
+    const wrapped = ((next % N) + N) % N;
+    if (wrapped === indexRef.current) return;
+    Animated.timing(fadeAnim, { toValue: 0, duration: 140, easing: Easing.out(Easing.quad), useNativeDriver: true }).start(() => {
+      setIndex(wrapped);
+      Animated.timing(fadeAnim, { toValue: 1, duration: 200, easing: Easing.in(Easing.quad), useNativeDriver: true }).start();
+    });
+  }, [fadeAnim]);
 
   const startAutoShuffle = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-      const n = SPECIALTY_EQUIPMENT_GROUPS.length;
-      if (n < 2) return;
-      let next = Math.floor(Math.random() * n);
-      if (next === indexRef.current) next = (next + 1) % n;
-      scrollToIndex(next);
+      if (N < 2) return;
+      let next = Math.floor(Math.random() * N);
+      if (next === indexRef.current) next = (next + 1) % N;
+      changeIndex(next);
     }, AUTO_SHUFFLE_MS);
-  }, [scrollToIndex]);
+  }, [changeIndex]);
 
   useEffect(() => {
-    if (expanded) {
+    if (flipped) {
       if (timerRef.current) clearInterval(timerRef.current);
       return;
     }
     startAutoShuffle();
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [expanded, startAutoShuffle]);
+  }, [flipped, startAutoShuffle]);
 
-  const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], { useNativeDriver: false });
+  /* ------------------------------------------------------------------ swipe left/right to step manually */
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_evt, gesture) =>
+        !flippedRef.current && Math.abs(gesture.dx) > 12 && Math.abs(gesture.dx) > Math.abs(gesture.dy),
+      onPanResponderRelease: (_evt, gesture) => {
+        if (Math.abs(gesture.dx) < SWIPE_THRESHOLD) return;
+        changeIndex(indexRef.current + (gesture.dx < 0 ? 1 : -1));
+        startAutoShuffle(); // a manual swipe just happened -- restart the auto-shuffle window instead of firing immediately
+      },
+    }),
+  ).current;
 
-  const onMomentumEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const i = Math.round(e.nativeEvent.contentOffset.x / STEP);
-    indexRef.current = Math.max(0, Math.min(SPECIALTY_EQUIPMENT_GROUPS.length - 1, i));
-    startAutoShuffle(); // a manual swipe just happened -- restart the auto-shuffle window instead of firing immediately
+  /* ------------------------------------------------------------------ flip to body-part presets, same bounds */
+  const flipAnim = useRef(new Animated.Value(0)).current;
+  const openFlip = () => {
+    setFlipped(true);
+    Animated.timing(flipAnim, { toValue: 1, duration: 340, easing: Easing.inOut(Easing.cubic), useNativeDriver: true }).start();
   };
-
-  /* ------------------------------------------------------------------ drill-down cross-fade */
-  const drillAnim = useRef(new Animated.Value(0)).current;
-  const openDrilldown = (equipment: string) => {
-    setExpanded(equipment);
-    Animated.timing(drillAnim, { toValue: 1, duration: 260, easing: Easing.out(Easing.cubic), useNativeDriver: true }).start();
-  };
-  const closeDrilldown = () => {
-    Animated.timing(drillAnim, { toValue: 0, duration: 220, easing: Easing.in(Easing.cubic), useNativeDriver: true }).start(({ finished }) => {
-      if (finished) setExpanded(null);
+  const closeFlip = () => {
+    Animated.timing(flipAnim, { toValue: 0, duration: 300, easing: Easing.inOut(Easing.cubic), useNativeDriver: true }).start(({ finished }) => {
+      if (finished) setFlipped(false);
     });
   };
+  const frontRotateY = flipAnim.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '180deg'] });
+  const backRotateY = flipAnim.interpolate({ inputRange: [0, 1], outputRange: ['180deg', '360deg'] });
 
-  const expandedGroup = useMemo(
-    () => (expanded ? SPECIALTY_EQUIPMENT_GROUPS.find((g) => g.equipment === expanded) ?? null : null),
-    [expanded],
-  );
+  const group = SPECIALTY_EQUIPMENT_GROUPS[index];
 
   return (
     <View style={styles.section} testID="v3-home-specialty">
@@ -155,131 +155,85 @@ export function SpecialtyPresetsRow() {
         </View>
       ) : null}
 
-      <View style={{ height: CARD_HEIGHT + 16, marginTop: 10 }}>
-        {/* Carousel: one equipment hero at a time, neighbors peeking */}
-        <Animated.View
-          pointerEvents={expanded ? 'none' : 'auto'}
-          style={[StyleSheet.absoluteFill, { opacity: drillAnim.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }) }]}
-        >
-          <Animated.ScrollView
-            ref={scrollRef}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            decelerationRate="fast"
-            snapToInterval={STEP}
-            snapToAlignment="start"
-            contentContainerStyle={{ paddingHorizontal: SIDE_PAD, gap: CARD_GAP }}
-            contentOffset={{ x: initialIndex * STEP, y: 0 }}
-            onScroll={onScroll}
-            scrollEventThrottle={16}
-            onMomentumScrollEnd={onMomentumEnd}
+      <View style={styles.pad}>
+        <View style={{ width: CARD_WIDTH, height: CARD_HEIGHT, marginTop: 10 }} {...panResponder.panHandlers}>
+          {/* Front face: the single equipment hero, cross-fading between equipments */}
+          <Animated.View
+            pointerEvents={flipped ? 'none' : 'auto'}
+            style={[
+              StyleSheet.absoluteFill,
+              { opacity: fadeAnim, backfaceVisibility: 'hidden', transform: [{ perspective: 1200 }, { rotateY: frontRotateY }] },
+            ]}
           >
-            {SPECIALTY_EQUIPMENT_GROUPS.map((g, i) => {
-              const inputRange = [(i - 1) * STEP, i * STEP, (i + 1) * STEP];
-              // "Behind, not beside" (Wes, Oct 2026 feedback #13): side cards are pulled in by almost a full
-              // STEP so they sit mostly behind the centered card (just a PEEK sliver showing at each edge),
-              // at full opacity -- no fade -- with a lower zIndex and a slight rotateY for the "revolving
-              // circle" read, instead of floating beside it as a faded slideshow neighbor.
-              const scale = scrollX.interpolate({ inputRange, outputRange: [0.86, 1, 0.86], extrapolate: 'clamp' });
-              const rotateY = scrollX.interpolate({ inputRange, outputRange: ['16deg', '0deg', '-16deg'], extrapolate: 'clamp' });
-              const pullIn = scrollX.interpolate({ inputRange, outputRange: [-(STEP - PEEK), 0, STEP - PEEK], extrapolate: 'clamp' });
-              const zIndex = scrollX.interpolate({ inputRange, outputRange: [0, 10, 0], extrapolate: 'clamp' });
-              const heroUri = g.heroUri; // true-16:9 equipment photo (SPECIALTY_EQUIPMENT_HERO), not a per-preset shot
-              return (
-                <Animated.View
-                  key={g.equipment}
-                  style={{
-                    width: CARD_WIDTH,
-                    zIndex: zIndex as unknown as number,
-                    transform: [{ perspective: 900 }, { translateX: pullIn }, { rotateY }, { scale }],
-                  }}
-                >
+            <Pressable
+              onPress={openFlip}
+              style={({ pressed }) => [styles.heroCard, pressed && { transform: [{ scale: 0.98 }] }]}
+              accessibilityRole="button"
+              accessibilityLabel={group.label}
+              testID={`v3-specialty-equipment-${group.equipment}`}
+            >
+              <ImageBackground
+                source={{ uri: optimizedImageUrl(group.heroUri, Math.round(CARD_WIDTH * 3)) }}
+                resizeMode="cover"
+                style={styles.heroImg}
+                imageStyle={styles.heroImgInner}
+              >
+                <LinearGradient colors={['rgba(10,10,10,0)', 'rgba(10,10,10,0.9)']} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject as any} />
+                <View style={styles.heroIconWrap}>
+                  <Ionicons name={SPECIALTY_EQUIPMENT_ICON[group.equipment] as any} size={16} color={COLORS.textPrimary} />
+                </View>
+                <View style={styles.heroText}>
+                  <Text style={styles.heroName}>{group.label}</Text>
+                  <Text style={styles.heroSub}>3 ways to train -- full, upper &amp; leg day</Text>
+                </View>
+              </ImageBackground>
+            </Pressable>
+          </Animated.View>
+
+          {/* Back face: this equipment's 3 body-part presets, same card bounds */}
+          <Animated.View
+            pointerEvents={flipped ? 'auto' : 'none'}
+            style={[
+              StyleSheet.absoluteFill,
+              { backfaceVisibility: 'hidden', transform: [{ perspective: 1200 }, { rotateY: backRotateY }] },
+            ]}
+          >
+            <View style={styles.drillRow}>
+              {group.presets.map((presetId) => {
+                const preset = PRESET_BY_ID.get(presetId)!;
+                const busy = generatingId === presetId;
+                const thumb = SPECIALTY_DRILLDOWN_THUMB[presetId];
+                return (
                   <Pressable
-                    onPress={() => openDrilldown(g.equipment)}
-                    style={({ pressed }) => [styles.heroCard, pressed && { transform: [{ scale: 0.98 }] }]}
+                    key={presetId}
+                    onPress={() => onPressPreset(presetId)}
+                    disabled={!!generatingId}
+                    style={({ pressed }) => [styles.drillCard, pressed && !generatingId && { transform: [{ scale: 0.97 }] }, generatingId && !busy && { opacity: 0.5 }]}
                     accessibilityRole="button"
-                    accessibilityLabel={g.label}
-                    testID={`v3-specialty-equipment-${g.equipment}`}
+                    accessibilityLabel={preset.name}
+                    testID={`v3-specialty-preset-${presetId}`}
                   >
-                    <ImageBackground
-                      source={{ uri: optimizedImageUrl(heroUri, Math.round(CARD_WIDTH * 3)) }}
-                      resizeMode="cover"
-                      style={styles.heroImg}
-                      imageStyle={styles.heroImgInner}
-                    >
+                    <ImageBackground source={{ uri: optimizedImageUrl(thumb, Math.round(DRILL_TILE_WIDTH * 3)) }} resizeMode="cover" style={styles.drillImg} imageStyle={styles.drillImgInner}>
                       <LinearGradient colors={['rgba(10,10,10,0)', 'rgba(10,10,10,0.9)']} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject as any} />
-                      <View style={styles.heroIconWrap}>
-                        <Ionicons name={SPECIALTY_EQUIPMENT_ICON[g.equipment] as any} size={16} color={COLORS.textPrimary} />
-                      </View>
-                      <View style={styles.heroText}>
-                        <Text style={styles.heroName}>{g.label}</Text>
-                        <Text style={styles.heroSub}>3 ways to train -- full, upper &amp; leg day</Text>
+                      {busy ? (
+                        <View style={styles.drillBusy}>
+                          <ActivityIndicator color={COLORS.textPrimary} />
+                        </View>
+                      ) : null}
+                      <View style={styles.drillText}>
+                        <Text style={styles.drillName} numberOfLines={1}>{titleParts(preset.name).secondary}</Text>
+                        <Text style={styles.drillSub} numberOfLines={1}>{preset.target === 'full' ? 'Full body' : preset.target === 'upper' ? 'Upper body' : 'Leg day'}</Text>
                       </View>
                     </ImageBackground>
                   </Pressable>
-                </Animated.View>
-              );
-            })}
-          </Animated.ScrollView>
-        </Animated.View>
-
-        {/* Drill-down: the tapped equipment's 3 body-part presets, real exercise thumbnails */}
-        <Animated.View
-          pointerEvents={expanded ? 'auto' : 'none'}
-          style={[
-            StyleSheet.absoluteFill,
-            styles.pad,
-            {
-              opacity: drillAnim,
-              transform: [{ translateY: drillAnim.interpolate({ inputRange: [0, 1], outputRange: [10, 0] }) }],
-            },
-          ]}
-        >
-          {expandedGroup ? (
-            <>
-              {/* Same bold-label treatment as the hero card's own heroName/heroIconWrap (Wes, Oct 2026 feedback
-                  #13), so this reads as "the same card, zoomed in" rather than a nav header into a new page. */}
-              <Pressable onPress={closeDrilldown} style={styles.backRow} accessibilityRole="button" accessibilityLabel="Back to equipment">
-                <View style={styles.heroIconWrap}>
-                  <Ionicons name="chevron-back" size={16} color={COLORS.textPrimary} />
-                </View>
-                <Text style={styles.backText}>{expandedGroup.label}</Text>
-              </Pressable>
-              <View style={styles.drillRow}>
-                {expandedGroup.presets.map((presetId) => {
-                  const preset = PRESET_BY_ID.get(presetId)!;
-                  const busy = generatingId === presetId;
-                  const thumb = SPECIALTY_DRILLDOWN_THUMB[presetId];
-                  return (
-                    <Pressable
-                      key={presetId}
-                      onPress={() => onPressPreset(presetId)}
-                      disabled={!!generatingId}
-                      style={({ pressed }) => [styles.drillCard, pressed && !generatingId && { transform: [{ scale: 0.97 }] }, generatingId && !busy && { opacity: 0.5 }]}
-                      accessibilityRole="button"
-                      accessibilityLabel={preset.name}
-                      testID={`v3-specialty-preset-${presetId}`}
-                    >
-                      {/* Same gradient stops/locations as the hero card's own ImageBackground overlay. */}
-                      <ImageBackground source={{ uri: optimizedImageUrl(thumb, Math.round(DRILL_TILE_WIDTH * 3)) }} resizeMode="cover" style={styles.drillImg} imageStyle={styles.drillImgInner}>
-                        <LinearGradient colors={['rgba(10,10,10,0)', 'rgba(10,10,10,0.9)']} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject as any} />
-                        {busy ? (
-                          <View style={styles.drillBusy}>
-                            <ActivityIndicator color={COLORS.textPrimary} />
-                          </View>
-                        ) : null}
-                        <View style={styles.drillText}>
-                          <Text style={styles.drillName} numberOfLines={1}>{titleParts(preset.name).secondary}</Text>
-                          <Text style={styles.drillSub} numberOfLines={1}>{preset.target === 'full' ? 'Full body' : preset.target === 'upper' ? 'Upper body' : 'Leg day'}</Text>
-                        </View>
-                      </ImageBackground>
-                    </Pressable>
-                  );
-                })}
-              </View>
-            </>
-          ) : null}
-        </Animated.View>
+                );
+              })}
+            </View>
+            <Pressable onPress={closeFlip} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Back to equipment" testID="v3-specialty-flip-back">
+              <Ionicons name="chevron-back" size={16} color={COLORS.textPrimary} />
+            </Pressable>
+          </Animated.View>
+        </View>
       </View>
     </View>
   );
@@ -292,7 +246,7 @@ const styles = StyleSheet.create({
   secSub: { fontSize: 12, lineHeight: 16, color: 'rgba(255,255,255,0.55)', marginTop: 2 },
   error: { fontSize: 12, color: '#FF6B6B', marginTop: 8 },
 
-  heroCard: { height: CARD_HEIGHT, borderRadius: 18, overflow: 'hidden' },
+  heroCard: { flex: 1, borderRadius: 18, overflow: 'hidden' },
   heroImg: { flex: 1, justifyContent: 'space-between', backgroundColor: COLORS.surface },
   heroImgInner: { width: '100%', height: '100%' },
   heroIconWrap: {
@@ -303,18 +257,18 @@ const styles = StyleSheet.create({
   heroName: { fontSize: 18, fontWeight: '800', color: COLORS.textPrimary },
   heroSub: { fontSize: 12, color: 'rgba(255,255,255,0.72)', marginTop: 2 },
 
-  backRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 },
-  // Matches heroName (same bold 18px/800 treatment) so the drill-down reads as the hero card's own label,
-  // not a separate nav header (Wes, Oct 2026 feedback #13).
-  backText: { fontSize: 18, fontWeight: '800', color: COLORS.textPrimary },
-  drillRow: { flexDirection: 'row', gap: DRILL_GAP },
-  // Same 16:9 format as the hero card, just smaller/3-across -- see DRILL_TILE_WIDTH/HEIGHT above.
-  drillCard: { width: DRILL_TILE_WIDTH, height: DRILL_TILE_HEIGHT, borderRadius: 14, overflow: 'hidden' },
+  // Small overlay button on the back face only -- no separate header row, so the back face keeps the exact
+  // same CARD_WIDTH x CARD_HEIGHT bounds as the front (Wes, Oct 2026 feedback #14).
+  backBtn: {
+    position: 'absolute', top: 10, left: 10, width: 28, height: 28, borderRadius: 14,
+    alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(10,10,10,0.55)',
+  },
+  drillRow: { flex: 1, flexDirection: 'row', gap: DRILL_GAP },
+  drillCard: { width: DRILL_TILE_WIDTH, borderRadius: 14, overflow: 'hidden' },
   drillImg: { flex: 1, justifyContent: 'flex-end', backgroundColor: COLORS.surface },
   drillImgInner: { width: '100%', height: '100%' },
   drillBusy: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' },
   drillText: { padding: 10 },
   drillName: { fontSize: 12, fontWeight: '800', color: COLORS.textPrimary },
-  // Mirrors heroSub's caption-under-title layout.
   drillSub: { fontSize: 10.5, color: 'rgba(255,255,255,0.72)', marginTop: 1 },
 });
