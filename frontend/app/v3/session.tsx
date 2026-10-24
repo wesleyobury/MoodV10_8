@@ -244,7 +244,7 @@ function V3GuidedSessionScreen() {
           options={[
             { label: 'Keep going', tone: 'primary', testID: 'v3-exit-keep', onPress: () => setExitOpen(false) },
             { label: 'Pause and leave', tone: 'plain', testID: 'v3-exit-pause', onPress: async () => { setExitOpen(false); await g.pauseAndLeave(); goHome(); } },
-            { label: 'End workout', tone: 'danger', testID: 'v3-exit-end', onPress: () => { setExitOpen(false); setConfirmEnd(true); } },
+            { label: 'End workout', tone: 'danger', testID: 'v3-exit-end', onPress: async () => { setExitOpen(false); await g.endWorkout(); goHome(); } },
           ]}
         />
         <ActionSheet
@@ -350,7 +350,7 @@ function V3GuidedSessionScreen() {
         options={[
           { label: 'Keep going', tone: 'primary', testID: 'v3-exit-keep', onPress: () => setExitOpen(false) },
           { label: 'Pause and leave', tone: 'plain', testID: 'v3-exit-pause', onPress: async () => { setExitOpen(false); await g.pauseAndLeave(); goHome(); } },
-          { label: 'End workout', tone: 'danger', testID: 'v3-exit-end', onPress: () => { setExitOpen(false); setConfirmEnd(true); } },
+          { label: 'End workout', tone: 'danger', testID: 'v3-exit-end', onPress: async () => { setExitOpen(false); await g.endWorkout(); goHome(); } },
         ]}
       />
       <ActionSheet

@@ -23,7 +23,7 @@
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator, Animated, Dimensions, Easing, ImageBackground, PanResponder, Pressable, StyleSheet, Text, View,
+  ActivityIndicator, Animated, Dimensions, Easing, ImageBackground, PanResponder, Pressable, ScrollView, StyleSheet, Text, View,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -235,21 +235,29 @@ export function SpecialtyPresetsRow() {
           </Animated.View>
         </View>
 
-        {/* Small, subtle pills so users can jump straight to any equipment (Wes, Oct 2026 feedback #15). */}
-        <View style={styles.dots} pointerEvents={flipped ? 'none' : 'auto'}>
+        {/* Small, subtle labeled pills so users can jump straight to any equipment (Wes, Oct 2026 feedback
+            #15/#16 -- the bare dots were too small to tap reliably, so the label now lives in the pill
+            itself; kept low-key: small text, muted fill, no bold borders). */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginTop: 10 }}
+          contentContainerStyle={styles.pillRow}
+          pointerEvents={flipped ? 'none' : 'auto'}
+        >
           {SPECIALTY_EQUIPMENT_GROUPS.map((g, i) => (
             <Pressable
               key={g.equipment}
               onPress={() => { changeIndex(i); startAutoShuffle(); }}
-              hitSlop={8}
+              style={[styles.pill, i === index && styles.pillActive]}
               accessibilityRole="button"
               accessibilityLabel={g.label}
-              testID={`v3-specialty-dot-${g.equipment}`}
+              testID={`v3-specialty-pill-${g.equipment}`}
             >
-              <View style={[styles.dot, i === index && styles.dotActive]} />
+              <Text style={[styles.pillText, i === index && styles.pillTextActive]}>{g.label}</Text>
             </Pressable>
           ))}
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -288,7 +296,12 @@ const styles = StyleSheet.create({
   drillName: { fontSize: 12, fontWeight: '800', color: COLORS.textPrimary },
   drillSub: { fontSize: 10.5, color: 'rgba(255,255,255,0.72)', marginTop: 1 },
 
-  dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 10 },
-  dot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: 'rgba(255,255,255,0.25)' },
-  dotActive: { width: 16, backgroundColor: 'rgba(255,255,255,0.75)' },
+  pillRow: { flexDirection: 'row', gap: 6 }, // already inside styles.pad -- no extra horizontal inset needed
+  pill: {
+    paddingHorizontal: 10, paddingVertical: 5, borderRadius: 11,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+  },
+  pillActive: { backgroundColor: 'rgba(255,255,255,0.14)' },
+  pillText: { fontSize: 11, fontWeight: '600', color: 'rgba(255,255,255,0.45)' },
+  pillTextActive: { color: COLORS.textPrimary },
 });
