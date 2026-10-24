@@ -234,6 +234,22 @@ export function SpecialtyPresetsRow() {
             </Pressable>
           </Animated.View>
         </View>
+
+        {/* Small, subtle pills so users can jump straight to any equipment (Wes, Oct 2026 feedback #15). */}
+        <View style={styles.dots} pointerEvents={flipped ? 'none' : 'auto'}>
+          {SPECIALTY_EQUIPMENT_GROUPS.map((g, i) => (
+            <Pressable
+              key={g.equipment}
+              onPress={() => { changeIndex(i); startAutoShuffle(); }}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel={g.label}
+              testID={`v3-specialty-dot-${g.equipment}`}
+            >
+              <View style={[styles.dot, i === index && styles.dotActive]} />
+            </Pressable>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -271,4 +287,8 @@ const styles = StyleSheet.create({
   drillText: { padding: 10 },
   drillName: { fontSize: 12, fontWeight: '800', color: COLORS.textPrimary },
   drillSub: { fontSize: 10.5, color: 'rgba(255,255,255,0.72)', marginTop: 1 },
+
+  dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, marginTop: 10 },
+  dot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: 'rgba(255,255,255,0.25)' },
+  dotActive: { width: 16, backgroundColor: 'rgba(255,255,255,0.75)' },
 });
