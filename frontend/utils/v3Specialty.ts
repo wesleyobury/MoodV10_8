@@ -103,6 +103,22 @@ export const SPECIALTY_DRILLDOWN_THUMB: Record<string, string> = {
  *  presets (SPECIALTY_EQUIPMENT_GROUPS below). Mirrors blueprints.PRESETS' own equipment grouping order. */
 const EQUIPMENT_ORDER: V3SpecialtyEquipment[] = ['barbell', 'kettlebell', 'dumbbells', 'landmine', 'bodyweight', 'outdoor_park'];
 
+/** One true-16:9 hero photo per equipment category, for the Home carousel's 6 equipment cards (Wes, Oct 2026
+ *  feedback #12 -- a correction of feedback #11: the earlier "Preset Heros" set (18 photos, one per PRESET,
+ *  portrait-cropped) was the wrong source for these equipment-level cards; these 6 photos -- found in
+ *  "Cart Heroes/preset heros", genuinely shot 16:9 -- are the right ones. Uploaded via
+ *  backend/upload_specialty_equipment_heroes_to_cloudinary.py. Note: that folder's "athlete.png" is used as the
+ *  bodyweight photo -- there's no "bodyweight.png" in the set and no other unclaimed file for 6 equipment slots,
+ *  so this is an inferred mapping, not a confirmed one; flag to Wes if it looks wrong. */
+export const SPECIALTY_EQUIPMENT_HERO: Record<V3SpecialtyEquipment, string> = {
+  barbell: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792812000/mood/v3/cart_heroes/specialty_equipment/barbell.png',
+  kettlebell: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792812011/mood/v3/cart_heroes/specialty_equipment/kettlebell.png',
+  dumbbells: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792812003/mood/v3/cart_heroes/specialty_equipment/dumbbells.png',
+  landmine: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792812018/mood/v3/cart_heroes/specialty_equipment/landmine.png',
+  bodyweight: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792811999/mood/v3/cart_heroes/specialty_equipment/bodyweight.png',
+  outdoor_park: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792812022/mood/v3/cart_heroes/specialty_equipment/outdoor_park.png',
+};
+
 export interface SpecialtyEquipmentGroup {
   equipment: V3SpecialtyEquipment;
   /** "Barbell Only", "Dumbbell Only", "Park Only", etc. -- derived from the equipment's own "full" preset name
@@ -110,11 +126,18 @@ export interface SpecialtyEquipmentGroup {
   label: string;
   /** [full, upper, lower] preset ids for this equipment. */
   presets: [string, string, string];
+  /** True 16:9 equipment-level hero photo (SPECIALTY_EQUIPMENT_HERO above) -- NOT a per-preset photo. */
+  heroUri: string;
 }
 
 export const SPECIALTY_EQUIPMENT_GROUPS: SpecialtyEquipmentGroup[] = EQUIPMENT_ORDER.map((equipment) => {
   const full = SPECIALTY_PRESETS.find((p) => p.equipment === equipment && p.target === 'full')!;
   const upper = SPECIALTY_PRESETS.find((p) => p.equipment === equipment && p.target === 'upper')!;
   const lower = SPECIALTY_PRESETS.find((p) => p.equipment === equipment && p.target === 'lower')!;
-  return { equipment, label: titleParts(full.name).primary.replace(/:$/, ''), presets: [full.id, upper.id, lower.id] };
+  return {
+    equipment,
+    label: titleParts(full.name).primary.replace(/:$/, ''),
+    presets: [full.id, upper.id, lower.id],
+    heroUri: SPECIALTY_EQUIPMENT_HERO[equipment],
+  };
 });

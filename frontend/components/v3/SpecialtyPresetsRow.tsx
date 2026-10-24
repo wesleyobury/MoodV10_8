@@ -5,12 +5,15 @@
  * touch the Build flow's 3-card Direction step (Strength/Sweat/Athletic stays exactly as it is). This is new,
  * additive content on Home.
  *
- * Shape (Wes, Oct 2026 feedback #11 -- a full redo of the original flat 18-card scroll row): a one-at-a-time
- * hero carousel of the 6 EQUIPMENT groups ("Barbell Only", "Dumbbell Only", ... -- SPECIALTY_EQUIPMENT_GROUPS),
- * each a curated 16:9 photo (V3_SPECIALTY_HEROES' own "full body" shot for that equipment) with the next/previous
- * card peeking in at the edges. It auto-shuffles to a random next card on a timer, and can be swiped manually
- * (which pauses and restarts the auto-shuffle, so a manual swipe never gets immediately overridden). Starts on a
- * random equipment every time Home mounts -- there is intentionally no fixed/first card.
+ * Shape (Wes, Oct 2026 feedback #11/#12 -- a full redo of the original flat 18-card scroll row, then a
+ * correction of the hero source + a revolving-circle animation pass): a one-at-a-time hero carousel of the 6
+ * EQUIPMENT groups ("Barbell Only", "Dumbbell Only", ... -- SPECIALTY_EQUIPMENT_GROUPS), each a true-16:9 photo
+ * (SPECIALTY_EQUIPMENT_GROUPS[i].heroUri, from the "Cart Heroes/preset heros" shoot -- NOT a per-preset photo)
+ * with the next/previous card peeking in at the edges. The transition is a coverflow-style "revolving circle":
+ * side cards tilt (rotateY) and tuck toward the center card as they pass, rather than sliding flat like a
+ * slideshow. It auto-shuffles to a random next card on a timer, and can be swiped manually (which pauses and
+ * restarts the auto-shuffle, so a manual swipe never gets immediately overridden). Starts on a random equipment
+ * every time Home mounts -- there is intentionally no fixed/first card.
  *
  * Tapping an equipment card animates a cross-fade into that equipment's 3 body-part cards (Full/Upper/Lower),
  * each showing a real exercise thumbnail (SPECIALTY_DRILLDOWN_THUMB -- a fixed representative exercise per
@@ -29,7 +32,6 @@ import { SafeLinearGradient as LinearGradient } from '../SafeLinearGradient';
 import { COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { trackEvent } from '../../utils/analytics';
-import { V3_SPECIALTY_HEROES } from '../../utils/cartHero';
 import { optimizedImageUrl } from '../../utils/cloudinaryImage';
 import { generateSpecialtyWorkout } from '../../utils/v3Api';
 import { SPECIALTY_DRILLDOWN_THUMB, SPECIALTY_EQUIPMENT_GROUPS, SPECIALTY_EQUIPMENT_ICON, SPECIALTY_PRESETS, titleParts } from '../../utils/v3Specialty';
@@ -142,7 +144,7 @@ export function SpecialtyPresetsRow() {
         </View>
       ) : null}
 
-      <View style={{ height: CARD_HEIGHT + 16 }}>
+      <View style={{ height: CARD_HEIGHT + 16, marginTop: 10 }}>
         {/* Carousel: one equipment hero at a time, neighbors peeking */}
         <Animated.View
           pointerEvents={expanded ? 'none' : 'auto'}
@@ -163,11 +165,24 @@ export function SpecialtyPresetsRow() {
           >
             {SPECIALTY_EQUIPMENT_GROUPS.map((g, i) => {
               const inputRange = [(i - 1) * STEP, i * STEP, (i + 1) * STEP];
-              const scale = scrollX.interpolate({ inputRange, outputRange: [0.9, 1, 0.9], extrapolate: 'clamp' });
-              const opacity = scrollX.interpolate({ inputRange, outputRange: [0.5, 1, 0.5], extrapolate: 'clamp' });
-              const heroUri = V3_SPECIALTY_HEROES[g.presets[0]]; // the equipment's "full body" shot represents it
+              // "Revolving circle" feel (Wes, Oct 2026 feedback #12): side cards tilt around a central axis and
+              // tuck in toward the centered card as they pass, instead of just sliding/shrinking flat.
+              const scale = scrollX.interpolate({ inputRange, outputRange: [0.82, 1, 0.82], extrapolate: 'clamp' });
+              const opacity = scrollX.interpolate({ inputRange, outputRange: [0.55, 1, 0.55], extrapolate: 'clamp' });
+              const rotateY = scrollX.interpolate({ inputRange, outputRange: ['38deg', '0deg', '-38deg'], extrapolate: 'clamp' });
+              const pullIn = scrollX.interpolate({ inputRange, outputRange: [-CARD_WIDTH * 0.22, 0, CARD_WIDTH * 0.22], extrapolate: 'clamp' });
+              const zIndex = scrollX.interpolate({ inputRange, outputRange: [0, 10, 0], extrapolate: 'clamp' });
+              const heroUri = g.heroUri; // true-16:9 equipment photo (SPECIALTY_EQUIPMENT_HERO), not a per-preset shot
               return (
-                <Animated.View key={g.equipment} style={{ width: CARD_WIDTH, transform: [{ scale }], opacity }}>
+                <Animated.View
+                  key={g.equipment}
+                  style={{
+                    width: CARD_WIDTH,
+                    opacity,
+                    zIndex: zIndex as unknown as number,
+                    transform: [{ perspective: 900 }, { translateX: pullIn }, { rotateY }, { scale }],
+                  }}
+                >
                   <Pressable
                     onPress={() => openDrilldown(g.equipment)}
                     style={({ pressed }) => [styles.heroCard, pressed && { transform: [{ scale: 0.98 }] }]}
