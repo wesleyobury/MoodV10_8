@@ -31,7 +31,7 @@ import { SafeLinearGradient as LinearGradient } from '../../components/SafeLinea
 import { BRAND_GRADIENT, COLORS, bgA } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { trackEvent } from '../../utils/analytics';
-import { V3Envelope, getSpecialtyWorkout, getV3Workout, swapSpecialtyExercise, swapV3Exercise, swapV3Workout } from '../../utils/v3Api';
+import { V3Envelope, getSpecialtyWorkout, getV3Workout, swapSpecialtyExercise, swapSpecialtyWorkout, swapV3Exercise, swapV3Workout } from '../../utils/v3Api';
 import { readCachedEnvelope, updateTodayEnvelope } from '../../utils/v3Today';
 import { findSavedV3, saveV3, unsaveV3 } from '../../utils/v3Saved';
 import * as Haptics from 'expo-haptics';
@@ -246,7 +246,7 @@ function V3WorkoutCartScreen() {
     if (!token || !id || !before || building) return;
     setBuilding(true);
     track('v3_swap_workout_tapped', { swap_count: before.swap_count, selection_source: before.selection_source ?? null, archetype: before.archetype.id });
-    const res = await swapV3Workout(token, id);
+    const res = isSpecialty ? await swapSpecialtyWorkout(token, id) : await swapV3Workout(token, id);
     setBuilding(false);
     if (!res.ok && res.error.kind === 'completed') {
       // finished already: Different Workout cannot change it. Send them Home, where the card builds a fresh one.
@@ -501,7 +501,7 @@ function V3WorkoutCartScreen() {
                   {`${exerciseTotal(w)} exercises · ${header.facts[0]}${w.warmup ? ' · warm-up included' : ''}`}
                 </Text>
 
-                {!isDone && !isSpecialty ? (
+                {!isDone ? (
                   <Pressable
                     onPress={onDifferent}
                     disabled={building}
@@ -534,7 +534,7 @@ function V3WorkoutCartScreen() {
               >
                 {saving ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name={savedId ? 'bookmark' : 'bookmark-outline'} size={18} color={savedId ? COLORS.accent : COLORS.textPrimary} />}
               </Pressable>
-              {!isDone && !isSpecialty ? (
+              {!isDone ? (
                 <Pressable onPress={onDifferent} disabled={building} hitSlop={10} style={[styles.glassBtn, { overflow: 'hidden' }]} accessibilityLabel="Different workout" testID="v3-cart-different-top">
                   {!building ? <Shimmer size={38} /> : null}
                   {building ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name="shuffle" size={19} color={COLORS.textPrimary} />}

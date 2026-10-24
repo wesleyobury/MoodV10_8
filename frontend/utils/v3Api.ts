@@ -395,6 +395,15 @@ export function swapSpecialtyExercise(token: string, workoutId: string, exercise
   });
 }
 
+/** Different workout (shuffle), Specialty's own equivalent of swapV3Workout below -- same preset, a fresh
+ *  selection, same workout_id (Wes, Oct 2026: "should be in the cart same as direction carts"). */
+export function swapSpecialtyWorkout(token: string, workoutId: string): Promise<V3Result> {
+  return call(`/api/v3/specialty/${encodeURIComponent(workoutId)}/swap-workout`, token, {
+    method: 'POST',
+    timeoutMs: GENERATE_TIMEOUT_MS,
+  });
+}
+
 /**
  * POST /api/v3/specialty/{id}/complete -- same request/response contract as completeV3Workout (backend/mood_v3/
  * specialty_router.py reuses mood_v3.completion.complete_workout, just pointed at db.specialty_workouts with

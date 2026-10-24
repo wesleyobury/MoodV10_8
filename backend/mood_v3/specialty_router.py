@@ -8,6 +8,11 @@ calls shared: formatter.py's builders (via engines/specialty/render.py), and rou
 GET  /api/v3/specialty/presets                 the 18 presets (id, name, equipment, target, default/eligible flavors)
 POST /api/v3/specialty/generate                 generate a specialty workout
 GET  /api/v3/specialty/{id}                     latest envelope
+POST /api/v3/specialty/{id}/swap-workout        Different workout: same preset_id, a fresh random selection (and
+                                                 a fresh flavor pick) from the pool, same workout_id, version + 1.
+                                                 Mirrors POST /api/v3/workouts/{id}/swap-workout (mood_v3/router.py)
+                                                 for the Directions, minus the archetype-rotation step Specialty
+                                                 has no equivalent of.
 POST /api/v3/specialty/{id}/swap-exercise       {"exercise_id": "..."} -> new envelope, or 409 no_alternative
 POST /api/v3/specialty/{id}/swap-complex        {"block_index": N} -> swap an assembled-complex block
 POST /api/v3/specialty/{id}/complete            {"performance": [...], "fit_rating", "duration_actual", ...} -- same
@@ -130,6 +135,31 @@ def build_specialty_router(db, get_current_user, completion_hooks=None):
         if not d: raise HTTPException(404, 'Specialty workout not found')
         if d['user_id'] != user_id: raise HTTPException(403, 'Not your workout')
         return d
+
+    @r.post('/{workout_id}/swap-workout')
+    async def swap_workout(workout_id: str, user_id: str = Depends(get_current_user)):
+        """Different workout (shuffle). Same preset_id / experience / duration; flavor is re-picked (same as a
+        fresh /generate call with no flavor given) and the pool selection reseeds off the doc's own `version`
+        (adapter._seed includes swap_count -- passing the pre-bump version here guarantees a seed this workout
+        has never used before). Same workout_id, version + 1 -- mirrors mood_v3.router's Direction swap-workout,
+        just without an archetype-rotation step Specialty has no equivalent of."""
+        d = await _load(workout_id, user_id)
+        if d.get('status') == 'completed':
+            raise HTTPException(409, 'Workout already completed')
+        nctx = d['nctx']
+        try:
+            env2, res2 = SR.generate(preset_id=nctx['preset_id'], flavor=None, experience=nctx['experience'],
+                                      duration=nctx['duration'], user_key=user_id, date=_dt.date.today().isoformat(),
+                                      equipment_label=BP.EQUIPMENT_PROFILES[BP.PRESETS[nctx['preset_id']]['equipment']]['label'],
+                                      swap_count=d['version'], production_only=nctx.get('production_only', True),
+                                      workout_id=workout_id, adapter_module=SPA)
+        except SPA.Conflict as c:
+            raise HTTPException(409, dict(code=c.code, message=c.message, detail=c.detail))
+        nctx2 = dict(preset_id=nctx['preset_id'], flavor=env2['workout']['specialty']['flavor'], experience=nctx['experience'],
+                      duration=nctx['duration'], user=user_id, date=_dt.date.today().isoformat(),
+                      persist=nctx.get('persist', True), production_only=nctx.get('production_only', True))
+        env2['workout']['version'] = d['version'] + 1
+        return await _finish(env2, res2, user_id, nctx2, workout_id, version=d['version'] + 1)
 
     @r.get('/{workout_id}')
     async def get_workout(workout_id: str, user_id: str = Depends(get_current_user)):
