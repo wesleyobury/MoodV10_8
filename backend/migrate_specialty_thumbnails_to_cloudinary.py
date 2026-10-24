@@ -115,9 +115,20 @@ def main():
         with open(MAP_OUT) as f:
             existing = json.load(f)
     mapping = existing.get('mapping', {})
-    done_ids = set(mapping)
-    todo = [r for r in cloudfront_items if r['specialty_catalog_id'] not in done_ids]
-    print(f'{len(done_ids)} already migrated in a prior run; {len(todo)} remaining.')
+
+    def _needs_upload(r):
+        """True unless this id is already mapped AND its recorded old_url still matches the manifest's
+        current CloudFront URL for it -- a catalog id can get a brand-new photoshoot image at the same
+        id (Wes/Emergent re-running the thumbnail generator), which must be re-uploaded even though the
+        id itself was "done" before (Oct 2026: a stale manifest revert surfaced exactly this case -- 9 of
+        86 ids had genuinely new source images, the rest had just reverted to their OLD, already-migrated
+        CloudFront URL)."""
+        m = mapping.get(r['specialty_catalog_id'])
+        return m is None or m['old_url'] != r['thumbnail_url']
+
+    todo = [r for r in cloudfront_items if _needs_upload(r)]
+    print(f'{len(cloudfront_items) - len(todo)} already migrated and unchanged; {len(todo)} need uploading '
+          f'(new ids and/or ids whose source image changed since the last run).')
 
     failures = []
     max_this_run = int(os.environ.get('MIGRATE_BATCH_SIZE', '0')) or len(todo)
@@ -144,8 +155,8 @@ def main():
         with open(MAP_OUT, 'w') as f:
             json.dump(dict(mapping=mapping, failures=failures), f, indent=2)
 
-    remaining = len(cloudfront_items) - len(mapping)
-    print(f'\n{len(mapping)}/{len(cloudfront_items)} migrated total ({remaining} remaining). Mapping at {MAP_OUT}')
+    remaining = sum(1 for r in cloudfront_items if _needs_upload(r))
+    print(f'\n{len(cloudfront_items) - remaining}/{len(cloudfront_items)} migrated total ({remaining} remaining). Mapping at {MAP_OUT}')
     if remaining > 0:
         print('Re-run this script (same --apply command) to continue -- already-done ids are skipped automatically.')
         return

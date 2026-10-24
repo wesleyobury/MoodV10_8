@@ -291,37 +291,53 @@ test('V3 Home heroes — never three women or three men across the three cards (
   assert.ok(checked >= 900);
 });
 
-/* ---------------------------------------------------------------- Specialty: first exercise thumbnail (Wes, Oct 2026) */
+/* ---------------------------------------------------------------- Specialty: curated preset hero (Wes, Oct 2026 #10) */
+// Every one of the 18 real presets (SPECIALTY_PRESETS) now has a curated photo in V3_SPECIALTY_HEROES, so these
+// use made-up archetype ids ("specialty_no_such_preset") to exercise the exercise-thumbnail / Direction-image
+// fallback paths, which still exist for a preset id that somehow isn't in the curated set.
+import { V3_SPECIALTY_HEROES } from './cartHero';
+
+test('V3 hero — Specialty with a curated preset photo uses it, ignoring exercise thumbnails entirely', () => {
+  const blocks = [{ items: [{ exercise: { id: 'goblet_squat', media: null } }] }];
+  const w = v3({ direction: 'specialty', archetype: { id: 'specialty_kettlebell_lower' }, target: { mode: 'explicit', muscles: [] }, blocks });
+  const r = resolveV3CartHero(w);
+  assert.equal(r.reason, 'archetype');
+  assert.deepEqual(r.source, { kind: 'remote', uri: V3_SPECIALTY_HEROES.kettlebell_lower });
+});
+
+test('V3 hero — different Specialty presets show their own distinct curated photo, not one repeated image', () => {
+  const a = resolveV3CartHero(v3({ direction: 'specialty', archetype: { id: 'specialty_kettlebell_lower' }, target: { mode: 'explicit', muscles: [] }, blocks: [] }));
+  const b = resolveV3CartHero(v3({ direction: 'specialty', archetype: { id: 'specialty_landmine_full' }, target: { mode: 'explicit', muscles: [] }, blocks: [] }));
+  assert.equal(a.reason, 'archetype');
+  assert.equal(b.reason, 'archetype');
+  assert.notDeepEqual(a.source, b.source);
+  assert.deepEqual(a.source, { kind: 'remote', uri: V3_SPECIALTY_HEROES.kettlebell_lower });
+  assert.deepEqual(b.source, { kind: 'remote', uri: V3_SPECIALTY_HEROES.landmine_full });
+});
+
 // Specialty's adapter fills slots from BOTH its own curated catalog AND the frozen production library
 // (engines/specialty/adapter.py:_production_pool), so a specialty workout's items can carry real frozen-library
-// exercise ids with real thumbnails, same as 'goblet_squat' / 'kettlebell_deadlift' here.
-test('V3 hero — Specialty uses the cart\'s own first exercise thumbnail, never one static Direction image', () => {
+// exercise ids with real thumbnails, same as 'goblet_squat' / 'kettlebell_deadlift' here -- exercised below via a
+// made-up preset id that has no curated photo, so the fallback chain still runs end to end.
+test('V3 hero — Specialty with no curated photo for the preset falls back to the cart\'s own first exercise thumbnail', () => {
   const blocks = [{ items: [{ exercise: { id: 'goblet_squat', media: null } }, { exercise: { id: 'kettlebell_deadlift', media: null } }] }];
-  const w = v3({ direction: 'specialty', archetype: { id: 'specialty_kettlebell_lower' }, target: { mode: 'explicit', muscles: [] }, blocks });
+  const w = v3({ direction: 'specialty', archetype: { id: 'specialty_no_such_preset' }, target: { mode: 'explicit', muscles: [] }, blocks });
   const r = resolveV3CartHero(w);
   assert.equal(r.reason, 'exercise');
   assert.deepEqual(r.source, { kind: 'remote', uri: thumbUrl('goblet_squat') });
 });
 
-test('V3 hero — Specialty prefers an explicit media.thumbnail_url over the id-derived lookup', () => {
+test('V3 hero — Specialty (no curated photo) prefers an explicit media.thumbnail_url over the id-derived lookup', () => {
   const blocks = [{ items: [{ exercise: { id: 'unknown_id', media: { thumbnail_url: 'https://cdn.example.com/direct.jpg' } } }] }];
-  const w = v3({ direction: 'specialty', archetype: { id: 'specialty_barbell_full' }, target: { mode: 'explicit', muscles: [] }, blocks });
+  const w = v3({ direction: 'specialty', archetype: { id: 'specialty_no_such_preset' }, target: { mode: 'explicit', muscles: [] }, blocks });
   const r = resolveV3CartHero(w);
   assert.equal(r.reason, 'exercise');
   assert.deepEqual(r.source, { kind: 'remote', uri: 'https://cdn.example.com/direct.jpg' });
 });
 
-test('V3 hero — Specialty with no readable exercise thumbnail at all falls back to the Direction image, same as before', () => {
-  const w = v3({ direction: 'specialty', archetype: { id: 'specialty_barbell_full' }, target: { mode: 'explicit', muscles: [] }, blocks: [] });
+test('V3 hero — Specialty with no curated photo and no readable exercise thumbnail falls back to the Direction image', () => {
+  const w = v3({ direction: 'specialty', archetype: { id: 'specialty_no_such_preset' }, target: { mode: 'explicit', muscles: [] }, blocks: [] });
   const r = resolveV3CartHero(w);
   assert.equal(r.reason, 'direction');
   assert.deepEqual(r.source, { kind: 'remote', uri: V3_CART_HEROES.strength_upper_push });
-});
-
-test('V3 hero — different Specialty workouts (different first exercise) get different heroes, not one repeated image', () => {
-  const a = resolveV3CartHero(v3({ direction: 'specialty', archetype: { id: 'specialty_kettlebell_lower' }, target: { mode: 'explicit', muscles: [] },
-    blocks: [{ items: [{ exercise: { id: 'goblet_squat', media: null } }] }] }));
-  const b = resolveV3CartHero(v3({ direction: 'specialty', archetype: { id: 'specialty_landmine_full' }, target: { mode: 'explicit', muscles: [] },
-    blocks: [{ items: [{ exercise: { id: 'front_squat', media: null } }] }] }));
-  assert.notDeepEqual(a.source, b.source);
 });

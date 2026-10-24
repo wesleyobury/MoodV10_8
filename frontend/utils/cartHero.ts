@@ -86,6 +86,38 @@ export const V3_CART_HEROES = {
   athletic_full_body: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1790890194/mood/v3/cart_heroes/athletic_full_body.jpg',
 } as const;
 export type V3CartHeroKey = keyof typeof V3_CART_HEROES;
+/**
+ * Specialty's own curated hero photo, one per preset (Wes, Oct 2026 feedback #10): "im seeing heros of exercise
+ * demonstration videos. use this defined set for each preset." Specialty previously fell back to the cart's own
+ * first exercise thumbnail (see firstExerciseThumb below) because there was no photo shoot covering all 18
+ * equipment x target combinations; there now is. Source: "V3 Updates/Exercise Thumbnails/Preset Heros/p<NN>_
+ * <equipment>_<target>_body_<athlete>.jpg" (1080 x 1350), uploaded to Cloudinary as
+ * mood/v3/cart_heroes/specialty/<preset_id>. Keyed by the bare preset id (SPECIALTY_PRESETS' own id, e.g.
+ * "landmine_full"), NOT the runtime archetype id (which carries a "specialty_" prefix -- see heroPlan below,
+ * which strips it before looking this up). One fixed photo per preset -- no pool/alternates, unlike
+ * V3_CART_HEROES, since each preset already has its own distinct shot.
+ */
+export const V3_SPECIALTY_HEROES: Record<string, string> = {
+  barbell_full: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808926/mood/v3/cart_heroes/specialty/barbell_full.jpg',
+  barbell_upper: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808927/mood/v3/cart_heroes/specialty/barbell_upper.jpg',
+  barbell_lower: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808927/mood/v3/cart_heroes/specialty/barbell_lower.jpg',
+  kettlebell_full: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808923/mood/v3/cart_heroes/specialty/kettlebell_full.jpg',
+  kettlebell_upper: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808923/mood/v3/cart_heroes/specialty/kettlebell_upper.jpg',
+  kettlebell_lower: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808924/mood/v3/cart_heroes/specialty/kettlebell_lower.jpg',
+  dumbbells_full: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808921/mood/v3/cart_heroes/specialty/dumbbells_full.jpg',
+  dumbbells_upper: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808922/mood/v3/cart_heroes/specialty/dumbbells_upper.jpg',
+  dumbbells_lower: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808922/mood/v3/cart_heroes/specialty/dumbbells_lower.jpg',
+  landmine_full: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808925/mood/v3/cart_heroes/specialty/landmine_full.jpg',
+  landmine_upper: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808925/mood/v3/cart_heroes/specialty/landmine_upper.jpg',
+  landmine_lower: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808926/mood/v3/cart_heroes/specialty/landmine_lower.jpg',
+  bodyweight_full: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808928/mood/v3/cart_heroes/specialty/bodyweight_full.jpg',
+  bodyweight_upper: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808930/mood/v3/cart_heroes/specialty/bodyweight_upper.jpg',
+  bodyweight_lower: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808930/mood/v3/cart_heroes/specialty/bodyweight_lower.jpg',
+  park_full: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808931/mood/v3/cart_heroes/specialty/park_full.jpg',
+  park_upper: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808931/mood/v3/cart_heroes/specialty/park_upper.jpg',
+  park_lower: 'https://res.cloudinary.com/dfsygar5c/image/upload/v1792808932/mood/v3/cart_heroes/specialty/park_lower.jpg',
+};
+
 
 /**
  * Cart hero library (Oct 2026). Every photo is tagged with each archetype it suits (first tag = the archetype it was
@@ -312,9 +344,14 @@ function heroPlan(w: V3HeroWorkout): HeroPlan {
     const hit = V3_TARGET_HERO.find((t) => t.muscles.includes(m));
     if (hit) return { kind: 'pool', reason: 'target', pool: v3WorkoutHeroPool(w, hit.hero), seed, salt: hit.hero };
   }
-  // Specialty: no curated pool and no target muscles (render.py always sends target_muscles=[]) -- use the cart's
-  // own first exercise thumbnail instead of one static generic image for all 18 presets (Wes, Oct 2026).
+  // Specialty: a curated photo per preset (Wes, Oct 2026 feedback #10) -- see V3_SPECIALTY_HEROES above. The
+  // runtime archetype id carries a "specialty_" prefix (engines/specialty/adapter.py: f'specialty_{preset_id}'),
+  // which V3_SPECIALTY_HEROES is NOT keyed by, so strip it before the lookup. Exercise-thumbnail fallback stays
+  // only for a preset that somehow has no curated shot (there shouldn't be one -- all 18 are covered).
   if (w.direction === 'specialty') {
+    const presetId = id?.startsWith('specialty_') ? id.slice('specialty_'.length) : id;
+    const curated = presetId ? V3_SPECIALTY_HEROES[presetId] : undefined;
+    if (curated) return { kind: 'fixed', reason: 'archetype', source: { kind: 'remote', uri: curated } };
     const thumb = firstExerciseThumb(w);
     if (thumb) return { kind: 'fixed', reason: 'exercise', source: { kind: 'remote', uri: thumb } };
   }

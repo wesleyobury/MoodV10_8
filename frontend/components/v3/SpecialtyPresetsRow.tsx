@@ -4,23 +4,27 @@
  * Per the locked product rule (MOOD_V3_Specialty_Generator scope doc): presets are NOT a 4th Direction and do not
  * touch the Build flow's 3-card Direction step (Strength/Sweat/Athletic stays exactly as it is). This is new,
  * additive content on Home: a horizontally-scrollable row of 18 preset cards, visually based on the Direction
- * cards' look (app/v3/build.tsx's dirCard/dirImg/dirText styles) since Home has no existing "browse many items"
- * card pattern to mirror -- Home's one existing card set ("MOOD's suggestions") is a live-preview-per-card system
- * purpose-built for exactly 3 Directions (it generates a real workout per card on every Home render); doing that
- * for 18 presets would mean 18 generator calls on every Home load, a different performance profile this feature
- * doesn't need. These cards are static (no live preview) and generate on demand, only when tapped.
+ * cards' look (app/v3/build.tsx's dirCard/dirImg/dirText styles) -- originally an icon-and-text card (no shoot
+ * existed to cover all 18 equipment x target combinations), now a real photo card per Wes's Oct 2026 feedback
+ * #10, matching the Direction step's own ImageBackground + bottom gradient + text treatment now that one does.
+ * Home's one other existing card set ("MOOD's suggestions") is a live-preview-per-card system purpose-built for
+ * exactly 3 Directions (it generates a real workout per card on every Home render); doing that for 18 presets
+ * would mean 18 generator calls on every Home load, a different performance profile this feature doesn't need.
+ * These cards are static (no live preview) and generate on demand, only when tapped.
  *
  * Tapping a card calls the independent specialty generator (POST /api/v3/specialty/generate) and opens the
  * existing Cart screen (/v3/workout) with a `kind=specialty` param so the Cart knows to fetch/swap through the
  * specialty endpoints instead of the Direction ones (see app/v3/workout.tsx for the corresponding branch).
  */
 import React, { useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeLinearGradient as LinearGradient } from '../SafeLinearGradient';
 import { COLORS } from '../../constants/brand';
 import { useAuth } from '../../contexts/AuthContext';
 import { trackEvent } from '../../utils/analytics';
+import { V3_SPECIALTY_HEROES } from '../../utils/cartHero';
 import { generateSpecialtyWorkout } from '../../utils/v3Api';
 import { SPECIALTY_EQUIPMENT_ICON, SPECIALTY_EQUIPMENT_LABEL, SPECIALTY_PRESETS, titleParts } from '../../utils/v3Specialty';
 
@@ -79,22 +83,27 @@ export function SpecialtyPresetsRow() {
               accessibilityLabel={p.name}
               testID={`v3-specialty-preset-${p.id}`}
             >
-              <View style={styles.iconWrap}>
-                {busy ? <ActivityIndicator color={COLORS.textPrimary} /> : <Ionicons name={SPECIALTY_EQUIPMENT_ICON[p.equipment] as any} size={26} color={COLORS.accent} />}
-              </View>
-              <Text style={styles.cardName} numberOfLines={2}>
-                {titleParts(p.name).secondary ? (
-                  <>
-                    {titleParts(p.name).primary}{' '}
-                    <Text style={styles.cardNameSecondary}>{titleParts(p.name).secondary}</Text>
-                  </>
-                ) : (
-                  p.name
-                )}
-              </Text>
-              <Text style={styles.cardSub} numberOfLines={1}>
-                {SPECIALTY_EQUIPMENT_LABEL[p.equipment]} · {TARGET_LABEL[p.target]}
-              </Text>
+              <ImageBackground source={{ uri: V3_SPECIALTY_HEROES[p.id] }} resizeMode="cover" style={styles.cardImg} imageStyle={styles.cardImgInner}>
+                <LinearGradient colors={['rgba(10,10,10,0)', 'rgba(10,10,10,0.92)']} locations={[0.35, 1]} style={StyleSheet.absoluteFillObject as any} />
+                <View style={styles.iconWrap}>
+                  {busy ? <ActivityIndicator size="small" color={COLORS.textPrimary} /> : <Ionicons name={SPECIALTY_EQUIPMENT_ICON[p.equipment] as any} size={15} color={COLORS.textPrimary} />}
+                </View>
+                <View style={styles.cardText}>
+                  <Text style={styles.cardName} numberOfLines={2}>
+                    {titleParts(p.name).secondary ? (
+                      <>
+                        {titleParts(p.name).primary}{' '}
+                        <Text style={styles.cardNameSecondary}>{titleParts(p.name).secondary}</Text>
+                      </>
+                    ) : (
+                      p.name
+                    )}
+                  </Text>
+                  <Text style={styles.cardSub} numberOfLines={1}>
+                    {SPECIALTY_EQUIPMENT_LABEL[p.equipment]} · {TARGET_LABEL[p.target]}
+                  </Text>
+                </View>
+              </ImageBackground>
             </Pressable>
           );
         })}
@@ -112,17 +121,21 @@ const styles = StyleSheet.create({
   row: { paddingHorizontal: 16, paddingTop: 12, gap: 10 },
   card: {
     width: 128,
+    height: 172,
     borderRadius: 18,
     overflow: 'hidden',
     backgroundColor: COLORS.surface,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'rgba(255,255,255,0.14)',
-    padding: 12,
-    minHeight: 150,
-    justifyContent: 'space-between',
   },
-  iconWrap: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.08)' },
-  cardName: { fontSize: 13, fontWeight: '800', color: COLORS.textPrimary, marginTop: 10 },
-  cardNameSecondary: { fontWeight: '500', opacity: 0.7 },
-  cardSub: { fontSize: 10, color: 'rgba(255,255,255,0.55)', marginTop: 4 },
+  cardImg: { flex: 1, justifyContent: 'space-between', backgroundColor: COLORS.surface },
+  cardImgInner: { width: '100%', height: '100%' },
+  iconWrap: {
+    alignSelf: 'flex-start', margin: 10, width: 26, height: 26, borderRadius: 13,
+    alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(10,10,10,0.55)',
+  },
+  cardText: { paddingHorizontal: 11, paddingBottom: 11 },
+  cardName: { fontSize: 13, fontWeight: '800', color: COLORS.textPrimary },
+  cardNameSecondary: { fontWeight: '500', opacity: 0.75 },
+  cardSub: { fontSize: 10, color: 'rgba(255,255,255,0.7)', marginTop: 3 },
 });
