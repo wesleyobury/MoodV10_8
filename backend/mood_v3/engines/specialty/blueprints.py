@@ -14,7 +14,11 @@ from __future__ import annotations
 EQUIPMENT_PROFILES = {
     'dumbbells':    dict(label='Dumbbells',     eq={'dumbbells', 'bench'}),
     'kettlebell':   dict(label='Kettlebells',   eq={'kettlebell', 'bench'}),
-    'landmine':     dict(label='Landmine',      eq={'landmine', 'barbell', 'bench'}),
+    # eq intentionally excludes plain 'barbell': landmine's own anchor movements are tagged 'landmine',
+    # and pulling in the whole barbell category (back squat, deadlift, curl, ...) put plainly unrelated
+    # barbell lifts into landmine-only sessions (Wes, Oct 2026 feedback #8) -- 'bench' stays as the one
+    # cross-equipment complement, same as dumbbells/kettlebell/bodyweight below.
+    'landmine':     dict(label='Landmine',      eq={'landmine', 'bench'}),
     'barbell':      dict(label='Barbell',       eq={'barbell', 'bench', 'rack'}),
     'bodyweight':   dict(label='Bodyweight',    eq={'bodyweight', 'bench'}),             # no pull-up bar
     'outdoor_park': dict(label='Outdoor/Park',  eq={'bodyweight', 'bench', 'pullup_bar'}),
