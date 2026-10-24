@@ -825,7 +825,7 @@ const styles = StyleSheet.create({
   seeAll: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingTop: 3 },
   seeAllText: { fontSize: 13.5, fontWeight: '600', color: COLORS.textSecondary },
   recRow: { flexDirection: 'row', gap: GAP },
-  wearables: { paddingTop: FOLD_GAP + 24 },
+  wearables: { paddingTop: FOLD_GAP }, // was FOLD_GAP + 24; the +24 was sized for the old recs->wearables gap
 
   toast: {
     position: 'absolute',

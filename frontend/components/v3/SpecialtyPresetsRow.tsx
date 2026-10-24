@@ -5,21 +5,25 @@
  * touch the Build flow's 3-card Direction step (Strength/Sweat/Athletic stays exactly as it is). This is new,
  * additive content on Home.
  *
- * Shape (Wes, Oct 2026 feedback #11/#12 -- a full redo of the original flat 18-card scroll row, then a
- * correction of the hero source + a revolving-circle animation pass): a one-at-a-time hero carousel of the 6
- * EQUIPMENT groups ("Barbell Only", "Dumbbell Only", ... -- SPECIALTY_EQUIPMENT_GROUPS), each a true-16:9 photo
- * (SPECIALTY_EQUIPMENT_GROUPS[i].heroUri, from the "Cart Heroes/preset heros" shoot -- NOT a per-preset photo)
- * with the next/previous card peeking in at the edges. The transition is a coverflow-style "revolving circle":
- * side cards tilt (rotateY) and tuck toward the center card as they pass, rather than sliding flat like a
- * slideshow. It auto-shuffles to a random next card on a timer, and can be swiped manually (which pauses and
- * restarts the auto-shuffle, so a manual swipe never gets immediately overridden). Starts on a random equipment
- * every time Home mounts -- there is intentionally no fixed/first card.
+ * Shape (Wes, Oct 2026 feedback #11/#12/#13 -- a full redo of the original flat 18-card scroll row, then a
+ * hero-source correction, then two animation/polish passes): a one-at-a-time hero carousel of the 6 EQUIPMENT
+ * groups ("Barbell Only", "Dumbbell Only", ... -- SPECIALTY_EQUIPMENT_GROUPS), each a true-16:9 photo
+ * (SPECIALTY_EQUIPMENT_GROUPS[i].heroUri, from the "Cart Heroes/preset heros" shoot -- NOT a per-preset photo).
+ * The previous/next cards sit almost entirely BEHIND the centered one (heavy horizontal overlap, a sliver
+ * peeking at each edge, lower zIndex, slight rotateY tilt for a "revolving circle" read) at full opacity --
+ * no fade -- rather than beside it with a faded slideshow feel. It auto-shuffles to a random next card on a
+ * timer, and can be swiped manually (which pauses and restarts the auto-shuffle, so a manual swipe never gets
+ * immediately overridden). Starts on a random equipment every time Home mounts -- there is intentionally no
+ * fixed/first card.
  *
  * Tapping an equipment card animates a cross-fade into that equipment's 3 body-part cards (Full/Upper/Lower),
  * each showing a real exercise thumbnail (SPECIALTY_DRILLDOWN_THUMB -- a fixed representative exercise per
- * preset, not a live preview; see that constant's own comment for why). Tapping one of THOSE calls the
- * independent specialty generator (POST /api/v3/specialty/generate) and opens the existing Cart screen
- * (/v3/workout) with a `kind=specialty` param, same as before. A back chevron returns to the equipment carousel.
+ * preset, not a live preview; see that constant's own comment for why). The drill-down tiles deliberately
+ * reuse the hero card's own format (16:9 aspect, same gradient stops, same bold-title/sub-caption layout) so
+ * the drill-down reads as a continuation of the same card family, not a jump into a separate section. Tapping
+ * one of THOSE calls the independent specialty generator (POST /api/v3/specialty/generate) and opens the
+ * existing Cart screen (/v3/workout) with a `kind=specialty` param, same as before. A back chevron returns to
+ * the equipment carousel.
  */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -43,6 +47,13 @@ const STEP = CARD_WIDTH + CARD_GAP;
 const SIDE_PAD = (SCREEN_WIDTH - CARD_WIDTH) / 2;
 const CARD_HEIGHT = Math.round((CARD_WIDTH * 9) / 16); // 16:9, on purpose (Wes, Oct 2026)
 const AUTO_SHUFFLE_MS = 4500;
+const DRILL_GAP = 10;
+// Drill-down tiles keep the SAME 16:9 format as the hero card, just smaller (3-across) -- so the drill-down
+// reads as the hero card's own family, not a differently-shaped new section (Wes, Oct 2026 feedback #13).
+const DRILL_TILE_WIDTH = Math.round((SCREEN_WIDTH - 32 - DRILL_GAP * 2) / 3);
+const DRILL_TILE_HEIGHT = Math.round((DRILL_TILE_WIDTH * 9) / 16);
+// How much of a side card peeks out from behind the centered one (Wes, Oct 2026 feedback #13: "behind, no fade").
+const PEEK = 20;
 const PRESET_BY_ID = new Map(SPECIALTY_PRESETS.map((p) => [p.id, p]));
 
 export function SpecialtyPresetsRow() {
@@ -165,12 +176,13 @@ export function SpecialtyPresetsRow() {
           >
             {SPECIALTY_EQUIPMENT_GROUPS.map((g, i) => {
               const inputRange = [(i - 1) * STEP, i * STEP, (i + 1) * STEP];
-              // "Revolving circle" feel (Wes, Oct 2026 feedback #12): side cards tilt around a central axis and
-              // tuck in toward the centered card as they pass, instead of just sliding/shrinking flat.
-              const scale = scrollX.interpolate({ inputRange, outputRange: [0.82, 1, 0.82], extrapolate: 'clamp' });
-              const opacity = scrollX.interpolate({ inputRange, outputRange: [0.55, 1, 0.55], extrapolate: 'clamp' });
-              const rotateY = scrollX.interpolate({ inputRange, outputRange: ['38deg', '0deg', '-38deg'], extrapolate: 'clamp' });
-              const pullIn = scrollX.interpolate({ inputRange, outputRange: [-CARD_WIDTH * 0.22, 0, CARD_WIDTH * 0.22], extrapolate: 'clamp' });
+              // "Behind, not beside" (Wes, Oct 2026 feedback #13): side cards are pulled in by almost a full
+              // STEP so they sit mostly behind the centered card (just a PEEK sliver showing at each edge),
+              // at full opacity -- no fade -- with a lower zIndex and a slight rotateY for the "revolving
+              // circle" read, instead of floating beside it as a faded slideshow neighbor.
+              const scale = scrollX.interpolate({ inputRange, outputRange: [0.86, 1, 0.86], extrapolate: 'clamp' });
+              const rotateY = scrollX.interpolate({ inputRange, outputRange: ['16deg', '0deg', '-16deg'], extrapolate: 'clamp' });
+              const pullIn = scrollX.interpolate({ inputRange, outputRange: [-(STEP - PEEK), 0, STEP - PEEK], extrapolate: 'clamp' });
               const zIndex = scrollX.interpolate({ inputRange, outputRange: [0, 10, 0], extrapolate: 'clamp' });
               const heroUri = g.heroUri; // true-16:9 equipment photo (SPECIALTY_EQUIPMENT_HERO), not a per-preset shot
               return (
@@ -178,7 +190,6 @@ export function SpecialtyPresetsRow() {
                   key={g.equipment}
                   style={{
                     width: CARD_WIDTH,
-                    opacity,
                     zIndex: zIndex as unknown as number,
                     transform: [{ perspective: 900 }, { translateX: pullIn }, { rotateY }, { scale }],
                   }}
@@ -226,8 +237,12 @@ export function SpecialtyPresetsRow() {
         >
           {expandedGroup ? (
             <>
+              {/* Same bold-label treatment as the hero card's own heroName/heroIconWrap (Wes, Oct 2026 feedback
+                  #13), so this reads as "the same card, zoomed in" rather than a nav header into a new page. */}
               <Pressable onPress={closeDrilldown} style={styles.backRow} accessibilityRole="button" accessibilityLabel="Back to equipment">
-                <Ionicons name="chevron-back" size={16} color={COLORS.textSecondary} />
+                <View style={styles.heroIconWrap}>
+                  <Ionicons name="chevron-back" size={16} color={COLORS.textPrimary} />
+                </View>
                 <Text style={styles.backText}>{expandedGroup.label}</Text>
               </Pressable>
               <View style={styles.drillRow}>
@@ -245,14 +260,18 @@ export function SpecialtyPresetsRow() {
                       accessibilityLabel={preset.name}
                       testID={`v3-specialty-preset-${presetId}`}
                     >
-                      <ImageBackground source={{ uri: optimizedImageUrl(thumb, 360) }} resizeMode="cover" style={styles.drillImg} imageStyle={styles.drillImgInner}>
-                        <LinearGradient colors={['rgba(10,10,10,0)', 'rgba(10,10,10,0.88)']} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject as any} />
+                      {/* Same gradient stops/locations as the hero card's own ImageBackground overlay. */}
+                      <ImageBackground source={{ uri: optimizedImageUrl(thumb, Math.round(DRILL_TILE_WIDTH * 3)) }} resizeMode="cover" style={styles.drillImg} imageStyle={styles.drillImgInner}>
+                        <LinearGradient colors={['rgba(10,10,10,0)', 'rgba(10,10,10,0.9)']} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject as any} />
                         {busy ? (
                           <View style={styles.drillBusy}>
                             <ActivityIndicator color={COLORS.textPrimary} />
                           </View>
                         ) : null}
-                        <Text style={styles.drillName} numberOfLines={2}>{titleParts(preset.name).secondary}</Text>
+                        <View style={styles.drillText}>
+                          <Text style={styles.drillName} numberOfLines={1}>{titleParts(preset.name).secondary}</Text>
+                          <Text style={styles.drillSub} numberOfLines={1}>{preset.target === 'full' ? 'Full body' : preset.target === 'upper' ? 'Upper body' : 'Leg day'}</Text>
+                        </View>
                       </ImageBackground>
                     </Pressable>
                   );
@@ -284,12 +303,18 @@ const styles = StyleSheet.create({
   heroName: { fontSize: 18, fontWeight: '800', color: COLORS.textPrimary },
   heroSub: { fontSize: 12, color: 'rgba(255,255,255,0.72)', marginTop: 2 },
 
-  backRow: { flexDirection: 'row', alignItems: 'center', gap: 2, marginBottom: 10 },
-  backText: { fontSize: 13, fontWeight: '700', color: COLORS.textSecondary },
-  drillRow: { flexDirection: 'row', gap: 10 },
-  drillCard: { flex: 1, height: CARD_HEIGHT, borderRadius: 16, overflow: 'hidden' },
+  backRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 },
+  // Matches heroName (same bold 18px/800 treatment) so the drill-down reads as the hero card's own label,
+  // not a separate nav header (Wes, Oct 2026 feedback #13).
+  backText: { fontSize: 18, fontWeight: '800', color: COLORS.textPrimary },
+  drillRow: { flexDirection: 'row', gap: DRILL_GAP },
+  // Same 16:9 format as the hero card, just smaller/3-across -- see DRILL_TILE_WIDTH/HEIGHT above.
+  drillCard: { width: DRILL_TILE_WIDTH, height: DRILL_TILE_HEIGHT, borderRadius: 14, overflow: 'hidden' },
   drillImg: { flex: 1, justifyContent: 'flex-end', backgroundColor: COLORS.surface },
   drillImgInner: { width: '100%', height: '100%' },
   drillBusy: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' },
-  drillName: { fontSize: 12.5, fontWeight: '800', color: COLORS.textPrimary, padding: 10 },
+  drillText: { padding: 10 },
+  drillName: { fontSize: 12, fontWeight: '800', color: COLORS.textPrimary },
+  // Mirrors heroSub's caption-under-title layout.
+  drillSub: { fontSize: 10.5, color: 'rgba(255,255,255,0.72)', marginTop: 1 },
 });
