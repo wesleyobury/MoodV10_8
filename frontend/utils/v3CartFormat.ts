@@ -645,27 +645,34 @@ const STRENGTH_ROLE: Record<string, string> = { main: 'Main lift', secondary: 'S
  * grouped or clocked block keeps its structure line (SUPERSET · 3 ROUNDS).
  */
 /**
- * Specialty's own Cart sections (Wes, Oct 2026 feedback #6): "the carts don't need to be structured the same as
- * the core generator's -- most don't have blocks, target, accessories or primaries." Direction's cartSections groups
- * consecutive same-phase blocks under a PRIMARY / SECONDARY / ACCESSORIES / FINISHER super-header designed for a
- * multi-block Strength/Sweat/Athletic session; a specialty session is usually 1-3 blocks with no such split, so
- * forcing it through that vocabulary invents a story the session doesn't have. Here every block is its own section,
- * titled by its own API title (always set by engines/specialty/render.py), with no phase merging and no super-label.
- */
-/**
- * Specialty: one flat exercise list, no Main Block / Secondary Block / Accessory sectioning (Wes, Oct 2026 --
- * these are simple 1-3 block sessions that don't need the core generator's role taxonomy). Every block's rows
- * flow into a single section with no title; each block's own internal label was already stripped to '' below,
- * so CartBlockView renders no header either -- the rows just divide continuously, like one list. A block's
- * actual programming (its items' sets/reps/rest, and chain tags on complex/circuit items) is unchanged; only
- * the section/block HEADINGS are gone.
+ * Specialty Cart sections by body part (Wes, Oct 2026 feedback #7): a flat list (the prior pass) reads fine for a
+ * 1-2 exercise session but loses the plan's shape once a session runs 3+ blocks. Section each block by what it
+ * actually trains -- the same per-block muscle derivation Strength uses (blockMuscles: an exercise's lead muscle,
+ * or its lead two for a single compound lift, up to three distinct groups for a superset/circuit) -- joined with
+ * ' + ' so a compound movement shows every body part it works (e.g. "BACK + BICEPS"), merging consecutive blocks
+ * that train the same group(s) into one section. Blocks are never reordered: the API's own block order is the
+ * generator's defensible sequencing (a compound lift ahead of its accessory work, etc.), so this only groups,
+ * never resorts.
  */
 function specialtySections(w: V3Workout): ScanSection[] {
   const scan = cartScan(w);
-  const blocks: ScanBlock[] = w.blocks.map((b, i) => ({ ...scan[i], label: '', sublabel: null }));
-  const exercises = w.blocks.reduce((n, b) => n + b.items.length, 0);
-  const minutes = w.blocks.reduce<number | null>((sum, b) => (sum != null && b.est_minutes != null ? sum + b.est_minutes : sum ?? b.est_minutes ?? null), null);
-  return [{ key: 'specialty-flat', title: '', muscles: null, exercises, minutes, emphasis: 'main', blocks }];
+  const out: ScanSection[] = [];
+  w.blocks.forEach((b, i) => {
+    const sb = scan[i];
+    const groups = blockMuscles(b);
+    const title = (groups.join(' + ') || prettyMuscle(b.type)).toUpperCase();
+    const m = /^(.*?ROUNDS?) · (\d.*)$/.exec(sb.label);
+    const block: ScanBlock = !sb.grouped && b.structure === 'straight' ? { ...sb, label: '', sublabel: null } : m ? { ...sb, label: m[1], sublabel: m[2].toLowerCase() } : { ...sb, sublabel: null };
+    const last = out[out.length - 1];
+    if (last && last.title === title) {
+      last.blocks.push(block);
+      last.exercises += b.items.length;
+      last.minutes = last.minutes != null && b.est_minutes != null ? last.minutes + b.est_minutes : last.minutes ?? b.est_minutes ?? null;
+      return;
+    }
+    out.push({ key: `${title}-${b.block_id}`, title, muscles: null, exercises: b.items.length, minutes: b.est_minutes ?? null, emphasis: b.type === 'main' ? 'main' : 'secondary', blocks: [block] });
+  });
+  return out;
 }
 
 export function cartSections(w: V3Workout): ScanSection[] {

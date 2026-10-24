@@ -366,8 +366,8 @@ test('Athletic cart: one sequenced session in phases (Primer -> Power -> Athleti
 // Specialty isn't in V3Direction yet (documented debt -- see app/v3/workout.tsx's `kind === 'specialty'` discriminator),
 // so these fixtures are built loosely and cast at the edge rather than fighting the type that's already known to lag
 // the runtime shape; everything under test here is the plain data cartSections/cartBlocks actually read.
-function mkSpecialtyItem(id: string, name: string): any {
-  return { item_id: `i_${id}`, role: 'primary', exercise: { id, name, media: null },
+function mkSpecialtyItem(id: string, name: string, muscles: string[] = []): any {
+  return { item_id: `i_${id}`, role: 'primary', exercise: { id, name, media: null, primary_muscles: muscles },
     prescription: { kind: 'reps', sets: 3, reps: 8, per_side: false, seconds: null, distance_m: null, calories: null,
       rest_sec: 90, rir: null, rpe: null, load_guidance: null, display: '3 x 8' },
     cues: [], quality_stop: null, swap: { swappable: true }, progression: null };
@@ -389,17 +389,36 @@ function mkSpecialtyWorkout(blocks: any[]): any {
   };
 }
 
-test('Specialty cart sections: one flat list, no block/section headings at all (Wes, Oct 2026 -- "no blocks needed, just list exercises")', () => {
+test('Specialty cart sections: grouped by body part, not flat and not Main/Secondary/Accessory (Wes, Oct 2026 feedback #7)', () => {
   const w = mkSpecialtyWorkout([
-    mkSpecialtyBlock('B1', 'main', 'Main Block', [mkSpecialtyItem('goblet_squat', 'Kettlebell Goblet Squat')]),
-    mkSpecialtyBlock('B2', 'accessory', 'Kettlebell Swing to Goblet Squat', [mkSpecialtyItem('kb_swing', 'Two-Hand Kettlebell Swing')]),
+    mkSpecialtyBlock('B1', 'main', 'Main Block', [mkSpecialtyItem('goblet_squat', 'Kettlebell Goblet Squat', ['quads', 'glutes'])]),
+    mkSpecialtyBlock('B2', 'accessory', 'Kettlebell Swing', [mkSpecialtyItem('kb_swing', 'Two-Hand Kettlebell Swing', ['glutes'])]),
   ]);
   const sections = cartSections(w);
-  assert.equal(sections.length, 1, 'every block flows into one section, not one section per block');
-  assert.equal(sections[0].title, '', 'no section heading at all for Specialty');
-  assert.equal(sections[0].blocks.length, 2, 'both blocks still present (their items flow continuously)');
-  for (const b of sections[0].blocks) assert.equal(b.label, '', 'no per-block heading either -- a true flat list');
+  assert.equal(sections.length, 2, 'different body parts -> separate sections, not one flat list');
+  assert.equal(sections[0].title, 'QUADS + GLUTES', 'a compound movement lists every body part it works');
+  assert.equal(sections[1].title, 'GLUTES');
+  assert.deepEqual(sections.map((s) => s.blocks.length), [1, 1]);
+  assert.equal(sections[0].exercises, 1);
+});
+
+test('Specialty cart sections: consecutive blocks training the same body part merge into one section', () => {
+  const w = mkSpecialtyWorkout([
+    mkSpecialtyBlock('B1', 'main', 'Main Block', [mkSpecialtyItem('bench_press', 'Barbell Bench Press', ['chest', 'triceps'])]),
+    mkSpecialtyBlock('B2', 'accessory', 'Accessory', [mkSpecialtyItem('tricep_ext', 'Triceps Extension', ['chest', 'triceps'])]),
+    mkSpecialtyBlock('B3', 'accessory', 'Accessory', [mkSpecialtyItem('row', 'Barbell Row', ['back'])]),
+  ]);
+  const sections = cartSections(w);
+  assert.equal(sections.length, 2, 'B1+B2 share a title and merge; B3 is a new body part and stays its own section');
+  assert.equal(sections[0].title, 'CHEST + TRICEPS');
+  assert.equal(sections[0].blocks.length, 2, 'merged section keeps both blocks, in API order');
   assert.equal(sections[0].exercises, 2);
+  assert.equal(sections[1].title, 'BACK');
+  assert.deepEqual(
+    sections.flatMap((s) => s.blocks.flatMap((b) => b.rows.map((r) => r.itemId))),
+    w.blocks.flatMap((b) => b.items.map((i) => i.item_id)),
+    'sections only group blocks -- they never reorder the generator\'s own defensible sequencing'
+  );
 });
 
 test('Specialty cart block heading prefers the API\'s own title over the shared Strength vocabulary', () => {
