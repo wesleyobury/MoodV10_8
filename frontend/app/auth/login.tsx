@@ -65,6 +65,24 @@ const fetchWithRetry = async (url: string, options: RequestInit, maxRetries = 3)
   throw lastError || new Error('Failed after multiple attempts');
 };
 
+
+// Detect social-app embedded browsers (Instagram, Facebook, TikTok, etc.)
+// Google blocks/breaks OAuth sign-in inside these webviews, which otherwise
+// surfaces as a confusing "Invalid state parameter" error from the auth proxy.
+const detectEmbeddedBrowser = (): string | null => {
+  if (Platform.OS !== 'web' || typeof navigator === 'undefined' || !navigator.userAgent) {
+    return null;
+  }
+  const ua = navigator.userAgent;
+  if (/Instagram/i.test(ua)) return 'Instagram';
+  if (/FBAN|FBAV|FB_IAB/i.test(ua)) return 'Facebook';
+  if (/TikTok|musical_ly/i.test(ua)) return 'TikTok';
+  if (/Line\//i.test(ua)) return 'LINE';
+  if (/Twitter|\bX\/\d/i.test(ua)) return 'X (Twitter)';
+  if (/Snapchat/i.test(ua)) return 'Snapchat';
+  return null;
+};
+
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -131,6 +149,13 @@ export default function Login() {
       }
     };
     checkAppleAvailability();
+  }, []);
+
+  // Warn users stuck in an in-app browser (Instagram/TikTok/etc.) before
+  // they hit the broken Google OAuth flow
+  const [embeddedBrowser, setEmbeddedBrowser] = useState<string | null>(null);
+  useEffect(() => {
+    setEmbeddedBrowser(detectEmbeddedBrowser());
   }, []);
 
   // Handle deep link redirect from Emergent Auth
@@ -214,6 +239,15 @@ export default function Login() {
   };
 
   const handleGoogleLogin = async () => {
+    const embeddedIn = detectEmbeddedBrowser();
+    if (embeddedIn) {
+      Alert.alert(
+        'Open in your browser to continue',
+        `Google sign-in doesn't work inside ${embeddedIn}'s built-in browser. Tap the \u2022\u2022\u2022 or share icon at the top of the screen, choose "Open in Browser" (or "Open in Safari"), then try Continue with Google again.`
+      );
+      return;
+    }
+
     const privacyAccepted = await AsyncStorage.getItem(PRIVACY_ACCEPTED_KEY);
     if (privacyAccepted !== 'true') {
       setShowPrivacyModal(true);
@@ -415,6 +449,16 @@ export default function Login() {
             <Text style={styles.subtitle}>Login to continue your fitness journey</Text>
           </TouchableOpacity>
 
+          {/* In-app browser warning */}
+          {embeddedBrowser ? (
+            <View style={styles.embeddedBrowserBanner}>
+              <Ionicons name="warning-outline" size={16} color="#FFA500" />
+              <Text style={styles.embeddedBrowserBannerText}>
+                Google sign-in won't work inside {embeddedBrowser}. Tap \u2022\u2022\u2022 above and choose "Open in Browser".
+              </Text>
+            </View>
+          ) : null}
+
           {/* Google Sign In Button */}
           <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
             <View style={styles.googleIconContainer}>
@@ -561,6 +605,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.textSecondary,
     textAlign: 'center',
+  },
+  embeddedBrowserBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 165, 0, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 165, 0, 0.4)',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 12,
+    gap: 8,
+  },
+  embeddedBrowserBannerText: {
+    flex: 1,
+    color: '#FFA500',
+    fontSize: 12,
+    lineHeight: 16,
   },
   googleButton: {
     flexDirection: 'row',
